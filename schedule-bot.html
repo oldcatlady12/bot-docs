@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #7856ff, #ff7a00); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-blue); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-blue); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#128197;</div>
+                    <h1>Schedule Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>The Schedule Bot provides daily sports schedules and league standings. It automatically posts game schedules for the day and updates standings, working alongside the Sports Bot to provide comprehensive sports coverage.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128197;</div>
+                        <h4>Daily Schedules</h4>
+                        <p>Auto-posted daily game schedules</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>League Standings</h4>
+                        <p>Conference and division standings</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128279;</div>
+                        <h4>Thread Links</h4>
+                        <p>Links to game threads from Sports Bot</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128276;</div>
+                        <h4>Role Alerts</h4>
+                        <p>Sport-specific role mentions</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>How It Works</h2>
+                <p>The Schedule Bot runs on a separate token from the Sports Bot and handles:</p>
+                <ul>
+                    <li><strong>Daily Schedule Posts:</strong> Automatically posts schedules each morning</li>
+                    <li><strong>Standings Updates:</strong> Regular updates to league standings</li>
+                    <li><strong>Cross-Bot Integration:</strong> Links to Sports Bot game threads</li>
+                    <li><strong>Forum Organization:</strong> Posts to sport-specific forum channels</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup</h2>
+                <h3>Installation</h3>
+                <div class="code-block">
+# Navigate to bot directory
+cd schedule-bot
+
+# Create virtual environment
+python -m venv venv
+
+# Activate venv (Windows)
+.\venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure .env file
+# SCHEDULE_BOT_TOKEN=your_separate_token_here
+
+# Run the bot
+python schedule_bot.py
+                </div>
+
+                <h3>Important Note</h3>
+                <p>This bot requires a <strong>separate Discord bot token</strong> from the Sports Bot. Create a second application in the Discord Developer Portal.</p>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+                <h3>Setup Commands</h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!set_schedule_forum &lt;forum_id&gt;</span></td><td>Set the forum channel for schedule posts</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!setup_schedules &lt;sports&gt;</span></td><td>Enable sports (e.g., nfl nba mlb)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!set_game_forum &lt;sport&gt; &lt;id&gt;</span></td><td>Link sport to game thread forum</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!setup_guide</span></td><td>Create user guide channel</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!set_admin_guide &lt;channel_id&gt;</span></td><td>Post admin guide to channel</td><td><span class="tag admin">Admin</span></td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Utility Commands</h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!post_schedules</span></td><td>Manually post all schedules now</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!schedule_status</span></td><td>View current bot configuration</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">!test_games &lt;sport&gt;</span></td><td>Test API response for a sport</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!cleanup_duplicates</span></td><td>Remove duplicate schedule threads</td><td><span class="tag admin">Admin</span></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Integration with Sports Bot</h2>
+                <p>The Schedule Bot reads from a shared file to link to game threads:</p>
+                <div class="code-block">
+# Shared file location (relative to schedule-bot)
+../sports-bot/shared_game_threads.json
+
+# Contains mapping of game_id -> thread info
+{
+  "game_threads": {
+    "401547234": {
+      "thread_id": "123456789",
+      "guild_id": "987654321",
+      "home_team": "LAL",
+      "away_team": "BOS"
+    }
+  }
+}
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Configuration Files</h2>
+                <table class="command-table">
+                    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>.env</code></td><td>SCHEDULE_BOT_TOKEN</td></tr>
+                        <tr><td><code>schedule_bot_settings.json</code></td><td>Guild settings, enabled sports, forum channels</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Supported Sports</h2>
+                <p>Same sports as the Sports Bot:</p>
+                <ul>
+                    <li>NFL, NBA, CFB, WNBA, MLB, NCAAM, NCAAW</li>
+                </ul>
+                <p>Each sport can have its own forum channel and alert role configured.</p>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

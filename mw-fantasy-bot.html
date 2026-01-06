@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M.W Fantasy Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-red: #f4212e;
+            --accent-yellow: #ffd400;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #f4212e, #7856ff); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-blue); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-blue); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        .tag.dev { background: rgba(255, 212, 0, 0.2); color: var(--accent-yellow); }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .status-badge { display: inline-block; background: rgba(255, 212, 0, 0.2); color: var(--accent-yellow); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; margin-left: 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#127944;</div>
+                    <h1>M.W Fantasy Bot <span class="status-badge">In Development</span></h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>M.W Fantasy is an advanced fantasy football bot designed for EA Madden NFL franchise leagues. It supports Daily Fantasy (FanDuel-style), Season-Long Fantasy (ESPN-style), betting, drafts, and a full economy system with EA Madden integration.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127944;</div>
+                        <h4>EA Integration</h4>
+                        <p>Sync data from Madden franchises</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127919;</div>
+                        <h4>Daily Fantasy</h4>
+                        <p>FanDuel-style contests per game week</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>Season Leagues</h4>
+                        <p>Full season fantasy leagues with drafts</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128176;</div>
+                        <h4>Betting</h4>
+                        <p>Spreads, moneylines, props, parlays</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128184;</div>
+                        <h4>Economy</h4>
+                        <p>Earn coins from activity and wins</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128483;</div>
+                        <h4>Drafts</h4>
+                        <p>Live and async draft modes</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Project Structure</h2>
+                <div class="code-block">
+mw_fantasy/
+├── bot.py                  # Main entry point
+├── config.py               # Configuration constants
+├── database/
+│   └── database.py         # SQLite async database
+├── cogs/
+│   ├── setup_cog.py        # Guild setup
+│   ├── registration_cog.py # User registration
+│   ├── economy_cog.py      # Daily/weekly rewards
+│   ├── fantasy_cog.py      # Season-long fantasy
+│   ├── draft_cog.py        # Draft management
+│   ├── betting_cog.py      # Betting commands
+│   ├── dfs_cog.py          # Daily fantasy
+│   ├── ea_cog.py           # EA Madden integration
+│   ├── leaderboard_cog.py  # Leaderboards
+│   ├── admin_cog.py        # Admin controls
+│   └── reports_cog.py      # Abuse reporting
+├── services/               # Business logic
+├── ui/
+│   ├── views/              # Discord Components V2
+│   └── modals/             # Input modals
+└── tasks/
+    └── ea_sync_task.py     # Periodic EA sync
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Core Features (Planned)</h2>
+
+                <div class="card">
+                    <h4>&#127944; EA Madden Integration</h4>
+                    <p>Login to EA website with encrypted credentials, fetch franchise data including teams, players, stats, and game results. Supports Madden 23, 24, 25 with auto-detection.</p>
+                </div>
+
+                <div class="card">
+                    <h4>&#127919; Daily Fantasy (DFS)</h4>
+                    <p>Create salary-capped lineups each game week. Contests include:</p>
+                    <ul>
+                        <li>Free contests for coins</li>
+                        <li>Paid contests with bigger prizes</li>
+                        <li>Head-to-head and tournament formats</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>&#127942; Season-Long Fantasy</h4>
+                    <p>Traditional fantasy leagues with drafts, weekly matchups, trades, and waivers. Supports standard and PPR scoring.</p>
+                </div>
+
+                <div class="card">
+                    <h4>&#128176; Betting System</h4>
+                    <p>Bet on Madden franchise games:</p>
+                    <ul>
+                        <li>Spreads and moneylines</li>
+                        <li>Over/under totals</li>
+                        <li>Player props</li>
+                        <li>Parlays</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>&#128184; Economy System</h4>
+                    <p>Coin rewards for activity:</p>
+                    <table class="command-table">
+                        <tr><td>Daily Claim</td><td>100 coins</td></tr>
+                        <tr><td>Weekly Claim</td><td>500 coins</td></tr>
+                        <tr><td>Monthly Claim</td><td>2,000 coins</td></tr>
+                        <tr><td>Game Win</td><td>200 coins</td></tr>
+                        <tr><td>MVP Award</td><td>500 coins</td></tr>
+                    </table>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands (Planned)</h2>
+
+                <h3>Setup & Economy</h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/setup</span></td><td>Configure bot channels and settings</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/register</span></td><td>Register for fantasy</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/daily</span></td><td>Claim daily coins</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/balance</span></td><td>Check coin balance</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Fantasy Commands</h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/league create</span></td><td>Create a new fantasy league</td></tr>
+                        <tr><td><span class="command-name">/league join</span></td><td>Join an existing league</td></tr>
+                        <tr><td><span class="command-name">/draft start</span></td><td>Start league draft (commissioner)</td></tr>
+                        <tr><td><span class="command-name">/roster</span></td><td>View your roster</td></tr>
+                        <tr><td><span class="command-name">/trade</span></td><td>Propose a trade</td></tr>
+                        <tr><td><span class="command-name">/waivers</span></td><td>Make waiver claims</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Betting Commands</h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/games</span></td><td>View upcoming games with betting lines</td></tr>
+                        <tr><td><span class="command-name">/bet</span></td><td>Place a bet</td></tr>
+                        <tr><td><span class="command-name">/mybets</span></td><td>View your active bets</td></tr>
+                        <tr><td><span class="command-name">/parlay</span></td><td>Create a parlay bet</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup</h2>
+                <div class="code-block">
+cd mw_fantasy
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+
+# Configure .env
+# DISCORD_TOKEN=your_token
+# OWNER_ID=your_discord_id
+# WORLDGATE_WEBHOOK=webhook_url (for abuse reports)
+
+python bot.py
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Configuration</h2>
+                <p>Edit <code>config.py</code> for economy settings, scoring presets, and defaults.</p>
+
+                <h3>Scoring Presets</h3>
+                <table class="command-table">
+                    <thead><tr><th>Preset</th><th>Pass TD</th><th>Rush/Rec TD</th><th>Reception</th></tr></thead>
+                    <tbody>
+                        <tr><td>Standard</td><td>4 pts</td><td>6 pts</td><td>0 pts</td></tr>
+                        <tr><td>PPR</td><td>4 pts</td><td>6 pts</td><td>1 pt</td></tr>
+                        <tr><td>Madden</td><td>4 pts</td><td>6 pts</td><td>1 pt + bonuses</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Development Status</h2>
+                <p>This bot is currently in active development. The following features are in progress:</p>
+                <ul>
+                    <li><span class="tag" style="background: rgba(0, 186, 124, 0.2); color: #00ba7c;">Done</span> Bot framework and cog structure</li>
+                    <li><span class="tag" style="background: rgba(0, 186, 124, 0.2); color: #00ba7c;">Done</span> Database schema</li>
+                    <li><span class="tag" style="background: rgba(0, 186, 124, 0.2); color: #00ba7c;">Done</span> Registration system</li>
+                    <li><span class="tag dev">In Progress</span> Economy commands</li>
+                    <li><span class="tag dev">In Progress</span> EA integration</li>
+                    <li><span class="tag" style="background: rgba(139, 152, 165, 0.2); color: #8b98a5;">Planned</span> Betting system</li>
+                    <li><span class="tag" style="background: rgba(139, 152, 165, 0.2); color: #8b98a5;">Planned</span> Draft system</li>
+                    <li><span class="tag" style="background: rgba(139, 152, 165, 0.2); color: #8b98a5;">Planned</span> DFS contests</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

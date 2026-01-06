@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldGate Judicial Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --accent-red: #f4212e;
+            --accent-yellow: #ffd400;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .bot-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #ED4245, #FEE75C);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        /* Main Content */
+        main {
+            padding: 40px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section h4 {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding-left: 12px;
+        }
+
+        .nav-link {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 48px;
+        }
+
+        .content-section h2 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .content-section h3 {
+            font-size: 1.25rem;
+            margin: 24px 0 12px;
+            color: var(--accent-blue);
+        }
+
+        .content-section p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card h4 {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            margin-bottom: 0;
+        }
+
+        /* Command Table */
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+
+        .command-table th,
+        .command-table td {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .command-table th {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .command-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .command-name {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: var(--bg-secondary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--accent-blue);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .feature-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .feature-item h4 {
+            margin-bottom: 4px;
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .tag.required { background: rgba(244, 33, 46, 0.2); color: var(--accent-red); }
+        .tag.optional { background: rgba(139, 152, 165, 0.2); color: var(--text-secondary); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: var(--accent-orange); }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+
+        /* Channel Requirements */
+        .channel-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .channel-item {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .channel-item .hash {
+            color: var(--text-secondary);
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .alert.info {
+            background: rgba(29, 155, 240, 0.1);
+            border: 1px solid rgba(29, 155, 240, 0.3);
+        }
+
+        .alert.warning {
+            background: rgba(255, 212, 0, 0.1);
+            border: 1px solid rgba(255, 212, 0, 0.3);
+        }
+
+        .alert-icon {
+            font-size: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .nav-section {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link">
+                    <span>&larr;</span> Back to All Bots
+                </a>
+                <div class="bot-title">
+                    <div class="bot-icon">&#9878;</div>
+                    <div>
+                        <h1>WorldGate Judicial Bot</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="two-column">
+                <!-- Sidebar Navigation -->
+                <aside class="sidebar">
+                    <nav>
+                        <div class="nav-section">
+                            <h4>Getting Started</h4>
+                            <a href="#overview" class="nav-link active">Overview</a>
+                            <a href="#setup" class="nav-link">Setup & Installation</a>
+                            <a href="#configuration" class="nav-link">Configuration</a>
+                        </div>
+                        <div class="nav-section">
+                            <h4>Features</h4>
+                            <a href="#case-management" class="nav-link">Case Management</a>
+                            <a href="#appeals" class="nav-link">Appeals System</a>
+                            <a href="#voting" class="nav-link">Voting System</a>
+                            <a href="#privacy" class="nav-link">Privacy & Anonymity</a>
+                            <a href="#web-interface" class="nav-link">Web Interface</a>
+                        </div>
+                        <div class="nav-section">
+                            <h4>Commands</h4>
+                            <a href="#slash-commands" class="nav-link">Slash Commands</a>
+                            <a href="#button-actions" class="nav-link">Button Actions</a>
+                        </div>
+                        <div class="nav-section">
+                            <h4>Reference</h4>
+                            <a href="#channels" class="nav-link">Required Channels</a>
+                            <a href="#database" class="nav-link">Database Schema</a>
+                        </div>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <div class="content">
+                    <!-- Overview -->
+                    <section id="overview" class="content-section">
+                        <h2>Overview</h2>
+                        <p>The WorldGate Judicial Bot is a comprehensive judicial system for Discord servers. It allows server administrators to manage reports, cases, and appeals in an organized manner with voting functionality and multi-server broadcasting.</p>
+
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128221;</div>
+                                <h4>Case Filing</h4>
+                                <p>Report users, servers, or websites with evidence</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#9878;</div>
+                                <h4>Appeals System</h4>
+                                <p>Convicted users can appeal verdicts via Discord or web</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128499;</div>
+                                <h4>Jury Voting</h4>
+                                <p>Dungeon Jury members can vote on cases</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#127760;</div>
+                                <h4>Web Interface</h4>
+                                <p>Submit reports and appeals via website</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128225;</div>
+                                <h4>Multi-Server</h4>
+                                <p>Broadcast cases across multiple Discord servers</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128274;</div>
+                                <h4>Case Records</h4>
+                                <p>Permanent records of all guilty verdicts</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Setup -->
+                    <section id="setup" class="content-section">
+                        <h2>Setup & Installation</h2>
+
+                        <h3>Prerequisites</h3>
+                        <ul>
+                            <li>Node.js 18.x or higher</li>
+                            <li>Discord Bot Token</li>
+                            <li>A Discord server with appropriate permissions</li>
+                        </ul>
+
+                        <h3>Installation Steps</h3>
+                        <div class="code-block">
+# Navigate to the bot directory
+cd worldgate-judicial-bot
+
+# Install dependencies
+npm install
+
+# Copy example environment file
+cp .env.example .env
+
+# Edit .env with your bot token
+# Edit config.json with your server IDs
+
+# Deploy slash commands
+node deploy-commands.js
+
+# Start the bot
+node index.js
+                        </div>
+
+                        <h3>Required Files</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>File</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>.env</code></td>
+                                    <td>Contains DISCORD_TOKEN and other secrets</td>
+                                </tr>
+                                <tr>
+                                    <td><code>config.json</code></td>
+                                    <td>Bot configuration (server IDs, owner ID, etc.)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>worldgate.db</code></td>
+                                    <td>SQLite database (auto-created)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Configuration -->
+                    <section id="configuration" class="content-section">
+                        <h2>Configuration</h2>
+
+                        <h3>config.json Structure</h3>
+                        <div class="code-block">
+{
+    "clientId": "YOUR_BOT_CLIENT_ID",
+    "mainServerId": "YOUR_MAIN_SERVER_ID",
+    "botOwnerId": "YOUR_DISCORD_USER_ID",
+    "discordInvite": "https://discord.gg/your-invite",
+    "contactChannelId": "CONTACT_CHANNEL_ID"
+}
+                        </div>
+
+                        <div class="alert info">
+                            <span class="alert-icon">&#9432;</span>
+                            <div>
+                                <strong>Important:</strong> The <code>mainServerId</code> should be the primary WorldGate server where cases are filed and the court-house forum exists.
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Case Management -->
+                    <section id="case-management" class="content-section">
+                        <h2>Case Management</h2>
+
+                        <h3>Filing a Report</h3>
+                        <p>Users can file reports against:</p>
+                        <ul>
+                            <li><strong>Users</strong> - Discord user ID required</li>
+                            <li><strong>Servers</strong> - Server ID or invite link</li>
+                            <li><strong>Websites</strong> - Full URL of malicious site</li>
+                        </ul>
+
+                        <h3>Case Workflow</h3>
+                        <div class="card">
+                            <h4>1. Report Filed</h4>
+                            <p>User submits report via /report command or web form. Creates a forum thread in #court-house.</p>
+                        </div>
+                        <div class="card">
+                            <h4>2. Evidence Upload</h4>
+                            <p>Reporter can upload evidence files (images, documents) to the case thread.</p>
+                        </div>
+                        <div class="card">
+                            <h4>3. Jury Voting</h4>
+                            <p>Dungeon Jury members vote Guilty or Not Guilty on the case.</p>
+                        </div>
+                        <div class="card">
+                            <h4>4. Verdict</h4>
+                            <p>Bot owner closes case with final verdict. Forum thread is deleted, case moved to #case-logs if guilty.</p>
+                        </div>
+
+                        <h3>Case Numbers</h3>
+                        <p>Cases are automatically assigned sequential numbers in the format: <code>CASE-000001</code></p>
+                    </section>
+
+                    <!-- Appeals -->
+                    <section id="appeals" class="content-section">
+                        <h2>Appeals System</h2>
+
+                        <h3>Appeal Methods</h3>
+                        <p>Convicted users can appeal through three methods:</p>
+
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128187;</div>
+                                <h4>Website Form</h4>
+                                <p>Submit appeal via the Appeals tab on the web interface</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128101;</div>
+                                <h4>Server Join</h4>
+                                <p>When convicted user joins, appeal dropdown appears in #appeals</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128280;</div>
+                                <h4>Case-Logs Button</h4>
+                                <p>Click "Appeal This Verdict" button on guilty case posts</p>
+                            </div>
+                        </div>
+
+                        <h3>Appeal Reasons</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Reason</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Mistaken Identity</td><td>I was not the person who committed this offense</td></tr>
+                                <tr><td>Insufficient Evidence</td><td>The evidence provided was not adequate</td></tr>
+                                <tr><td>Account Compromised</td><td>My account was hacked or used without permission</td></tr>
+                                <tr><td>Context Not Considered</td><td>Important context was missing from the case</td></tr>
+                                <tr><td>First Offense Leniency</td><td>Request leniency as this was my first offense</td></tr>
+                                <tr><td>Time Served</td><td>I have served my punishment and reformed</td></tr>
+                                <tr><td>Procedural Error</td><td>There was an error in how the case was handled</td></tr>
+                                <tr><td>Other</td><td>Custom reason (opens text modal)</td></tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Voting -->
+                    <section id="voting" class="content-section">
+                        <h2>Voting System</h2>
+
+                        <h3>Who Can Vote</h3>
+                        <ul>
+                            <li>Users with the <strong>"Dungeon Jury"</strong> role</li>
+                            <li>Bot owner (as configured in config.json)</li>
+                        </ul>
+
+                        <h3>Vote Types</h3>
+                        <div class="feature-grid">
+                            <div class="feature-item" style="border-left: 4px solid var(--accent-red);">
+                                <h4>&#128308; Vote Guilty</h4>
+                                <p>Defendant is guilty of the offense</p>
+                            </div>
+                            <div class="feature-item" style="border-left: 4px solid var(--accent-green);">
+                                <h4>&#128994; Vote Not Guilty</h4>
+                                <p>Defendant is not guilty or insufficient evidence</p>
+                            </div>
+                        </div>
+
+                        <h3>Closing Cases</h3>
+                        <p>Only the bot owner can close cases. When closed:</p>
+                        <ul>
+                            <li>Court-house forum thread is <strong>deleted</strong></li>
+                            <li>If <strong>Guilty</strong>: Case posted to #case-logs with appeal button</li>
+                            <li>If <strong>Not Guilty</strong>: Case posted to #closed-cases</li>
+                            <li>Verdict posted to #appeals channel</li>
+                            <li>Broadcast to all subscribed servers' #closed-cases channels</li>
+                        </ul>
+                    </section>
+
+                    <!-- Privacy & Anonymity -->
+                    <section id="privacy" class="content-section">
+                        <h2>Privacy & Anonymity</h2>
+
+                        <p>The bot includes privacy features to protect reporters and hide sensitive information from public view.</p>
+
+                        <h3>Anonymous Reporting</h3>
+                        <p>When filing a report (via Discord or web), users can choose to remain anonymous:</p>
+                        <ul>
+                            <li><strong>Discord:</strong> In the report modal, type "yes" in the "Stay Anonymous?" field</li>
+                            <li><strong>Web:</strong> Check the "Submit Anonymously" checkbox on the form</li>
+                        </ul>
+                        <p>Anonymous reporters are displayed as "Anonymous Reporter" in public embeds.</p>
+
+                        <h3>Hidden User IDs</h3>
+                        <p>User IDs (both reporter and defendant) are <strong>hidden from public view</strong> in all case embeds. This protects user privacy and prevents harassment.</p>
+
+                        <div class="feature-grid">
+                            <div class="feature-item" style="border-left: 4px solid var(--accent-green);">
+                                <h4>&#128274; Public View</h4>
+                                <p>Shows defendant name, reason, and reporter name (or "Anonymous"). No IDs visible.</p>
+                            </div>
+                            <div class="feature-item" style="border-left: 4px solid var(--accent-purple);">
+                                <h4>&#128272; Owner View</h4>
+                                <p>Bot owner receives a DM with confidential details including all user IDs.</p>
+                            </div>
+                        </div>
+
+                        <h3>Confidential Details (Owner Only)</h3>
+                        <p>When a case is filed, the bot owner receives a private DM containing:</p>
+                        <ul>
+                            <li>Defendant ID</li>
+                            <li>Reporter ID</li>
+                            <li>Reporter Username</li>
+                            <li>Whether the report was anonymous</li>
+                        </ul>
+                        <p>If the DM fails, this information is posted to the #admin-alerts channel instead.</p>
+                    </section>
+
+                    <!-- Web Interface -->
+                    <section id="web-interface" class="content-section">
+                        <h2>Web Interface</h2>
+
+                        <p>The bot includes a built-in Express web server running on port 3000.</p>
+
+                        <h3>Available Pages</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Page</th>
+                                    <th>URL</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Main Page</td>
+                                    <td><code>/</code></td>
+                                    <td>File a Report, Case Records, Appeals tabs</td>
+                                </tr>
+                                <tr>
+                                    <td>Contact</td>
+                                    <td><code>/contact</code></td>
+                                    <td>Contact form for general inquiries</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>API Endpoints</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Endpoint</th>
+                                    <th>Method</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>/api/report</code></td>
+                                    <td>POST</td>
+                                    <td>Submit a new report (10 files max)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>/api/appeal</code></td>
+                                    <td>POST</td>
+                                    <td>Submit an appeal (10 files max)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>/api/contact</code></td>
+                                    <td>POST</td>
+                                    <td>Submit contact form</td>
+                                </tr>
+                                <tr>
+                                    <td><code>/api/cases/guilty</code></td>
+                                    <td>GET</td>
+                                    <td>Get all guilty cases</td>
+                                </tr>
+                                <tr>
+                                    <td><code>/api/health</code></td>
+                                    <td>GET</td>
+                                    <td>Health check endpoint</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Cooldowns</h3>
+                        <ul>
+                            <li>Reports: 5 minutes between submissions</li>
+                            <li>Contact: 10 minutes between submissions</li>
+                            <li>Appeals: 30 minutes between submissions</li>
+                        </ul>
+                    </section>
+
+                    <!-- Slash Commands -->
+                    <section id="slash-commands" class="content-section">
+                        <h2>Slash Commands</h2>
+
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Command</th>
+                                    <th>Description</th>
+                                    <th>Access</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="command-name">/report</span></td>
+                                    <td>File a new report against a user, server, or website</td>
+                                    <td><span class="tag user">Everyone</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/setup</span></td>
+                                    <td>Set up the judicial system channels in a server</td>
+                                    <td><span class="tag admin">Admin</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/leaderboard</span></td>
+                                    <td>View case statistics and leaderboards</td>
+                                    <td><span class="tag user">Everyone</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/lookup</span></td>
+                                    <td>Look up a user's case history</td>
+                                    <td><span class="tag user">Everyone</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Button Actions -->
+                    <section id="button-actions" class="content-section">
+                        <h2>Button Actions</h2>
+
+                        <h3>Case Buttons (Court-House)</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Button</th>
+                                    <th>Action</th>
+                                    <th>Access</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&#128308; Vote Guilty</td>
+                                    <td>Cast guilty vote</td>
+                                    <td>Dungeon Jury</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128994; Vote Not Guilty</td>
+                                    <td>Cast not guilty vote</td>
+                                    <td>Dungeon Jury</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128274; Close - Guilty</td>
+                                    <td>Close case with guilty verdict</td>
+                                    <td>Bot Owner</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128275; Close - Not Guilty</td>
+                                    <td>Close case with not guilty verdict</td>
+                                    <td>Bot Owner</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Contact Form Buttons</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Button</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&#9989; Mark Resolved</td>
+                                    <td>Mark contact submission as resolved</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128992; Mark Pending</td>
+                                    <td>Mark contact submission as pending</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128683; Mark Spam</td>
+                                    <td>Mark contact submission as spam</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <!-- Required Channels -->
+                    <section id="channels" class="content-section">
+                        <h2>Required Channels</h2>
+
+                        <p>The bot looks for these channels by name in the main server:</p>
+
+                        <div class="channel-list">
+                            <div class="channel-item">
+                                <span class="hash">#</span>
+                                <span>court-house</span>
+                                <span class="tag" style="margin-left: auto;">Forum</span>
+                            </div>
+                            <div class="channel-item">
+                                <span class="hash">#</span>
+                                <span>case-logs</span>
+                                <span class="tag" style="margin-left: auto;">Forum</span>
+                            </div>
+                            <div class="channel-item">
+                                <span class="hash">#</span>
+                                <span>appeals</span>
+                                <span class="tag" style="margin-left: auto;">Text</span>
+                            </div>
+                            <div class="channel-item">
+                                <span class="hash">#</span>
+                                <span>closed-cases</span>
+                                <span class="tag" style="margin-left: auto;">Text</span>
+                            </div>
+                            <div class="channel-item">
+                                <span class="hash">#</span>
+                                <span>admin-alerts</span>
+                                <span class="tag" style="margin-left: auto;">Text</span>
+                            </div>
+                            <div class="channel-item">
+                                <span class="hash">#</span>
+                                <span>worldgate-updates</span>
+                                <span class="tag" style="margin-left: auto;">Text</span>
+                            </div>
+                        </div>
+
+                        <h3>Required Roles</h3>
+                        <div class="channel-list">
+                            <div class="channel-item">
+                                <span>@</span>
+                                <span>Dungeon Jury</span>
+                                <span class="tag" style="margin-left: auto;">Voting</span>
+                            </div>
+                            <div class="channel-item">
+                                <span>@</span>
+                                <span>Convicted</span>
+                                <span class="tag" style="margin-left: auto;">Auto-assigned</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Database -->
+                    <section id="database" class="content-section">
+                        <h2>Database Schema</h2>
+
+                        <p>The bot uses SQLite with the following main tables:</p>
+
+                        <h3>cases</h3>
+                        <div class="code-block">
+case_id, case_number, reporter_id, reporter_username,
+defendant_type, defendant_id, defendant_name,
+reason, evidence, status, verdict, repeat_offender,
+forum_channel_id, closed_by, created_at, closed_at
+                        </div>
+
+                        <h3>votes</h3>
+                        <div class="code-block">
+vote_id, case_id, voter_id, voter_username, vote, created_at
+                        </div>
+
+                        <h3>appeals</h3>
+                        <div class="code-block">
+appeal_id, case_id, appellant_id, appellant_name,
+reason, status, reviewed_by, created_at, reviewed_at
+                        </div>
+
+                        <h3>guild_settings</h3>
+                        <div class="code-block">
+guild_id, cases_channel_id, receive_guilty_only, created_at
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simple scroll spy for navigation
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
