@@ -62,18 +62,28 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Schedule Bot provides daily sports schedules and league standings. It automatically posts game schedules for the day and updates standings, working alongside the Sports Bot to provide comprehensive sports coverage.</p>
+                <p>The Schedule Bot provides daily sports schedules and league standings. It automatically posts game schedules for the day at 9:00 AM ET, updates scores hourly, and provides interactive standings buttons. Works alongside the Sports Bot to provide comprehensive sports coverage.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">&#128197;</div>
                         <h4>Daily Schedules</h4>
-                        <p>Auto-posted daily game schedules</p>
+                        <p>Auto-posted at 9:00 AM ET daily</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#127942;</div>
-                        <h4>League Standings</h4>
-                        <p>Conference and division standings</p>
+                        <h4>Interactive Standings</h4>
+                        <p>Click buttons to view conference/division standings</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128260;</div>
+                        <h4>Hourly Score Updates</h4>
+                        <p>Live scores updated every hour</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127774;</div>
+                        <h4>Off-Season Support</h4>
+                        <p>Season countdown &amp; last season standings</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128279;</div>
@@ -92,8 +102,11 @@
                 <h2>How It Works</h2>
                 <p>The Schedule Bot runs on a separate token from the Sports Bot and handles:</p>
                 <ul>
-                    <li><strong>Daily Schedule Posts:</strong> Automatically posts schedules each morning</li>
-                    <li><strong>Standings Updates:</strong> Regular updates to league standings</li>
+                    <li><strong>Daily Schedule Posts:</strong> Automatically posts schedules at 9:00 AM Eastern Time</li>
+                    <li><strong>Hourly Score Updates:</strong> Refreshes all schedule threads with current scores every hour</li>
+                    <li><strong>Interactive Standings:</strong> Each schedule message has a button to view that sport's standings</li>
+                    <li><strong>Conference/Division Selection:</strong> Click standings button to see buttons for each conference (AFC, NFC, etc.)</li>
+                    <li><strong>Off-Season Detection:</strong> Shows countdown to season start and last season's standings when off-season</li>
                     <li><strong>Cross-Bot Integration:</strong> Links to Sports Bot game threads</li>
                     <li><strong>Forum Organization:</strong> Posts to sport-specific forum channels</li>
                 </ul>
@@ -185,12 +198,85 @@ python schedule_bot.py
             </section>
 
             <section class="content-section">
+                <h2>Standings Feature</h2>
+                <p>Every schedule message includes an interactive standings button:</p>
+
+                <h3>How to View Standings</h3>
+                <ul>
+                    <li>Click the "View [Sport] Standings" button on any schedule message</li>
+                    <li>Standings are shown as an ephemeral message (only visible to you)</li>
+                    <li>For leagues with conferences (NFL, NBA, MLB), you'll see additional buttons for each conference</li>
+                    <li>Click a conference button (e.g., "AFC", "NFC") to see just that conference's standings</li>
+                </ul>
+
+                <h3>Off-Season Standings</h3>
+                <ul>
+                    <li>During off-season, standings show "(Last Season)" in the title</li>
+                    <li>Displays the previous season's final standings</li>
+                    <li>Schedule messages show countdown to next season (e.g., "Season begins in 45 days")</li>
+                </ul>
+
+                <h3>Supported Conferences/Divisions</h3>
+                <table class="command-table">
+                    <thead><tr><th>Sport</th><th>Conferences</th></tr></thead>
+                    <tbody>
+                        <tr><td>NFL</td><td>AFC, NFC (16 teams each)</td></tr>
+                        <tr><td>NBA</td><td>Eastern, Western (15 teams each)</td></tr>
+                        <tr><td>MLB</td><td>American League, National League (15 teams each)</td></tr>
+                        <tr><td>CFB</td><td>Conference standings available</td></tr>
+                        <tr><td>NCAAM/NCAAW</td><td>Conference standings available</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Automatic Features</h2>
+                <h3>Daily Schedule Posting</h3>
+                <ul>
+                    <li>Posts automatically at <strong>9:00 AM Eastern Time</strong></li>
+                    <li>Creates a new thread for each sport in the configured forum</li>
+                    <li>Includes game times in Eastern timezone</li>
+                    <li>Shows team matchups with network/channel info when available</li>
+                </ul>
+
+                <h3>Hourly Score Updates</h3>
+                <ul>
+                    <li>Every hour, updates all schedule threads with current scores</li>
+                    <li>Shows final scores for completed games</li>
+                    <li>Updates in-progress game scores</li>
+                    <li>Rate-limited (2 second delay between sports) to avoid API issues</li>
+                </ul>
+
+                <h3>Off-Season Detection</h3>
+                <p>The bot automatically detects when a sport is in off-season and displays:</p>
+                <ul>
+                    <li>A message indicating the season has ended</li>
+                    <li>Countdown to the next season start date</li>
+                    <li>Previous season standings when clicking the standings button</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
                 <h2>Supported Sports</h2>
                 <p>Same sports as the Sports Bot:</p>
                 <ul>
                     <li>NFL, NBA, CFB, WNBA, MLB, NCAAM, NCAAW</li>
                 </ul>
                 <p>Each sport can have its own forum channel and alert role configured.</p>
+
+                <h3>Season Schedule</h3>
+                <table class="command-table">
+                    <thead><tr><th>Sport</th><th>Season Start</th><th>Season End</th></tr></thead>
+                    <tbody>
+                        <tr><td>NFL</td><td>September</td><td>February (Super Bowl)</td></tr>
+                        <tr><td>NBA</td><td>October</td><td>June (Finals)</td></tr>
+                        <tr><td>MLB</td><td>Late March</td><td>October (World Series)</td></tr>
+                        <tr><td>CFB</td><td>Late August</td><td>January (Championship)</td></tr>
+                        <tr><td>WNBA</td><td>May</td><td>September</td></tr>
+                        <tr><td>NCAAM</td><td>November</td><td>April (March Madness)</td></tr>
+                        <tr><td>NCAAW</td><td>November</td><td>April</td></tr>
+                    </tbody>
+                </table>
             </section>
         </div>
     </main>

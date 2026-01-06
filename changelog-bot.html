@@ -42,6 +42,8 @@
         .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
         ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
         li { margin-bottom: 8px; }
+        .highlight-box { background: rgba(29, 155, 240, 0.1); border: 1px solid var(--accent-blue); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .highlight-box h4 { color: var(--accent-blue); margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -61,23 +63,23 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Changelog Bot monitors CHANGELOG.md files across all your bots and automatically posts update announcements to Discord when new entries are detected.</p>
+                <p>The Changelog Bot receives update notifications from other bots and posts announcements to Discord. It uses a <strong>push-based system</strong> where bots send updates when changes happen, ensuring instant and reliable notifications.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
-                        <div class="feature-icon">&#128196;</div>
-                        <h4>Auto-Detection</h4>
-                        <p>Monitors CHANGELOG.md files for new entries</p>
+                        <div class="feature-icon">&#128225;</div>
+                        <h4>Push-Based</h4>
+                        <p>Bots send updates instantly when changes happen</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128226;</div>
                         <h4>Announcements</h4>
-                        <p>Posts formatted update messages</p>
+                        <p>Posts formatted update messages with embeds</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#127912;</div>
                         <h4>Multi-Bot Support</h4>
-                        <p>Tracks changes for all your bots</p>
+                        <p>Receives updates from all registered bots</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128276;</div>
@@ -88,36 +90,33 @@
             </section>
 
             <section class="content-section">
+                <h2>How It Works</h2>
+                <div class="highlight-box">
+                    <h4>Push-Based Architecture</h4>
+                    <p style="margin: 0; color: var(--text-secondary);">Instead of polling files, the changelog bot runs a webhook server. When any bot has an update, it sends a notification to the webhook, and the changelog bot immediately posts to Discord.</p>
+                </div>
+                <ol style="margin-left: 24px; color: var(--text-secondary);">
+                    <li>Changelog bot starts a webhook server on port 5050</li>
+                    <li>When you update a bot, run <code>!announce_update</code> from that bot</li>
+                    <li>The bot sends the update to the changelog webhook</li>
+                    <li>Changelog bot posts a formatted embed to all configured channels</li>
+                    <li>Users with alert roles get notified instantly</li>
+                </ol>
+            </section>
+
+            <section class="content-section">
                 <h2>Registered Bots</h2>
-                <p>The following bots are tracked for changelog updates:</p>
+                <p>The following bots can send changelog updates:</p>
                 <table class="command-table">
                     <thead><tr><th>Bot</th><th>Key</th><th>Color</th></tr></thead>
                     <tbody>
                         <tr><td>&#127942; Sports Bot</td><td><code>sports</code></td><td style="color: #3498db;">Blue</td></tr>
                         <tr><td>&#128197; Sports Schedule Bot</td><td><code>schedule</code></td><td style="color: #2ecc71;">Green</td></tr>
                         <tr><td>&#127936; March Madness Bot</td><td><code>marchmadness</code></td><td style="color: #e74c3c;">Red</td></tr>
-                        <tr><td>&#127758; WorldGate Bot</td><td><code>worldgate</code></td><td style="color: #9b59b6;">Purple</td></tr>
+                        <tr><td>&#127758; WorldGate Judicial Bot</td><td><code>worldgate</code></td><td style="color: #9b59b6;">Purple</td></tr>
                         <tr><td>&#127944; M.W Fantasy Bot</td><td><code>mwfantasy</code></td><td style="color: #f39c12;">Orange</td></tr>
                     </tbody>
                 </table>
-            </section>
-
-            <section class="content-section">
-                <h2>Changelog Format</h2>
-                <p>CHANGELOG.md files should follow this format for proper parsing:</p>
-                <div class="code-block">## [1.2.0] - 2025-01-06
-
-### Added
-- New feature description
-
-### Changed
-- Modified behavior description
-
-### Fixed
-- Bug fix description
-
----</div>
-                <p>Each entry starts with <code>## </code> and ends with <code>---</code> (or the next entry).</p>
             </section>
 
             <section class="content-section">
@@ -129,20 +128,21 @@ python -m venv venv
 pip install -r requirements.txt
 
 # Configure .env
-# DISCORD_TOKEN=your_token
+# CHANGELOG_BOT_TOKEN=your_token
+# CHANGELOG_WEBHOOK_SECRET=your_secret_key
+# CHANGELOG_WEBHOOK_PORT=5050
 
 python bot.py</div>
 
-                <h3>Adding New Bots to Track</h3>
-                <p>Edit the <code>BOTS_CONFIG</code> dictionary in <code>bot.py</code>:</p>
-                <div class="code-block">BOTS_CONFIG = {
-    'your_bot': {
-        'name': 'Your Bot Name',
-        'emoji': '&#127775;',
-        'color': 0x3498db,
-        'changelog_path': r'c:\path\to\CHANGELOG.md'
-    }
-}</div>
+                <h3>Environment Variables</h3>
+                <table class="command-table">
+                    <thead><tr><th>Variable</th><th>Description</th><th>Default</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>CHANGELOG_BOT_TOKEN</code></td><td>Discord bot token</td><td>Required</td></tr>
+                        <tr><td><code>CHANGELOG_WEBHOOK_SECRET</code></td><td>Secret key for webhook auth</td><td>change_this</td></tr>
+                        <tr><td><code>CHANGELOG_WEBHOOK_PORT</code></td><td>Port for webhook server</td><td>5050</td></tr>
+                    </tbody>
+                </table>
             </section>
 
             <section class="content-section">
@@ -161,12 +161,44 @@ python bot.py</div>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!list_bots</span></td><td>Show all monitored bots</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">!list_bots</span></td><td>Show all registered bots</td><td><span class="tag user">Everyone</span></td></tr>
                         <tr><td><span class="command-name">!changelog_status</span></td><td>Show current configuration</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!check_updates</span></td><td>Manually check for new updates</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!test_webhook</span></td><td>Test the webhook system</td><td><span class="tag admin">Admin</span></td></tr>
                         <tr><td><span class="command-name">!changelog_help</span></td><td>Show help information</td><td><span class="tag user">Everyone</span></td></tr>
                     </tbody>
                 </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Sending Updates from Other Bots</h2>
+                <p>Each bot has an <code>!announce_update</code> command to send changelog updates:</p>
+
+                <h3>Python Bots (Sports, Schedule, etc.)</h3>
+                <div class="code-block">!announce_update v1.2.0 - Added new live score tracking
+- Real-time updates every 30 seconds
+- Fixed timezone issues
+- Improved performance</div>
+
+                <h3>JavaScript Bots (WorldGate)</h3>
+                <div class="code-block">/announce_update version:v1.2.0 changes:Added anonymous reporting feature</div>
+
+                <h3>Programmatic Usage (Python)</h3>
+                <div class="code-block">from changelog_notifier import send_changelog_update
+
+await send_changelog_update(
+    bot_key='sports',
+    version='v1.2.0',
+    changes='- Added feature X\n- Fixed bug Y'
+)</div>
+
+                <h3>Programmatic Usage (JavaScript)</h3>
+                <div class="code-block">const { sendChangelogUpdate } = require('./changelog_notifier.js');
+
+await sendChangelogUpdate({
+    botKey: 'worldgate',
+    version: 'v1.2.0',
+    changes: '- Added feature X\n- Fixed bug Y'
+});</div>
             </section>
 
             <section class="content-section">
@@ -174,20 +206,28 @@ python bot.py</div>
                 <table class="command-table">
                     <thead><tr><th>File</th><th>Purpose</th></tr></thead>
                     <tbody>
-                        <tr><td><code>.env</code></td><td>DISCORD_TOKEN</td></tr>
-                        <tr><td><code>changelog_settings.json</code></td><td>Channels, last posted dates, alert roles</td></tr>
+                        <tr><td><code>.env</code></td><td>Bot token, webhook secret, port</td></tr>
+                        <tr><td><code>changelog_settings.json</code></td><td>Channels, posted hashes, alert roles</td></tr>
+                        <tr><td><code>changelog_notifier.py</code></td><td>Helper for Python bots</td></tr>
+                        <tr><td><code>changelog_notifier.js</code></td><td>Helper for JavaScript bots</td></tr>
                     </tbody>
                 </table>
             </section>
 
             <section class="content-section">
-                <h2>How Detection Works</h2>
+                <h2>Adding a New Bot</h2>
+                <p>To register a new bot to send changelog updates:</p>
                 <ol style="margin-left: 24px; color: var(--text-secondary);">
-                    <li>Bot checks CHANGELOG.md files periodically</li>
-                    <li>Parses the most recent entry (first ## section)</li>
-                    <li>Compares entry date to last posted date</li>
-                    <li>If new, posts formatted embed to configured channel</li>
-                    <li>Updates last posted date to prevent duplicates</li>
+                    <li>Add the bot to <code>BOTS_CONFIG</code> in <code>bot.py</code>:
+                        <div class="code-block">'newbot': {
+    'name': 'New Bot Name',
+    'emoji': '&#127775;',
+    'color': 0x3498db,  # Hex color
+}</div>
+                    </li>
+                    <li>Copy the <code>changelog_notifier.py</code> (or .js) helper to your bot's directory</li>
+                    <li>Add the <code>!announce_update</code> command to your bot</li>
+                    <li>Set the same <code>CHANGELOG_WEBHOOK_SECRET</code> in your bot's .env</li>
                 </ol>
             </section>
         </div>
