@@ -360,6 +360,7 @@
                             <a href="#appeals" class="nav-link">Appeals System</a>
                             <a href="#voting" class="nav-link">Voting System</a>
                             <a href="#privacy" class="nav-link">Privacy & Anonymity</a>
+                            <a href="#link-moderation" class="nav-link">Link Moderation</a>
                             <a href="#web-interface" class="nav-link">Web Interface</a>
                         </div>
                         <div class="nav-section">
@@ -653,6 +654,95 @@ node index.js
                         <p>If the DM fails, this information is posted to the #admin-alerts channel instead.</p>
                     </section>
 
+                    <!-- Link Moderation -->
+                    <section id="link-moderation" class="content-section">
+                        <h2>Link Moderation</h2>
+
+                        <p>The bot includes a comprehensive link and invite moderation system that tracks warnings globally across all servers using the bot.</p>
+
+                        <h3>Key Features</h3>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128279;</div>
+                                <h4>Link Blocking</h4>
+                                <p>Block specific links/domains with partial matching support</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#128236;</div>
+                                <h4>Invite Control</h4>
+                                <p>Control where Discord invites can be posted</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#127760;</div>
+                                <h4>Global Tracking</h4>
+                                <p>Warnings are tracked across ALL servers using the bot</p>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">&#9878;</div>
+                                <h4>Auto-Case Creation</h4>
+                                <p>Automatically creates cases after configurable warning threshold</p>
+                            </div>
+                        </div>
+
+                        <h3>Channel Types</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Allowed Channel</strong></td>
+                                    <td>Channel where ALL links/invites are allowed (bypasses moderation)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Blocked Channel</strong></td>
+                                    <td>Channel where ALL links are blocked (deleted + warning)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Invite Allowed</strong></td>
+                                    <td>Channel where Discord invites are specifically allowed</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Invite Blocked</strong></td>
+                                    <td>Channel where Discord invites are specifically blocked</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>How It Works</h3>
+                        <div class="card">
+                            <h4>1. Enable Link Moderation</h4>
+                            <p>Use <code>/linkmod enable</code> to activate link moderation for the server.</p>
+                        </div>
+                        <div class="card">
+                            <h4>2. Configure Settings</h4>
+                            <p>Set allowed/blocked channels, add blocked link patterns, and configure warning thresholds.</p>
+                        </div>
+                        <div class="card">
+                            <h4>3. Violation Detection</h4>
+                            <p>When a user posts a prohibited link, the message is deleted and a warning is issued.</p>
+                        </div>
+                        <div class="card">
+                            <h4>4. Auto-Case Creation</h4>
+                            <p>After reaching the warning threshold, a case is automatically filed with all warnings as evidence.</p>
+                        </div>
+                        <div class="card">
+                            <h4>5. Post-Conviction Tracking</h4>
+                            <p>If a user is found guilty and continues violating, new warnings are added to their guilty case.</p>
+                        </div>
+
+                        <h3>Partial Link Matching</h3>
+                        <p>When you add a blocked link pattern (e.g., <code>badsite.com</code>), any message CONTAINING that text will be flagged. This means:</p>
+                        <ul>
+                            <li><code>badsite.com</code> matches <code>https://badsite.com/page</code></li>
+                            <li><code>badsite.com</code> matches <code>www.badsite.com</code></li>
+                            <li><code>scam</code> matches any message containing the word "scam"</li>
+                        </ul>
+                    </section>
+
                     <!-- Web Interface -->
                     <section id="web-interface" class="content-section">
                         <h2>Web Interface</h2>
@@ -732,6 +822,7 @@ node index.js
                     <section id="slash-commands" class="content-section">
                         <h2>Slash Commands</h2>
 
+                        <h3>Core Commands</h3>
                         <table class="command-table">
                             <thead>
                                 <tr>
@@ -749,7 +840,7 @@ node index.js
                                 <tr>
                                     <td><span class="command-name">/setup</span></td>
                                     <td>Set up the judicial system channels in a server</td>
-                                    <td><span class="tag admin">Admin</span></td>
+                                    <td><span class="tag admin">Bot Owner</span></td>
                                 </tr>
                                 <tr>
                                     <td><span class="command-name">/leaderboard</span></td>
@@ -761,8 +852,115 @@ node index.js
                                     <td>Look up a user's case history</td>
                                     <td><span class="tag user">Everyone</span></td>
                                 </tr>
+                                <tr>
+                                    <td><span class="command-name">/setmainserver</span></td>
+                                    <td>Designate current server as the main WorldGate server</td>
+                                    <td><span class="tag admin">Bot Owner</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/setupcases</span></td>
+                                    <td>Set up a cases channel in a secondary server</td>
+                                    <td><span class="tag admin">Bot Owner</span></td>
+                                </tr>
                             </tbody>
                         </table>
+
+                        <h3>Link Moderation Commands</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Command</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="command-name">/linkmod enable</span></td>
+                                    <td>Enable link moderation for the server</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod disable</span></td>
+                                    <td>Disable link moderation for the server</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod status</span></td>
+                                    <td>View current link moderation settings</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod setchannel &lt;channel&gt;</span></td>
+                                    <td>Set a channel where links/invites ARE allowed</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod clearchannel</span></td>
+                                    <td>Remove the allowed links channel</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod setwarnings &lt;count&gt;</span></td>
+                                    <td>Set warnings before auto-case creation (1-10)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod blocklink &lt;link&gt;</span></td>
+                                    <td>Add a link/domain to the blocklist</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod unblocklink &lt;link&gt;</span></td>
+                                    <td>Remove a link/domain from the blocklist</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod blocklist</span></td>
+                                    <td>View all blocked links/domains</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod toggleinvites &lt;block&gt;</span></td>
+                                    <td>Toggle blocking Discord invites (true/false)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod toggledelete &lt;delete&gt;</span></td>
+                                    <td>Toggle automatic message deletion (true/false)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod blockchannel &lt;channel&gt;</span></td>
+                                    <td>Set a channel where ALL links are blocked</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod unblockchannel &lt;channel&gt;</span></td>
+                                    <td>Remove a channel from the link blocked list</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod blockedchannels</span></td>
+                                    <td>View all channels where links are blocked</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod allowinvites &lt;channel&gt;</span></td>
+                                    <td>Set a channel where Discord invites ARE allowed</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod disallowinvites &lt;channel&gt;</span></td>
+                                    <td>Remove a channel from invite allowed list</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod blockinvites &lt;channel&gt;</span></td>
+                                    <td>Set a channel where invites are blocked (deleted + warning)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod unblockinvites &lt;channel&gt;</span></td>
+                                    <td>Remove a channel from invite blocked list</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod invitechannels</span></td>
+                                    <td>View all invite allowed and blocked channels</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod checkuser &lt;user&gt;</span></td>
+                                    <td>Check warnings for a user (across all servers)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod clearwarnings &lt;user&gt;</span></td>
+                                    <td>Clear all warnings for a user</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="color: var(--text-secondary); margin-top: 8px;"><em>All /linkmod commands are Bot Owner only.</em></p>
                     </section>
 
                     <!-- Button Actions -->
