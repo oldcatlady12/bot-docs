@@ -660,6 +660,11 @@ node index.js
 
                         <p>The bot includes a comprehensive link and invite moderation system that tracks warnings globally across all servers using the bot.</p>
 
+                        <div class="card" style="background: #2d5a27; border-left: 4px solid #57F287; margin-bottom: 20px;">
+                            <h4 style="color: #57F287;">Default Behavior</h4>
+                            <p>Links and invites are <strong>ALLOWED everywhere</strong> by default. You only need to block specific channels or categories where you don't want links/invites.</p>
+                        </div>
+
                         <h3>Key Features</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
@@ -678,13 +683,13 @@ node index.js
                                 <p>Warnings are tracked across ALL servers using the bot</p>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">&#9878;</div>
-                                <h4>Auto-Case Creation</h4>
-                                <p>Automatically creates cases after configurable warning threshold</p>
+                                <div class="feature-icon">&#128193;</div>
+                                <h4>Category Support</h4>
+                                <p>Block or allow entire categories at once</p>
                             </div>
                         </div>
 
-                        <h3>Channel Types</h3>
+                        <h3>Channel & Category Types</h3>
                         <table class="command-table">
                             <thead>
                                 <tr>
@@ -694,20 +699,20 @@ node index.js
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>Allowed Channel</strong></td>
-                                    <td>Channel where ALL links/invites are allowed (bypasses moderation)</td>
+                                    <td><strong>Blocked Channel/Category</strong></td>
+                                    <td>Links are blocked here (deleted + warning)</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Blocked Channel</strong></td>
-                                    <td>Channel where ALL links are blocked (deleted + warning)</td>
+                                    <td><strong>Allowed Channel/Category</strong></td>
+                                    <td>Links are explicitly allowed (overrides blocked category)</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Invite Allowed</strong></td>
-                                    <td>Channel where Discord invites are specifically allowed</td>
+                                    <td><strong>Invite Blocked Channel/Category</strong></td>
+                                    <td>Discord invites are blocked here</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Invite Blocked</strong></td>
-                                    <td>Channel where Discord invites are specifically blocked</td>
+                                    <td><strong>Invite Allowed Channel/Category</strong></td>
+                                    <td>Discord invites explicitly allowed (overrides blocked)</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -718,12 +723,12 @@ node index.js
                             <p>Use <code>/linkmod enable</code> to activate link moderation for the server.</p>
                         </div>
                         <div class="card">
-                            <h4>2. Configure Settings</h4>
-                            <p>Set allowed/blocked channels, add blocked link patterns, and configure warning thresholds.</p>
+                            <h4>2. Block Channels/Categories</h4>
+                            <p>Use <code>/linkmod blockchannel</code> or <code>/linkmod blockcategory</code> to block links. Use <code>/invitemod</code> for Discord invites.</p>
                         </div>
                         <div class="card">
                             <h4>3. Violation Detection</h4>
-                            <p>When a user posts a prohibited link, the message is deleted and a warning is issued.</p>
+                            <p>When a user posts a link in a blocked area, the message is deleted and a warning is issued.</p>
                         </div>
                         <div class="card">
                             <h4>4. Auto-Case Creation</h4>
@@ -734,8 +739,16 @@ node index.js
                             <p>If a user is found guilty and continues violating, new warnings are added to their guilty case.</p>
                         </div>
 
+                        <h3>Category Override</h3>
+                        <p>If you block an entire category but want to allow links in one specific channel within it:</p>
+                        <ol>
+                            <li>Block the category: <code>/linkmod blockcategory</code></li>
+                            <li>Allow the specific channel: <code>/linkmod allowchannel</code></li>
+                        </ol>
+                        <p>The allowed channel will override the blocked category.</p>
+
                         <h3>Partial Link Matching</h3>
-                        <p>When you add a blocked link pattern (e.g., <code>badsite.com</code>), any message CONTAINING that text will be flagged. This means:</p>
+                        <p>When you add a blocked link pattern (e.g., <code>badsite.com</code>), any message CONTAINING that text will be flagged:</p>
                         <ul>
                             <li><code>badsite.com</code> matches <code>https://badsite.com/page</code></li>
                             <li><code>badsite.com</code> matches <code>www.badsite.com</code></li>
@@ -865,7 +878,7 @@ node index.js
                             </tbody>
                         </table>
 
-                        <h3>Link Moderation Commands</h3>
+                        <h3>Link Moderation Commands (/linkmod)</h3>
                         <table class="command-table">
                             <thead>
                                 <tr>
@@ -887,16 +900,12 @@ node index.js
                                     <td>View current link moderation settings</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="command-name">/linkmod setchannel &lt;channel&gt;</span></td>
-                                    <td>Set a channel where links/invites ARE allowed</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="command-name">/linkmod clearchannel</span></td>
-                                    <td>Remove the allowed links channel</td>
-                                </tr>
-                                <tr>
                                     <td><span class="command-name">/linkmod setwarnings &lt;count&gt;</span></td>
                                     <td>Set warnings before auto-case creation (1-10)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod toggledelete &lt;delete&gt;</span></td>
+                                    <td>Toggle automatic message deletion (true/false)</td>
                                 </tr>
                                 <tr>
                                     <td><span class="command-name">/linkmod blocklink &lt;link&gt;</span></td>
@@ -911,44 +920,44 @@ node index.js
                                     <td>View all blocked links/domains</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="command-name">/linkmod toggleinvites &lt;block&gt;</span></td>
-                                    <td>Toggle blocking Discord invites (true/false)</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="command-name">/linkmod toggledelete &lt;delete&gt;</span></td>
-                                    <td>Toggle automatic message deletion (true/false)</td>
-                                </tr>
-                                <tr>
                                     <td><span class="command-name">/linkmod blockchannel &lt;channel&gt;</span></td>
-                                    <td>Set a channel where ALL links are blocked</td>
+                                    <td>Block links in a specific channel</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/linkmod blockcategory &lt;category&gt;</span></td>
+                                    <td>Block links in an entire category</td>
                                 </tr>
                                 <tr>
                                     <td><span class="command-name">/linkmod unblockchannel &lt;channel&gt;</span></td>
                                     <td>Remove a channel from the link blocked list</td>
                                 </tr>
                                 <tr>
+                                    <td><span class="command-name">/linkmod unblockcategory &lt;category&gt;</span></td>
+                                    <td>Remove a category from the link blocked list</td>
+                                </tr>
+                                <tr>
                                     <td><span class="command-name">/linkmod blockedchannels</span></td>
-                                    <td>View all channels where links are blocked</td>
+                                    <td>View all channels/categories where links are blocked</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="command-name">/linkmod allowinvites &lt;channel&gt;</span></td>
-                                    <td>Set a channel where Discord invites ARE allowed</td>
+                                    <td><span class="command-name">/linkmod allowchannel &lt;channel&gt;</span></td>
+                                    <td>Allow links in a channel (overrides blocked category)</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="command-name">/linkmod disallowinvites &lt;channel&gt;</span></td>
-                                    <td>Remove a channel from invite allowed list</td>
+                                    <td><span class="command-name">/linkmod allowcategory &lt;category&gt;</span></td>
+                                    <td>Allow links in an entire category</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="command-name">/linkmod blockinvites &lt;channel&gt;</span></td>
-                                    <td>Set a channel where invites are blocked (deleted + warning)</td>
+                                    <td><span class="command-name">/linkmod disallowchannel &lt;channel&gt;</span></td>
+                                    <td>Remove a channel from the link allowed list</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="command-name">/linkmod unblockinvites &lt;channel&gt;</span></td>
-                                    <td>Remove a channel from invite blocked list</td>
+                                    <td><span class="command-name">/linkmod disallowcategory &lt;category&gt;</span></td>
+                                    <td>Remove a category from the link allowed list</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="command-name">/linkmod invitechannels</span></td>
-                                    <td>View all invite allowed and blocked channels</td>
+                                    <td><span class="command-name">/linkmod allowedchannels</span></td>
+                                    <td>View all channels/categories where links are explicitly allowed</td>
                                 </tr>
                                 <tr>
                                     <td><span class="command-name">/linkmod checkuser &lt;user&gt;</span></td>
@@ -961,6 +970,63 @@ node index.js
                             </tbody>
                         </table>
                         <p style="color: var(--text-secondary); margin-top: 8px;"><em>All /linkmod commands are Bot Owner only.</em></p>
+
+                        <h3>Invite Moderation Commands (/invitemod)</h3>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Command</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="command-name">/invitemod blockchannel &lt;channel&gt;</span></td>
+                                    <td>Block Discord invites in a channel (deleted + warning)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod blockcategory &lt;category&gt;</span></td>
+                                    <td>Block Discord invites in an entire category</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod unblockchannel &lt;channel&gt;</span></td>
+                                    <td>Remove a channel from the invite blocked list</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod unblockcategory &lt;category&gt;</span></td>
+                                    <td>Remove a category from the invite blocked list</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod blockedchannels</span></td>
+                                    <td>View all channels/categories where invites are blocked</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod allowchannel &lt;channel&gt;</span></td>
+                                    <td>Allow invites in a channel (overrides blocked category)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod allowcategory &lt;category&gt;</span></td>
+                                    <td>Allow invites in an entire category</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod disallowchannel &lt;channel&gt;</span></td>
+                                    <td>Remove a channel from the invite allowed list</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod disallowcategory &lt;category&gt;</span></td>
+                                    <td>Remove a category from the invite allowed list</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod allowedchannels</span></td>
+                                    <td>View all channels/categories where invites are explicitly allowed</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/invitemod status</span></td>
+                                    <td>View invite moderation status</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="color: var(--text-secondary); margin-top: 8px;"><em>All /invitemod commands are Bot Owner only.</em></p>
                     </section>
 
                     <!-- Button Actions -->
