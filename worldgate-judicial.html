@@ -604,14 +604,61 @@ node index.js
                         </div>
 
                         <h3>Closing Cases</h3>
-                        <p>Only the bot owner can close cases. When closed:</p>
+                        <p>Only the bot owner can close cases. When closing with a guilty verdict, a <strong>punishment dropdown</strong> appears.</p>
+
+                        <h4>Available Punishments</h4>
+                        <table class="command-table">
+                            <thead>
+                                <tr>
+                                    <th>Punishment</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&#128296; Permanent Ban</td>
+                                    <td>User should be permanently banned from all servers</td>
+                                </tr>
+                                <tr>
+                                    <td>&#9203; Temporary Ban</td>
+                                    <td>User should be temporarily banned</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128098; Kick</td>
+                                    <td>User should be kicked from servers</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128263; Timeout</td>
+                                    <td>User should be timed out</td>
+                                </tr>
+                                <tr>
+                                    <td>&#129296; Mute</td>
+                                    <td>User should be muted</td>
+                                </tr>
+                                <tr>
+                                    <td>&#9888;&#65039; Warning Only</td>
+                                    <td>No action, case serves as a warning</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4>When Cases Are Closed</h4>
                         <ul>
                             <li>Case-review forum thread is <strong>deleted</strong></li>
-                            <li>If <strong>Guilty</strong>: Case posted to #resolved-cases with appeal button</li>
-                            <li>If <strong>Not Guilty</strong>: Case posted to #closed-cases</li>
-                            <li>Verdict posted to #appeals channel</li>
+                            <li>If <strong>Guilty</strong>: Case posted to #resolved-cases with punishment and appeal button</li>
+                            <li>If <strong>Not Guilty</strong>: Case posted to #closed-cases and removed from database</li>
+                            <li>Verdict and punishment posted to #appeals channel</li>
                             <li>Reporter is notified via DM about the verdict outcome</li>
                             <li>Broadcast to all subscribed servers' #closed-cases channels</li>
+                        </ul>
+
+                        <h3>Manual Warnings</h3>
+                        <p>Administrators can issue manual warnings using <code>/warn</code>:</p>
+                        <ul>
+                            <li>Warnings are tracked globally across all servers</li>
+                            <li>Combined with link moderation warnings for threshold calculation</li>
+                            <li>When threshold is reached, a case is automatically created</li>
+                            <li>User is notified via DM about the warning (optional)</li>
                         </ul>
                     </section>
 
@@ -874,6 +921,11 @@ node index.js
                                     <td><span class="command-name">/setupcases</span></td>
                                     <td>Set up a cases channel in a secondary server</td>
                                     <td><span class="tag admin">Bot Owner</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="command-name">/warn</span></td>
+                                    <td>Issue a manual warning to a user (reason required)</td>
+                                    <td><span class="tag admin">Administrators</span></td>
                                 </tr>
                             </tbody>
                         </table>
