@@ -209,6 +209,8 @@ python bot.py
                     <tbody>
                         <tr><td><span class="command-name">!setup_media</span></td><td>Create all media category forums and genre threads in the current category</td><td><span class="tag admin">Admin</span></td></tr>
                         <tr><td><span class="command-name">!setup_recommend_channel</span></td><td>Set up the current channel as the recommendation submission channel</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!setup_missing_genres [category]</span></td><td>Create missing genre posts for all categories or a specific one (e.g., tv_shows)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!add_category_forum &lt;category&gt;</span></td><td>Add a single category's forum and genre posts after initial setup</td><td><span class="tag admin">Admin</span></td></tr>
                     </tbody>
                 </table>
 
@@ -316,11 +318,20 @@ python bot.py
             </section>
 
             <section class="content-section">
-                <h2>Background Tasks</h2>
-                <p>The bot runs automated tasks to keep content fresh:</p>
+                <h2>Background Tasks & Real-Time Updates</h2>
+                <p>The bot runs automated tasks and real-time updates to keep content fresh:</p>
+
+                <h3>Real-Time Updates</h3>
+                <ul>
+                    <li><strong>Leaderboard on New Recommendation</strong> - When a new recommendation is submitted, the category leaderboard updates immediately</li>
+                    <li><strong>Leaderboard on Vote</strong> - When someone upvotes or downvotes, the leaderboard updates to reflect the new rankings</li>
+                    <li><strong>Menu Reset</strong> - The recommendation submission menu resets to its initial state after each submission</li>
+                </ul>
+
+                <h3>Scheduled Tasks</h3>
                 <ul>
                     <li><strong>Daily Random Recommendation</strong> - Posts a random recommendation from the database each day</li>
-                    <li><strong>Hourly Leaderboard Updates</strong> - Updates all leaderboard posts with current vote counts</li>
+                    <li><strong>Hourly Leaderboard Updates</strong> - Backup update of all leaderboard posts with current vote counts</li>
                 </ul>
             </section>
         </div>
