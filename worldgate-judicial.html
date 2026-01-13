@@ -491,7 +491,7 @@ node index.js
                         <div class="alert info">
                             <span class="alert-icon">&#9432;</span>
                             <div>
-                                <strong>Important:</strong> The <code>mainServerId</code> should be the primary WorldGate server where cases are filed and the court-house forum exists.
+                                <strong>Important:</strong> The <code>mainServerId</code> should be the primary WorldGate server where cases are filed and the case-review forum exists.
                             </div>
                         </div>
                     </section>
@@ -511,19 +511,23 @@ node index.js
                         <h3>Case Workflow</h3>
                         <div class="card">
                             <h4>1. Report Filed</h4>
-                            <p>User submits report via /report command or web form. Creates a forum thread in #court-house.</p>
+                            <p>User submits report via /report command or web form. Creates a forum thread in #case-review. Reporter receives confirmation with main server invite link.</p>
                         </div>
                         <div class="card">
                             <h4>2. Evidence Upload</h4>
-                            <p>Reporter can upload evidence files (images, documents) to the case thread.</p>
+                            <p>Reporter can upload evidence files (images, documents) to the case thread. Confirmation messages are sent privately via DM.</p>
                         </div>
                         <div class="card">
-                            <h4>3. Jury Voting</h4>
-                            <p>Dungeon Jury members vote Guilty or Not Guilty on the case.</p>
+                            <h4>3. Review Board Voting</h4>
+                            <p>Review Board members vote Guilty or Not Guilty. They can also request more information from the reporter.</p>
                         </div>
                         <div class="card">
-                            <h4>4. Verdict</h4>
-                            <p>Bot owner closes case with final verdict. Forum thread is deleted, case moved to #case-logs if guilty.</p>
+                            <h4>4. Need More Info (Optional)</h4>
+                            <p>If more evidence is needed, admin clicks "Need More Info" button. Reporter receives DM with request and can submit additional evidence.</p>
+                        </div>
+                        <div class="card">
+                            <h4>5. Verdict</h4>
+                            <p>Bot owner closes case with final verdict. Forum thread is deleted, case moved to #resolved-cases if guilty. <strong>Reporter is notified via DM about the verdict outcome.</strong></p>
                         </div>
 
                         <h3>Case Numbers</h3>
@@ -601,10 +605,11 @@ node index.js
                         <h3>Closing Cases</h3>
                         <p>Only the bot owner can close cases. When closed:</p>
                         <ul>
-                            <li>Court-house forum thread is <strong>deleted</strong></li>
-                            <li>If <strong>Guilty</strong>: Case posted to #case-logs with appeal button</li>
+                            <li>Case-review forum thread is <strong>deleted</strong></li>
+                            <li>If <strong>Guilty</strong>: Case posted to #resolved-cases with appeal button</li>
                             <li>If <strong>Not Guilty</strong>: Case posted to #closed-cases</li>
                             <li>Verdict posted to #appeals channel</li>
+                            <li>Reporter is notified via DM about the verdict outcome</li>
                             <li>Broadcast to all subscribed servers' #closed-cases channels</li>
                         </ul>
                     </section>
@@ -764,7 +769,7 @@ node index.js
                     <section id="button-actions" class="content-section">
                         <h2>Button Actions</h2>
 
-                        <h3>Case Buttons (Court-House)</h3>
+                        <h3>Case Buttons (Case-Review Forum)</h3>
                         <table class="command-table">
                             <thead>
                                 <tr>
@@ -793,6 +798,16 @@ node index.js
                                     <td>&#128275; Close - Not Guilty</td>
                                     <td>Close case with not guilty verdict</td>
                                     <td>Bot Owner</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128172; Need More Info</td>
+                                    <td>Request additional evidence from reporter (sends DM)</td>
+                                    <td>Dungeon Jury / Bot Owner</td>
+                                </tr>
+                                <tr>
+                                    <td>&#128206; Add More Evidence</td>
+                                    <td>Reporter can add more evidence after initial submission</td>
+                                    <td>Reporter Only</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -831,13 +846,13 @@ node index.js
                         <div class="channel-list">
                             <div class="channel-item">
                                 <span class="hash">#</span>
-                                <span>court-house</span>
+                                <span>case-review</span>
                                 <span class="tag" style="margin-left: auto;">Forum</span>
                             </div>
                             <div class="channel-item">
                                 <span class="hash">#</span>
-                                <span>case-logs</span>
-                                <span class="tag" style="margin-left: auto;">Forum</span>
+                                <span>resolved-cases</span>
+                                <span class="tag" style="margin-left: auto;">Text</span>
                             </div>
                             <div class="channel-item">
                                 <span class="hash">#</span>

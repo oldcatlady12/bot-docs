@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Fundamentals - Bot Academy</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-yellow: #f0c000;
+            --border-color: #30363d;
+            --python-blue: #3776ab;
+            --python-yellow: #ffd43b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .sidebar-header h1 {
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-header .python-logo {
+            font-size: 1.8rem;
+        }
+        .sidebar-header p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        .nav-section {
+            margin-bottom: 10px;
+        }
+        .nav-section-title {
+            padding: 10px 20px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: var(--bg-card);
+            border-left-color: var(--accent-blue);
+        }
+        .nav-link.active {
+            background: rgba(55, 118, 171, 0.15);
+            border-left-color: var(--python-blue);
+            color: var(--python-yellow);
+        }
+        .nav-link .lesson-num {
+            background: var(--bg-card);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .nav-link.completed .lesson-num {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+        .back-link {
+            display: block;
+            padding: 15px 20px;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .back-link:hover {
+            background: var(--bg-card);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            padding: 40px 60px;
+            max-width: 1100px;
+        }
+
+        /* Lesson Container */
+        .lesson {
+            display: none;
+        }
+        .lesson.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        .lesson-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .lesson-header .lesson-number {
+            color: var(--python-yellow);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .lesson-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .lesson-header .lesson-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 40px 0 20px;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h4 {
+            font-size: 1.2rem;
+            margin: 30px 0 15px;
+            color: var(--accent-green);
+        }
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 16px 0 16px 24px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Video Container */
+        .video-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .video-container h5 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--accent-red);
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-red);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .video-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(248, 81, 73, 0.3);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            background: var(--bg-card);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-header .filename {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+        .code-header .lang-badge {
+            background: var(--python-blue);
+            color: var(--python-yellow);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .code-content {
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+        .code-content pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: var(--accent-purple); font-weight: 500; }
+        .string { color: var(--accent-green); }
+        .comment { color: var(--text-secondary); font-style: italic; }
+        .function { color: var(--accent-blue); }
+        .number { color: var(--accent-orange); }
+        .decorator { color: var(--accent-orange); }
+        .builtin { color: var(--accent-blue); }
+        .class-name { color: var(--accent-green); }
+        .param { color: var(--accent-orange); }
+
+        /* Info Boxes */
+        .info-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .info-box.tip { border-left: 4px solid var(--accent-green); }
+        .info-box.warning { border-left: 4px solid var(--accent-orange); }
+        .info-box.important { border-left: 4px solid var(--accent-blue); }
+        .info-box.example { border-left: 4px solid var(--accent-purple); }
+        .info-box h5 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .info-box.tip h5 { color: var(--accent-green); }
+        .info-box.warning h5 { color: var(--accent-orange); }
+        .info-box.important h5 { color: var(--accent-blue); }
+        .info-box.example h5 { color: var(--accent-purple); }
+
+        /* Visual Diagram */
+        .diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .diagram h5 {
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+        }
+        .diagram-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .diagram-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 15px 25px;
+            min-width: 120px;
+        }
+        .diagram-arrow {
+            color: var(--accent-orange);
+            font-size: 1.5rem;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(55, 118, 171, 0.1), rgba(255, 212, 59, 0.1));
+            border: 2px solid var(--python-blue);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        .quiz-section h4 {
+            color: var(--python-yellow);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quiz-question {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .quiz-question p {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent-blue);
+            background: rgba(88, 166, 255, 0.1);
+        }
+        .quiz-option.selected {
+            border-color: var(--accent-blue);
+            background: rgba(88, 166, 255, 0.15);
+        }
+        .quiz-option.correct {
+            border-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.15);
+        }
+        .quiz-option.incorrect {
+            border-color: var(--accent-red);
+            background: rgba(248, 81, 73, 0.15);
+        }
+        .quiz-option input {
+            display: none;
+        }
+        .quiz-option .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct {
+            background: rgba(63, 185, 80, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+        .quiz-feedback.incorrect {
+            background: rgba(248, 81, 73, 0.15);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+        .check-answer-btn {
+            background: var(--python-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+        .check-answer-btn:hover {
+            background: #2d6a9f;
+            transform: translateY(-2px);
+        }
+
+        /* From Your Bots Section */
+        .bot-example {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        .bot-example-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .bot-example-header .bot-icon {
+            font-size: 2rem;
+        }
+        .bot-example-header h5 {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+        }
+        .bot-example-header .bot-name {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: var(--bg-card);
+            border-radius: 10px;
+            height: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--python-blue), var(--python-yellow));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Navigation Buttons */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(88, 166, 255, 0.1);
+        }
+        .nav-btn.primary {
+            background: var(--python-blue);
+            border-color: var(--python-blue);
+        }
+        .nav-btn.primary:hover {
+            background: #2d6a9f;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        th {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        td {
+            color: var(--text-secondary);
+        }
+        tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        /* Image Container */
+        .image-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .image-container .caption {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .comparison-col {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .comparison-col.good {
+            border-top: 3px solid var(--accent-green);
+        }
+        .comparison-col.bad {
+            border-top: 3px solid var(--accent-red);
+        }
+        .comparison-col h5 {
+            margin-bottom: 15px;
+        }
+        .comparison-col.good h5 { color: var(--accent-green); }
+        .comparison-col.bad h5 { color: var(--accent-red); }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <a href="learn-to-code.html" class="back-link">← Back to All Courses</a>
+        <div class="sidebar-header">
+            <h1><span class="python-logo">🐍</span> Python</h1>
+            <p>Fundamentals Course</p>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Getting Started</div>
+            <a href="#lesson1" class="nav-link active" data-lesson="1">
+                <span class="lesson-num">1</span>
+                Introduction to Python
+            </a>
+            <a href="#lesson2" class="nav-link" data-lesson="2">
+                <span class="lesson-num">2</span>
+                Variables & Data Types
+            </a>
+            <a href="#lesson3" class="nav-link" data-lesson="3">
+                <span class="lesson-num">3</span>
+                Operators & Expressions
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Control Flow</div>
+            <a href="#lesson4" class="nav-link" data-lesson="4">
+                <span class="lesson-num">4</span>
+                If Statements
+            </a>
+            <a href="#lesson5" class="nav-link" data-lesson="5">
+                <span class="lesson-num">5</span>
+                Loops (for & while)
+            </a>
+            <a href="#lesson6" class="nav-link" data-lesson="6">
+                <span class="lesson-num">6</span>
+                Functions
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Data Structures</div>
+            <a href="#lesson7" class="nav-link" data-lesson="7">
+                <span class="lesson-num">7</span>
+                Lists & Tuples
+            </a>
+            <a href="#lesson8" class="nav-link" data-lesson="8">
+                <span class="lesson-num">8</span>
+                Dictionaries & Sets
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Object-Oriented Programming</div>
+            <a href="#lesson9" class="nav-link" data-lesson="9">
+                <span class="lesson-num">9</span>
+                Classes & Objects
+            </a>
+            <a href="#lesson10" class="nav-link" data-lesson="10">
+                <span class="lesson-num">10</span>
+                Inheritance
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Advanced Topics</div>
+            <a href="#lesson11" class="nav-link" data-lesson="11">
+                <span class="lesson-num">11</span>
+                Async/Await
+            </a>
+            <a href="#lesson12" class="nav-link" data-lesson="12">
+                <span class="lesson-num">12</span>
+                Error Handling
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Lesson 1: Introduction to Python -->
+        <div class="lesson active" id="lesson1">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 1</div>
+                <h2>Introduction to Python</h2>
+                <p class="lesson-desc">Learn what Python is, why it's popular, and how to run your first program.</p>
+            </div>
+
+            <h3>🎯 What is Python?</h3>
+            <p>Python is a high-level, interpreted programming language known for its simple, readable syntax. Created by Guido van Rossum in 1991, Python has become one of the most popular programming languages in the world.</p>
+
+            <div class="info-box important">
+                <h5>💡 Why Python for Discord Bots?</h5>
+                <p>Python is perfect for Discord bots because:</p>
+                <ul>
+                    <li>Easy to learn and read</li>
+                    <li>Excellent library support (discord.py)</li>
+                    <li>Great for handling async operations (waiting for messages, API calls)</li>
+                    <li>Huge community with lots of resources</li>
+                </ul>
+            </div>
+
+            <div class="video-container">
+                <h5>📺 Video: Python in 100 Seconds</h5>
+                <p style="margin-bottom: 15px;">Watch this quick overview of Python:</p>
+                <a href="https://www.youtube.com/watch?v=x7X9w_GIm1s" target="_blank" class="video-link">
+                    ▶️ Watch on YouTube
+                </a>
+            </div>
+
+            <h3>🖥️ Your First Python Program</h3>
+            <p>The traditional first program in any language is "Hello, World!" - a simple program that displays a message:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">hello.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># This is a comment - Python ignores this line</span>
+<span class="comment"># The print() function displays text to the screen</span>
+
+<span class="builtin">print</span>(<span class="string">"Hello, World!"</span>)
+<span class="builtin">print</span>(<span class="string">"Welcome to Python programming!"</span>)</pre>
+                </div>
+            </div>
+
+            <div class="diagram">
+                <h5>How Python Code Runs</h5>
+                <div class="diagram-content">
+                    <div class="diagram-box">Your Code<br><small>(.py file)</small></div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Python Interpreter</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Output<br><small>(result)</small></div>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏆</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">bot.py - Line 1-10</span>
+                    </div>
+                </div>
+                <p>Here's how your Sports Bot starts - notice the import statements that bring in code libraries:</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="keyword">import</span> discord
+<span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands, tasks
+<span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta, timezone
+<span class="keyword">import</span> aiohttp
+<span class="keyword">import</span> asyncio
+<span class="keyword">import</span> json
+<span class="keyword">import</span> os
+
+<span class="comment"># These imports bring in pre-written code libraries</span>
+<span class="comment"># discord - The library for creating Discord bots</span>
+<span class="comment"># datetime - For working with dates and times</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>📝 Key Concepts</h3>
+            <table>
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>print()</td>
+                    <td>Function that displays output</td>
+                    <td><code>print("Hello")</code></td>
+                </tr>
+                <tr>
+                    <td>Comment</td>
+                    <td>Text Python ignores (starts with #)</td>
+                    <td><code># This is a comment</code></td>
+                </tr>
+                <tr>
+                    <td>String</td>
+                    <td>Text inside quotes</td>
+                    <td><code>"Hello, World!"</code></td>
+                </tr>
+                <tr>
+                    <td>import</td>
+                    <td>Brings in external code</td>
+                    <td><code>import discord</code></td>
+                </tr>
+            </table>
+
+            <!-- Quiz Section -->
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+                <p>Test your understanding of this lesson:</p>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 1:</strong> What function do you use to display text in Python?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>display()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>show()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>print()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>echo()</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 2:</strong> How do you write a comment in Python?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>// This is a comment</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="b">
+                            <span class="option-letter">B</span>
+                            <span># This is a comment</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>/* This is a comment */</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>&lt;!-- This is a comment --&gt;</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> What keyword do you use to include external libraries in Python?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>import</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>include</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>require</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>using</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>✅ Lesson Complete!</h5>
+                <p>You've learned the basics of Python! In the next lesson, we'll explore variables and data types - the building blocks of any program.</p>
+            </div>
+
+            <div class="lesson-nav">
+                <span></span>
+                <a href="#lesson2" class="nav-btn primary" onclick="goToLesson(2)">
+                    Next: Variables & Data Types →
+                </a>
+            </div>
+        </div>
+
+        <!-- Lesson 2: Variables & Data Types -->
+        <div class="lesson" id="lesson2">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 2</div>
+                <h2>Variables & Data Types</h2>
+                <p class="lesson-desc">Learn how to store and work with different types of data in Python.</p>
+            </div>
+
+            <h3>📦 What are Variables?</h3>
+            <p>Variables are like labeled containers that store data. You give them a name, and Python remembers the value you put in them.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">variables.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Creating variables - no special keyword needed!</span>
+name = <span class="string">"Arthur"</span>           <span class="comment"># String (text)</span>
+age = <span class="number">25</span>                   <span class="comment"># Integer (whole number)</span>
+score = <span class="number">99.5</span>               <span class="comment"># Float (decimal number)</span>
+is_admin = <span class="keyword">True</span>            <span class="comment"># Boolean (True or False)</span>
+
+<span class="comment"># Using variables</span>
+<span class="builtin">print</span>(<span class="string">"Hello, "</span> + name)     <span class="comment"># Output: Hello, Arthur</span>
+<span class="builtin">print</span>(<span class="string">"Age:"</span>, age)          <span class="comment"># Output: Age: 25</span></pre>
+                </div>
+            </div>
+
+            <div class="diagram">
+                <h5>Variable Assignment</h5>
+                <div class="diagram-content">
+                    <div class="diagram-box">name</div>
+                    <span class="diagram-arrow">=</span>
+                    <div class="diagram-box" style="border-color: var(--accent-green);">"Arthur"</div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-secondary);">The variable <code>name</code> now holds the value <code>"Arthur"</code></p>
+            </div>
+
+            <h3>📊 Python Data Types</h3>
+            <p>Python has several built-in data types. Here are the most common ones:</p>
+
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><code>str</code></td>
+                    <td>String - text in quotes</td>
+                    <td><code>"Hello"</code> or <code>'Hello'</code></td>
+                </tr>
+                <tr>
+                    <td><code>int</code></td>
+                    <td>Integer - whole numbers</td>
+                    <td><code>42</code>, <code>-10</code>, <code>0</code></td>
+                </tr>
+                <tr>
+                    <td><code>float</code></td>
+                    <td>Float - decimal numbers</td>
+                    <td><code>3.14</code>, <code>-0.5</code></td>
+                </tr>
+                <tr>
+                    <td><code>bool</code></td>
+                    <td>Boolean - True or False</td>
+                    <td><code>True</code>, <code>False</code></td>
+                </tr>
+                <tr>
+                    <td><code>list</code></td>
+                    <td>Ordered collection</td>
+                    <td><code>[1, 2, 3]</code></td>
+                </tr>
+                <tr>
+                    <td><code>dict</code></td>
+                    <td>Key-value pairs</td>
+                    <td><code>{"name": "Arthur"}</code></td>
+                </tr>
+            </table>
+
+            <h3>🔍 Checking Types</h3>
+            <p>Use the <code>type()</code> function to check what type a variable is:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">check_types.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre>name = <span class="string">"Arthur"</span>
+age = <span class="number">25</span>
+score = <span class="number">99.5</span>
+is_online = <span class="keyword">True</span>
+
+<span class="builtin">print</span>(<span class="builtin">type</span>(name))      <span class="comment"># &lt;class 'str'&gt;</span>
+<span class="builtin">print</span>(<span class="builtin">type</span>(age))       <span class="comment"># &lt;class 'int'&gt;</span>
+<span class="builtin">print</span>(<span class="builtin">type</span>(score))     <span class="comment"># &lt;class 'float'&gt;</span>
+<span class="builtin">print</span>(<span class="builtin">type</span>(is_online)) <span class="comment"># &lt;class 'bool'&gt;</span></pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏆</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">Using Variables for Game Data</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment"># Variables storing game information</span>
+home_team = <span class="string">"Lakers"</span>          <span class="comment"># String</span>
+away_team = <span class="string">"Celtics"</span>         <span class="comment"># String</span>
+home_score = <span class="number">105</span>               <span class="comment"># Integer</span>
+away_score = <span class="number">98</span>                <span class="comment"># Integer</span>
+is_live = <span class="keyword">True</span>                 <span class="comment"># Boolean</span>
+quarter = <span class="number">4</span>                    <span class="comment"># Integer</span>
+
+<span class="comment"># Using f-strings to create formatted messages</span>
+message = <span class="string">f"</span><span class="string">{away_team}</span> <span class="string">{away_score}</span> <span class="string">-</span> <span class="string">{home_score}</span> <span class="string">{home_team}</span><span class="string">"</span>
+<span class="builtin">print</span>(message)  <span class="comment"># Output: Celtics 98 - 105 Lakers</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>💡 F-Strings (Formatted Strings)</h5>
+                <p>F-strings are an easy way to put variables inside strings. Just add an <code>f</code> before the quotes and use <code>{variable}</code> to insert values:</p>
+                <div class="code-block">
+                    <div class="code-content">
+<pre>name = <span class="string">"Arthur"</span>
+age = <span class="number">25</span>
+<span class="builtin">print</span>(<span class="string">f"My name is {name} and I am {age} years old"</span>)</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔄 Type Conversion</h3>
+            <p>Sometimes you need to convert between types:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">conversion.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Converting types</span>
+number_str = <span class="string">"42"</span>
+number_int = <span class="builtin">int</span>(number_str)   <span class="comment"># String to Integer: 42</span>
+
+price = <span class="number">19.99</span>
+price_str = <span class="builtin">str</span>(price)         <span class="comment"># Float to String: "19.99"</span>
+
+age = <span class="number">25</span>
+age_float = <span class="builtin">float</span>(age)         <span class="comment"># Integer to Float: 25.0</span></pre>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What data type is the value <code>3.14</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>int</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>float</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>str</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>bool</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What is the correct way to create an f-string?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>"Hello {name}"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>format("Hello {name}")</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>f"Hello {name}"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>$"Hello {name}"</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="d">
+                    <p><strong>Question 3:</strong> What function checks the data type of a variable?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>typeof()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>datatype()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>check()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>type()</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson1" class="nav-btn" onclick="goToLesson(1)">
+                    ← Previous: Introduction
+                </a>
+                <a href="#lesson3" class="nav-btn primary" onclick="goToLesson(3)">
+                    Next: Operators →
+                </a>
+            </div>
+        </div>
+
+        <!-- Lesson 3: Operators -->
+        <div class="lesson" id="lesson3">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 3</div>
+                <h2>Operators & Expressions</h2>
+                <p class="lesson-desc">Learn how to perform calculations and comparisons in Python.</p>
+            </div>
+
+            <h3>➕ Arithmetic Operators</h3>
+            <p>Python can do math! Here are the basic arithmetic operators:</p>
+
+            <table>
+                <tr>
+                    <th>Operator</th>
+                    <th>Name</th>
+                    <th>Example</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <td><code>+</code></td>
+                    <td>Addition</td>
+                    <td><code>5 + 3</code></td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td><code>-</code></td>
+                    <td>Subtraction</td>
+                    <td><code>5 - 3</code></td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><code>*</code></td>
+                    <td>Multiplication</td>
+                    <td><code>5 * 3</code></td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td><code>/</code></td>
+                    <td>Division</td>
+                    <td><code>15 / 3</code></td>
+                    <td>5.0</td>
+                </tr>
+                <tr>
+                    <td><code>//</code></td>
+                    <td>Floor Division</td>
+                    <td><code>17 // 3</code></td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td><code>%</code></td>
+                    <td>Modulus (remainder)</td>
+                    <td><code>17 % 3</code></td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><code>**</code></td>
+                    <td>Exponent (power)</td>
+                    <td><code>2 ** 3</code></td>
+                    <td>8</td>
+                </tr>
+            </table>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">math_examples.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Basic math</span>
+total_points = <span class="number">100</span> + <span class="number">50</span>          <span class="comment"># 150</span>
+remaining = <span class="number">100</span> - <span class="number">25</span>              <span class="comment"># 75</span>
+doubled = <span class="number">50</span> * <span class="number">2</span>                  <span class="comment"># 100</span>
+average = <span class="number">90</span> / <span class="number">3</span>                  <span class="comment"># 30.0</span>
+
+<span class="comment"># Useful for Discord bots</span>
+minutes = <span class="number">125</span>
+hours = minutes // <span class="number">60</span>             <span class="comment"># 2 hours</span>
+remaining_mins = minutes % <span class="number">60</span>     <span class="comment"># 5 minutes</span>
+<span class="builtin">print</span>(<span class="string">f"Time: {hours}h {remaining_mins}m"</span>)  <span class="comment"># Time: 2h 5m</span></pre>
+                </div>
+            </div>
+
+            <h3>⚖️ Comparison Operators</h3>
+            <p>Comparison operators compare two values and return <code>True</code> or <code>False</code>:</p>
+
+            <table>
+                <tr>
+                    <th>Operator</th>
+                    <th>Meaning</th>
+                    <th>Example</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <td><code>==</code></td>
+                    <td>Equal to</td>
+                    <td><code>5 == 5</code></td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <td><code>!=</code></td>
+                    <td>Not equal to</td>
+                    <td><code>5 != 3</code></td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <td><code>&gt;</code></td>
+                    <td>Greater than</td>
+                    <td><code>5 > 3</code></td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;</code></td>
+                    <td>Less than</td>
+                    <td><code>5 < 3</code></td>
+                    <td>False</td>
+                </tr>
+                <tr>
+                    <td><code>&gt;=</code></td>
+                    <td>Greater or equal</td>
+                    <td><code>5 >= 5</code></td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <td><code>&lt;=</code></td>
+                    <td>Less or equal</td>
+                    <td><code>5 <= 3</code></td>
+                    <td>False</td>
+                </tr>
+            </table>
+
+            <div class="info-box warning">
+                <h5>⚠️ Common Mistake: = vs ==</h5>
+                <ul>
+                    <li><code>=</code> is for <strong>assignment</strong> (setting a value)</li>
+                    <li><code>==</code> is for <strong>comparison</strong> (checking equality)</li>
+                </ul>
+                <div class="code-block">
+                    <div class="code-content">
+<pre>x = <span class="number">5</span>      <span class="comment"># Assignment: x now equals 5</span>
+x == <span class="number">5</span>     <span class="comment"># Comparison: is x equal to 5? (True)</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔗 Logical Operators</h3>
+            <p>Combine multiple conditions:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">logical.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre>age = <span class="number">25</span>
+is_member = <span class="keyword">True</span>
+
+<span class="comment"># AND - both must be true</span>
+can_vote = age >= <span class="number">18</span> <span class="keyword">and</span> is_member    <span class="comment"># True</span>
+
+<span class="comment"># OR - at least one must be true</span>
+gets_discount = age < <span class="number">18</span> <span class="keyword">or</span> age > <span class="number">65</span>  <span class="comment"># False</span>
+
+<span class="comment"># NOT - flips True to False and vice versa</span>
+is_guest = <span class="keyword">not</span> is_member                <span class="comment"># False</span></pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏀</span>
+                    <div>
+                        <h5>March Madness Bot</h5>
+                        <span class="bot-name">Checking betting conditions</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">march_madness_bot/betting.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment"># Check if user can place a bet</span>
+user_balance = <span class="number">500</span>
+bet_amount = <span class="number">100</span>
+game_started = <span class="keyword">False</span>
+
+<span class="comment"># Using comparison and logical operators</span>
+can_bet = (
+    user_balance >= bet_amount <span class="keyword">and</span>  <span class="comment"># Has enough money</span>
+    bet_amount > <span class="number">0</span> <span class="keyword">and</span>              <span class="comment"># Positive bet</span>
+    <span class="keyword">not</span> game_started                 <span class="comment"># Game hasn't started</span>
+)
+
+<span class="keyword">if</span> can_bet:
+    <span class="builtin">print</span>(<span class="string">"Bet placed!"</span>)
+<span class="keyword">else</span>:
+    <span class="builtin">print</span>(<span class="string">"Cannot place bet"</span>)</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What is the result of <code>17 % 5</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>3.4</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>2</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>3</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>12</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What operator checks if two values are equal?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>=</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>===</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>==</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>equals</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> What is the result of <code>True and False</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>False</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>True</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Error</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>None</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson2" class="nav-btn" onclick="goToLesson(2)">
+                    ← Previous: Variables
+                </a>
+                <a href="#lesson4" class="nav-btn primary" onclick="goToLesson(4)">
+                    Next: If Statements →
+                </a>
+            </div>
+        </div>
+
+        <!-- Placeholder for remaining lessons -->
+        <div class="lesson" id="lesson4">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 4</div>
+                <h2>If Statements (Conditionals)</h2>
+                <p class="lesson-desc">Learn how to make decisions in your code based on conditions.</p>
+            </div>
+
+            <h3>🔀 Making Decisions</h3>
+            <p>If statements let your program make decisions. They check a condition and run different code based on whether it's True or False.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">if_example.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre>score = <span class="number">85</span>
+
+<span class="keyword">if</span> score >= <span class="number">90</span>:
+    <span class="builtin">print</span>(<span class="string">"A - Excellent!"</span>)
+<span class="keyword">elif</span> score >= <span class="number">80</span>:
+    <span class="builtin">print</span>(<span class="string">"B - Good job!"</span>)
+<span class="keyword">elif</span> score >= <span class="number">70</span>:
+    <span class="builtin">print</span>(<span class="string">"C - Not bad"</span>)
+<span class="keyword">else</span>:
+    <span class="builtin">print</span>(<span class="string">"Need improvement"</span>)
+
+<span class="comment"># Output: B - Good job!</span></pre>
+                </div>
+            </div>
+
+            <div class="info-box important">
+                <h5>🔑 Key Points</h5>
+                <ul>
+                    <li><code>if</code> - First condition to check</li>
+                    <li><code>elif</code> - Additional conditions (short for "else if")</li>
+                    <li><code>else</code> - What to do if no conditions are True</li>
+                    <li><strong>Indentation matters!</strong> Code inside the if must be indented with 4 spaces</li>
+                </ul>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏆</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">Checking game state</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment"># Check game state and display appropriate message</span>
+state = <span class="string">"in"</span>  <span class="comment"># Could be "pre", "in", or "post"</span>
+
+<span class="keyword">if</span> state == <span class="string">"in"</span>:
+    <span class="builtin">print</span>(<span class="string">"🔴 LIVE - Game in progress!"</span>)
+<span class="keyword">elif</span> state == <span class="string">"pre"</span>:
+    <span class="builtin">print</span>(<span class="string">"⏰ Game starts soon"</span>)
+<span class="keyword">elif</span> state == <span class="string">"post"</span>:
+    <span class="builtin">print</span>(<span class="string">"✅ Game finished"</span>)
+<span class="keyword">else</span>:
+    <span class="builtin">print</span>(<span class="string">"❓ Unknown state"</span>)</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What keyword is short for "else if" in Python?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>elseif</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>elif</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>else if</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>otherwise</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> How many spaces should you indent code inside an if statement?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>2 spaces</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>1 tab only</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>4 spaces (standard)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>No indentation needed</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson3" class="nav-btn" onclick="goToLesson(3)">
+                    ← Previous: Operators
+                </a>
+                <a href="#lesson5" class="nav-btn primary" onclick="goToLesson(5)">
+                    Next: Loops →
+                </a>
+            </div>
+        </div>
+
+        <!-- More lessons would continue... -->
+        <div class="lesson" id="lesson5">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 5</div>
+                <h2>Loops (for & while)</h2>
+                <p class="lesson-desc">Learn how to repeat actions using loops.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div class="lesson" id="lesson6">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 6</div>
+                <h2>Functions</h2>
+                <p class="lesson-desc">Learn how to create reusable blocks of code.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div class="lesson" id="lesson7">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 7</div>
+                <h2>Lists & Tuples</h2>
+                <p class="lesson-desc">Learn about Python's sequence data types.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div class="lesson" id="lesson8">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 8</div>
+                <h2>Dictionaries & Sets</h2>
+                <p class="lesson-desc">Learn about key-value pairs and unique collections.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div class="lesson" id="lesson9">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 9</div>
+                <h2>Classes & Objects</h2>
+                <p class="lesson-desc">Introduction to Object-Oriented Programming.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div class="lesson" id="lesson10">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 10</div>
+                <h2>Inheritance</h2>
+                <p class="lesson-desc">Learn how classes can inherit from other classes.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div class="lesson" id="lesson11">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 11</div>
+                <h2>Async/Await</h2>
+                <p class="lesson-desc">Learn asynchronous programming for Discord bots.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div class="lesson" id="lesson12">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 12</div>
+                <h2>Error Handling</h2>
+                <p class="lesson-desc">Learn how to handle errors gracefully.</p>
+            </div>
+            <p>Content coming soon...</p>
+        </div>
+    </main>
+
+    <script>
+        // Navigation
+        function goToLesson(lessonNum) {
+            // Hide all lessons
+            document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+            // Show selected lesson
+            document.getElementById('lesson' + lessonNum).classList.add('active');
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.lesson == lessonNum) {
+                    link.classList.add('active');
+                }
+            });
+            // Scroll to top
+            window.scrollTo(0, 0);
+            // Update progress
+            updateProgress(lessonNum);
+        }
+
+        // Click handlers for nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                goToLesson(parseInt(link.dataset.lesson));
+            });
+        });
+
+        // Quiz checking
+        function checkAnswer(button) {
+            const question = button.closest('.quiz-question');
+            const correctAnswer = question.dataset.correct;
+            const selected = question.querySelector('input:checked');
+            const feedback = question.querySelector('.quiz-feedback');
+
+            if (!selected) {
+                feedback.textContent = 'Please select an answer!';
+                feedback.className = 'quiz-feedback show incorrect';
+                return;
+            }
+
+            const options = question.querySelectorAll('.quiz-option');
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                const input = opt.querySelector('input');
+                if (input.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (input.checked) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            if (selected.value === correctAnswer) {
+                feedback.textContent = '✅ Correct! Great job!';
+                feedback.className = 'quiz-feedback show correct';
+            } else {
+                feedback.textContent = '❌ Not quite. The correct answer is highlighted in green.';
+                feedback.className = 'quiz-feedback show incorrect';
+            }
+
+            button.disabled = true;
+            button.textContent = 'Answered';
+        }
+
+        // Progress bar
+        function updateProgress(lessonNum) {
+            const totalLessons = 12;
+            const progress = (lessonNum / totalLessons) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        // Initialize
+        updateProgress(1);
+    </script>
+</body>
+</html>

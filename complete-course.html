@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Bot Development Course</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --border-color: #30363d;
+            --discord-blurple: #5865F2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+        .layout { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 40px;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            z-index: 10;
+        }
+        .sidebar-header h1 {
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .progress-container { margin-top: 15px; }
+        .progress-text { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px; }
+        .progress-bar {
+            background: var(--bg-card);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Navigation */
+        .nav-module {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .module-header {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .module-header:hover { background: var(--bg-card); }
+        .module-header h3 {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .module-header .arrow {
+            transition: transform 0.2s;
+            color: var(--text-secondary);
+        }
+        .nav-module.open .arrow { transform: rotate(90deg); }
+        .module-lessons {
+            display: none;
+            padding: 0 10px 10px;
+        }
+        .nav-module.open .module-lessons { display: block; }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            margin-bottom: 2px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        .nav-link.active {
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent-blue);
+        }
+        .nav-link.completed::before {
+            content: "✓";
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+        .lesson-num {
+            background: var(--bg-primary);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 320px;
+            padding: 40px 60px;
+            max-width: 1000px;
+        }
+
+        .lesson { display: none; }
+        .lesson.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        .lesson-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .lesson-header .module-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .module-tag.python { background: rgba(63, 185, 80, 0.2); color: var(--accent-green); }
+        .module-tag.javascript { background: rgba(210, 169, 34, 0.2); color: var(--accent-orange); }
+        .module-tag.discordpy { background: rgba(88, 101, 242, 0.2); color: var(--discord-blurple); }
+        .module-tag.discordjs { background: rgba(163, 113, 247, 0.2); color: var(--accent-purple); }
+
+        .lesson-header h2 { font-size: 2rem; margin-bottom: 10px; }
+        .lesson-header p { color: var(--text-secondary); font-size: 1.1rem; }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 35px 0 15px;
+            color: var(--accent-blue);
+        }
+        h4 {
+            font-size: 1.1rem;
+            margin: 25px 0 12px;
+            color: var(--accent-green);
+        }
+        p { color: var(--text-secondary); margin-bottom: 15px; }
+        ul, ol { color: var(--text-secondary); margin: 15px 0 15px 25px; }
+        li { margin-bottom: 8px; }
+        code {
+            background: var(--bg-card);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            background: var(--bg-card);
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-header .filename { color: var(--text-secondary); font-size: 0.85rem; }
+        .code-header .lang-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .lang-badge.python { background: var(--accent-green); color: #000; }
+        .lang-badge.javascript { background: var(--accent-orange); color: #000; }
+        .code-content {
+            padding: 15px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        /* Syntax */
+        .keyword { color: var(--accent-purple); }
+        .string { color: var(--accent-green); }
+        .comment { color: var(--text-secondary); font-style: italic; }
+        .function { color: var(--accent-blue); }
+        .number { color: var(--accent-orange); }
+        .decorator { color: var(--accent-orange); }
+
+        /* Info Boxes */
+        .info-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+        .info-box.tip { border-left: 4px solid var(--accent-green); }
+        .info-box.warning { border-left: 4px solid var(--accent-orange); }
+        .info-box.important { border-left: 4px solid var(--accent-blue); }
+        .info-box.code-ref { border-left: 4px solid var(--accent-purple); }
+        .info-box h5 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .info-box.tip h5 { color: var(--accent-green); }
+        .info-box.warning h5 { color: var(--accent-orange); }
+        .info-box.important h5 { color: var(--accent-blue); }
+        .info-box.code-ref h5 { color: var(--accent-purple); }
+
+        /* Quiz */
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1));
+            border: 2px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        .quiz-section h4 {
+            color: var(--accent-blue);
+            margin-top: 0;
+        }
+        .quiz-question {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .quiz-question p { color: var(--text-primary); font-weight: 500; margin-bottom: 12px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-option {
+            padding: 10px 15px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover { border-color: var(--accent-blue); }
+        .quiz-option.correct { border-color: var(--accent-green); background: rgba(63, 185, 80, 0.15); }
+        .quiz-option.incorrect { border-color: var(--accent-red); background: rgba(248, 81, 73, 0.15); }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px 15px; text-align: left; border: 1px solid var(--border-color); }
+        th { background: var(--bg-card); color: var(--accent-blue); }
+        td { color: var(--text-secondary); }
+
+        /* Navigation Buttons */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { border-color: var(--accent-blue); }
+        .nav-btn.primary { background: var(--accent-blue); border-color: var(--accent-blue); }
+
+        /* Welcome Section */
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .welcome-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .welcome-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+        .welcome-card .icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .welcome-card h4 { color: var(--text-primary); margin: 0 0 8px; }
+        .welcome-card p { font-size: 0.85rem; margin: 0; }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h1>Complete Bot Development Course</h1>
+                <div class="progress-container">
+                    <div class="progress-text"><span id="completed-count">0</span> of <span id="total-count">48</span> lessons completed</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 1: Python -->
+            <div class="nav-module open" data-module="python">
+                <div class="module-header" onclick="toggleModule(this.parentElement)">
+                    <h3><span>🐍</span> Module 1: Python Basics</h3>
+                    <span class="arrow">▶</span>
+                </div>
+                <div class="module-lessons">
+                    <a class="nav-link active" data-lesson="py-1" onclick="showLesson('py-1')"><span class="lesson-num">1</span> Variables & Data Types</a>
+                    <a class="nav-link" data-lesson="py-2" onclick="showLesson('py-2')"><span class="lesson-num">2</span> Conditionals</a>
+                    <a class="nav-link" data-lesson="py-3" onclick="showLesson('py-3')"><span class="lesson-num">3</span> Loops</a>
+                    <a class="nav-link" data-lesson="py-4" onclick="showLesson('py-4')"><span class="lesson-num">4</span> Functions</a>
+                    <a class="nav-link" data-lesson="py-5" onclick="showLesson('py-5')"><span class="lesson-num">5</span> Lists & Dictionaries</a>
+                    <a class="nav-link" data-lesson="py-6" onclick="showLesson('py-6')"><span class="lesson-num">6</span> Classes & Objects</a>
+                    <a class="nav-link" data-lesson="py-7" onclick="showLesson('py-7')"><span class="lesson-num">7</span> Async/Await</a>
+                </div>
+            </div>
+
+            <!-- Module 2: JavaScript -->
+            <div class="nav-module" data-module="javascript">
+                <div class="module-header" onclick="toggleModule(this.parentElement)">
+                    <h3><span>🟨</span> Module 2: JavaScript Basics</h3>
+                    <span class="arrow">▶</span>
+                </div>
+                <div class="module-lessons">
+                    <a class="nav-link" data-lesson="js-1" onclick="showLesson('js-1')"><span class="lesson-num">1</span> Variables & Types</a>
+                    <a class="nav-link" data-lesson="js-2" onclick="showLesson('js-2')"><span class="lesson-num">2</span> Conditionals</a>
+                    <a class="nav-link" data-lesson="js-3" onclick="showLesson('js-3')"><span class="lesson-num">3</span> Loops</a>
+                    <a class="nav-link" data-lesson="js-4" onclick="showLesson('js-4')"><span class="lesson-num">4</span> Functions</a>
+                    <a class="nav-link" data-lesson="js-5" onclick="showLesson('js-5')"><span class="lesson-num">5</span> Arrays & Objects</a>
+                    <a class="nav-link" data-lesson="js-6" onclick="showLesson('js-6')"><span class="lesson-num">6</span> Promises & Async</a>
+                    <a class="nav-link" data-lesson="js-7" onclick="showLesson('js-7')"><span class="lesson-num">7</span> Node.js & npm</a>
+                </div>
+            </div>
+
+            <!-- Module 3: Discord.py -->
+            <div class="nav-module" data-module="discordpy">
+                <div class="module-header" onclick="toggleModule(this.parentElement)">
+                    <h3><span>🤖</span> Module 3: Discord.py</h3>
+                    <span class="arrow">▶</span>
+                </div>
+                <div class="module-lessons">
+                    <a class="nav-link" data-lesson="dpy-1" onclick="showLesson('dpy-1')"><span class="lesson-num">1</span> Your First Bot</a>
+                    <a class="nav-link" data-lesson="dpy-2" onclick="showLesson('dpy-2')"><span class="lesson-num">2</span> Events</a>
+                    <a class="nav-link" data-lesson="dpy-3" onclick="showLesson('dpy-3')"><span class="lesson-num">3</span> Slash Commands</a>
+                    <a class="nav-link" data-lesson="dpy-4" onclick="showLesson('dpy-4')"><span class="lesson-num">4</span> Embeds</a>
+                    <a class="nav-link" data-lesson="dpy-5" onclick="showLesson('dpy-5')"><span class="lesson-num">5</span> Buttons & Views</a>
+                    <a class="nav-link" data-lesson="dpy-6" onclick="showLesson('dpy-6')"><span class="lesson-num">6</span> Select Menus</a>
+                    <a class="nav-link" data-lesson="dpy-7" onclick="showLesson('dpy-7')"><span class="lesson-num">7</span> Modals</a>
+                    <a class="nav-link" data-lesson="dpy-8" onclick="showLesson('dpy-8')"><span class="lesson-num">8</span> Cogs</a>
+                    <a class="nav-link" data-lesson="dpy-9" onclick="showLesson('dpy-9')"><span class="lesson-num">9</span> Background Tasks</a>
+                    <a class="nav-link" data-lesson="dpy-10" onclick="showLesson('dpy-10')"><span class="lesson-num">10</span> Error Handling</a>
+                </div>
+            </div>
+
+            <!-- Module 4: Discord.js -->
+            <div class="nav-module" data-module="discordjs">
+                <div class="module-header" onclick="toggleModule(this.parentElement)">
+                    <h3><span>💜</span> Module 4: Discord.js</h3>
+                    <span class="arrow">▶</span>
+                </div>
+                <div class="module-lessons">
+                    <a class="nav-link" data-lesson="djs-1" onclick="showLesson('djs-1')"><span class="lesson-num">1</span> Your First Bot</a>
+                    <a class="nav-link" data-lesson="djs-2" onclick="showLesson('djs-2')"><span class="lesson-num">2</span> Events</a>
+                    <a class="nav-link" data-lesson="djs-3" onclick="showLesson('djs-3')"><span class="lesson-num">3</span> Slash Commands</a>
+                    <a class="nav-link" data-lesson="djs-4" onclick="showLesson('djs-4')"><span class="lesson-num">4</span> Embeds</a>
+                    <a class="nav-link" data-lesson="djs-5" onclick="showLesson('djs-5')"><span class="lesson-num">5</span> Buttons</a>
+                    <a class="nav-link" data-lesson="djs-6" onclick="showLesson('djs-6')"><span class="lesson-num">6</span> Select Menus</a>
+                    <a class="nav-link" data-lesson="djs-7" onclick="showLesson('djs-7')"><span class="lesson-num">7</span> Modals</a>
+                    <a class="nav-link" data-lesson="djs-8" onclick="showLesson('djs-8')"><span class="lesson-num">8</span> Command Handler</a>
+                    <a class="nav-link" data-lesson="djs-9" onclick="showLesson('djs-9')"><span class="lesson-num">9</span> SQLite Database</a>
+                    <a class="nav-link" data-lesson="djs-10" onclick="showLesson('djs-10')"><span class="lesson-num">10</span> Error Handling</a>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <!-- WELCOME -->
+            <div class="lesson active" id="welcome">
+                <div class="lesson-header">
+                    <h2>Welcome to Your Bot Development Journey!</h2>
+                    <p>Learn Python, JavaScript, and build Discord bots using examples from your own bots.</p>
+                </div>
+
+                <h3>What You'll Learn</h3>
+                <div class="welcome-grid">
+                    <div class="welcome-card">
+                        <div class="icon">🐍</div>
+                        <h4>Python</h4>
+                        <p>7 lessons covering fundamentals to async programming</p>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="icon">🟨</div>
+                        <h4>JavaScript</h4>
+                        <p>7 lessons from basics to Node.js</p>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="icon">🤖</div>
+                        <h4>Discord.py</h4>
+                        <p>10 lessons - build Python bots</p>
+                    </div>
+                    <div class="welcome-card">
+                        <div class="icon">💜</div>
+                        <h4>Discord.js</h4>
+                        <p>10 lessons - build JS bots</p>
+                    </div>
+                </div>
+
+                <h3>Your Bot Portfolio</h3>
+                <p>You've already built these amazing bots - we'll reference them throughout!</p>
+                <table>
+                    <tr><th>Bot</th><th>Language</th><th>Key Features</th></tr>
+                    <tr><td>🏈 Sports Bot</td><td>Python</td><td>Live scores, ESPN API, game threads</td></tr>
+                    <tr><td>🏆 March Madness Bot</td><td>Python</td><td>Brackets, betting, economy</td></tr>
+                    <tr><td>🏈 MW Fantasy Bot</td><td>Python</td><td>Fantasy leagues, EA Madden</td></tr>
+                    <tr><td>⚖️ WorldGate Bot</td><td>JavaScript</td><td>Judicial system, voting</td></tr>
+                </table>
+
+                <div class="info-box tip">
+                    <h5>💡 How to Use This Course</h5>
+                    <p>Work through modules in order. Each lesson has code examples, quizzes, and references to your actual bot code. Your progress is saved automatically!</p>
+                </div>
+
+                <div class="lesson-nav">
+                    <div></div>
+                    <button class="nav-btn primary" onclick="showLesson('py-1')">Start Learning →</button>
+                </div>
+            </div>
+
+            <!-- PYTHON LESSON 1 -->
+            <div class="lesson" id="py-1">
+                <div class="lesson-header">
+                    <span class="module-tag python">Module 1: Python</span>
+                    <h2>Variables & Data Types</h2>
+                    <p>Store and work with different kinds of data in Python.</p>
+                </div>
+
+                <h3>Creating Variables</h3>
+                <p>Variables store data. Python figures out the type automatically.</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">variables.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="comment"># String - text</span>
+bot_name = <span class="string">"Sports Bot"</span>
+
+<span class="comment"># Integer - whole number</span>
+score = <span class="number">42</span>
+
+<span class="comment"># Float - decimal number</span>
+win_rate = <span class="number">0.75</span>
+
+<span class="comment"># Boolean - True or False</span>
+is_online = <span class="keyword">True</span>
+
+<span class="comment"># None - no value</span>
+current_game = <span class="keyword">None</span></div>
+                </div>
+
+                <h3>f-Strings (Formatted Strings)</h3>
+                <p>The easiest way to include variables in text:</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">f_strings.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content">team = <span class="string">"Lakers"</span>
+points = <span class="number">110</span>
+
+<span class="comment"># f-string - put f before the quote</span>
+message = <span class="string">f"The {team} scored {points} points!"</span>
+<span class="function">print</span>(message)  <span class="comment"># The Lakers scored 110 points!</span>
+
+<span class="comment"># You can do math inside</span>
+<span class="function">print</span>(<span class="string">f"Double: {points * 2}"</span>)  <span class="comment"># Double: 220</span></div>
+                </div>
+
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p>In <code>sports-bot/bot.py</code>, f-strings are used everywhere! Look at line 233 for <code>format_game_time()</code> which formats game times using f-strings.</p>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>What type is <code>score = 42</code>?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">String</div>
+                            <div class="quiz-option" data-correct="true">Integer</div>
+                            <div class="quiz-option" data-correct="false">Float</div>
+                            <div class="quiz-option" data-correct="false">Boolean</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('welcome')">← Welcome</button>
+                    <button class="nav-btn primary" onclick="nextLesson('py-1', 'py-2')">Next: Conditionals →</button>
+                </div>
+            </div>
+
+            <!-- PYTHON LESSON 2 -->
+            <div class="lesson" id="py-2">
+                <div class="lesson-header">
+                    <span class="module-tag python">Module 1: Python</span>
+                    <h2>Conditionals</h2>
+                    <p>Make decisions in your code with if/else statements.</p>
+                </div>
+
+                <h3>If Statements</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">conditionals.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content">score = <span class="number">85</span>
+
+<span class="keyword">if</span> score >= <span class="number">90</span>:
+    <span class="function">print</span>(<span class="string">"A grade!"</span>)
+<span class="keyword">elif</span> score >= <span class="number">80</span>:
+    <span class="function">print</span>(<span class="string">"B grade!"</span>)
+<span class="keyword">elif</span> score >= <span class="number">70</span>:
+    <span class="function">print</span>(<span class="string">"C grade"</span>)
+<span class="keyword">else</span>:
+    <span class="function">print</span>(<span class="string">"Keep studying!"</span>)</div>
+                </div>
+
+                <h3>Comparison Operators</h3>
+                <table>
+                    <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+                    <tr><td>==</td><td>Equal to</td><td>x == 5</td></tr>
+                    <tr><td>!=</td><td>Not equal to</td><td>x != 5</td></tr>
+                    <tr><td>&gt;</td><td>Greater than</td><td>x > 5</td></tr>
+                    <tr><td>&lt;</td><td>Less than</td><td>x < 5</td></tr>
+                    <tr><td>&gt;=</td><td>Greater or equal</td><td>x >= 5</td></tr>
+                    <tr><td>&lt;=</td><td>Less or equal</td><td>x <= 5</td></tr>
+                </table>
+
+                <h3>Logical Operators</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">logical.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="comment"># and - both must be true</span>
+<span class="keyword">if</span> score > <span class="number">80</span> <span class="keyword">and</span> passed_exam:
+    <span class="function">print</span>(<span class="string">"Great job!"</span>)
+
+<span class="comment"># or - at least one must be true</span>
+<span class="keyword">if</span> is_admin <span class="keyword">or</span> is_moderator:
+    <span class="function">print</span>(<span class="string">"You have access"</span>)
+
+<span class="comment"># not - inverts the condition</span>
+<span class="keyword">if</span> <span class="keyword">not</span> is_banned:
+    <span class="function">print</span>(<span class="string">"Welcome!"</span>)</div>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>What keyword is used for "otherwise if" in Python?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">else if</div>
+                            <div class="quiz-option" data-correct="true">elif</div>
+                            <div class="quiz-option" data-correct="false">elseif</div>
+                            <div class="quiz-option" data-correct="false">elsif</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('py-1')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('py-2', 'py-3')">Next: Loops →</button>
+                </div>
+            </div>
+
+            <!-- PYTHON LESSON 3 -->
+            <div class="lesson" id="py-3">
+                <div class="lesson-header">
+                    <span class="module-tag python">Module 1: Python</span>
+                    <h2>Loops</h2>
+                    <p>Repeat actions with for and while loops.</p>
+                </div>
+
+                <h3>For Loops</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">loops.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="comment"># Loop through a list</span>
+teams = [<span class="string">"Lakers"</span>, <span class="string">"Celtics"</span>, <span class="string">"Warriors"</span>]
+<span class="keyword">for</span> team <span class="keyword">in</span> teams:
+    <span class="function">print</span>(<span class="string">f"Go {team}!"</span>)
+
+<span class="comment"># Loop with range</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>):
+    <span class="function">print</span>(i)  <span class="comment"># 0, 1, 2, 3, 4</span>
+
+<span class="comment"># Loop with index using enumerate</span>
+<span class="keyword">for</span> index, team <span class="keyword">in</span> <span class="function">enumerate</span>(teams):
+    <span class="function">print</span>(<span class="string">f"{index + 1}. {team}"</span>)</div>
+                </div>
+
+                <h3>While Loops</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">while_loop.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content">count = <span class="number">0</span>
+<span class="keyword">while</span> count < <span class="number">5</span>:
+    <span class="function">print</span>(count)
+    count += <span class="number">1</span>  <span class="comment"># Don't forget to increment!</span>
+
+<span class="comment"># break - exit the loop early</span>
+<span class="keyword">for</span> team <span class="keyword">in</span> teams:
+    <span class="keyword">if</span> team == <span class="string">"Celtics"</span>:
+        <span class="keyword">break</span>  <span class="comment"># Stop here</span>
+
+<span class="comment"># continue - skip to next iteration</span>
+<span class="keyword">for</span> team <span class="keyword">in</span> teams:
+    <span class="keyword">if</span> team == <span class="string">"Celtics"</span>:
+        <span class="keyword">continue</span>  <span class="comment"># Skip this one</span>
+    <span class="function">print</span>(team)</div>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>What does <code>break</code> do in a loop?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">Pauses the loop</div>
+                            <div class="quiz-option" data-correct="true">Exits the loop completely</div>
+                            <div class="quiz-option" data-correct="false">Skips to next iteration</div>
+                            <div class="quiz-option" data-correct="false">Restarts the loop</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('py-2')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('py-3', 'py-4')">Next: Functions →</button>
+                </div>
+            </div>
+
+            <!-- PYTHON LESSON 4 -->
+            <div class="lesson" id="py-4">
+                <div class="lesson-header">
+                    <span class="module-tag python">Module 1: Python</span>
+                    <h2>Functions</h2>
+                    <p>Create reusable blocks of code.</p>
+                </div>
+
+                <h3>Defining Functions</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">functions.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="comment"># Basic function</span>
+<span class="keyword">def</span> <span class="function">greet</span>():
+    <span class="function">print</span>(<span class="string">"Hello!"</span>)
+
+<span class="function">greet</span>()  <span class="comment"># Call it</span>
+
+<span class="comment"># Function with parameters</span>
+<span class="keyword">def</span> <span class="function">greet_user</span>(name):
+    <span class="function">print</span>(<span class="string">f"Hello, {name}!"</span>)
+
+<span class="function">greet_user</span>(<span class="string">"Arthur"</span>)
+
+<span class="comment"># Function with return value</span>
+<span class="keyword">def</span> <span class="function">add</span>(a, b):
+    <span class="keyword">return</span> a + b
+
+result = <span class="function">add</span>(<span class="number">5</span>, <span class="number">3</span>)  <span class="comment"># result = 8</span>
+
+<span class="comment"># Default parameters</span>
+<span class="keyword">def</span> <span class="function">greet</span>(name, greeting=<span class="string">"Hello"</span>):
+    <span class="keyword">return</span> <span class="string">f"{greeting}, {name}!"</span>
+
+<span class="function">greet</span>(<span class="string">"Arthur"</span>)           <span class="comment"># Hello, Arthur!</span>
+<span class="function">greet</span>(<span class="string">"Arthur"</span>, <span class="string">"Welcome"</span>) <span class="comment"># Welcome, Arthur!</span></div>
+                </div>
+
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p>Check <code>sports-bot/bot.py</code> line 233 - the <code>format_game_time()</code> helper function takes a status string and returns formatted time!</p>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>What keyword is used to send a value back from a function?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">send</div>
+                            <div class="quiz-option" data-correct="false">output</div>
+                            <div class="quiz-option" data-correct="true">return</div>
+                            <div class="quiz-option" data-correct="false">give</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('py-3')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('py-4', 'py-5')">Next: Lists & Dicts →</button>
+                </div>
+            </div>
+
+            <!-- PYTHON LESSON 5 -->
+            <div class="lesson" id="py-5">
+                <div class="lesson-header">
+                    <span class="module-tag python">Module 1: Python</span>
+                    <h2>Lists & Dictionaries</h2>
+                    <p>Store collections of data.</p>
+                </div>
+
+                <h3>Lists</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">lists.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="comment"># Create a list</span>
+teams = [<span class="string">"Lakers"</span>, <span class="string">"Celtics"</span>, <span class="string">"Warriors"</span>]
+
+<span class="comment"># Access items (0-indexed)</span>
+<span class="function">print</span>(teams[<span class="number">0</span>])   <span class="comment"># Lakers</span>
+<span class="function">print</span>(teams[<span class="number">-1</span>])  <span class="comment"># Warriors (last item)</span>
+
+<span class="comment"># Modify</span>
+teams.append(<span class="string">"Heat"</span>)      <span class="comment"># Add to end</span>
+teams.insert(<span class="number">0</span>, <span class="string">"Bulls"</span>)  <span class="comment"># Add at index</span>
+teams.remove(<span class="string">"Celtics"</span>)   <span class="comment"># Remove by value</span>
+
+<span class="comment"># Length</span>
+<span class="function">print</span>(<span class="function">len</span>(teams))  <span class="comment"># Number of items</span>
+
+<span class="comment"># Check if item exists</span>
+<span class="keyword">if</span> <span class="string">"Lakers"</span> <span class="keyword">in</span> teams:
+    <span class="function">print</span>(<span class="string">"Found!"</span>)</div>
+                </div>
+
+                <h3>Dictionaries</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">dicts.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="comment"># Create a dictionary</span>
+game = {
+    <span class="string">"home_team"</span>: <span class="string">"Lakers"</span>,
+    <span class="string">"away_team"</span>: <span class="string">"Celtics"</span>,
+    <span class="string">"home_score"</span>: <span class="number">105</span>,
+    <span class="string">"away_score"</span>: <span class="number">98</span>
+}
+
+<span class="comment"># Access values</span>
+<span class="function">print</span>(game[<span class="string">"home_team"</span>])  <span class="comment"># Lakers</span>
+<span class="function">print</span>(game.get(<span class="string">"status"</span>, <span class="string">"Unknown"</span>))  <span class="comment"># Safe access with default</span>
+
+<span class="comment"># Modify</span>
+game[<span class="string">"home_score"</span>] = <span class="number">110</span>
+game[<span class="string">"quarter"</span>] = <span class="number">4</span>  <span class="comment"># Add new key</span>
+
+<span class="comment"># Loop through</span>
+<span class="keyword">for</span> key, value <span class="keyword">in</span> game.items():
+    <span class="function">print</span>(<span class="string">f"{key}: {value}"</span>)</div>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>How do you add an item to the end of a list?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">list.add(item)</div>
+                            <div class="quiz-option" data-correct="true">list.append(item)</div>
+                            <div class="quiz-option" data-correct="false">list.push(item)</div>
+                            <div class="quiz-option" data-correct="false">list.insert(item)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('py-4')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('py-5', 'py-6')">Next: Classes →</button>
+                </div>
+            </div>
+
+            <!-- PYTHON LESSON 6 -->
+            <div class="lesson" id="py-6">
+                <div class="lesson-header">
+                    <span class="module-tag python">Module 1: Python</span>
+                    <h2>Classes & Objects</h2>
+                    <p>Create your own custom data types.</p>
+                </div>
+
+                <h3>Creating a Class</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">classes.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="keyword">class</span> <span class="function">Team</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, name, wins=<span class="number">0</span>):
+        self.name = name
+        self.wins = wins
+
+    <span class="keyword">def</span> <span class="function">add_win</span>(self):
+        self.wins += <span class="number">1</span>
+        <span class="function">print</span>(<span class="string">f"{self.name} now has {self.wins} wins!"</span>)
+
+<span class="comment"># Create objects</span>
+lakers = <span class="function">Team</span>(<span class="string">"Lakers"</span>, <span class="number">10</span>)
+celtics = <span class="function">Team</span>(<span class="string">"Celtics"</span>)
+
+<span class="comment"># Use methods</span>
+lakers.add_win()  <span class="comment"># Lakers now has 11 wins!</span>
+<span class="function">print</span>(celtics.wins)  <span class="comment"># 0</span></div>
+                </div>
+
+                <div class="info-box tip">
+                    <h5>💡 self Explained</h5>
+                    <p><code>self</code> refers to the current object. It's how you access the object's own attributes and methods from inside the class.</p>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>What method is called when creating a new object?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">__new__</div>
+                            <div class="quiz-option" data-correct="true">__init__</div>
+                            <div class="quiz-option" data-correct="false">__create__</div>
+                            <div class="quiz-option" data-correct="false">__start__</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('py-5')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('py-6', 'py-7')">Next: Async/Await →</button>
+                </div>
+            </div>
+
+            <!-- PYTHON LESSON 7 -->
+            <div class="lesson" id="py-7">
+                <div class="lesson-header">
+                    <span class="module-tag python">Module 1: Python</span>
+                    <h2>Async/Await</h2>
+                    <p>Handle operations that take time without blocking.</p>
+                </div>
+
+                <h3>Why Async?</h3>
+                <p>Discord bots need to handle multiple users at once. Async lets your bot respond to new messages while waiting for API calls.</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">async_example.py</span>
+                        <span class="lang-badge python">Python</span>
+                    </div>
+                    <div class="code-content"><span class="keyword">import</span> asyncio
+
+<span class="comment"># Async function</span>
+<span class="keyword">async def</span> <span class="function">fetch_data</span>():
+    <span class="function">print</span>(<span class="string">"Fetching..."</span>)
+    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)  <span class="comment"># Wait 2 seconds</span>
+    <span class="keyword">return</span> <span class="string">"Data!"</span>
+
+<span class="comment"># Call async function</span>
+<span class="keyword">async def</span> <span class="function">main</span>():
+    result = <span class="keyword">await</span> <span class="function">fetch_data</span>()
+    <span class="function">print</span>(result)
+
+<span class="comment"># Run it</span>
+asyncio.run(<span class="function">main</span>())</div>
+                </div>
+
+                <h3>Key Rules</h3>
+                <ul>
+                    <li>Use <code>async def</code> to define an async function</li>
+                    <li>Use <code>await</code> when calling another async function</li>
+                    <li>You can only use <code>await</code> inside an <code>async</code> function</li>
+                </ul>
+
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p>Every Discord.py command uses async! Look at any command in <code>sports-bot/bot.py</code> - they all use <code>async def</code> and <code>await</code>.</p>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>What keyword pauses execution until an async operation completes?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">wait</div>
+                            <div class="quiz-option" data-correct="true">await</div>
+                            <div class="quiz-option" data-correct="false">async</div>
+                            <div class="quiz-option" data-correct="false">pause</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('py-6')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('py-7', 'js-1')">Next: JavaScript Basics →</button>
+                </div>
+            </div>
+
+            <!-- JAVASCRIPT LESSON 1 -->
+            <div class="lesson" id="js-1">
+                <div class="lesson-header">
+                    <span class="module-tag javascript">Module 2: JavaScript</span>
+                    <h2>Variables & Types</h2>
+                    <p>Learn JavaScript basics - used by your WorldGate Bot.</p>
+                </div>
+
+                <h3>Declaring Variables</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">variables.js</span>
+                        <span class="lang-badge javascript">JavaScript</span>
+                    </div>
+                    <div class="code-content"><span class="comment">// const - can't be reassigned (use most often)</span>
+<span class="keyword">const</span> botName = <span class="string">"WorldGate"</span>;
+
+<span class="comment">// let - can be reassigned</span>
+<span class="keyword">let</span> score = <span class="number">0</span>;
+score = <span class="number">10</span>;  <span class="comment">// OK</span>
+
+<span class="comment">// var - old way (avoid)</span>
+<span class="keyword">var</span> oldStyle = <span class="string">"don't use"</span>;</div>
+                </div>
+
+                <h3>Python vs JavaScript</h3>
+                <table>
+                    <tr><th>Python</th><th>JavaScript</th></tr>
+                    <tr><td>name = "Bot"</td><td>const name = "Bot";</td></tr>
+                    <tr><td>True / False</td><td>true / false</td></tr>
+                    <tr><td>None</td><td>null / undefined</td></tr>
+                    <tr><td>No semicolons needed</td><td>Semicolons optional but recommended</td></tr>
+                </table>
+
+                <h3>Template Strings</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">templates.js</span>
+                        <span class="lang-badge javascript">JavaScript</span>
+                    </div>
+                    <div class="code-content"><span class="keyword">const</span> team = <span class="string">"Lakers"</span>;
+<span class="keyword">const</span> points = <span class="number">110</span>;
+
+<span class="comment">// Use backticks ` not quotes</span>
+<span class="keyword">const</span> message = <span class="string">`The ${team} scored ${points} points!`</span>;
+console.<span class="function">log</span>(message);</div>
+                </div>
+
+                <div class="quiz-section">
+                    <h4>🧠 Quick Quiz</h4>
+                    <div class="quiz-question">
+                        <p>Which keyword should you use for variables that won't change?</p>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">var</div>
+                            <div class="quiz-option" data-correct="false">let</div>
+                            <div class="quiz-option" data-correct="true">const</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('py-7')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('js-1', 'js-2')">Next: Conditionals →</button>
+                </div>
+            </div>
+
+            <!-- JAVASCRIPT LESSON 2 -->
+            <div class="lesson" id="js-2">
+                <div class="lesson-header">
+                    <span class="module-tag javascript">Module 2: JavaScript</span>
+                    <h2>Conditionals</h2>
+                    <p>Make decisions in JavaScript.</p>
+                </div>
+
+                <h3>If Statements</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">conditionals.js</span>
+                        <span class="lang-badge javascript">JavaScript</span>
+                    </div>
+                    <div class="code-content"><span class="keyword">const</span> score = <span class="number">85</span>;
+
+<span class="keyword">if</span> (score >= <span class="number">90</span>) {
+    console.<span class="function">log</span>(<span class="string">"A grade!"</span>);
+} <span class="keyword">else if</span> (score >= <span class="number">80</span>) {
+    console.<span class="function">log</span>(<span class="string">"B grade!"</span>);
+} <span class="keyword">else</span> {
+    console.<span class="function">log</span>(<span class="string">"Keep studying!"</span>);
+}</div>
+                </div>
+
+                <h3>Comparison: Python vs JS</h3>
+                <table>
+                    <tr><th>Python</th><th>JavaScript</th></tr>
+                    <tr><td>elif</td><td>else if</td></tr>
+                    <tr><td>and</td><td>&&</td></tr>
+                    <tr><td>or</td><td>||</td></tr>
+                    <tr><td>not</td><td>!</td></tr>
+                </table>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('js-1')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('js-2', 'js-3')">Next: Loops →</button>
+                </div>
+            </div>
+
+            <!-- JAVASCRIPT LESSON 3-7 (abbreviated for space) -->
+            <div class="lesson" id="js-3">
+                <div class="lesson-header">
+                    <span class="module-tag javascript">Module 2: JavaScript</span>
+                    <h2>Loops</h2>
+                    <p>Repeat actions in JavaScript.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">loops.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> teams = [<span class="string">"Lakers"</span>, <span class="string">"Celtics"</span>, <span class="string">"Warriors"</span>];
+
+<span class="comment">// for...of (like Python's for...in)</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> team <span class="keyword">of</span> teams) {
+    console.<span class="function">log</span>(team);
+}
+
+<span class="comment">// forEach method</span>
+teams.<span class="function">forEach</span>((team, index) => {
+    console.<span class="function">log</span>(<span class="string">`${index + 1}. ${team}`</span>);
+});
+
+<span class="comment">// Traditional for loop</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < teams.length; i++) {
+    console.<span class="function">log</span>(teams[i]);
+}</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('js-2')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('js-3', 'js-4')">Next: Functions →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="js-4">
+                <div class="lesson-header">
+                    <span class="module-tag javascript">Module 2: JavaScript</span>
+                    <h2>Functions</h2>
+                    <p>Create reusable code blocks.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">functions.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="comment">// Regular function</span>
+<span class="keyword">function</span> <span class="function">greet</span>(name) {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+}
+
+<span class="comment">// Arrow function (modern, shorter)</span>
+<span class="keyword">const</span> <span class="function">greetArrow</span> = (name) => {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+};
+
+<span class="comment">// One-liner arrow function</span>
+<span class="keyword">const</span> <span class="function">double</span> = (n) => n * <span class="number">2</span>;
+
+<span class="comment">// Default parameters</span>
+<span class="keyword">const</span> <span class="function">greetUser</span> = (name, greeting = <span class="string">"Hello"</span>) => {
+    <span class="keyword">return</span> <span class="string">`${greeting}, ${name}!`</span>;
+};</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('js-3')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('js-4', 'js-5')">Next: Arrays & Objects →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="js-5">
+                <div class="lesson-header">
+                    <span class="module-tag javascript">Module 2: JavaScript</span>
+                    <h2>Arrays & Objects</h2>
+                    <p>Store collections of data.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">arrays.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="comment">// Arrays</span>
+<span class="keyword">const</span> teams = [<span class="string">"Lakers"</span>, <span class="string">"Celtics"</span>];
+teams.<span class="function">push</span>(<span class="string">"Warriors"</span>);  <span class="comment">// Add to end</span>
+teams.<span class="function">includes</span>(<span class="string">"Lakers"</span>); <span class="comment">// true</span>
+
+<span class="comment">// Objects (like Python dicts)</span>
+<span class="keyword">const</span> game = {
+    homeTeam: <span class="string">"Lakers"</span>,
+    awayTeam: <span class="string">"Celtics"</span>,
+    homeScore: <span class="number">105</span>
+};
+
+console.<span class="function">log</span>(game.homeTeam);     <span class="comment">// Lakers</span>
+console.<span class="function">log</span>(game[<span class="string">"homeTeam"</span>]); <span class="comment">// Lakers</span>
+
+<span class="comment">// Destructuring</span>
+<span class="keyword">const</span> { homeTeam, awayTeam } = game;</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('js-4')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('js-5', 'js-6')">Next: Promises & Async →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="js-6">
+                <div class="lesson-header">
+                    <span class="module-tag javascript">Module 2: JavaScript</span>
+                    <h2>Promises & Async/Await</h2>
+                    <p>Handle asynchronous operations.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">async.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="comment">// Async function</span>
+<span class="keyword">async function</span> <span class="function">fetchData</span>() {
+    console.<span class="function">log</span>(<span class="string">"Fetching..."</span>);
+    <span class="keyword">await</span> <span class="function">sleep</span>(<span class="number">2000</span>);  <span class="comment">// Wait 2 seconds</span>
+    <span class="keyword">return</span> <span class="string">"Data!"</span>;
+}
+
+<span class="comment">// Call it</span>
+<span class="keyword">async function</span> <span class="function">main</span>() {
+    <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="function">fetchData</span>();
+    console.<span class="function">log</span>(result);
+}
+
+<span class="comment">// Error handling</span>
+<span class="keyword">try</span> {
+    <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="function">fetchData</span>();
+} <span class="keyword">catch</span> (error) {
+    console.<span class="function">error</span>(<span class="string">"Failed:"</span>, error);
+}</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('js-5')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('js-6', 'js-7')">Next: Node.js →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="js-7">
+                <div class="lesson-header">
+                    <span class="module-tag javascript">Module 2: JavaScript</span>
+                    <h2>Node.js & npm</h2>
+                    <p>Run JavaScript outside the browser.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">terminal</span><span class="lang-badge javascript">Commands</span></div>
+                    <div class="code-content"><span class="comment"># Initialize a project</span>
+npm init -y
+
+<span class="comment"># Install packages</span>
+npm install discord.js
+npm install dotenv
+
+<span class="comment"># Run your bot</span>
+node index.js</div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">index.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="comment">// Import modules</span>
+<span class="keyword">const</span> { Client } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+<span class="function">require</span>(<span class="string">'dotenv'</span>).<span class="function">config</span>();
+
+<span class="comment">// Use environment variables</span>
+<span class="keyword">const</span> token = process.env.TOKEN;</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('js-6')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('js-7', 'dpy-1')">Next: Discord.py →</button>
+                </div>
+            </div>
+
+            <!-- DISCORD.PY LESSONS -->
+            <div class="lesson" id="dpy-1">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Your First Bot</h2>
+                    <p>Create and run your first Discord bot with Python.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">bot.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="keyword">import</span> discord
+<span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+
+<span class="comment"># Create bot with intents</span>
+intents = discord.Intents.default()
+intents.message_content = <span class="keyword">True</span>
+bot = commands.Bot(command_prefix=<span class="string">"!"</span>, intents=intents)
+
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="function">print</span>(<span class="string">f"Logged in as {bot.user}!"</span>)
+
+<span class="comment"># Run with token from .env</span>
+<span class="keyword">import</span> os
+<span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv
+load_dotenv()
+bot.run(os.getenv(<span class="string">'TOKEN'</span>))</div>
+                </div>
+                <div class="info-box warning">
+                    <h5>⚠️ Never share your token!</h5>
+                    <p>Keep it in a <code>.env</code> file and add <code>.env</code> to your <code>.gitignore</code>.</p>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('js-7')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-1', 'dpy-2')">Next: Events →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-2">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Events</h2>
+                    <p>Respond to things happening in Discord.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">events.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_message</span>(message):
+    <span class="keyword">if</span> message.author.bot:
+        <span class="keyword">return</span>  <span class="comment"># Ignore bots</span>
+
+    <span class="keyword">if</span> <span class="string">"hello"</span> <span class="keyword">in</span> message.content.lower():
+        <span class="keyword">await</span> message.channel.send(<span class="string">"Hello there!"</span>)
+
+    <span class="keyword">await</span> bot.process_commands(message)  <span class="comment"># Important!</span>
+
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_member_join</span>(member):
+    channel = member.guild.system_channel
+    <span class="keyword">if</span> channel:
+        <span class="keyword">await</span> channel.send(<span class="string">f"Welcome, {member.mention}!"</span>)</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-1')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-2', 'dpy-3')">Next: Slash Commands →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-3">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Slash Commands</h2>
+                    <p>Modern commands that show in Discord's menu.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">slash.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="decorator">@bot.tree.command</span>(name=<span class="string">"ping"</span>, description=<span class="string">"Check bot latency"</span>)
+<span class="keyword">async def</span> <span class="function">ping</span>(interaction: discord.Interaction):
+    latency = <span class="function">round</span>(bot.latency * <span class="number">1000</span>)
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">f"Pong! {latency}ms"</span>)
+
+<span class="comment"># Sync commands on startup</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="keyword">await</span> bot.tree.sync()
+    <span class="function">print</span>(<span class="string">"Commands synced!"</span>)</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-2')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-3', 'dpy-4')">Next: Embeds →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-4">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Embeds</h2>
+                    <p>Create rich, formatted messages.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">embeds.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content">embed = discord.Embed(
+    title=<span class="string">"Game Score"</span>,
+    description=<span class="string">"Lakers vs Celtics"</span>,
+    color=discord.Color.blue()
+)
+embed.add_field(name=<span class="string">"Lakers"</span>, value=<span class="string">"**105**"</span>, inline=<span class="keyword">True</span>)
+embed.add_field(name=<span class="string">"Celtics"</span>, value=<span class="string">"**98**"</span>, inline=<span class="keyword">True</span>)
+embed.set_footer(text=<span class="string">"Final"</span>)
+embed.timestamp = datetime.now()
+
+<span class="keyword">await</span> interaction.response.send_message(embed=embed)</div>
+                </div>
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p>Check <code>sports-bot/bot.py</code> line 2235 - <code>create_admin_guide_embed()</code> creates a complex multi-field embed!</p>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-3')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-4', 'dpy-5')">Next: Buttons →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-5">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Buttons & Views</h2>
+                    <p>Add interactive buttons to your messages.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">buttons.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="keyword">class</span> <span class="function">ConfirmView</span>(discord.ui.View):
+    <span class="decorator">@discord.ui.button</span>(label=<span class="string">"Confirm"</span>, style=discord.ButtonStyle.green)
+    <span class="keyword">async def</span> <span class="function">confirm</span>(self, interaction, button):
+        <span class="keyword">await</span> interaction.response.send_message(<span class="string">"Confirmed!"</span>)
+
+    <span class="decorator">@discord.ui.button</span>(label=<span class="string">"Cancel"</span>, style=discord.ButtonStyle.red)
+    <span class="keyword">async def</span> <span class="function">cancel</span>(self, interaction, button):
+        <span class="keyword">await</span> interaction.response.send_message(<span class="string">"Cancelled!"</span>)
+
+<span class="comment"># Use it</span>
+view = ConfirmView()
+<span class="keyword">await</span> interaction.response.send_message(<span class="string">"Are you sure?"</span>, view=view)</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-4')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-5', 'dpy-6')">Next: Select Menus →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-6">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Select Menus</h2>
+                    <p>Dropdown menus for choices.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">select.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="keyword">class</span> <span class="function">TeamSelect</span>(discord.ui.Select):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        options = [
+            discord.SelectOption(label=<span class="string">"Lakers"</span>, emoji=<span class="string">"🏀"</span>),
+            discord.SelectOption(label=<span class="string">"Celtics"</span>, emoji=<span class="string">"☘️"</span>),
+            discord.SelectOption(label=<span class="string">"Warriors"</span>, emoji=<span class="string">"🌉"</span>),
+        ]
+        <span class="function">super</span>().__init__(placeholder=<span class="string">"Choose a team..."</span>, options=options)
+
+    <span class="keyword">async def</span> <span class="function">callback</span>(self, interaction):
+        <span class="keyword">await</span> interaction.response.send_message(<span class="string">f"You chose {self.values[0]}!"</span>)</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-5')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-6', 'dpy-7')">Next: Modals →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-7">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Modals</h2>
+                    <p>Popup forms for user input.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">modals.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="keyword">class</span> <span class="function">FeedbackModal</span>(discord.ui.Modal, title=<span class="string">"Feedback"</span>):
+    feedback = discord.ui.TextInput(
+        label=<span class="string">"Your feedback"</span>,
+        style=discord.TextStyle.paragraph,
+        placeholder=<span class="string">"Tell us what you think..."</span>
+    )
+
+    <span class="keyword">async def</span> <span class="function">on_submit</span>(self, interaction):
+        <span class="keyword">await</span> interaction.response.send_message(
+            <span class="string">f"Thanks for your feedback!"</span>, ephemeral=<span class="keyword">True</span>
+        )</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-6')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-7', 'dpy-8')">Next: Cogs →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-8">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Cogs</h2>
+                    <p>Organize commands into separate files.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">cogs/games.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+
+<span class="keyword">class</span> <span class="function">Games</span>(commands.Cog):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, bot):
+        self.bot = bot
+
+    <span class="decorator">@commands.command</span>()
+    <span class="keyword">async def</span> <span class="function">roll</span>(self, ctx):
+        <span class="keyword">import</span> random
+        <span class="keyword">await</span> ctx.send(<span class="string">f"You rolled {random.randint(1, 6)}!"</span>)
+
+<span class="keyword">async def</span> <span class="function">setup</span>(bot):
+    <span class="keyword">await</span> bot.add_cog(Games(bot))</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-7')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-8', 'dpy-9')">Next: Background Tasks →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-9">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Background Tasks</h2>
+                    <p>Run code on a schedule.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">tasks.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="keyword">from</span> discord.ext <span class="keyword">import</span> tasks
+
+<span class="decorator">@tasks.loop</span>(minutes=<span class="number">10</span>)
+<span class="keyword">async def</span> <span class="function">check_scores</span>():
+    <span class="function">print</span>(<span class="string">"Checking for score updates..."</span>)
+    <span class="comment"># Fetch and post updates</span>
+
+<span class="decorator">@check_scores.before_loop</span>
+<span class="keyword">async def</span> <span class="function">before_check</span>():
+    <span class="keyword">await</span> bot.wait_until_ready()
+
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    check_scores.start()  <span class="comment"># Start the loop</span></div>
+                </div>
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p><code>sports-bot/bot.py</code> line 3051: <code>game_monitor()</code> runs every 10 minutes to check for new games.</p>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-8')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-9', 'dpy-10')">Next: Error Handling →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="dpy-10">
+                <div class="lesson-header">
+                    <span class="module-tag discordpy">Module 3: Discord.py</span>
+                    <h2>Error Handling</h2>
+                    <p>Handle errors gracefully.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">errors.py</span><span class="lang-badge python">Python</span></div>
+                    <div class="code-content"><span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_command_error</span>(ctx, error):
+    <span class="keyword">if</span> <span class="function">isinstance</span>(error, commands.MissingPermissions):
+        <span class="keyword">await</span> ctx.send(<span class="string">"You don't have permission!"</span>)
+    <span class="keyword">elif</span> <span class="function">isinstance</span>(error, commands.CommandNotFound):
+        <span class="keyword">pass</span>  <span class="comment"># Ignore unknown commands</span>
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">f"Error: {error}"</span>)</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-9')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('dpy-10', 'djs-1')">Next: Discord.js →</button>
+                </div>
+            </div>
+
+            <!-- DISCORD.JS LESSONS -->
+            <div class="lesson" id="djs-1">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Your First Bot</h2>
+                    <p>Create a Discord bot with JavaScript - like WorldGate Bot.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">index.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> { Client, GatewayIntentBits } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+<span class="function">require</span>(<span class="string">'dotenv'</span>).<span class="function">config</span>();
+
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">Client</span>({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
+});
+
+client.<span class="function">once</span>(<span class="string">'ready'</span>, () => {
+    console.<span class="function">log</span>(<span class="string">`Logged in as ${client.user.tag}!`</span>);
+});
+
+client.<span class="function">login</span>(process.env.TOKEN);</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('dpy-10')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-1', 'djs-2')">Next: Events →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-2">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Events</h2>
+                    <p>Listen for Discord events.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">events.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content">client.<span class="function">on</span>(<span class="string">'messageCreate'</span>, (message) => {
+    <span class="keyword">if</span> (message.author.bot) <span class="keyword">return</span>;
+
+    <span class="keyword">if</span> (message.content.<span class="function">toLowerCase</span>().<span class="function">includes</span>(<span class="string">'hello'</span>)) {
+        message.<span class="function">reply</span>(<span class="string">'Hello there!'</span>);
+    }
+});
+
+client.<span class="function">on</span>(<span class="string">'interactionCreate'</span>, <span class="keyword">async</span> (interaction) => {
+    <span class="keyword">if</span> (interaction.<span class="function">isChatInputCommand</span>()) {
+        <span class="comment">// Handle slash commands</span>
+    }
+    <span class="keyword">if</span> (interaction.<span class="function">isButton</span>()) {
+        <span class="comment">// Handle button clicks</span>
+    }
+});</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-1')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-2', 'djs-3')">Next: Slash Commands →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-3">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Slash Commands</h2>
+                    <p>Register and handle slash commands.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">commands.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> { SlashCommandBuilder } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> command = <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+    .<span class="function">setName</span>(<span class="string">'ping'</span>)
+    .<span class="function">setDescription</span>(<span class="string">'Check bot latency'</span>);
+
+<span class="comment">// Handle the command</span>
+client.<span class="function">on</span>(<span class="string">'interactionCreate'</span>, <span class="keyword">async</span> (interaction) => {
+    <span class="keyword">if</span> (!interaction.<span class="function">isChatInputCommand</span>()) <span class="keyword">return</span>;
+
+    <span class="keyword">if</span> (interaction.commandName === <span class="string">'ping'</span>) {
+        <span class="keyword">const</span> latency = Date.<span class="function">now</span>() - interaction.createdTimestamp;
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`Pong! ${latency}ms`</span>);
+    }
+});</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-2')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-3', 'djs-4')">Next: Embeds →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-4">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Embeds</h2>
+                    <p>Create rich formatted messages.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">embeds.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> { EmbedBuilder } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> embed = <span class="keyword">new</span> <span class="function">EmbedBuilder</span>()
+    .<span class="function">setColor</span>(<span class="number">0x5865F2</span>)
+    .<span class="function">setTitle</span>(<span class="string">'Case #1234'</span>)
+    .<span class="function">setDescription</span>(<span class="string">'Case details here...'</span>)
+    .<span class="function">addFields</span>(
+        { name: <span class="string">'Status'</span>, value: <span class="string">'Open'</span>, inline: <span class="keyword">true</span> },
+        { name: <span class="string">'Judge'</span>, value: <span class="string">'Admin'</span>, inline: <span class="keyword">true</span> }
+    )
+    .<span class="function">setTimestamp</span>();
+
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({ embeds: [embed] });</div>
+                </div>
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p><code>WorldGateBot/commands/report.js</code> line 9 creates embeds for the report center!</p>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-3')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-4', 'djs-5')">Next: Buttons →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-5">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Buttons</h2>
+                    <p>Add interactive buttons.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">buttons.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> { ActionRowBuilder, ButtonBuilder, ButtonStyle } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> row = <span class="keyword">new</span> <span class="function">ActionRowBuilder</span>()
+    .<span class="function">addComponents</span>(
+        <span class="keyword">new</span> <span class="function">ButtonBuilder</span>()
+            .<span class="function">setCustomId</span>(<span class="string">'approve'</span>)
+            .<span class="function">setLabel</span>(<span class="string">'Approve'</span>)
+            .<span class="function">setStyle</span>(ButtonStyle.Success),
+        <span class="keyword">new</span> <span class="function">ButtonBuilder</span>()
+            .<span class="function">setCustomId</span>(<span class="string">'deny'</span>)
+            .<span class="function">setLabel</span>(<span class="string">'Deny'</span>)
+            .<span class="function">setStyle</span>(ButtonStyle.Danger)
+    );
+
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({ content: <span class="string">'Choose:'</span>, components: [row] });</div>
+                </div>
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p><code>WorldGateBot/commands/leaderboard.js</code> line 27 creates a refresh button!</p>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-4')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-5', 'djs-6')">Next: Select Menus →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-6">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Select Menus</h2>
+                    <p>Dropdown selection menus.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">select.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> { StringSelectMenuBuilder } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> menu = <span class="keyword">new</span> <span class="function">StringSelectMenuBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'team-select'</span>)
+    .<span class="function">setPlaceholder</span>(<span class="string">'Select a team'</span>)
+    .<span class="function">addOptions</span>(
+        { label: <span class="string">'Lakers'</span>, value: <span class="string">'lakers'</span> },
+        { label: <span class="string">'Celtics'</span>, value: <span class="string">'celtics'</span> }
+    );
+
+<span class="comment">// Handle selection</span>
+<span class="keyword">if</span> (interaction.<span class="function">isStringSelectMenu</span>()) {
+    <span class="keyword">const</span> selected = interaction.values[<span class="number">0</span>];
+    <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`You chose: ${selected}`</span>);
+}</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-5')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-6', 'djs-7')">Next: Modals →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-7">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Modals</h2>
+                    <p>Popup forms for user input.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">modals.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> { ModalBuilder, TextInputBuilder, TextInputStyle } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'feedback-modal'</span>)
+    .<span class="function">setTitle</span>(<span class="string">'Submit Feedback'</span>);
+
+<span class="keyword">const</span> input = <span class="keyword">new</span> <span class="function">TextInputBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'feedback'</span>)
+    .<span class="function">setLabel</span>(<span class="string">'Your feedback'</span>)
+    .<span class="function">setStyle</span>(TextInputStyle.Paragraph);
+
+<span class="keyword">await</span> interaction.<span class="function">showModal</span>(modal);</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-6')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-7', 'djs-8')">Next: Command Handler →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-8">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Command Handler</h2>
+                    <p>Organize commands into files.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">commands/ping.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content">module.exports = {
+    data: <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'ping'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Check latency'</span>),
+
+    <span class="keyword">async</span> <span class="function">execute</span>(interaction) {
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">'Pong!'</span>);
+    }
+};</div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-7')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-8', 'djs-9')">Next: SQLite →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-9">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>SQLite Database</h2>
+                    <p>Store data persistently.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">database.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="keyword">const</span> Database = <span class="function">require</span>(<span class="string">'better-sqlite3'</span>);
+<span class="keyword">const</span> db = <span class="keyword">new</span> <span class="function">Database</span>(<span class="string">'bot.db'</span>);
+
+<span class="comment">// Create table</span>
+db.<span class="function">exec</span>(<span class="string">`
+    CREATE TABLE IF NOT EXISTS warnings (
+        id INTEGER PRIMARY KEY,
+        user_id TEXT,
+        reason TEXT
+    )
+`</span>);
+
+<span class="comment">// Insert</span>
+<span class="keyword">const</span> stmt = db.<span class="function">prepare</span>(<span class="string">'INSERT INTO warnings (user_id, reason) VALUES (?, ?)'</span>);
+stmt.<span class="function">run</span>(userId, reason);
+
+<span class="comment">// Query</span>
+<span class="keyword">const</span> warnings = db.<span class="function">prepare</span>(<span class="string">'SELECT * FROM warnings WHERE user_id = ?'</span>).<span class="function">all</span>(userId);</div>
+                </div>
+                <div class="info-box code-ref">
+                    <h5>📁 See It In Your Code</h5>
+                    <p><code>WorldGateBot/database.js</code> line 503 shows secure parameterized queries!</p>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-8')">← Previous</button>
+                    <button class="nav-btn primary" onclick="nextLesson('djs-9', 'djs-10')">Next: Error Handling →</button>
+                </div>
+            </div>
+
+            <div class="lesson" id="djs-10">
+                <div class="lesson-header">
+                    <span class="module-tag discordjs">Module 4: Discord.js</span>
+                    <h2>Error Handling</h2>
+                    <p>Handle errors gracefully.</p>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><span class="filename">errors.js</span><span class="lang-badge javascript">JavaScript</span></div>
+                    <div class="code-content"><span class="comment">// Global error handlers</span>
+process.<span class="function">on</span>(<span class="string">'unhandledRejection'</span>, (error) => {
+    console.<span class="function">error</span>(<span class="string">'Unhandled rejection:'</span>, error);
+});
+
+<span class="comment">// Command error handling</span>
+<span class="keyword">try</span> {
+    <span class="keyword">await</span> command.<span class="function">execute</span>(interaction);
+} <span class="keyword">catch</span> (error) {
+    console.<span class="function">error</span>(error);
+    <span class="keyword">const</span> reply = { content: <span class="string">'Error!'</span>, ephemeral: <span class="keyword">true</span> };
+
+    <span class="keyword">if</span> (interaction.replied) {
+        <span class="keyword">await</span> interaction.<span class="function">followUp</span>(reply);
+    } <span class="keyword">else</span> {
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(reply);
+    }
+}</div>
+                </div>
+
+                <div class="info-box tip">
+                    <h5>🎉 Congratulations!</h5>
+                    <p>You've completed the entire course! You now know Python, JavaScript, Discord.py, and Discord.js!</p>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" onclick="showLesson('djs-9')">← Previous</button>
+                    <button class="nav-btn primary" onclick="showLesson('welcome')">Back to Start</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        let completedLessons = JSON.parse(localStorage.getItem('completedLessons') || '[]');
+        let currentLesson = 'welcome';
+
+        function toggleModule(module) {
+            module.classList.toggle('open');
+        }
+
+        function showLesson(id) {
+            // Hide all lessons
+            document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+
+            // Show selected lesson
+            const lesson = document.getElementById(id);
+            if (lesson) {
+                lesson.classList.add('active');
+                currentLesson = id;
+            }
+
+            // Update nav
+            const navLink = document.querySelector(`[data-lesson="${id}"]`);
+            if (navLink) {
+                navLink.classList.add('active');
+                // Open parent module
+                const module = navLink.closest('.nav-module');
+                if (module) module.classList.add('open');
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        function markComplete(lessonId) {
+            if (!completedLessons.includes(lessonId)) {
+                completedLessons.push(lessonId);
+                localStorage.setItem('completedLessons', JSON.stringify(completedLessons));
+                updateProgress();
+            }
+        }
+
+        function nextLesson(current, next) {
+            markComplete(current);
+            showLesson(next);
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.nav-link').length;
+            const completed = completedLessons.length;
+            document.getElementById('completed-count').textContent = completed;
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('progress-fill').style.width = `${(completed / total) * 100}%`;
+
+            // Mark completed in nav
+            completedLessons.forEach(id => {
+                const link = document.querySelector(`[data-lesson="${id}"]`);
+                if (link) link.classList.add('completed');
+            });
+        }
+
+        // Quiz handling
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('quiz-option')) {
+                const question = e.target.closest('.quiz-question');
+                if (question.classList.contains('answered')) return;
+
+                question.classList.add('answered');
+                const isCorrect = e.target.dataset.correct === 'true';
+                e.target.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+                if (!isCorrect) {
+                    question.querySelector('[data-correct="true"]').classList.add('correct');
+                }
+            }
+        });
+
+        updateProgress();
+    </script>
+</body>
+</html>

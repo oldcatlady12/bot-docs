@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn to Code - Your Bot Academy</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --bg-code: #0d1117;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --border-color: #30363d;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sidebar .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+        .nav-section {
+            margin-bottom: 20px;
+        }
+        .nav-section h3 {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .nav-link {
+            display: block;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: var(--bg-card);
+        }
+        .nav-link.active {
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent-blue);
+        }
+        .nav-link .icon {
+            margin-right: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 40px;
+            max-width: 1000px;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        h3 {
+            font-size: 1.5rem;
+            margin: 32px 0 16px;
+            color: var(--accent-blue);
+        }
+        h4 {
+            font-size: 1.1rem;
+            margin: 24px 0 12px;
+            color: var(--accent-green);
+        }
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            background: var(--bg-card);
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-header .filename {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .code-header .lang-tag {
+            background: var(--bg-secondary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+        }
+        .code-content {
+            padding: 16px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: var(--accent-purple); }
+        .string { color: var(--accent-green); }
+        .comment { color: var(--text-secondary); font-style: italic; }
+        .function { color: var(--accent-blue); }
+        .number { color: var(--accent-orange); }
+        .decorator { color: var(--accent-orange); }
+        .class-name { color: var(--accent-green); }
+
+        /* Info Boxes */
+        .info-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .info-box.tip {
+            border-left: 4px solid var(--accent-green);
+        }
+        .info-box.warning {
+            border-left: 4px solid var(--accent-orange);
+        }
+        .info-box.important {
+            border-left: 4px solid var(--accent-blue);
+        }
+        .info-box h5 {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-box.tip h5 { color: var(--accent-green); }
+        .info-box.warning h5 { color: var(--accent-orange); }
+        .info-box.important h5 { color: var(--accent-blue); }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+        .card .icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .card h4 {
+            margin: 0 0 8px;
+            color: var(--text-primary);
+        }
+        .card p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* External Links */
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+        .resource-link:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-secondary);
+        }
+        .resource-link .icon {
+            font-size: 1.5rem;
+        }
+        .resource-link .details h5 {
+            margin-bottom: 4px;
+        }
+        .resource-link .details p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Interactive Elements */
+        .try-it-box {
+            background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1));
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .try-it-box h5 {
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Progress Tracker */
+        .progress-bar {
+            background: var(--bg-card);
+            border-radius: 8px;
+            height: 8px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 16px 0 16px 24px;
+            color: var(--text-secondary);
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        li strong {
+            color: var(--text-primary);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        td code {
+            background: var(--bg-secondary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Video placeholder */
+        .video-placeholder {
+            background: var(--bg-card);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        .video-placeholder .icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+
+        /* Diagram */
+        .diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .diagram .box {
+            display: inline-block;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-blue);
+            border-radius: 6px;
+            padding: 12px 20px;
+            margin: 8px;
+        }
+        .diagram .arrow {
+            color: var(--accent-blue);
+            font-size: 1.5rem;
+            margin: 0 8px;
+        }
+
+        /* Comparison */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .comparison .col h5 {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .comparison .col.good h5 { color: var(--accent-green); }
+        .comparison .col.bad h5 { color: var(--accent-red); }
+
+        /* Quiz */
+        .quiz-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .quiz-box h5 {
+            margin-bottom: 16px;
+            color: var(--accent-purple);
+        }
+        .quiz-option {
+            display: block;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent-blue);
+        }
+        .quiz-option.correct {
+            border-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.1);
+        }
+        .quiz-option.incorrect {
+            border-color: var(--accent-red);
+            background: rgba(248, 81, 73, 0.1);
+        }
+
+        /* Bot Examples */
+        .bot-example {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 24px 0;
+        }
+        .bot-example .header {
+            background: var(--bg-secondary);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .bot-example .header .icon {
+            font-size: 1.5rem;
+        }
+        .bot-example .header h4 {
+            margin: 0;
+            color: var(--text-primary);
+        }
+        .bot-example .content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>Code Academy</h1>
+        <p class="subtitle">Learn with your Discord Bots</p>
+
+        <div class="nav-section">
+            <h3>Getting Started</h3>
+            <a href="#intro" class="nav-link active" onclick="showSection('intro')">
+                <span class="icon">&#128075;</span> Welcome
+            </a>
+            <a href="#setup" class="nav-link" onclick="showSection('setup')">
+                <span class="icon">&#9881;</span> Setup & Tools
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <h3>Python Basics</h3>
+            <a href="#python-basics" class="nav-link" onclick="showSection('python-basics')">
+                <span class="icon">&#128013;</span> Python 101
+            </a>
+            <a href="#python-variables" class="nav-link" onclick="showSection('python-variables')">
+                <span class="icon">&#128230;</span> Variables & Types
+            </a>
+            <a href="#python-functions" class="nav-link" onclick="showSection('python-functions')">
+                <span class="icon">&#128736;</span> Functions
+            </a>
+            <a href="#python-classes" class="nav-link" onclick="showSection('python-classes')">
+                <span class="icon">&#127959;</span> Classes & Objects
+            </a>
+            <a href="#python-async" class="nav-link" onclick="showSection('python-async')">
+                <span class="icon">&#9889;</span> Async Programming
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <h3>JavaScript Basics</h3>
+            <a href="#js-basics" class="nav-link" onclick="showSection('js-basics')">
+                <span class="icon">&#127312;</span> JavaScript 101
+            </a>
+            <a href="#js-functions" class="nav-link" onclick="showSection('js-functions')">
+                <span class="icon">&#128736;</span> Functions & Arrows
+            </a>
+            <a href="#js-async" class="nav-link" onclick="showSection('js-async')">
+                <span class="icon">&#9889;</span> Promises & Async
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <h3>Discord.py Deep Dive</h3>
+            <a href="#discordpy-basics" class="nav-link" onclick="showSection('discordpy-basics')">
+                <span class="icon">&#129302;</span> Bot Basics
+            </a>
+            <a href="#discordpy-commands" class="nav-link" onclick="showSection('discordpy-commands')">
+                <span class="icon">&#128172;</span> Commands
+            </a>
+            <a href="#discordpy-events" class="nav-link" onclick="showSection('discordpy-events')">
+                <span class="icon">&#128276;</span> Events
+            </a>
+            <a href="#discordpy-embeds" class="nav-link" onclick="showSection('discordpy-embeds')">
+                <span class="icon">&#127912;</span> Embeds & UI
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <h3>Your Bots Explained</h3>
+            <a href="#sports-bot" class="nav-link" onclick="showSection('sports-bot')">
+                <span class="icon">&#127936;</span> Sports Bot
+            </a>
+            <a href="#worldgate-bot" class="nav-link" onclick="showSection('worldgate-bot')">
+                <span class="icon">&#127758;</span> WorldGate Bot
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <h3>Resources</h3>
+            <a href="#resources" class="nav-link" onclick="showSection('resources')">
+                <span class="icon">&#128214;</span> Learning Resources
+            </a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- INTRO SECTION -->
+        <section id="intro" class="section active">
+            <h2>&#128075; Welcome to Your Coding Journey!</h2>
+            <p>This guide will teach you how to code by using the Discord bots you've built as real-world examples. You'll learn Python, JavaScript, and how Discord bots work under the hood.</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="icon">&#128013;</div>
+                    <h4>Python</h4>
+                    <p>Used in Sports Bot, March Madness Bot, and MW Fantasy Bot</p>
+                </div>
+                <div class="card">
+                    <div class="icon">&#127312;</div>
+                    <h4>JavaScript</h4>
+                    <p>Used in WorldGate Judicial Bot (Node.js)</p>
+                </div>
+                <div class="card">
+                    <div class="icon">&#128268;</div>
+                    <h4>APIs</h4>
+                    <p>Discord API, ESPN API, and more - learn how bots communicate with services</p>
+                </div>
+                <div class="card">
+                    <div class="icon">&#128451;</div>
+                    <h4>Databases</h4>
+                    <p>SQLite for storing user data, settings, and game information</p>
+                </div>
+            </div>
+
+            <h3>Your Bot Portfolio</h3>
+            <p>You've already built these amazing bots:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bot</th>
+                        <th>Language</th>
+                        <th>Key Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>&#127936; Sports Bot</strong></td>
+                        <td><code>Python</code></td>
+                        <td>Live scores, game threads, ESPN API integration</td>
+                    </tr>
+
+
+                    <tr>
+                        <td><strong>&#127936; March Madness Bot</strong></td>
+                        <td><code>Python</code></td>
+                        <td>Bracket pools, betting, economy system</td>
+                    </tr>
+                    <tr>
+                        <td><strong>&#127944; MW Fantasy Bot</strong></td>
+                        <td><code>Python</code></td>
+                        <td>Fantasy leagues, EA Madden integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>&#127758; WorldGate Bot</strong></td>
+                        <td><code>JavaScript</code></td>
+                        <td>Judicial system, voting, case management</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box tip">
+                <h5>&#128161; Pro Tip</h5>
+                <p>The best way to learn coding is by doing! As you go through this guide, try modifying your existing bots to add new features.</p>
+            </div>
+
+            <h3>Comprehensive Courses</h3>
+            <p>For in-depth learning with quizzes and video placeholders, check out these dedicated courses:</p>
+
+            <!-- Featured: Complete Course -->
+            <a href="complete-course.html" class="card" style="text-decoration: none; cursor: pointer; margin-bottom: 24px; display: block; background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1)); border: 2px solid var(--accent-purple);">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div class="icon" style="font-size: 2.5rem;">&#127891;</div>
+                    <div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 1.3rem;">Complete Bot Development Course</h4>
+                        <p style="margin: 0;">All 34 lessons in one place! Python, JavaScript, Discord.py, and Discord.js with progress tracking, quizzes, and references to your actual bot code.</p>
+                        <span style="color: var(--accent-purple); font-size: 0.9rem; font-weight: 600;">Start the Full Course →</span>
+                    </div>
+                </div>
+            </a>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px;">Or explore individual courses:</p>
+
+            <div class="card-grid">
+                <a href="python-course.html" class="card" style="text-decoration: none; cursor: pointer;">
+                    <div class="icon">&#128013;</div>
+                    <h4>Python Course</h4>
+                    <p>12 lessons covering Python fundamentals from variables to async programming. Perfect for beginners.</p>
+                    <span style="color: var(--accent-green); font-size: 0.85rem;">Start Learning →</span>
+                </a>
+                <a href="javascript-course.html" class="card" style="text-decoration: none; cursor: pointer;">
+                    <div class="icon">&#127312;</div>
+                    <h4>JavaScript Course</h4>
+                    <p>12 lessons covering JavaScript and Node.js fundamentals with Python comparisons.</p>
+                    <span style="color: var(--accent-green); font-size: 0.85rem;">Start Learning →</span>
+                </a>
+                <a href="discordpy-course.html" class="card" style="text-decoration: none; cursor: pointer;">
+                    <div class="icon">&#128013;</div>
+                    <h4>Discord.py Course</h4>
+                    <p>Build Discord bots with Python! Slash commands, embeds, buttons, modals, cogs, and more.</p>
+                    <span style="color: var(--accent-blue); font-size: 0.85rem;">Start Learning →</span>
+                </a>
+                <a href="discordjs-course.html" class="card" style="text-decoration: none; cursor: pointer;">
+                    <div class="icon">&#127312;</div>
+                    <h4>Discord.js Course</h4>
+                    <p>Build Discord bots with JavaScript! Command handlers, databases, and error handling.</p>
+                    <span style="color: var(--accent-blue); font-size: 0.85rem;">Start Learning →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- SETUP SECTION -->
+        <section id="setup" class="section">
+            <h2>&#9881; Setup & Tools</h2>
+            <p>Before diving into code, let's make sure you have the right tools set up.</p>
+
+            <h3>Essential Tools</h3>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="icon">&#128187;</div>
+                    <h4>VS Code</h4>
+                    <p>The code editor you're already using! It has great extensions for Python and JavaScript.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">&#128013;</div>
+                    <h4>Python 3.10+</h4>
+                    <p>Your bots use Python. Check version with <code>python --version</code></p>
+                </div>
+                <div class="card">
+                    <div class="icon">&#128154;</div>
+                    <h4>Node.js</h4>
+                    <p>Required for WorldGate Bot. Check with <code>node --version</code></p>
+                </div>
+                <div class="card">
+                    <div class="icon">&#128230;</div>
+                    <h4>Git</h4>
+                    <p>Version control - track changes to your code</p>
+                </div>
+            </div>
+
+            <h3>VS Code Extensions</h3>
+            <p>Install these extensions to make coding easier:</p>
+
+            <ul>
+                <li><strong>Python</strong> - Syntax highlighting, IntelliSense, debugging</li>
+                <li><strong>Pylance</strong> - Advanced Python language support</li>
+                <li><strong>ESLint</strong> - JavaScript linting</li>
+                <li><strong>Prettier</strong> - Code formatting</li>
+                <li><strong>GitLens</strong> - See who changed what in your code</li>
+            </ul>
+
+            <h3>Your Project Structure</h3>
+            <p>Here's how your bot files are organized:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">Desktop/</span>
+                    <span class="lang-tag">Structure</span>
+                </div>
+                <div class="code-content">Desktop/
+├── sports-bot/
+│   ├── bot.py              <span class="comment"># Main bot code</span>
+│   ├── injury_scraper.py   <span class="comment"># Web scraping module</span>
+│   ├── bot_settings.json   <span class="comment"># Configuration</span>
+│   ├── .env                <span class="comment"># Secret tokens (never share!)</span>
+│   └── venv/               <span class="comment"># Python virtual environment</span>
+├── WorldGateBot/
+│   └── worldgate-judicial-bot/
+│       ├── index.js        <span class="comment"># Main entry point</span>
+│       ├── commands/       <span class="comment"># Slash command files</span>
+│       └── utils/          <span class="comment"># Helper functions</span>
+└── bot-docs/               <span class="comment"># Documentation website</span></div>
+            </div>
+
+            <div class="info-box warning">
+                <h5>&#9888; Important: Never Share Your .env Files!</h5>
+                <p>Your .env files contain your Discord bot tokens. If someone gets these, they can control your bots. Never commit them to GitHub or share them publicly.</p>
+            </div>
+        </section>
+
+        <!-- PYTHON BASICS -->
+        <section id="python-basics" class="section">
+            <h2>&#128013; Python 101</h2>
+            <p>Python is a beginner-friendly programming language known for its clean, readable syntax. Let's start with the fundamentals.</p>
+
+            <h3>Your First Python Code</h3>
+            <p>The classic "Hello World" program:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">hello.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="comment"># This is a comment - Python ignores these</span>
+<span class="function">print</span>(<span class="string">"Hello, World!"</span>)
+
+<span class="comment"># You can print variables too</span>
+name = <span class="string">"Arthur"</span>
+<span class="function">print</span>(<span class="string">f"Hello, </span>{name}<span class="string">!"</span>)  <span class="comment"># f-strings let you embed variables</span></div>
+            </div>
+
+            <h3>Real Example from Your Sports Bot</h3>
+            <p>Here's actual code from your Sports Bot showing basic Python concepts:</p>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py (lines 19-27)</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="comment"># Dictionary - stores key-value pairs</span>
+SPORTS_CONFIG = {
+    <span class="string">'nfl'</span>: {<span class="string">'league'</span>: <span class="string">'football/nfl'</span>, <span class="string">'name'</span>: <span class="string">'NFL'</span>, <span class="string">'emoji'</span>: <span class="string">'&#127944;'</span>},
+    <span class="string">'nba'</span>: {<span class="string">'league'</span>: <span class="string">'basketball/nba'</span>, <span class="string">'name'</span>: <span class="string">'NBA'</span>, <span class="string">'emoji'</span>: <span class="string">'&#127936;'</span>},
+    <span class="string">'cfb'</span>: {<span class="string">'league'</span>: <span class="string">'football/college-football'</span>, <span class="string">'name'</span>: <span class="string">'CFB'</span>, <span class="string">'emoji'</span>: <span class="string">'&#127891;'</span>},
+}
+
+<span class="comment"># Accessing dictionary values</span>
+nfl_config = SPORTS_CONFIG[<span class="string">'nfl'</span>]
+<span class="function">print</span>(nfl_config[<span class="string">'name'</span>])  <span class="comment"># Output: NFL</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Key Concepts</h3>
+
+            <h4>1. Indentation Matters!</h4>
+            <p>Python uses indentation (spaces/tabs) to define code blocks. This is different from other languages that use braces {}.</p>
+
+            <div class="comparison">
+                <div class="col good">
+                    <h5>&#9989; Correct</h5>
+                    <div class="code-block">
+                        <div class="code-content"><span class="keyword">if</span> score > <span class="number">100</span>:
+    <span class="function">print</span>(<span class="string">"High score!"</span>)
+    <span class="function">print</span>(<span class="string">"Great job!"</span>)</div>
+                    </div>
+                </div>
+                <div class="col bad">
+                    <h5>&#10060; Wrong</h5>
+                    <div class="code-block">
+                        <div class="code-content"><span class="keyword">if</span> score > <span class="number">100</span>:
+<span class="function">print</span>(<span class="string">"High score!"</span>)  <span class="comment"># IndentationError!</span>
+<span class="function">print</span>(<span class="string">"Great job!"</span>)</div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>2. Lists and Loops</h4>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">lists_example.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="comment"># Lists store multiple items</span>
+sports = [<span class="string">'nfl'</span>, <span class="string">'nba'</span>, <span class="string">'mlb'</span>]
+
+<span class="comment"># Loop through each item</span>
+<span class="keyword">for</span> sport <span class="keyword">in</span> sports:
+    <span class="function">print</span>(<span class="string">f"Checking </span>{sport}<span class="string"> games..."</span>)
+
+<span class="comment"># Add to a list</span>
+sports.<span class="function">append</span>(<span class="string">'nhl'</span>)
+
+<span class="comment"># Check if item exists</span>
+<span class="keyword">if</span> <span class="string">'nfl'</span> <span class="keyword">in</span> sports:
+    <span class="function">print</span>(<span class="string">"NFL is enabled!"</span>)</div>
+            </div>
+
+            <div class="try-it-box">
+                <h5>&#128104;&#8205;&#128187; Try It Yourself</h5>
+                <p>Open your Sports Bot's <code>bot.py</code> file and find the <code>SPORTS_CONFIG</code> dictionary. Try adding a new sport!</p>
+            </div>
+
+            <div class="quiz-box">
+                <h5>&#127919; Quick Quiz</h5>
+                <p>What will this code print?</p>
+                <div class="code-block">
+                    <div class="code-content">teams = [<span class="string">'Lakers'</span>, <span class="string">'Celtics'</span>, <span class="string">'Bulls'</span>]
+<span class="function">print</span>(teams[<span class="number">1</span>])</div>
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, true)">Celtics</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false)">Lakers</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false)">Bulls</div>
+                <p style="margin-top: 12px; font-size: 0.85rem;"><em>Hint: Lists are zero-indexed, meaning the first item is at position 0!</em></p>
+            </div>
+        </section>
+
+        <!-- PYTHON VARIABLES -->
+        <section id="python-variables" class="section">
+            <h2>&#128230; Variables & Data Types</h2>
+            <p>Variables are containers for storing data. Python has several built-in data types.</p>
+
+            <h3>Data Types</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Example</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>str</code></td>
+                        <td><code>"Hello"</code></td>
+                        <td>Text/strings</td>
+                    </tr>
+                    <tr>
+                        <td><code>int</code></td>
+                        <td><code>42</code></td>
+                        <td>Whole numbers</td>
+                    </tr>
+                    <tr>
+                        <td><code>float</code></td>
+                        <td><code>3.14</code></td>
+                        <td>Decimal numbers</td>
+                    </tr>
+                    <tr>
+                        <td><code>bool</code></td>
+                        <td><code>True</code> / <code>False</code></td>
+                        <td>Boolean values</td>
+                    </tr>
+                    <tr>
+                        <td><code>list</code></td>
+                        <td><code>['a', 'b', 'c']</code></td>
+                        <td>Ordered, changeable collection</td>
+                    </tr>
+                    <tr>
+                        <td><code>dict</code></td>
+                        <td><code>{'key': 'value'}</code></td>
+                        <td>Key-value pairs</td>
+                    </tr>
+                    <tr>
+                        <td><code>None</code></td>
+                        <td><code>None</code></td>
+                        <td>Represents "nothing"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Real Example: Your Sports Bot Settings</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="keyword">class</span> <span class="class-name">GameTracker</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>):
+        <span class="comment"># Dictionary to store guild settings</span>
+        <span class="keyword">self</span>.guild_settings = {}              <span class="comment"># dict</span>
+
+        <span class="comment"># None means "not set yet"</span>
+        <span class="keyword">self</span>.session = <span class="keyword">None</span>                   <span class="comment"># NoneType</span>
+
+        <span class="comment"># Dictionaries for tracking games</span>
+        <span class="keyword">self</span>.active_games = {}                <span class="comment"># dict</span>
+        <span class="keyword">self</span>.game_threads = {}                <span class="comment"># dict</span>
+
+        <span class="comment"># Load settings from file</span>
+        <span class="keyword">self</span>.<span class="function">load_settings</span>()</div>
+                    </div>
+                    <p style="margin-top: 12px;">This shows a <strong>class</strong> with instance variables. <code>self</code> refers to the current object.</p>
+                </div>
+            </div>
+
+            <h3>F-Strings (String Formatting)</h3>
+            <p>F-strings are the modern way to embed variables in strings:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">f_strings.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content">team_name = <span class="string">"Lakers"</span>
+score = <span class="number">105</span>
+
+<span class="comment"># F-string - prefix with 'f' and use {}</span>
+message = <span class="string">f"The </span>{team_name}<span class="string"> scored </span>{score}<span class="string"> points!"</span>
+<span class="function">print</span>(message)  <span class="comment"># The Lakers scored 105 points!</span>
+
+<span class="comment"># You can do math inside {}</span>
+<span class="function">print</span>(<span class="string">f"Double score: </span>{score * <span class="number">2</span>}<span class="string">"</span>)  <span class="comment"># Double score: 210</span>
+
+<span class="comment"># Format numbers</span>
+percentage = <span class="number">0.756</span>
+<span class="function">print</span>(<span class="string">f"Win rate: </span>{percentage:<span class="number">.1%</span>}<span class="string">"</span>)  <span class="comment"># Win rate: 75.6%</span></div>
+            </div>
+
+            <div class="info-box important">
+                <h5>&#128218; From Your Bots</h5>
+                <p>Your bots use f-strings everywhere! Look for patterns like <code>f"[API] {sport_key} returned {len(events)} events"</code> in your Sports Bot.</p>
+            </div>
+        </section>
+
+        <!-- PYTHON FUNCTIONS -->
+        <section id="python-functions" class="section">
+            <h2>&#128736; Functions</h2>
+            <p>Functions are reusable blocks of code. They take inputs (parameters), do something, and often return outputs.</p>
+
+            <h3>Basic Function Structure</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">functions_basic.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="comment"># Define a function with 'def'</span>
+<span class="keyword">def</span> <span class="function">greet</span>(name):
+    <span class="string">"""This is a docstring - describes what the function does"""</span>
+    <span class="keyword">return</span> <span class="string">f"Hello, </span>{name}<span class="string">!"</span>
+
+<span class="comment"># Call the function</span>
+message = <span class="function">greet</span>(<span class="string">"Arthur"</span>)
+<span class="function">print</span>(message)  <span class="comment"># Hello, Arthur!</span>
+
+<span class="comment"># Function with default parameter</span>
+<span class="keyword">def</span> <span class="function">greet</span>(name, greeting=<span class="string">"Hello"</span>):
+    <span class="keyword">return</span> <span class="string">f"</span>{greeting}<span class="string">, </span>{name}<span class="string">!"</span>
+
+<span class="function">print</span>(<span class="function">greet</span>(<span class="string">"Arthur"</span>))            <span class="comment"># Hello, Arthur!</span>
+<span class="function">print</span>(<span class="function">greet</span>(<span class="string">"Arthur"</span>, <span class="string">"Welcome"</span>))  <span class="comment"># Welcome, Arthur!</span></div>
+            </div>
+
+            <h3>Real Example: Helper Functions from Your Sports Bot</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py (Helper Functions)</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py (lines 88-112)</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="keyword">def</span> <span class="function">log_error</span>(context: <span class="class-name">str</span>, error: <span class="class-name">Exception</span> = <span class="keyword">None</span>):
+    <span class="string">"""Centralized error logging with traceback"""</span>
+    <span class="keyword">if</span> error:
+        <span class="function">print</span>(<span class="string">f"[ERROR] </span>{context}<span class="string">: </span>{error}<span class="string">"</span>)
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">f"[ERROR] </span>{context}<span class="string">"</span>)
+    traceback.<span class="function">print_exc</span>()
+
+<span class="keyword">def</span> <span class="function">get_competitors</span>(game_or_competition):
+    <span class="string">"""Extract home/away teams from game data. Returns (away_team, home_team)"""</span>
+    <span class="keyword">if</span> <span class="string">'competitions'</span> <span class="keyword">in</span> game_or_competition:
+        competitors = game_or_competition[<span class="string">'competitions'</span>][<span class="number">0</span>][<span class="string">'competitors'</span>]
+    <span class="keyword">else</span>:
+        competitors = game_or_competition[<span class="string">'competitors'</span>]
+    home = <span class="function">next</span>(t <span class="keyword">for</span> t <span class="keyword">in</span> competitors <span class="keyword">if</span> t[<span class="string">'homeAway'</span>] == <span class="string">'home'</span>)
+    away = <span class="function">next</span>(t <span class="keyword">for</span> t <span class="keyword">in</span> competitors <span class="keyword">if</span> t[<span class="string">'homeAway'</span>] == <span class="string">'away'</span>)
+    <span class="keyword">return</span> away, home
+
+<span class="keyword">def</span> <span class="function">get_team_abbr</span>(team, fallback=<span class="string">'???'</span>):
+    <span class="string">"""Get team abbreviation with fallback"""</span>
+    <span class="keyword">return</span> team[<span class="string">'team'</span>].<span class="function">get</span>(<span class="string">'abbreviation'</span>,
+           team[<span class="string">'team'</span>].<span class="function">get</span>(<span class="string">'displayName'</span>, fallback)[:<span class="number">3</span>])</div>
+                    </div>
+                    <p style="margin-top: 12px;"><strong>Key concepts shown:</strong></p>
+                    <ul>
+                        <li><strong>Type hints</strong> (<code>context: str</code>) - tells you what type of data is expected</li>
+                        <li><strong>Default parameters</strong> (<code>error = None</code>) - optional parameters</li>
+                        <li><strong>Docstrings</strong> - documentation in triple quotes</li>
+                        <li><strong>Return values</strong> - functions can return multiple values as a tuple</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>The .get() Method</h3>
+            <p>A safe way to access dictionary values:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">dict_get.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content">team = {<span class="string">'name'</span>: <span class="string">'Lakers'</span>, <span class="string">'city'</span>: <span class="string">'Los Angeles'</span>}
+
+<span class="comment"># This crashes if key doesn't exist!</span>
+<span class="comment"># print(team['abbreviation'])  # KeyError!</span>
+
+<span class="comment"># .get() returns None (or a default) if key missing</span>
+abbr = team.<span class="function">get</span>(<span class="string">'abbreviation'</span>)           <span class="comment"># Returns None</span>
+abbr = team.<span class="function">get</span>(<span class="string">'abbreviation'</span>, <span class="string">'UNK'</span>)    <span class="comment"># Returns 'UNK'</span>
+
+<span class="comment"># Your bots use this pattern everywhere!</span></div>
+            </div>
+        </section>
+
+        <!-- PYTHON CLASSES -->
+        <section id="python-classes" class="section">
+            <h2>&#127959; Classes & Objects</h2>
+            <p>Classes are blueprints for creating objects. They bundle data (attributes) and functions (methods) together.</p>
+
+            <h3>Basic Class Structure</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">class_basic.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="keyword">class</span> <span class="class-name">Player</span>:
+    <span class="string">"""A class representing a sports player"""</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, name, team, position):
+        <span class="comment"># __init__ is the constructor - runs when creating an object</span>
+        <span class="keyword">self</span>.name = name          <span class="comment"># instance attribute</span>
+        <span class="keyword">self</span>.team = team
+        <span class="keyword">self</span>.position = position
+        <span class="keyword">self</span>.stats = {}           <span class="comment"># empty dict for stats</span>
+
+    <span class="keyword">def</span> <span class="function">add_stat</span>(<span class="keyword">self</span>, stat_name, value):
+        <span class="string">"""Add a statistic for the player"""</span>
+        <span class="keyword">self</span>.stats[stat_name] = value
+
+    <span class="keyword">def</span> <span class="function">__str__</span>(<span class="keyword">self</span>):
+        <span class="comment"># __str__ defines how to print the object</span>
+        <span class="keyword">return</span> <span class="string">f"</span>{<span class="keyword">self</span>.name}<span class="string"> (</span>{<span class="keyword">self</span>.position}<span class="string">) - </span>{<span class="keyword">self</span>.team}<span class="string">"</span>
+
+<span class="comment"># Create objects (instances) of the class</span>
+lebron = <span class="class-name">Player</span>(<span class="string">"LeBron James"</span>, <span class="string">"Lakers"</span>, <span class="string">"SF"</span>)
+curry = <span class="class-name">Player</span>(<span class="string">"Stephen Curry"</span>, <span class="string">"Warriors"</span>, <span class="string">"PG"</span>)
+
+<span class="comment"># Use methods</span>
+lebron.<span class="function">add_stat</span>(<span class="string">"points"</span>, <span class="number">28</span>)
+<span class="function">print</span>(lebron)  <span class="comment"># LeBron James (SF) - Lakers</span></div>
+            </div>
+
+            <h3>Real Example: GameTracker Class</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py (GameTracker Class)</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py (GameTracker)</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="keyword">class</span> <span class="class-name">GameTracker</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>):
+        <span class="comment"># All the data this class tracks</span>
+        <span class="keyword">self</span>.active_games = {}          <span class="comment"># Currently live games</span>
+        <span class="keyword">self</span>.game_threads = {}          <span class="comment"># Forum threads created</span>
+        <span class="keyword">self</span>.guild_settings = {}        <span class="comment"># Per-server settings</span>
+        <span class="keyword">self</span>.alert_roles = {}           <span class="comment"># Notification roles</span>
+        <span class="keyword">self</span>.team_roles = {}            <span class="comment"># Team-specific roles</span>
+        <span class="keyword">self</span>.monitoring_paused = <span class="keyword">False</span>  <span class="comment"># Boolean flag</span>
+
+    <span class="keyword">def</span> <span class="function">save_settings</span>(<span class="keyword">self</span>):
+        <span class="string">"""Save all settings to a JSON file"""</span>
+        data = {
+            <span class="string">'guild_settings'</span>: <span class="keyword">self</span>.guild_settings,
+            <span class="string">'alert_roles'</span>: <span class="keyword">self</span>.alert_roles,
+            <span class="string">'team_roles'</span>: <span class="keyword">self</span>.team_roles,
+        }
+        <span class="keyword">with</span> <span class="function">open</span>(<span class="string">'bot_settings.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:
+            json.<span class="function">dump</span>(data, f, indent=<span class="number">2</span>)
+
+    <span class="keyword">def</span> <span class="function">load_settings</span>(<span class="keyword">self</span>):
+        <span class="string">"""Load settings from JSON file"""</span>
+        <span class="keyword">try</span>:
+            <span class="keyword">with</span> <span class="function">open</span>(<span class="string">'bot_settings.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:
+                data = json.<span class="function">load</span>(f)
+                <span class="keyword">self</span>.guild_settings = data.<span class="function">get</span>(<span class="string">'guild_settings'</span>, {})
+                <span class="keyword">self</span>.alert_roles = data.<span class="function">get</span>(<span class="string">'alert_roles'</span>, {})
+        <span class="keyword">except</span> <span class="class-name">FileNotFoundError</span>:
+            <span class="function">print</span>(<span class="string">"No settings file found, using defaults"</span>)
+
+<span class="comment"># Create a single instance used throughout the bot</span>
+tracker = <span class="class-name">GameTracker</span>()</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>&#128161; Why Use Classes?</h5>
+                <p><strong>Organization</strong> - Group related data and functions together<br>
+                <strong>Reusability</strong> - Create multiple objects from one class<br>
+                <strong>Encapsulation</strong> - Hide complexity behind simple methods</p>
+            </div>
+        </section>
+
+        <!-- PYTHON ASYNC -->
+        <section id="python-async" class="section">
+            <h2>&#9889; Async Programming</h2>
+            <p>Async (asynchronous) programming lets your bot do multiple things at once without waiting. This is crucial for Discord bots!</p>
+
+            <h3>Why Async?</h3>
+
+            <div class="diagram">
+                <p><strong>Without Async (Blocking)</strong></p>
+                <div class="box">Fetch NFL</div>
+                <span class="arrow">&#8594;</span>
+                <div class="box">Wait...</div>
+                <span class="arrow">&#8594;</span>
+                <div class="box">Fetch NBA</div>
+                <span class="arrow">&#8594;</span>
+                <div class="box">Wait...</div>
+                <p style="margin-top: 16px;"><strong>With Async (Non-Blocking)</strong></p>
+                <div class="box">Fetch NFL</div>
+                <div class="box">Fetch NBA</div>
+                <div class="box">Fetch MLB</div>
+                <span style="margin-left: 16px;">&#8594; All at once!</span>
+            </div>
+
+            <h3>Key Keywords</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Keyword</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>async def</code></td>
+                        <td>Defines an asynchronous function (coroutine)</td>
+                    </tr>
+                    <tr>
+                        <td><code>await</code></td>
+                        <td>Wait for an async operation to complete</td>
+                    </tr>
+                    <tr>
+                        <td><code>asyncio</code></td>
+                        <td>Python's async library</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Real Example: Fetching Game Data</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py (API Fetching)</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py (fetch_games method)</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="keyword">async def</span> <span class="function">fetch_games</span>(<span class="keyword">self</span>, sport_key):
+    <span class="string">"""Fetch games from ESPN API"""</span>
+    config = SPORTS_CONFIG.<span class="function">get</span>(sport_key)
+    <span class="keyword">if</span> <span class="keyword">not</span> config:
+        <span class="keyword">return</span> []
+
+    url = <span class="string">f"</span>{ESPN_API_BASE}<span class="string">/</span>{config[<span class="string">'league'</span>]}<span class="string">/scoreboard"</span>
+
+    <span class="comment"># 'async with' ensures the session is properly closed</span>
+    <span class="keyword">async with</span> aiohttp.<span class="class-name">ClientSession</span>() <span class="keyword">as</span> session:
+        <span class="comment"># 'await' pauses here until the request completes</span>
+        <span class="keyword">async with</span> session.<span class="function">get</span>(url) <span class="keyword">as</span> response:
+            <span class="keyword">if</span> response.status == <span class="number">200</span>:
+                <span class="comment"># await the JSON parsing too</span>
+                data = <span class="keyword">await</span> response.<span class="function">json</span>()
+                <span class="keyword">return</span> data.<span class="function">get</span>(<span class="string">'events'</span>, [])
+    <span class="keyword">return</span> []
+
+<span class="comment"># Using the async function</span>
+<span class="keyword">async def</span> <span class="function">check_all_sports</span>():
+    <span class="keyword">for</span> sport <span class="keyword">in</span> [<span class="string">'nfl'</span>, <span class="string">'nba'</span>, <span class="string">'mlb'</span>]:
+        games = <span class="keyword">await</span> tracker.<span class="function">fetch_games</span>(sport)
+        <span class="function">print</span>(<span class="string">f"Found </span>{<span class="function">len</span>(games)}<span class="string"> </span>{sport}<span class="string"> games"</span>)</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Discord.py Commands are Async</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">async_command.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="decorator">@bot.command</span>(name=<span class="string">'scores'</span>)
+<span class="keyword">async def</span> <span class="function">get_scores</span>(ctx):
+    <span class="string">"""Get current scores - this is an async command"""</span>
+
+    <span class="comment"># Send a message (await because it's a network operation)</span>
+    <span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">"Fetching scores..."</span>)
+
+    <span class="comment"># Fetch data (await the API call)</span>
+    games = <span class="keyword">await</span> tracker.<span class="function">fetch_games</span>(<span class="string">'nba'</span>)
+
+    <span class="comment"># Send another message with results</span>
+    <span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">f"Found </span>{<span class="function">len</span>(games)}<span class="string"> games!"</span>)</div>
+            </div>
+
+            <div class="info-box warning">
+                <h5>&#9888; Common Mistake</h5>
+                <p>Forgetting <code>await</code> is a common error! If you see <code>&lt;coroutine object at 0x...&gt;</code>, you forgot to await something.</p>
+            </div>
+        </section>
+
+        <!-- DISCORD.PY BASICS -->
+        <section id="discordpy-basics" class="section">
+            <h2>&#129302; Discord.py Bot Basics</h2>
+            <p>Discord.py is the Python library that lets your bots interact with Discord.</p>
+
+            <h3>Bot Anatomy</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">basic_bot.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="keyword">import</span> discord
+<span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+
+<span class="comment"># Intents tell Discord what events your bot wants to receive</span>
+intents = discord.<span class="class-name">Intents</span>.<span class="function">default</span>()
+intents.message_content = <span class="keyword">True</span>  <span class="comment"># Needed to read message content</span>
+
+<span class="comment"># Create the bot with a command prefix</span>
+bot = commands.<span class="class-name">Bot</span>(command_prefix=<span class="string">'!'</span>, intents=intents)
+
+<span class="comment"># Event: Runs when bot is ready</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="function">print</span>(<span class="string">f'</span>{bot.user}<span class="string"> has connected to Discord!'</span>)
+
+<span class="comment"># Run the bot (TOKEN from .env file)</span>
+bot.<span class="function">run</span>(TOKEN)</div>
+            </div>
+
+            <h3>How Your Bots Start</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py (Bottom of file)</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py (end of file)</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="comment"># Load token from .env file</span>
+<span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv
+<span class="function">load_dotenv</span>()
+TOKEN = os.<span class="function">getenv</span>(<span class="string">'DISCORD_TOKEN'</span>)
+
+<span class="comment"># This runs the bot</span>
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    bot.<span class="function">run</span>(TOKEN)</div>
+                    </div>
+                    <p style="margin-top: 12px;"><code>if __name__ == "__main__"</code> ensures the bot only runs when the file is executed directly, not when imported.</p>
+                </div>
+            </div>
+
+            <h3>Intents Explained</h3>
+            <p>Intents are permissions that tell Discord what data your bot can access:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Intent</th>
+                        <th>What It Enables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>message_content</code></td>
+                        <td>Read message text (required for ! commands)</td>
+                    </tr>
+                    <tr>
+                        <td><code>guilds</code></td>
+                        <td>See servers, channels, roles</td>
+                    </tr>
+                    <tr>
+                        <td><code>members</code></td>
+                        <td>See server members (privileged)</td>
+                    </tr>
+                    <tr>
+                        <td><code>presences</code></td>
+                        <td>See user status (privileged)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- DISCORD.PY COMMANDS -->
+        <section id="discordpy-commands" class="section">
+            <h2>&#128172; Creating Commands</h2>
+            <p>Commands are how users interact with your bot. Let's learn both prefix commands (!) and slash commands (/).</p>
+
+            <h3>Prefix Commands</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">prefix_commands.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="comment"># Basic command</span>
+<span class="decorator">@bot.command</span>(name=<span class="string">'hello'</span>)
+<span class="keyword">async def</span> <span class="function">hello</span>(ctx):
+    <span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">f"Hello, </span>{ctx.author.name}<span class="string">!"</span>)
+
+<span class="comment"># Command with required parameter</span>
+<span class="decorator">@bot.command</span>(name=<span class="string">'greet'</span>)
+<span class="keyword">async def</span> <span class="function">greet</span>(ctx, name: <span class="class-name">str</span>):
+    <span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">f"Hello, </span>{name}<span class="string">!"</span>)
+
+<span class="comment"># Command with optional parameter</span>
+<span class="decorator">@bot.command</span>(name=<span class="string">'greet'</span>)
+<span class="keyword">async def</span> <span class="function">greet</span>(ctx, name: <span class="class-name">str</span> = <span class="string">"stranger"</span>):
+    <span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">f"Hello, </span>{name}<span class="string">!"</span>)
+
+<span class="comment"># Admin-only command</span>
+<span class="decorator">@bot.command</span>(name=<span class="string">'kick'</span>)
+<span class="decorator">@commands.has_permissions</span>(administrator=<span class="keyword">True</span>)
+<span class="keyword">async def</span> <span class="function">kick</span>(ctx, member: discord.<span class="class-name">Member</span>):
+    <span class="keyword">await</span> member.<span class="function">kick</span>()
+    <span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">f"Kicked </span>{member.name}<span class="string">"</span>)</div>
+            </div>
+
+            <h3>Real Example: Your Team Role Commands</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py (Team Role Commands)</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="decorator">@bot.command</span>(name=<span class="string">'set_team_role'</span>)
+<span class="decorator">@commands.has_permissions</span>(administrator=<span class="keyword">True</span>)
+<span class="keyword">async def</span> <span class="function">set_team_role</span>(ctx, role: discord.<span class="class-name">Role</span>, *, team_name: <span class="class-name">str</span>):
+    <span class="string">"""Link a Discord role to a team for alerts
+    Usage: !set_team_role @Lakers Los Angeles Lakers"""</span>
+
+    guild_id = <span class="function">str</span>(ctx.guild.id)
+
+    <span class="comment"># Initialize if needed</span>
+    <span class="keyword">if</span> guild_id <span class="keyword">not in</span> tracker.team_roles:
+        tracker.team_roles[guild_id] = {}
+
+    <span class="comment"># Store the role (case-insensitive key)</span>
+    tracker.team_roles[guild_id][team_name.<span class="function">lower</span>()] = role.id
+    tracker.<span class="function">save_settings</span>()
+
+    <span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">f"&#9989; Linked </span>{role.mention}<span class="string"> to </span>{team_name}<span class="string">"</span>)</div>
+                    </div>
+                    <p style="margin-top: 12px;"><strong>Key concepts:</strong></p>
+                    <ul>
+                        <li><code>discord.Role</code> - Discord.py automatically converts the @mention to a Role object</li>
+                        <li><code>*, team_name</code> - The <code>*</code> means "everything after is one argument" (for multi-word names)</li>
+                        <li><code>ctx.guild.id</code> - Gets the server's unique ID</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>The ctx Object</h3>
+            <p><code>ctx</code> (context) gives you information about the command invocation:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>What It Contains</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>ctx.author</code></td>
+                        <td>The user who sent the command</td>
+                    </tr>
+                    <tr>
+                        <td><code>ctx.guild</code></td>
+                        <td>The server where command was used</td>
+                    </tr>
+                    <tr>
+                        <td><code>ctx.channel</code></td>
+                        <td>The channel where command was used</td>
+                    </tr>
+                    <tr>
+                        <td><code>ctx.message</code></td>
+                        <td>The original message object</td>
+                    </tr>
+                    <tr>
+                        <td><code>ctx.send()</code></td>
+                        <td>Send a message to the same channel</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- DISCORD.PY EVENTS -->
+        <section id="discordpy-events" class="section">
+            <h2>&#128276; Events & Tasks</h2>
+            <p>Events let your bot respond to things that happen in Discord. Tasks run code on a schedule.</p>
+
+            <h3>Common Events</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">events.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="comment"># Bot is ready and connected</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="function">print</span>(<span class="string">f"</span>{bot.user}<span class="string"> is online!"</span>)
+
+<span class="comment"># Someone sent a message</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_message</span>(message):
+    <span class="comment"># Ignore bot's own messages</span>
+    <span class="keyword">if</span> message.author == bot.user:
+        <span class="keyword">return</span>
+
+    <span class="keyword">if</span> <span class="string">"hello"</span> <span class="keyword">in</span> message.content.<span class="function">lower</span>():
+        <span class="keyword">await</span> message.channel.<span class="function">send</span>(<span class="string">"Hey there!"</span>)
+
+    <span class="comment"># IMPORTANT: Process commands after custom handling</span>
+    <span class="keyword">await</span> bot.<span class="function">process_commands</span>(message)
+
+<span class="comment"># Someone joined the server</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_member_join</span>(member):
+    channel = member.guild.system_channel
+    <span class="keyword">if</span> channel:
+        <span class="keyword">await</span> channel.<span class="function">send</span>(<span class="string">f"Welcome, </span>{member.mention}<span class="string">!"</span>)</div>
+            </div>
+
+            <h3>Background Tasks</h3>
+            <p>Tasks run code repeatedly on a schedule - perfect for checking scores!</p>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127936;</span>
+                    <h4>From sports-bot/bot.py (Game Monitor Task)</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">bot.py</span>
+                            <span class="lang-tag">Python</span>
+                        </div>
+                        <div class="code-content"><span class="keyword">from</span> discord.ext <span class="keyword">import</span> tasks
+
+<span class="comment"># Run every 10 minutes</span>
+<span class="decorator">@tasks.loop</span>(minutes=<span class="number">10</span>)
+<span class="keyword">async def</span> <span class="function">game_monitor</span>():
+    <span class="string">"""Check for game updates every 10 minutes"""</span>
+    <span class="keyword">if</span> tracker.monitoring_paused:
+        <span class="function">print</span>(<span class="string">"[MONITOR] Paused"</span>)
+        <span class="keyword">return</span>
+
+    <span class="keyword">for</span> sport_key <span class="keyword">in</span> SPORTS_CONFIG.<span class="function">keys</span>():
+        games = <span class="keyword">await</span> tracker.<span class="function">fetch_games</span>(sport_key)
+        <span class="keyword">for</span> game <span class="keyword">in</span> games:
+            <span class="keyword">await</span> <span class="function">process_game</span>(game, sport_key)
+
+<span class="comment"># Wait until bot is ready before starting</span>
+<span class="decorator">@game_monitor.before_loop</span>
+<span class="keyword">async def</span> <span class="function">before_game_monitor</span>():
+    <span class="keyword">await</span> bot.<span class="function">wait_until_ready</span>()
+
+<span class="comment"># Start the task when bot is ready</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="keyword">if</span> <span class="keyword">not</span> game_monitor.<span class="function">is_running</span>():
+        game_monitor.<span class="function">start</span>()</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>&#128161; Task Options</h5>
+                <p><code>@tasks.loop(seconds=30)</code> - Run every 30 seconds<br>
+                <code>@tasks.loop(minutes=5)</code> - Run every 5 minutes<br>
+                <code>@tasks.loop(hours=1)</code> - Run every hour<br>
+                <code>@tasks.loop(time=datetime.time(9, 0))</code> - Run at 9:00 AM daily</p>
+            </div>
+        </section>
+
+        <!-- DISCORD.PY EMBEDS -->
+        <section id="discordpy-embeds" class="section">
+            <h2>&#127912; Embeds & UI</h2>
+            <p>Embeds are rich message cards with colors, images, and formatting. They make your bot look professional!</p>
+
+            <h3>Creating Embeds</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">embeds.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="keyword">import</span> discord
+
+<span class="comment"># Create an embed</span>
+embed = discord.<span class="class-name">Embed</span>(
+    title=<span class="string">"&#127936; NBA Scores"</span>,
+    description=<span class="string">"Today's games"</span>,
+    color=discord.<span class="class-name">Color</span>.<span class="function">orange</span>()
+)
+
+<span class="comment"># Add fields</span>
+embed.<span class="function">add_field</span>(
+    name=<span class="string">"Lakers vs Celtics"</span>,
+    value=<span class="string">"105 - 98 | Q3 4:30"</span>,
+    inline=<span class="keyword">False</span>
+)
+
+embed.<span class="function">add_field</span>(
+    name=<span class="string">"Warriors vs Suns"</span>,
+    value=<span class="string">"88 - 92 | Q2 1:15"</span>,
+    inline=<span class="keyword">False</span>
+)
+
+<span class="comment"># Add footer and timestamp</span>
+embed.<span class="function">set_footer</span>(text=<span class="string">"Updated every 30 seconds"</span>)
+embed.timestamp = datetime.<span class="function">now</span>()
+
+<span class="comment"># Send the embed</span>
+<span class="keyword">await</span> ctx.<span class="function">send</span>(embed=embed)</div>
+            </div>
+
+            <h3>Buttons and Views</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">buttons.py</span>
+                    <span class="lang-tag">Python</span>
+                </div>
+                <div class="code-content"><span class="keyword">from</span> discord <span class="keyword">import</span> ui
+
+<span class="keyword">class</span> <span class="class-name">ScoreButtons</span>(ui.<span class="class-name">View</span>):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>):
+        <span class="function">super</span>().<span class="function">__init__</span>(timeout=<span class="keyword">None</span>)  <span class="comment"># Buttons never expire</span>
+
+    <span class="decorator">@ui.button</span>(label=<span class="string">"NFL"</span>, style=discord.<span class="class-name">ButtonStyle</span>.primary, emoji=<span class="string">"&#127944;"</span>)
+    <span class="keyword">async def</span> <span class="function">nfl_button</span>(<span class="keyword">self</span>, interaction, button):
+        <span class="keyword">await</span> interaction.response.<span class="function">send_message</span>(
+            <span class="string">"Fetching NFL scores..."</span>,
+            ephemeral=<span class="keyword">True</span>  <span class="comment"># Only visible to clicker</span>
+        )
+
+    <span class="decorator">@ui.button</span>(label=<span class="string">"NBA"</span>, style=discord.<span class="class-name">ButtonStyle</span>.success, emoji=<span class="string">"&#127936;"</span>)
+    <span class="keyword">async def</span> <span class="function">nba_button</span>(<span class="keyword">self</span>, interaction, button):
+        <span class="keyword">await</span> interaction.response.<span class="function">send_message</span>(
+            <span class="string">"Fetching NBA scores..."</span>,
+            ephemeral=<span class="keyword">True</span>
+        )
+
+<span class="comment"># Send message with buttons</span>
+view = <span class="class-name">ScoreButtons</span>()
+<span class="keyword">await</span> ctx.<span class="function">send</span>(<span class="string">"Select a sport:"</span>, view=view)</div>
+            </div>
+        </section>
+
+        <!-- JAVASCRIPT BASICS -->
+        <section id="js-basics" class="section">
+            <h2>&#127312; JavaScript 101</h2>
+            <p>JavaScript (JS) is used in your WorldGate Bot. It's different from Python but shares many concepts.</p>
+
+            <h3>Python vs JavaScript</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Python</th>
+                        <th>JavaScript</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Variables</td>
+                        <td><code>name = "Arthur"</code></td>
+                        <td><code>const name = "Arthur";</code></td>
+                    </tr>
+                    <tr>
+                        <td>Functions</td>
+                        <td><code>def greet(name):</code></td>
+                        <td><code>function greet(name) {</code></td>
+                    </tr>
+                    <tr>
+                        <td>Print</td>
+                        <td><code>print("Hello")</code></td>
+                        <td><code>console.log("Hello");</code></td>
+                    </tr>
+                    <tr>
+                        <td>Comments</td>
+                        <td><code># Comment</code></td>
+                        <td><code>// Comment</code></td>
+                    </tr>
+                    <tr>
+                        <td>None/Null</td>
+                        <td><code>None</code></td>
+                        <td><code>null</code> / <code>undefined</code></td>
+                    </tr>
+                    <tr>
+                        <td>Dictionary/Object</td>
+                        <td><code>{'key': 'value'}</code></td>
+                        <td><code>{key: 'value'}</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Variable Declaration</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">variables.js</span>
+                    <span class="lang-tag">JavaScript</span>
+                </div>
+                <div class="code-content"><span class="comment">// const - cannot be reassigned (use for most things)</span>
+<span class="keyword">const</span> botName = <span class="string">"WorldGate"</span>;
+
+<span class="comment">// let - can be reassigned</span>
+<span class="keyword">let</span> score = <span class="number">0</span>;
+score = <span class="number">10</span>;  <span class="comment">// OK</span>
+
+<span class="comment">// var - old style, avoid using</span>
+<span class="keyword">var</span> oldStyle = <span class="string">"don't use this"</span>;
+
+<span class="comment">// Objects (like Python dicts)</span>
+<span class="keyword">const</span> config = {
+    name: <span class="string">"WorldGate Bot"</span>,
+    version: <span class="string">"1.0.0"</span>,
+    colors: {
+        primary: <span class="number">0x5865F2</span>,
+        danger: <span class="number">0xED4245</span>
+    }
+};
+
+<span class="comment">// Arrays (like Python lists)</span>
+<span class="keyword">const</span> sports = [<span class="string">"nfl"</span>, <span class="string">"nba"</span>, <span class="string">"mlb"</span>];</div>
+            </div>
+
+            <h3>Real Example: WorldGate Config</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127758;</span>
+                    <h4>From WorldGateBot/config.json</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">config.json</span>
+                            <span class="lang-tag">JSON</span>
+                        </div>
+                        <div class="code-content">{
+    <span class="string">"colors"</span>: {
+        <span class="string">"primary"</span>: <span class="number">5793266</span>,
+        <span class="string">"success"</span>: <span class="number">5763719</span>,
+        <span class="string">"danger"</span>: <span class="number">15548997</span>,
+        <span class="string">"warning"</span>: <span class="number">16776960</span>,
+        <span class="string">"neutral"</span>: <span class="number">9807270</span>
+    },
+    <span class="string">"botOwnerId"</span>: <span class="string">"123456789"</span>,
+    <span class="string">"mainServerId"</span>: <span class="string">"987654321"</span>
+}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JAVASCRIPT FUNCTIONS -->
+        <section id="js-functions" class="section">
+            <h2>&#128736; JavaScript Functions</h2>
+            <p>JavaScript has multiple ways to define functions, including the modern "arrow function" syntax.</p>
+
+            <h3>Function Styles</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">functions.js</span>
+                    <span class="lang-tag">JavaScript</span>
+                </div>
+                <div class="code-content"><span class="comment">// Traditional function</span>
+<span class="keyword">function</span> <span class="function">greet</span>(name) {
+    <span class="keyword">return</span> <span class="string">`Hello, </span>${name}<span class="string">!`</span>;
+}
+
+<span class="comment">// Arrow function (modern, shorter)</span>
+<span class="keyword">const</span> <span class="function">greet</span> = (name) => {
+    <span class="keyword">return</span> <span class="string">`Hello, </span>${name}<span class="string">!`</span>;
+};
+
+<span class="comment">// Arrow function (one-liner)</span>
+<span class="keyword">const</span> <span class="function">greet</span> = (name) => <span class="string">`Hello, </span>${name}<span class="string">!`</span>;
+
+<span class="comment">// With default parameter</span>
+<span class="keyword">const</span> <span class="function">greet</span> = (name = <span class="string">"stranger"</span>) => <span class="string">`Hello, </span>${name}<span class="string">!`</span>;
+
+<span class="comment">// Template literals (backticks) - like Python f-strings</span>
+<span class="keyword">const</span> score = <span class="number">42</span>;
+console.<span class="function">log</span>(<span class="string">`Your score is </span>${score}<span class="string">`</span>);</div>
+            </div>
+
+            <h3>Real Example: WorldGate Helper Functions</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127758;</span>
+                    <h4>From WorldGateBot/utils/helpers.js</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">helpers.js</span>
+                            <span class="lang-tag">JavaScript</span>
+                        </div>
+                        <div class="code-content"><span class="comment">// Database helper - wraps callback in a Promise</span>
+<span class="keyword">function</span> <span class="function">dbGet</span>(db, query, params = []) {
+    <span class="keyword">return new</span> <span class="class-name">Promise</span>((resolve, reject) => {
+        db.db.<span class="function">get</span>(query, params, (err, row) => {
+            <span class="keyword">if</span> (err) <span class="function">reject</span>(err);
+            <span class="keyword">else</span> <span class="function">resolve</span>(row);
+        });
+    });
+}
+
+<span class="comment">// Medal emoji based on leaderboard position</span>
+<span class="keyword">function</span> <span class="function">getMedal</span>(index) {
+    <span class="keyword">return</span> index === <span class="number">0</span> ? <span class="string">'&#129351;'</span>
+         : index === <span class="number">1</span> ? <span class="string">'&#129352;'</span>
+         : index === <span class="number">2</span> ? <span class="string">'&#129353;'</span>
+         : <span class="string">`**</span>${index + <span class="number">1</span>}<span class="string">.**`</span>;
+}
+
+<span class="comment">// Export functions for use in other files</span>
+module.exports = {
+    dbGet,
+    getMedal
+};</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JAVASCRIPT ASYNC -->
+        <section id="js-async" class="section">
+            <h2>&#9889; JavaScript Async/Await</h2>
+            <p>JavaScript uses Promises and async/await for asynchronous operations, similar to Python.</p>
+
+            <h3>Promises</h3>
+            <p>A Promise represents a value that might not be available yet.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">promises.js</span>
+                    <span class="lang-tag">JavaScript</span>
+                </div>
+                <div class="code-content"><span class="comment">// Creating a Promise</span>
+<span class="keyword">const</span> fetchData = <span class="keyword">new</span> <span class="class-name">Promise</span>((resolve, reject) => {
+    <span class="comment">// Simulate API call</span>
+    <span class="function">setTimeout</span>(() => {
+        <span class="keyword">const</span> success = <span class="keyword">true</span>;
+        <span class="keyword">if</span> (success) {
+            <span class="function">resolve</span>({ score: <span class="number">100</span> });
+        } <span class="keyword">else</span> {
+            <span class="function">reject</span>(<span class="string">"Failed to fetch"</span>);
+        }
+    }, <span class="number">1000</span>);
+});
+
+<span class="comment">// Using the Promise with .then()</span>
+fetchData
+    .<span class="function">then</span>(data => console.<span class="function">log</span>(data))
+    .<span class="function">catch</span>(error => console.<span class="function">log</span>(error));</div>
+            </div>
+
+            <h3>Async/Await (Cleaner Syntax)</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">async_await.js</span>
+                    <span class="lang-tag">JavaScript</span>
+                </div>
+                <div class="code-content"><span class="comment">// async function - can use await inside</span>
+<span class="keyword">async function</span> <span class="function">getStats</span>() {
+    <span class="keyword">try</span> {
+        <span class="comment">// await pauses until Promise resolves</span>
+        <span class="keyword">const</span> totalCases = <span class="keyword">await</span> <span class="function">dbGet</span>(db, <span class="string">'SELECT COUNT(*) FROM cases'</span>);
+        <span class="keyword">const</span> openCases = <span class="keyword">await</span> <span class="function">dbGet</span>(db, <span class="string">"SELECT COUNT(*) FROM cases WHERE status = 'OPEN'"</span>);
+
+        <span class="keyword">return</span> { totalCases, openCases };
+    } <span class="keyword">catch</span> (error) {
+        console.<span class="function">error</span>(<span class="string">'Error:'</span>, error);
+    }
+}
+
+<span class="comment">// Arrow function version</span>
+<span class="keyword">const</span> <span class="function">getStats</span> = <span class="keyword">async</span> () => {
+    <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="function">dbGet</span>(db, <span class="string">'SELECT * FROM stats'</span>);
+    <span class="keyword">return</span> result;
+};</div>
+            </div>
+
+            <h3>Real Example: WorldGate Stats Command</h3>
+
+            <div class="bot-example">
+                <div class="header">
+                    <span class="icon">&#127758;</span>
+                    <h4>From WorldGateBot/commands/stats.js</h4>
+                </div>
+                <div class="content">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="filename">stats.js</span>
+                            <span class="lang-tag">JavaScript</span>
+                        </div>
+                        <div class="code-content"><span class="keyword">const</span> { dbGet, dbAll } = <span class="function">require</span>(<span class="string">'../utils/helpers'</span>);
+
+<span class="keyword">async</span> <span class="function">execute</span>(interaction, client) {
+    <span class="keyword">await</span> interaction.<span class="function">deferReply</span>({ ephemeral: <span class="keyword">true</span> });
+
+    <span class="keyword">try</span> {
+        <span class="keyword">const</span> db = client.db;
+
+        <span class="comment">// Multiple await calls - clean and readable</span>
+        <span class="keyword">const</span> totalCases = (<span class="keyword">await</span> <span class="function">dbGet</span>(db, <span class="string">'SELECT COUNT(*) as count FROM cases'</span>)).count;
+        <span class="keyword">const</span> openCases = (<span class="keyword">await</span> <span class="function">dbGet</span>(db, <span class="string">"SELECT COUNT(*) as count FROM cases WHERE status = 'OPEN'"</span>)).count;
+        <span class="keyword">const</span> topVoters = <span class="keyword">await</span> <span class="function">dbAll</span>(db, <span class="string">'SELECT voter_username, COUNT(*) as count FROM votes GROUP BY voter_id ORDER BY count DESC LIMIT 5'</span>);
+
+        <span class="comment">// Build and send embed...</span>
+    } <span class="keyword">catch</span> (error) {
+        console.<span class="function">error</span>(<span class="string">'Error fetching statistics:'</span>, error);
+    }
+}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPORTS BOT DEEP DIVE -->
+        <section id="sports-bot" class="section">
+            <h2>&#127936; Sports Bot Deep Dive</h2>
+            <p>Let's explore how your Sports Bot works in detail.</p>
+
+            <h3>Architecture Overview</h3>
+
+            <div class="diagram">
+                <div class="box">Discord Commands</div>
+                <span class="arrow">&#8594;</span>
+                <div class="box">Bot.py</div>
+                <span class="arrow">&#8594;</span>
+                <div class="box">ESPN API</div>
+                <br><br>
+                <div class="box">Background Tasks</div>
+                <span class="arrow">&#8594;</span>
+                <div class="box">GameTracker</div>
+                <span class="arrow">&#8594;</span>
+                <div class="box">Discord Channels</div>
+            </div>
+
+            <h3>Key Components</h3>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>GameTracker Class</h4>
+                    <p>Stores all game data, settings, and thread references. Central data hub.</p>
+                </div>
+                <div class="card">
+                    <h4>ESPN API Integration</h4>
+                    <p>Fetches live scores, schedules, and statistics from ESPN's public API.</p>
+                </div>
+                <div class="card">
+                    <h4>Background Tasks</h4>
+                    <p>game_monitor runs every 10 minutes, title_score_updater updates thread names.</p>
+                </div>
+                <div class="card">
+                    <h4>Forum Threads</h4>
+                    <p>Creates threads in forum channels for each game with live updates.</p>
+                </div>
+            </div>
+
+            <h3>How Game Updates Work</h3>
+
+            <ol>
+                <li><strong>Fetch</strong> - ESPN API returns game data every 30 seconds</li>
+                <li><strong>Compare</strong> - Check if score changed from last update</li>
+                <li><strong>Format</strong> - Build embed with current scores and stats</li>
+                <li><strong>Post</strong> - Edit existing message or create new one</li>
+                <li><strong>Track</strong> - Store message ID for future updates</li>
+            </ol>
+
+            <h3>Study These Files</h3>
+            <ul>
+                <li><strong>bot.py lines 85-113</strong> - Helper functions</li>
+                <li><strong>bot.py GameTracker class</strong> - Data management</li>
+                <li><strong>bot.py fetch_games()</strong> - API integration</li>
+                <li><strong>bot.py game_monitor task</strong> - Background processing</li>
+            </ul>
+        </section>
+
+        <!-- WORLDGATE BOT -->
+        <section id="worldgate-bot" class="section">
+            <h2>&#127758; WorldGate Bot (JavaScript)</h2>
+            <p>WorldGate is built with Discord.js (JavaScript) instead of Discord.py. Let's see the differences!</p>
+
+            <h3>Project Structure</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">worldgate-judicial-bot/</span>
+                    <span class="lang-tag">Structure</span>
+                </div>
+                <div class="code-content">worldgate-judicial-bot/
+├── index.js           <span class="comment">// Main entry point</span>
+├── config.json        <span class="comment">// Bot configuration</span>
+├── commands/          <span class="comment">// Slash command files</span>
+│   ├── report.js      <span class="comment">// /report command</span>
+│   ├── stats.js       <span class="comment">// /stats command</span>
+│   ├── leaderboard.js <span class="comment">// /leaderboard command</span>
+│   └── lookup.js      <span class="comment">// /lookup command</span>
+├── utils/
+│   └── helpers.js     <span class="comment">// Helper functions</span>
+└── events/
+    └── ready.js       <span class="comment">// Bot ready event</span></div>
+            </div>
+
+            <h3>Discord.py vs Discord.js</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Discord.py (Python)</th>
+                        <th>Discord.js (JavaScript)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Import</td>
+                        <td><code>import discord</code></td>
+                        <td><code>require('discord.js')</code></td>
+                    </tr>
+                    <tr>
+                        <td>Create Bot</td>
+                        <td><code>bot = commands.Bot()</code></td>
+                        <td><code>new Client()</code></td>
+                    </tr>
+                    <tr>
+                        <td>Commands</td>
+                        <td><code>@bot.command()</code></td>
+                        <td>Separate files in /commands</td>
+                    </tr>
+                    <tr>
+                        <td>Run Bot</td>
+                        <td><code>bot.run(TOKEN)</code></td>
+                        <td><code>client.login(TOKEN)</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Slash Command Structure</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">commands/stats.js</span>
+                    <span class="lang-tag">JavaScript</span>
+                </div>
+                <div class="code-content"><span class="keyword">const</span> { SlashCommandBuilder, EmbedBuilder } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+module.exports = {
+    <span class="comment">// Define the command</span>
+    data: <span class="keyword">new</span> <span class="class-name">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'stats'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'View statistics'</span>),
+
+    <span class="comment">// Execute the command</span>
+    <span class="keyword">async</span> <span class="function">execute</span>(interaction, client) {
+        <span class="keyword">await</span> interaction.<span class="function">deferReply</span>({ ephemeral: <span class="keyword">true</span> });
+
+        <span class="comment">// Build response...</span>
+        <span class="keyword">const</span> embed = <span class="keyword">new</span> <span class="class-name">EmbedBuilder</span>()
+            .<span class="function">setTitle</span>(<span class="string">'Statistics'</span>)
+            .<span class="function">setColor</span>(<span class="number">0x5865F2</span>);
+
+        <span class="keyword">await</span> interaction.<span class="function">editReply</span>({ embeds: [embed] });
+    }
+};</div>
+            </div>
+        </section>
+
+        <!-- RESOURCES -->
+        <section id="resources" class="section">
+            <h2>&#128214; Learning Resources</h2>
+            <p>Here are the best places to continue learning:</p>
+
+            <h3>Python Resources</h3>
+
+            <a href="https://www.w3schools.com/python/" target="_blank" class="resource-link">
+                <span class="icon">&#127919;</span>
+                <div class="details">
+                    <h5>W3Schools Python Tutorial</h5>
+                    <p>Interactive tutorials with "Try it Yourself" examples</p>
+                </div>
+            </a>
+
+            <a href="https://docs.python.org/3/tutorial/" target="_blank" class="resource-link">
+                <span class="icon">&#128013;</span>
+                <div class="details">
+                    <h5>Official Python Tutorial</h5>
+                    <p>Comprehensive guide from Python's creators</p>
+                </div>
+            </a>
+
+            <a href="https://realpython.com/" target="_blank" class="resource-link">
+                <span class="icon">&#128218;</span>
+                <div class="details">
+                    <h5>Real Python</h5>
+                    <p>In-depth articles and tutorials for all levels</p>
+                </div>
+            </a>
+
+            <h3>JavaScript Resources</h3>
+
+            <a href="https://www.w3schools.com/js/" target="_blank" class="resource-link">
+                <span class="icon">&#127919;</span>
+                <div class="details">
+                    <h5>W3Schools JavaScript Tutorial</h5>
+                    <p>Learn JavaScript fundamentals interactively</p>
+                </div>
+            </a>
+
+            <a href="https://javascript.info/" target="_blank" class="resource-link">
+                <span class="icon">&#127312;</span>
+                <div class="details">
+                    <h5>JavaScript.info</h5>
+                    <p>Modern JavaScript tutorial - beginner to advanced</p>
+                </div>
+            </a>
+
+            <h3>Discord Bot Resources</h3>
+
+            <a href="https://discordpy.readthedocs.io/" target="_blank" class="resource-link">
+                <span class="icon">&#128013;</span>
+                <div class="details">
+                    <h5>Discord.py Documentation</h5>
+                    <p>Official docs for the Python Discord library</p>
+                </div>
+            </a>
+
+            <a href="https://discord.js.org/" target="_blank" class="resource-link">
+                <span class="icon">&#127312;</span>
+                <div class="details">
+                    <h5>Discord.js Guide</h5>
+                    <p>Official guide for the JavaScript Discord library</p>
+                </div>
+            </a>
+
+            <a href="https://discord.com/developers/docs" target="_blank" class="resource-link">
+                <span class="icon">&#129302;</span>
+                <div class="details">
+                    <h5>Discord Developer Portal</h5>
+                    <p>Official Discord API documentation</p>
+                </div>
+            </a>
+
+            <h3>Video Resources</h3>
+
+            <a href="https://www.youtube.com/results?search_query=discord.py+tutorial" target="_blank" class="resource-link">
+                <span class="icon">&#127909;</span>
+                <div class="details">
+                    <h5>Discord.py Tutorials on YouTube</h5>
+                    <p>Video tutorials for visual learners</p>
+                </div>
+            </a>
+
+            <a href="https://www.youtube.com/results?search_query=python+for+beginners" target="_blank" class="resource-link">
+                <span class="icon">&#127909;</span>
+                <div class="details">
+                    <h5>Python Beginner Tutorials</h5>
+                    <p>Start from scratch with video guides</p>
+                </div>
+            </a>
+
+            <div class="info-box tip">
+                <h5>&#128161; Learning Tip</h5>
+                <p>The best way to learn is by doing! Pick a small feature to add to one of your bots and try to implement it. When you get stuck, search for help or ask Claude!</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function checkAnswer(element, isCorrect) {
+            // Reset all options
+            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            // Mark this answer
+            if (isCorrect) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+                // Show correct answer
+                element.parentElement.querySelector('.quiz-option:first-of-type').classList.add('correct');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord.py Bot Development - Bot Academy</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-yellow: #f0c000;
+            --border-color: #30363d;
+            --discord-blurple: #5865F2;
+            --discord-green: #57F287;
+            --discord-yellow: #FEE75C;
+            --discord-fuchsia: #EB459E;
+            --discord-red: #ED4245;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .sidebar-header h1 {
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-header .discord-logo {
+            font-size: 1.8rem;
+        }
+        .sidebar-header p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        .nav-section {
+            margin-bottom: 10px;
+        }
+        .nav-section-title {
+            padding: 10px 20px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: var(--bg-card);
+            border-left-color: var(--discord-blurple);
+        }
+        .nav-link.active {
+            background: rgba(88, 101, 242, 0.15);
+            border-left-color: var(--discord-blurple);
+            color: var(--discord-blurple);
+        }
+        .nav-link .lesson-num {
+            background: var(--bg-card);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .back-link {
+            display: block;
+            padding: 15px 20px;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .back-link:hover {
+            background: var(--bg-card);
+        }
+        .progress-bar {
+            background: var(--bg-card);
+            border-radius: 10px;
+            height: 8px;
+            margin: 15px 0 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--discord-blurple), var(--discord-fuchsia));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            padding: 40px 60px;
+            max-width: 1100px;
+        }
+
+        .lesson {
+            display: none;
+        }
+        .lesson.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        .lesson-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .lesson-header .lesson-number {
+            color: var(--discord-blurple);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .lesson-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .lesson-header .lesson-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 40px 0 20px;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h4 {
+            font-size: 1.2rem;
+            margin: 30px 0 15px;
+            color: var(--accent-green);
+        }
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 16px 0 16px 24px;
+        }
+        li { margin-bottom: 8px; }
+
+        /* Video Container */
+        .video-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .video-container h5 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--accent-red);
+        }
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-red);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .video-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(248, 81, 73, 0.3);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            background: var(--bg-card);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-header .filename {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+        .code-header .lang-badge {
+            background: var(--discord-blurple);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .code-content {
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+        .code-content pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: var(--accent-purple); font-weight: 500; }
+        .string { color: var(--accent-green); }
+        .comment { color: var(--text-secondary); font-style: italic; }
+        .function { color: var(--accent-blue); }
+        .number { color: var(--accent-orange); }
+        .builtin { color: var(--accent-blue); }
+        .decorator { color: var(--accent-orange); }
+        .class-name { color: var(--discord-green); }
+
+        /* Info Boxes */
+        .info-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .info-box.tip { border-left: 4px solid var(--accent-green); }
+        .info-box.warning { border-left: 4px solid var(--accent-orange); }
+        .info-box.important { border-left: 4px solid var(--discord-blurple); }
+        .info-box h5 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .info-box.tip h5 { color: var(--accent-green); }
+        .info-box.warning h5 { color: var(--accent-orange); }
+        .info-box.important h5 { color: var(--discord-blurple); }
+
+        /* Diagram */
+        .diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .diagram h5 {
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+        }
+        .diagram-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .diagram-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--discord-blurple);
+            border-radius: 8px;
+            padding: 15px 25px;
+            min-width: 120px;
+        }
+        .diagram-arrow {
+            color: var(--accent-orange);
+            font-size: 1.5rem;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.1), rgba(235, 69, 158, 0.1));
+            border: 2px solid var(--discord-blurple);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        .quiz-section h4 {
+            color: var(--discord-blurple);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quiz-question {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .quiz-question p {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            border-color: var(--discord-blurple);
+            background: rgba(88, 101, 242, 0.1);
+        }
+        .quiz-option.correct {
+            border-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.15);
+        }
+        .quiz-option.incorrect {
+            border-color: var(--accent-red);
+            background: rgba(248, 81, 73, 0.15);
+        }
+        .quiz-option input { display: none; }
+        .quiz-option .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct {
+            background: rgba(63, 185, 80, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+        .quiz-feedback.incorrect {
+            background: rgba(248, 81, 73, 0.15);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+        .check-answer-btn {
+            background: var(--discord-blurple);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+        .check-answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Bot Example */
+        .bot-example {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        .bot-example-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .bot-example-header .bot-icon { font-size: 2rem; }
+        .bot-example-header h5 {
+            color: var(--discord-blurple);
+            font-size: 1.1rem;
+        }
+        .bot-example-header .bot-name {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        th {
+            background: var(--bg-card);
+            color: var(--discord-blurple);
+            font-weight: 600;
+        }
+        td { color: var(--text-secondary); }
+        tr:nth-child(even) { background: var(--bg-secondary); }
+
+        /* Navigation */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            border-color: var(--discord-blurple);
+        }
+        .nav-btn.primary {
+            background: var(--discord-blurple);
+            border-color: var(--discord-blurple);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <a href="learn-to-code.html" class="back-link">← Back to All Courses</a>
+        <div class="sidebar-header">
+            <h1><span class="discord-logo">🤖</span> Discord.py</h1>
+            <p>Bot Development Course</p>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Getting Started</div>
+            <a href="#lesson1" class="nav-link active" data-lesson="1">
+                <span class="lesson-num">1</span>
+                Your First Bot
+            </a>
+            <a href="#lesson2" class="nav-link" data-lesson="2">
+                <span class="lesson-num">2</span>
+                Bot Events
+            </a>
+            <a href="#lesson3" class="nav-link" data-lesson="3">
+                <span class="lesson-num">3</span>
+                Commands
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Slash Commands</div>
+            <a href="#lesson4" class="nav-link" data-lesson="4">
+                <span class="lesson-num">4</span>
+                Slash Commands Basics
+            </a>
+            <a href="#lesson5" class="nav-link" data-lesson="5">
+                <span class="lesson-num">5</span>
+                Command Options
+            </a>
+            <a href="#lesson6" class="nav-link" data-lesson="6">
+                <span class="lesson-num">6</span>
+                Embeds
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Advanced Features</div>
+            <a href="#lesson7" class="nav-link" data-lesson="7">
+                <span class="lesson-num">7</span>
+                Buttons & Views
+            </a>
+            <a href="#lesson8" class="nav-link" data-lesson="8">
+                <span class="lesson-num">8</span>
+                Select Menus
+            </a>
+            <a href="#lesson9" class="nav-link" data-lesson="9">
+                <span class="lesson-num">9</span>
+                Modals
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Bot Architecture</div>
+            <a href="#lesson10" class="nav-link" data-lesson="10">
+                <span class="lesson-num">10</span>
+                Cogs & Extensions
+            </a>
+            <a href="#lesson11" class="nav-link" data-lesson="11">
+                <span class="lesson-num">11</span>
+                Tasks & Loops
+            </a>
+            <a href="#lesson12" class="nav-link" data-lesson="12">
+                <span class="lesson-num">12</span>
+                Error Handling
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Lesson 1 -->
+        <div class="lesson active" id="lesson1">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 1</div>
+                <h2>Your First Discord Bot</h2>
+                <p class="lesson-desc">Set up and run your first Discord.py bot.</p>
+            </div>
+
+            <h3>🚀 What is Discord.py?</h3>
+            <p>Discord.py is a Python library that lets you create Discord bots. It handles all the communication with Discord's API, so you can focus on building features!</p>
+
+            <div class="info-box important">
+                <h5>📋 Prerequisites</h5>
+                <ul>
+                    <li>Python 3.8 or higher installed</li>
+                    <li>A Discord account</li>
+                    <li>A Discord server where you're admin (for testing)</li>
+                    <li>Basic Python knowledge (see Python course)</li>
+                </ul>
+            </div>
+
+            <h3>📦 Installation</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">Terminal</span>
+                    <span class="lang-badge">Shell</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Install discord.py</span>
+pip install discord.py
+
+<span class="comment"># Install with voice support (optional)</span>
+pip install discord.py[voice]
+
+<span class="comment"># Also install python-dotenv for environment variables</span>
+pip install python-dotenv</pre>
+                </div>
+            </div>
+
+            <h3>🔑 Creating Your Bot on Discord</h3>
+            <ol>
+                <li>Go to <a href="https://discord.com/developers/applications" style="color: var(--discord-blurple);">Discord Developer Portal</a></li>
+                <li>Click "New Application" and give it a name</li>
+                <li>Go to the "Bot" tab and click "Add Bot"</li>
+                <li>Click "Reset Token" and copy your bot token</li>
+                <li>Enable "Message Content Intent" under Privileged Gateway Intents</li>
+                <li>Go to OAuth2 → URL Generator, select "bot" and "applications.commands"</li>
+                <li>Select permissions and use the generated URL to invite your bot</li>
+            </ol>
+
+            <div class="info-box warning">
+                <h5>⚠️ Keep Your Token Secret!</h5>
+                <p>Never share your bot token or commit it to GitHub. Anyone with your token can control your bot!</p>
+            </div>
+
+            <h3>📝 Your First Bot Code</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">.env</span>
+                    <span class="lang-badge">ENV</span>
+                </div>
+                <div class="code-content">
+<pre>DISCORD_TOKEN=your_bot_token_here</pre>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">bot.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">import</span> discord
+<span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+<span class="keyword">import</span> os
+<span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv
+
+<span class="comment"># Load environment variables</span>
+load_dotenv()
+
+<span class="comment"># Set up intents (permissions for your bot)</span>
+intents = discord.Intents.default()
+intents.message_content = <span class="keyword">True</span>  <span class="comment"># Required to read message content</span>
+
+<span class="comment"># Create the bot</span>
+bot = commands.Bot(command_prefix=<span class="string">'!'</span>, intents=intents)
+
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="string">"""Called when the bot is ready and connected."""</span>
+    <span class="builtin">print</span>(<span class="string">f'Logged in as {bot.user.name} (ID: {bot.user.id})'</span>)
+    <span class="builtin">print</span>(<span class="string">'------'</span>)
+
+<span class="decorator">@bot.command</span>()
+<span class="keyword">async def</span> <span class="function">ping</span>(ctx):
+    <span class="string">"""Simple ping command to test the bot."""</span>
+    <span class="keyword">await</span> ctx.send(<span class="string">'Pong!'</span>)
+
+<span class="comment"># Run the bot</span>
+bot.run(os.getenv(<span class="string">'DISCORD_TOKEN'</span>))</pre>
+                </div>
+            </div>
+
+            <h3>▶️ Running Your Bot</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">Terminal</span>
+                    <span class="lang-badge">Shell</span>
+                </div>
+                <div class="code-content">
+<pre>python bot.py</pre>
+                </div>
+            </div>
+
+            <p>If successful, you'll see "Logged in as YourBotName" in the console. Go to your Discord server and type <code>!ping</code> to test!</p>
+
+            <div class="video-container">
+                <h5>📺 Video: Discord.py Setup Guide</h5>
+                <p style="margin-bottom: 15px;">Visual walkthrough of bot setup:</p>
+                <a href="https://www.youtube.com/watch?v=SPTfmiYiuok" target="_blank" class="video-link">
+                    ▶️ Watch on YouTube
+                </a>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What command installs discord.py?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>npm install discord.py</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>pip install discord.py</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>install discord.py</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>python install discord</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> Why should you never share your bot token?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>It will slow down your bot</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Discord will ban you</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Anyone can control your bot with it</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>It expires after 24 hours</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <span></span>
+                <a href="#lesson2" class="nav-btn primary" onclick="goToLesson(2)">
+                    Next: Bot Events →
+                </a>
+            </div>
+        </div>
+
+        <!-- Lesson 2 -->
+        <div class="lesson" id="lesson2">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 2</div>
+                <h2>Bot Events</h2>
+                <p class="lesson-desc">Learn how your bot responds to Discord events.</p>
+            </div>
+
+            <h3>📡 What are Events?</h3>
+            <p>Events are things that happen on Discord - messages sent, members joining, reactions added, etc. Your bot can listen for these events and respond to them.</p>
+
+            <div class="diagram">
+                <h5>Event Flow</h5>
+                <div class="diagram-content">
+                    <div class="diagram-box">Discord</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Event</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Your Bot</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Response</div>
+                </div>
+            </div>
+
+            <h3>🎯 Common Events</h3>
+            <table>
+                <tr>
+                    <th>Event</th>
+                    <th>When it fires</th>
+                </tr>
+                <tr>
+                    <td><code>on_ready</code></td>
+                    <td>Bot connects and is ready</td>
+                </tr>
+                <tr>
+                    <td><code>on_message</code></td>
+                    <td>A message is sent in any channel</td>
+                </tr>
+                <tr>
+                    <td><code>on_member_join</code></td>
+                    <td>A new member joins a server</td>
+                </tr>
+                <tr>
+                    <td><code>on_member_remove</code></td>
+                    <td>A member leaves a server</td>
+                </tr>
+                <tr>
+                    <td><code>on_reaction_add</code></td>
+                    <td>Someone adds a reaction</td>
+                </tr>
+            </table>
+
+            <h3>📝 Event Examples</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">events.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="string">"""Called when bot is ready."""</span>
+    <span class="builtin">print</span>(<span class="string">f'{bot.user} is online!'</span>)
+    <span class="comment"># Set bot status</span>
+    <span class="keyword">await</span> bot.change_presence(
+        activity=discord.Game(name=<span class="string">"!help for commands"</span>)
+    )
+
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_message</span>(message):
+    <span class="string">"""Called when any message is sent."""</span>
+    <span class="comment"># Ignore messages from the bot itself</span>
+    <span class="keyword">if</span> message.author == bot.user:
+        <span class="keyword">return</span>
+
+    <span class="comment"># Respond to specific words</span>
+    <span class="keyword">if</span> <span class="string">'hello'</span> <span class="keyword">in</span> message.content.lower():
+        <span class="keyword">await</span> message.channel.send(<span class="string">f'Hello {message.author.name}!'</span>)
+
+    <span class="comment"># IMPORTANT: Process commands after custom on_message</span>
+    <span class="keyword">await</span> bot.process_commands(message)
+
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_member_join</span>(member):
+    <span class="string">"""Called when a member joins the server."""</span>
+    <span class="comment"># Find a welcome channel</span>
+    channel = discord.utils.get(member.guild.text_channels, name=<span class="string">'welcome'</span>)
+    <span class="keyword">if</span> channel:
+        <span class="keyword">await</span> channel.send(<span class="string">f'Welcome to the server, {member.mention}!'</span>)</pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h5>⚠️ Important: process_commands()</h5>
+                <p>If you use <code>on_message</code>, you MUST call <code>await bot.process_commands(message)</code> at the end, or your commands won't work!</p>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏈</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">Event handling example</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="builtin">print</span>(<span class="string">f'{bot.user} is online!'</span>)
+    <span class="builtin">print</span>(<span class="string">f'Connected to {len(bot.guilds)} servers'</span>)
+
+    <span class="comment"># Sync slash commands</span>
+    <span class="keyword">try</span>:
+        synced = <span class="keyword">await</span> bot.tree.sync()
+        <span class="builtin">print</span>(<span class="string">f'Synced {len(synced)} commands'</span>)
+    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+        <span class="builtin">print</span>(<span class="string">f'Error syncing: {e}'</span>)
+
+    <span class="comment"># Start the game monitoring loop</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> game_monitor.is_running():
+        game_monitor.start()</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 1:</strong> What event fires when a message is sent?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>on_message</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>on_send</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>message_received</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>on_chat</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What must you call at the end of on_message to keep commands working?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>bot.run_commands()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>return message</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>await bot.process_commands(message)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>message.process()</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson1" class="nav-btn" onclick="goToLesson(1)">
+                    ← Previous
+                </a>
+                <a href="#lesson3" class="nav-btn primary" onclick="goToLesson(3)">
+                    Next: Commands →
+                </a>
+            </div>
+        </div>
+
+        <!-- Lesson 3 -->
+        <div class="lesson" id="lesson3">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 3</div>
+                <h2>Text Commands</h2>
+                <p class="lesson-desc">Create commands that users can trigger with a prefix.</p>
+            </div>
+
+            <h3>⌨️ Prefix Commands</h3>
+            <p>Prefix commands start with a symbol like <code>!</code> or <code>?</code>. While slash commands are now preferred, prefix commands are still useful for quick testing and admin utilities.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">commands.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Basic command</span>
+<span class="decorator">@bot.command</span>()
+<span class="keyword">async def</span> <span class="function">hello</span>(ctx):
+    <span class="string">"""Says hello to the user."""</span>
+    <span class="keyword">await</span> ctx.send(<span class="string">f'Hello, {ctx.author.name}!'</span>)
+
+<span class="comment"># Command with arguments</span>
+<span class="decorator">@bot.command</span>()
+<span class="keyword">async def</span> <span class="function">say</span>(ctx, *, message):
+    <span class="string">"""Repeats what you say."""</span>
+    <span class="keyword">await</span> ctx.send(message)
+
+<span class="comment"># Command with multiple arguments</span>
+<span class="decorator">@bot.command</span>()
+<span class="keyword">async def</span> <span class="function">add</span>(ctx, num1: <span class="builtin">int</span>, num2: <span class="builtin">int</span>):
+    <span class="string">"""Adds two numbers."""</span>
+    result = num1 + num2
+    <span class="keyword">await</span> ctx.send(<span class="string">f'{num1} + {num2} = {result}'</span>)</pre>
+                </div>
+            </div>
+
+            <h3>📋 The Context Object (ctx)</h3>
+            <p>Every command receives a <code>ctx</code> (context) object with useful information:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">context.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="decorator">@bot.command</span>()
+<span class="keyword">async def</span> <span class="function">info</span>(ctx):
+    <span class="comment"># Who sent the command</span>
+    author = ctx.author           <span class="comment"># User object</span>
+    author_name = ctx.author.name <span class="comment"># Username</span>
+    author_id = ctx.author.id     <span class="comment"># User ID</span>
+
+    <span class="comment"># Where the command was sent</span>
+    channel = ctx.channel         <span class="comment"># Channel object</span>
+    guild = ctx.guild             <span class="comment"># Server object</span>
+
+    <span class="comment"># The message that triggered the command</span>
+    message = ctx.message
+
+    <span class="comment"># Responding</span>
+    <span class="keyword">await</span> ctx.send(<span class="string">"Sends a message"</span>)
+    <span class="keyword">await</span> ctx.reply(<span class="string">"Replies to the command message"</span>)</pre>
+                </div>
+            </div>
+
+            <h3>🔒 Permission Checks</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">permissions.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+
+<span class="comment"># Require administrator permission</span>
+<span class="decorator">@bot.command</span>()
+<span class="decorator">@commands.has_permissions</span>(administrator=<span class="keyword">True</span>)
+<span class="keyword">async def</span> <span class="function">admin_only</span>(ctx):
+    <span class="keyword">await</span> ctx.send(<span class="string">'You are an admin!'</span>)
+
+<span class="comment"># Require specific role</span>
+<span class="decorator">@bot.command</span>()
+<span class="decorator">@commands.has_role</span>(<span class="string">'Moderator'</span>)
+<span class="keyword">async def</span> <span class="function">mod_only</span>(ctx):
+    <span class="keyword">await</span> ctx.send(<span class="string">'You are a mod!'</span>)
+
+<span class="comment"># Check if user is bot owner</span>
+<span class="decorator">@bot.command</span>()
+<span class="decorator">@commands.is_owner</span>()
+<span class="keyword">async def</span> <span class="function">owner_only</span>(ctx):
+    <span class="keyword">await</span> ctx.send(<span class="string">'You own this bot!'</span>)</pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏈</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">Admin command example</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="decorator">@bot.command</span>(name=<span class="string">'post_update'</span>)
+<span class="decorator">@commands.has_permissions</span>(administrator=<span class="keyword">True</span>)
+<span class="keyword">async def</span> <span class="function">post_update</span>(ctx, bot_key: <span class="builtin">str</span> = <span class="keyword">None</span>, version: <span class="builtin">str</span> = <span class="keyword">None</span>, *, changes: <span class="builtin">str</span> = <span class="keyword">None</span>):
+    <span class="string">"""Directly post a changelog update."""</span>
+    guild_id = <span class="builtin">str</span>(ctx.guild.id)
+
+    <span class="keyword">if</span> <span class="keyword">not</span> bot_key:
+        bot_list = <span class="string">', '</span>.join(BOTS_CONFIG.keys())
+        <span class="keyword">await</span> ctx.send(<span class="string">f'Usage: `!post_update &lt;bot&gt; &lt;version&gt; &lt;changes&gt;`\n'</span>
+                      <span class="string">f'Available bots: {bot_list}'</span>)
+        <span class="keyword">return</span>
+
+    <span class="comment"># ... rest of command logic</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What does <code>*</code> before a parameter name do?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Makes it optional</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Captures all remaining text as one argument</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Makes it required</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Multiplies the value</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="d">
+                    <p><strong>Question 2:</strong> How do you get the username of who sent a command?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>ctx.user.name</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>ctx.sender.name</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>message.author.name</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>ctx.author.name</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson2" class="nav-btn" onclick="goToLesson(2)">
+                    ← Previous
+                </a>
+                <a href="#lesson4" class="nav-btn primary" onclick="goToLesson(4)">
+                    Next: Slash Commands →
+                </a>
+            </div>
+        </div>
+
+        <!-- Lesson 4 -->
+        <div class="lesson" id="lesson4">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 4</div>
+                <h2>Slash Commands Basics</h2>
+                <p class="lesson-desc">Create modern slash commands with autocompletion.</p>
+            </div>
+
+            <h3>⚡ What are Slash Commands?</h3>
+            <p>Slash commands start with <code>/</code> and show up in Discord's command picker with descriptions and autocomplete. They're the modern way to build bot commands!</p>
+
+            <div class="info-box tip">
+                <h5>✅ Why Use Slash Commands?</h5>
+                <ul>
+                    <li>Users can discover commands by typing <code>/</code></li>
+                    <li>Built-in argument validation</li>
+                    <li>Descriptions and help text</li>
+                    <li>Discord's official recommended approach</li>
+                </ul>
+            </div>
+
+            <h3>📝 Creating Slash Commands</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">slash_commands.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">import</span> discord
+<span class="keyword">from</span> discord <span class="keyword">import</span> app_commands
+<span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+
+<span class="comment"># Create bot with command tree</span>
+bot = commands.Bot(command_prefix=<span class="string">'!'</span>, intents=discord.Intents.default())
+
+<span class="comment"># Simple slash command</span>
+<span class="decorator">@bot.tree.command</span>(name=<span class="string">"ping"</span>, description=<span class="string">"Check bot latency"</span>)
+<span class="keyword">async def</span> <span class="function">ping</span>(interaction: discord.Interaction):
+    latency = <span class="builtin">round</span>(bot.latency * <span class="number">1000</span>)
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">f'Pong! {latency}ms'</span>)
+
+<span class="comment"># Slash command with argument</span>
+<span class="decorator">@bot.tree.command</span>(name=<span class="string">"greet"</span>, description=<span class="string">"Greet a user"</span>)
+<span class="keyword">async def</span> <span class="function">greet</span>(interaction: discord.Interaction, user: discord.Member):
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">f'Hello, {user.mention}!'</span>)
+
+<span class="comment"># Sync commands when bot is ready</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="keyword">await</span> bot.tree.sync()  <span class="comment"># Sync to all servers</span>
+    <span class="builtin">print</span>(<span class="string">f'Synced commands!'</span>)</pre>
+                </div>
+            </div>
+
+            <h3>🔄 Interaction vs Context</h3>
+            <p>Slash commands use <code>interaction</code> instead of <code>ctx</code>:</p>
+
+            <table>
+                <tr>
+                    <th>Prefix Command (ctx)</th>
+                    <th>Slash Command (interaction)</th>
+                </tr>
+                <tr>
+                    <td><code>ctx.send()</code></td>
+                    <td><code>interaction.response.send_message()</code></td>
+                </tr>
+                <tr>
+                    <td><code>ctx.author</code></td>
+                    <td><code>interaction.user</code></td>
+                </tr>
+                <tr>
+                    <td><code>ctx.guild</code></td>
+                    <td><code>interaction.guild</code></td>
+                </tr>
+                <tr>
+                    <td><code>ctx.channel</code></td>
+                    <td><code>interaction.channel</code></td>
+                </tr>
+            </table>
+
+            <h3>📨 Response Types</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">responses.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="decorator">@bot.tree.command</span>(name=<span class="string">"example"</span>)
+<span class="keyword">async def</span> <span class="function">example</span>(interaction: discord.Interaction):
+    <span class="comment"># Normal response</span>
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">"Hello!"</span>)
+
+    <span class="comment"># Ephemeral (only visible to user)</span>
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">"Secret!"</span>, ephemeral=<span class="keyword">True</span>)
+
+    <span class="comment"># Deferred response (for slow operations)</span>
+    <span class="keyword">await</span> interaction.response.defer()
+    <span class="comment"># ... do slow operation ...</span>
+    <span class="keyword">await</span> interaction.followup.send(<span class="string">"Done!"</span>)</pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h5>⚠️ Response Timeout</h5>
+                <p>You must respond to a slash command within 3 seconds. Use <code>defer()</code> if you need more time, then <code>followup.send()</code> when done.</p>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏈</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">Slash command example</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="decorator">@bot.tree.command</span>(name=<span class="string">"scores"</span>, description=<span class="string">"Get today's game scores"</span>)
+<span class="decorator">@app_commands.describe</span>(sport=<span class="string">"The sport to check"</span>)
+<span class="keyword">async def</span> <span class="function">scores</span>(interaction: discord.Interaction, sport: <span class="builtin">str</span>):
+    <span class="keyword">await</span> interaction.response.defer()  <span class="comment"># API call takes time</span>
+
+    games = <span class="keyword">await</span> fetch_games(sport)
+    embed = create_scores_embed(games)
+
+    <span class="keyword">await</span> interaction.followup.send(embed=embed)</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> How do you send a response to a slash command?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>interaction.send()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>interaction.response.send_message()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>ctx.send()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>interaction.reply()</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What should you do if your command takes more than 3 seconds?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Use a prefix command instead</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Send an empty response first</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Use defer() then followup.send()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Increase the timeout setting</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson3" class="nav-btn" onclick="goToLesson(3)">
+                    ← Previous
+                </a>
+                <a href="#lesson5" class="nav-btn primary" onclick="goToLesson(5)">
+                    Next: Command Options →
+                </a>
+            </div>
+        </div>
+
+        <!-- Placeholder lessons 5-12 -->
+        <div class="lesson" id="lesson5">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 5</div>
+                <h2>Command Options</h2>
+                <p class="lesson-desc">Add arguments, choices, and autocomplete to slash commands.</p>
+            </div>
+
+            <h3>📝 Adding Options</h3>
+            <p>Slash commands can have various types of options:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">options.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">from</span> discord <span class="keyword">import</span> app_commands
+
+<span class="comment"># Different parameter types</span>
+<span class="decorator">@bot.tree.command</span>(name=<span class="string">"demo"</span>)
+<span class="decorator">@app_commands.describe</span>(
+    text=<span class="string">"A text message"</span>,
+    number=<span class="string">"A number"</span>,
+    user=<span class="string">"A Discord user"</span>,
+    channel=<span class="string">"A channel"</span>
+)
+<span class="keyword">async def</span> <span class="function">demo</span>(
+    interaction: discord.Interaction,
+    text: <span class="builtin">str</span>,
+    number: <span class="builtin">int</span>,
+    user: discord.Member,
+    channel: discord.TextChannel
+):
+    <span class="keyword">await</span> interaction.response.send_message(
+        <span class="string">f'Text: {text}\nNumber: {number}\nUser: {user}\nChannel: {channel}'</span>
+    )
+
+<span class="comment"># Optional parameters (with defaults)</span>
+<span class="decorator">@bot.tree.command</span>(name=<span class="string">"greet"</span>)
+<span class="keyword">async def</span> <span class="function">greet</span>(interaction: discord.Interaction, name: <span class="builtin">str</span> = <span class="string">"friend"</span>):
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">f'Hello, {name}!'</span>)</pre>
+                </div>
+            </div>
+
+            <h3>🎯 Choices (Dropdown)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">choices.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Predefined choices</span>
+<span class="decorator">@bot.tree.command</span>(name=<span class="string">"sport"</span>)
+<span class="decorator">@app_commands.choices</span>(league=[
+    app_commands.Choice(name=<span class="string">"NFL Football"</span>, value=<span class="string">"nfl"</span>),
+    app_commands.Choice(name=<span class="string">"NBA Basketball"</span>, value=<span class="string">"nba"</span>),
+    app_commands.Choice(name=<span class="string">"MLB Baseball"</span>, value=<span class="string">"mlb"</span>),
+    app_commands.Choice(name=<span class="string">"NHL Hockey"</span>, value=<span class="string">"nhl"</span>),
+])
+<span class="keyword">async def</span> <span class="function">sport</span>(interaction: discord.Interaction, league: app_commands.Choice[<span class="builtin">str</span>]):
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">f'You chose: {league.name} ({league.value})'</span>)</pre>
+                </div>
+            </div>
+
+            <h3>🔮 Autocomplete</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">autocomplete.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Dynamic autocomplete</span>
+<span class="keyword">async def</span> <span class="function">team_autocomplete</span>(
+    interaction: discord.Interaction,
+    current: <span class="builtin">str</span>
+) -> <span class="builtin">list</span>[app_commands.Choice[<span class="builtin">str</span>]]:
+    teams = [<span class="string">"Patriots"</span>, <span class="string">"Chiefs"</span>, <span class="string">"Eagles"</span>, <span class="string">"Cowboys"</span>, <span class="string">"49ers"</span>]
+    <span class="keyword">return</span> [
+        app_commands.Choice(name=team, value=team)
+        <span class="keyword">for</span> team <span class="keyword">in</span> teams
+        <span class="keyword">if</span> current.lower() <span class="keyword">in</span> team.lower()
+    ][:<span class="number">25</span>]  <span class="comment"># Max 25 choices</span>
+
+<span class="decorator">@bot.tree.command</span>(name=<span class="string">"team"</span>)
+<span class="decorator">@app_commands.autocomplete</span>(team=team_autocomplete)
+<span class="keyword">async def</span> <span class="function">team</span>(interaction: discord.Interaction, team: <span class="builtin">str</span>):
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">f'Team: {team}'</span>)</pre>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 1:</strong> How do you make a slash command parameter optional?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Give it a default value</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Add optional=True</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Use @optional decorator</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Put it in brackets []</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson4" class="nav-btn" onclick="goToLesson(4)">
+                    ← Previous
+                </a>
+                <a href="#lesson6" class="nav-btn primary" onclick="goToLesson(6)">
+                    Next: Embeds →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson6">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 6</div>
+                <h2>Embeds</h2>
+                <p class="lesson-desc">Create rich, formatted messages with embeds.</p>
+            </div>
+
+            <h3>🎨 What are Embeds?</h3>
+            <p>Embeds are rich message boxes with colors, images, fields, and formatting. They make your bot's messages look professional!</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">embeds.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Basic embed</span>
+embed = discord.Embed(
+    title=<span class="string">"Title Here"</span>,
+    description=<span class="string">"Description text"</span>,
+    color=discord.Color.blue()  <span class="comment"># Or hex: 0x5865F2</span>
+)
+
+<span class="comment"># Add fields</span>
+embed.add_field(name=<span class="string">"Field 1"</span>, value=<span class="string">"Value 1"</span>, inline=<span class="keyword">True</span>)
+embed.add_field(name=<span class="string">"Field 2"</span>, value=<span class="string">"Value 2"</span>, inline=<span class="keyword">True</span>)
+embed.add_field(name=<span class="string">"Full Width"</span>, value=<span class="string">"Not inline"</span>, inline=<span class="keyword">False</span>)
+
+<span class="comment"># Add images</span>
+embed.set_thumbnail(url=<span class="string">"https://example.com/small.png"</span>)
+embed.set_image(url=<span class="string">"https://example.com/large.png"</span>)
+
+<span class="comment"># Add author and footer</span>
+embed.set_author(name=<span class="string">"Author Name"</span>, icon_url=<span class="string">"https://..."</span>)
+embed.set_footer(text=<span class="string">"Footer text"</span>)
+
+<span class="comment"># Add timestamp</span>
+<span class="keyword">from</span> datetime <span class="keyword">import</span> datetime
+embed.timestamp = datetime.now()
+
+<span class="comment"># Send it</span>
+<span class="keyword">await</span> interaction.response.send_message(embed=embed)</pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏈</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">Game score embed</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="keyword">def</span> <span class="function">create_game_embed</span>(game):
+    embed = discord.Embed(
+        title=<span class="string">f"{game['away_team']} @ {game['home_team']}"</span>,
+        color=<span class="number">0x013369</span>  <span class="comment"># NFL Blue</span>
+    )
+
+    embed.add_field(
+        name=game[<span class="string">'away_team'</span>],
+        value=<span class="string">f"**{game['away_score']}**"</span>,
+        inline=<span class="keyword">True</span>
+    )
+    embed.add_field(
+        name=game[<span class="string">'home_team'</span>],
+        value=<span class="string">f"**{game['home_score']}**"</span>,
+        inline=<span class="keyword">True</span>
+    )
+    embed.add_field(
+        name=<span class="string">"Status"</span>,
+        value=game[<span class="string">'status'</span>],
+        inline=<span class="keyword">False</span>
+    )
+
+    embed.set_footer(text=<span class="string">"Data from ESPN"</span>)
+    embed.timestamp = datetime.now()
+
+    <span class="keyword">return</span> embed</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box important">
+                <h5>📁 See It In Your Code</h5>
+                <p>Check out the <strong>create_admin_guide_embed()</strong> function in <code>sports-bot/bot.py</code> at line 2235 - it shows a complex embed with multiple field sections for command documentation!</p>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 1:</strong> How do you make embed fields appear side by side?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>side_by_side=True</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>horizontal=True</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>inline=True</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>row=True</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson5" class="nav-btn" onclick="goToLesson(5)">
+                    ← Previous
+                </a>
+                <a href="#lesson7" class="nav-btn primary" onclick="goToLesson(7)">
+                    Next: Buttons & Views →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson7">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 7</div>
+                <h2>Buttons & Views</h2>
+                <p class="lesson-desc">Add interactive buttons to your bot messages.</p>
+            </div>
+
+            <h3>🔘 Creating Buttons</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">buttons.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">import</span> discord
+<span class="keyword">from</span> discord.ui <span class="keyword">import</span> Button, View
+
+<span class="keyword">class</span> <span class="class-name">MyView</span>(View):
+    <span class="decorator">@discord.ui.button</span>(label=<span class="string">"Click Me!"</span>, style=discord.ButtonStyle.primary)
+    <span class="keyword">async def</span> <span class="function">button_callback</span>(self, interaction: discord.Interaction, button: Button):
+        <span class="keyword">await</span> interaction.response.send_message(<span class="string">"You clicked the button!"</span>)
+
+<span class="decorator">@bot.tree.command</span>(name=<span class="string">"buttons"</span>)
+<span class="keyword">async def</span> <span class="function">buttons</span>(interaction: discord.Interaction):
+    view = MyView()
+    <span class="keyword">await</span> interaction.response.send_message(<span class="string">"Click the button:"</span>, view=view)</pre>
+                </div>
+            </div>
+
+            <h3>🎨 Button Styles</h3>
+            <table>
+                <tr>
+                    <th>Style</th>
+                    <th>Color</th>
+                    <th>Use Case</th>
+                </tr>
+                <tr>
+                    <td><code>ButtonStyle.primary</code></td>
+                    <td>Blurple</td>
+                    <td>Main actions</td>
+                </tr>
+                <tr>
+                    <td><code>ButtonStyle.secondary</code></td>
+                    <td>Gray</td>
+                    <td>Less important</td>
+                </tr>
+                <tr>
+                    <td><code>ButtonStyle.success</code></td>
+                    <td>Green</td>
+                    <td>Confirm/Accept</td>
+                </tr>
+                <tr>
+                    <td><code>ButtonStyle.danger</code></td>
+                    <td>Red</td>
+                    <td>Delete/Cancel</td>
+                </tr>
+            </table>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What class do you inherit from to create buttons?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>discord.Button</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>discord.ui.View</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>discord.Component</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>discord.Interactive</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson6" class="nav-btn" onclick="goToLesson(6)">
+                    ← Previous
+                </a>
+                <a href="#lesson8" class="nav-btn primary" onclick="goToLesson(8)">
+                    Next: Select Menus →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson8">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 8</div>
+                <h2>Select Menus</h2>
+                <p class="lesson-desc">Create dropdown selection menus.</p>
+            </div>
+
+            <h3>📋 Creating Select Menus</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">select.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">from</span> discord.ui <span class="keyword">import</span> Select, View
+
+<span class="keyword">class</span> <span class="class-name">SelectView</span>(View):
+    <span class="decorator">@discord.ui.select</span>(
+        placeholder=<span class="string">"Choose a sport..."</span>,
+        options=[
+            discord.SelectOption(label=<span class="string">"Football"</span>, value=<span class="string">"nfl"</span>, emoji=<span class="string">"🏈"</span>),
+            discord.SelectOption(label=<span class="string">"Basketball"</span>, value=<span class="string">"nba"</span>, emoji=<span class="string">"🏀"</span>),
+            discord.SelectOption(label=<span class="string">"Baseball"</span>, value=<span class="string">"mlb"</span>, emoji=<span class="string">"⚾"</span>),
+        ]
+    )
+    <span class="keyword">async def</span> <span class="function">select_callback</span>(self, interaction: discord.Interaction, select: Select):
+        <span class="keyword">await</span> interaction.response.send_message(<span class="string">f'You chose: {select.values[0]}'</span>)</pre>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson7" class="nav-btn" onclick="goToLesson(7)">
+                    ← Previous
+                </a>
+                <a href="#lesson9" class="nav-btn primary" onclick="goToLesson(9)">
+                    Next: Modals →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson9">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 9</div>
+                <h2>Modals</h2>
+                <p class="lesson-desc">Create popup forms for user input.</p>
+            </div>
+
+            <h3>📝 Creating Modals</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">modals.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">from</span> discord.ui <span class="keyword">import</span> Modal, TextInput
+
+<span class="keyword">class</span> <span class="class-name">FeedbackModal</span>(Modal, title=<span class="string">"Feedback Form"</span>):
+    name = TextInput(label=<span class="string">"Your Name"</span>, placeholder=<span class="string">"Enter your name..."</span>)
+    feedback = TextInput(
+        label=<span class="string">"Feedback"</span>,
+        style=discord.TextStyle.paragraph,
+        placeholder=<span class="string">"Enter your feedback..."</span>,
+        max_length=<span class="number">500</span>
+    )
+
+    <span class="keyword">async def</span> <span class="function">on_submit</span>(self, interaction: discord.Interaction):
+        <span class="keyword">await</span> interaction.response.send_message(
+            <span class="string">f'Thanks {self.name.value}! Feedback received.'</span>,
+            ephemeral=<span class="keyword">True</span>
+        )</pre>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson8" class="nav-btn" onclick="goToLesson(8)">
+                    ← Previous
+                </a>
+                <a href="#lesson10" class="nav-btn primary" onclick="goToLesson(10)">
+                    Next: Cogs & Extensions →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson10">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 10</div>
+                <h2>Cogs & Extensions</h2>
+                <p class="lesson-desc">Organize your bot into modular components.</p>
+            </div>
+
+            <h3>🧩 What are Cogs?</h3>
+            <p>Cogs are classes that group related commands and events together. They make large bots easier to manage!</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">cogs/moderation.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+
+<span class="keyword">class</span> <span class="class-name">Moderation</span>(commands.Cog):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, bot):
+        self.bot = bot
+
+    <span class="decorator">@commands.command</span>()
+    <span class="decorator">@commands.has_permissions</span>(kick_members=<span class="keyword">True</span>)
+    <span class="keyword">async def</span> <span class="function">kick</span>(self, ctx, member: discord.Member, *, reason=<span class="keyword">None</span>):
+        <span class="keyword">await</span> member.kick(reason=reason)
+        <span class="keyword">await</span> ctx.send(<span class="string">f'{member} was kicked.'</span>)
+
+<span class="keyword">async def</span> <span class="function">setup</span>(bot):
+    <span class="keyword">await</span> bot.add_cog(Moderation(bot))</pre>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">bot.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Load cogs</span>
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    <span class="keyword">await</span> bot.load_extension(<span class="string">'cogs.moderation'</span>)
+    <span class="builtin">print</span>(<span class="string">'Cog loaded!'</span>)</pre>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson9" class="nav-btn" onclick="goToLesson(9)">
+                    ← Previous
+                </a>
+                <a href="#lesson11" class="nav-btn primary" onclick="goToLesson(11)">
+                    Next: Tasks & Loops →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson11">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 11</div>
+                <h2>Tasks & Loops</h2>
+                <p class="lesson-desc">Run background tasks on a schedule.</p>
+            </div>
+
+            <h3>🔄 Creating Background Tasks</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">tasks.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">from</span> discord.ext <span class="keyword">import</span> tasks
+
+<span class="comment"># Run every 5 minutes</span>
+<span class="decorator">@tasks.loop</span>(minutes=<span class="number">5</span>)
+<span class="keyword">async def</span> <span class="function">check_updates</span>():
+    <span class="builtin">print</span>(<span class="string">"Checking for updates..."</span>)
+    <span class="comment"># Your code here</span>
+
+<span class="decorator">@check_updates.before_loop</span>
+<span class="keyword">async def</span> <span class="function">before_check</span>():
+    <span class="keyword">await</span> bot.wait_until_ready()  <span class="comment"># Wait for bot to be ready</span>
+
+<span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_ready</span>():
+    check_updates.start()  <span class="comment"># Start the loop</span></pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🏈</span>
+                    <div>
+                        <h5>Sports Bot</h5>
+                        <span class="bot-name">Game monitoring loop</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">sports-bot/bot.py</span>
+                        <span class="lang-badge">Python</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="decorator">@tasks.loop</span>(minutes=<span class="number">2</span>)
+<span class="keyword">async def</span> <span class="function">game_monitor</span>():
+    <span class="string">"""Check for live games and update scores."""</span>
+    games = <span class="keyword">await</span> fetch_live_games()
+    <span class="keyword">for</span> game <span class="keyword">in</span> games:
+        <span class="keyword">if</span> game[<span class="string">'has_update'</span>]:
+            <span class="keyword">await</span> update_game_thread(game)</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box important">
+                <h5>📁 See It In Your Code</h5>
+                <p><strong>Sports Bot</strong> - <code>game_monitor()</code> runs every 10 minutes to check for new games and manage monitoring state.</p>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson10" class="nav-btn" onclick="goToLesson(10)">
+                    ← Previous
+                </a>
+                <a href="#lesson12" class="nav-btn primary" onclick="goToLesson(12)">
+                    Next: Error Handling →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson12">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 12</div>
+                <h2>Error Handling</h2>
+                <p class="lesson-desc">Handle errors gracefully in your bot.</p>
+            </div>
+
+            <h3>🛡️ Global Error Handler</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">errors.py</span>
+                    <span class="lang-badge">Python</span>
+                </div>
+                <div class="code-content">
+<pre><span class="decorator">@bot.event</span>
+<span class="keyword">async def</span> <span class="function">on_command_error</span>(ctx, error):
+    <span class="keyword">if</span> <span class="builtin">isinstance</span>(error, commands.MissingPermissions):
+        <span class="keyword">await</span> ctx.send(<span class="string">"You don't have permission to do that!"</span>)
+    <span class="keyword">elif</span> <span class="builtin">isinstance</span>(error, commands.MissingRequiredArgument):
+        <span class="keyword">await</span> ctx.send(<span class="string">f"Missing argument: {error.param.name}"</span>)
+    <span class="keyword">elif</span> <span class="builtin">isinstance</span>(error, commands.CommandNotFound):
+        <span class="keyword">pass</span>  <span class="comment"># Ignore unknown commands</span>
+    <span class="keyword">else</span>:
+        <span class="builtin">print</span>(<span class="string">f"Error: {error}"</span>)
+
+<span class="comment"># Slash command error handler</span>
+<span class="decorator">@bot.tree.error</span>
+<span class="keyword">async def</span> <span class="function">on_app_command_error</span>(interaction: discord.Interaction, error):
+    <span class="keyword">await</span> interaction.response.send_message(
+        <span class="string">f"An error occurred: {error}"</span>,
+        ephemeral=<span class="keyword">True</span>
+    )</pre>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>✅ Congratulations!</h5>
+                <p>You've completed the Discord.py course! You now have the knowledge to build powerful Discord bots with Python.</p>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson11" class="nav-btn" onclick="goToLesson(11)">
+                    ← Previous
+                </a>
+                <a href="learn-to-code.html" class="nav-btn primary">
+                    Back to All Courses
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function goToLesson(lessonNum) {
+            document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+            document.getElementById('lesson' + lessonNum).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.lesson == lessonNum) {
+                    link.classList.add('active');
+                }
+            });
+            window.scrollTo(0, 0);
+            document.querySelector('.progress-fill').style.width = (lessonNum / 12 * 100) + '%';
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                goToLesson(parseInt(link.dataset.lesson));
+            });
+        });
+
+        function checkAnswer(button) {
+            const question = button.closest('.quiz-question');
+            const correctAnswer = question.dataset.correct;
+            const selected = question.querySelector('input:checked');
+            const feedback = question.querySelector('.quiz-feedback');
+
+            if (!selected) {
+                feedback.textContent = 'Please select an answer!';
+                feedback.className = 'quiz-feedback show incorrect';
+                return;
+            }
+
+            question.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                const input = opt.querySelector('input');
+                if (input.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (input.checked) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            if (selected.value === correctAnswer) {
+                feedback.textContent = 'Correct!';
+                feedback.className = 'quiz-feedback show correct';
+            } else {
+                feedback.textContent = 'Not quite. See the correct answer above.';
+                feedback.className = 'quiz-feedback show incorrect';
+            }
+
+            button.disabled = true;
+            button.textContent = 'Answered';
+        }
+    </script>
+</body>
+</html>

@@ -156,6 +156,17 @@ python bot.py
                         <tr><td><span class="command-name">!restart_games</span></td><td>Restart game tracking tasks</td><td><span class="tag admin">Admin</span></td></tr>
                     </tbody>
                 </table>
+
+                <h3>Team Role Commands</h3>
+                <p>Link Discord roles to specific teams for targeted game alerts. When a game starts, users with the team role will be mentioned instead of the general sport role.</p>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!set_team_role @Role &lt;TeamName&gt;</span></td><td>Link a Discord role to a specific team (e.g., !set_team_role @Lakers Los Angeles Lakers)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!remove_team_role &lt;TeamName&gt;</span></td><td>Remove a team role link</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">!list_team_roles</span></td><td>View all configured team roles</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
             </section>
 
             <section class="content-section">
@@ -167,7 +178,13 @@ python bot.py
                     <li>Lead changes and key plays</li>
                     <li>Final score with complete box score</li>
                     <li>Components V2 styling for modern Discord look</li>
+                    <li>Links to both teams' ESPN schedule pages in the game description</li>
+                    <li>Channel mentions for other live games (not URL links)</li>
+                    <li>Thread title automatically updates to "FINAL" with scores when game ends</li>
                 </ul>
+
+                <h3>Team Schedule Links</h3>
+                <p>Each game thread description includes direct links to both teams' ESPN schedule pages. For professional leagues (NFL, NBA, MLB, WNBA), links use team abbreviations. For college sports (CFB, NCAAM, NCAAW), links use team IDs for accurate routing.</p>
 
                 <h3>Statistics Displayed</h3>
                 <div class="card">

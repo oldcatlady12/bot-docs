@@ -1,0 +1,3572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript & Node.js - Bot Academy</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-yellow: #f0db4f;
+            --border-color: #30363d;
+            --js-yellow: #f0db4f;
+            --js-dark: #323330;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .sidebar-header h1 {
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-header .js-logo {
+            font-size: 1.8rem;
+        }
+        .sidebar-header p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        .nav-section {
+            margin-bottom: 10px;
+        }
+        .nav-section-title {
+            padding: 10px 20px;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: var(--bg-card);
+            border-left-color: var(--js-yellow);
+        }
+        .nav-link.active {
+            background: rgba(240, 219, 79, 0.1);
+            border-left-color: var(--js-yellow);
+            color: var(--js-yellow);
+        }
+        .nav-link .lesson-num {
+            background: var(--bg-card);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .back-link {
+            display: block;
+            padding: 15px 20px;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .back-link:hover {
+            background: var(--bg-card);
+        }
+        .progress-bar {
+            background: var(--bg-card);
+            border-radius: 10px;
+            height: 8px;
+            margin: 15px 0 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--js-yellow), var(--accent-orange));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            padding: 40px 60px;
+            max-width: 1100px;
+        }
+
+        .lesson {
+            display: none;
+        }
+        .lesson.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        .lesson-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .lesson-header .lesson-number {
+            color: var(--js-yellow);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .lesson-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .lesson-header .lesson-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 40px 0 20px;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h4 {
+            font-size: 1.2rem;
+            margin: 30px 0 15px;
+            color: var(--accent-green);
+        }
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 16px 0 16px 24px;
+        }
+        li { margin-bottom: 8px; }
+
+        /* Video Container */
+        .video-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .video-container h5 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--accent-red);
+        }
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-red);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .video-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(248, 81, 73, 0.3);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            background: var(--bg-card);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-header .filename {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+        .code-header .lang-badge {
+            background: var(--js-yellow);
+            color: var(--js-dark);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .code-content {
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+        .code-content pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: var(--accent-purple); font-weight: 500; }
+        .string { color: var(--accent-green); }
+        .comment { color: var(--text-secondary); font-style: italic; }
+        .function { color: var(--accent-blue); }
+        .number { color: var(--accent-orange); }
+        .builtin { color: var(--accent-blue); }
+        .const { color: var(--accent-orange); }
+
+        /* Info Boxes */
+        .info-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .info-box.tip { border-left: 4px solid var(--accent-green); }
+        .info-box.warning { border-left: 4px solid var(--accent-orange); }
+        .info-box.important { border-left: 4px solid var(--accent-blue); }
+        .info-box h5 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .info-box.tip h5 { color: var(--accent-green); }
+        .info-box.warning h5 { color: var(--accent-orange); }
+        .info-box.important h5 { color: var(--accent-blue); }
+
+        /* Diagram */
+        .diagram {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .diagram h5 {
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+        }
+        .diagram-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .diagram-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--js-yellow);
+            border-radius: 8px;
+            padding: 15px 25px;
+            min-width: 120px;
+        }
+        .diagram-arrow {
+            color: var(--accent-orange);
+            font-size: 1.5rem;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(240, 219, 79, 0.1), rgba(210, 153, 34, 0.1));
+            border: 2px solid var(--js-yellow);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        .quiz-section h4 {
+            color: var(--js-yellow);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quiz-question {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .quiz-question p {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            border-color: var(--js-yellow);
+            background: rgba(240, 219, 79, 0.1);
+        }
+        .quiz-option.correct {
+            border-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.15);
+        }
+        .quiz-option.incorrect {
+            border-color: var(--accent-red);
+            background: rgba(248, 81, 73, 0.15);
+        }
+        .quiz-option input { display: none; }
+        .quiz-option .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct {
+            background: rgba(63, 185, 80, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+        .quiz-feedback.incorrect {
+            background: rgba(248, 81, 73, 0.15);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+        .check-answer-btn {
+            background: var(--js-yellow);
+            color: var(--js-dark);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+        .check-answer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Bot Example */
+        .bot-example {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        .bot-example-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .bot-example-header .bot-icon { font-size: 2rem; }
+        .bot-example-header h5 {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+        }
+        .bot-example-header .bot-name {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .comparison-col {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .comparison-col h5 { margin-bottom: 15px; }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        th {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        td { color: var(--text-secondary); }
+        tr:nth-child(even) { background: var(--bg-secondary); }
+
+        /* Navigation */
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            border-color: var(--js-yellow);
+        }
+        .nav-btn.primary {
+            background: var(--js-yellow);
+            border-color: var(--js-yellow);
+            color: var(--js-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <a href="learn-to-code.html" class="back-link">← Back to All Courses</a>
+        <div class="sidebar-header">
+            <h1><span class="js-logo">⚡</span> JavaScript</h1>
+            <p>& Node.js Course</p>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Getting Started</div>
+            <a href="#lesson1" class="nav-link active" data-lesson="1">
+                <span class="lesson-num">1</span>
+                Introduction to JavaScript
+            </a>
+            <a href="#lesson2" class="nav-link" data-lesson="2">
+                <span class="lesson-num">2</span>
+                Variables (let, const, var)
+            </a>
+            <a href="#lesson3" class="nav-link" data-lesson="3">
+                <span class="lesson-num">3</span>
+                Data Types
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Control Flow</div>
+            <a href="#lesson4" class="nav-link" data-lesson="4">
+                <span class="lesson-num">4</span>
+                Conditionals
+            </a>
+            <a href="#lesson5" class="nav-link" data-lesson="5">
+                <span class="lesson-num">5</span>
+                Loops
+            </a>
+            <a href="#lesson6" class="nav-link" data-lesson="6">
+                <span class="lesson-num">6</span>
+                Functions
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Data Structures</div>
+            <a href="#lesson7" class="nav-link" data-lesson="7">
+                <span class="lesson-num">7</span>
+                Arrays
+            </a>
+            <a href="#lesson8" class="nav-link" data-lesson="8">
+                <span class="lesson-num">8</span>
+                Objects
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Modern JavaScript</div>
+            <a href="#lesson9" class="nav-link" data-lesson="9">
+                <span class="lesson-num">9</span>
+                Arrow Functions
+            </a>
+            <a href="#lesson10" class="nav-link" data-lesson="10">
+                <span class="lesson-num">10</span>
+                Promises & Async/Await
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Node.js</div>
+            <a href="#lesson11" class="nav-link" data-lesson="11">
+                <span class="lesson-num">11</span>
+                Node.js Basics
+            </a>
+            <a href="#lesson12" class="nav-link" data-lesson="12">
+                <span class="lesson-num">12</span>
+                npm & Modules
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Lesson 1 -->
+        <div class="lesson active" id="lesson1">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 1</div>
+                <h2>Introduction to JavaScript</h2>
+                <p class="lesson-desc">Learn what JavaScript is and how it powers the web and Discord bots.</p>
+            </div>
+
+            <h3>🌐 What is JavaScript?</h3>
+            <p>JavaScript is the programming language of the web. Originally created in 1995 to make web pages interactive, it's now used everywhere - browsers, servers, mobile apps, and Discord bots!</p>
+
+            <div class="info-box important">
+                <h5>💡 JavaScript vs Node.js</h5>
+                <ul>
+                    <li><strong>JavaScript</strong> - The programming language itself</li>
+                    <li><strong>Node.js</strong> - A runtime that lets you run JavaScript outside the browser (like on your computer for Discord bots)</li>
+                </ul>
+            </div>
+
+            <div class="video-container">
+                <h5>📺 Video: JavaScript in 100 Seconds</h5>
+                <p style="margin-bottom: 15px;">Quick overview of JavaScript:</p>
+                <a href="https://www.youtube.com/watch?v=DHjqpvDnNGE" target="_blank" class="video-link">
+                    ▶️ Watch on YouTube
+                </a>
+            </div>
+
+            <h3>🖥️ Your First JavaScript Code</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">hello.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// This is a comment - JavaScript ignores this</span>
+<span class="comment">// console.log() displays output (like Python's print)</span>
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"Hello, World!"</span>);
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"Welcome to JavaScript!"</span>);
+
+<span class="comment">// You can also use single quotes</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">'This works too!'</span>);</pre>
+                </div>
+            </div>
+
+            <h3>🐍 Python vs JavaScript</h3>
+            <p>Since you know Python, here's how JavaScript compares:</p>
+
+            <div class="comparison">
+                <div class="comparison-col">
+                    <h5 style="color: var(--accent-blue);">Python</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="comment"># Python</span>
+<span class="builtin">print</span>(<span class="string">"Hello"</span>)
+
+<span class="comment"># Variables</span>
+name = <span class="string">"Arthur"</span>
+age = <span class="number">25</span>
+
+<span class="comment"># No semicolons needed</span></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-col">
+                    <h5 style="color: var(--js-yellow);">JavaScript</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="comment">// JavaScript</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"Hello"</span>);
+
+<span class="comment">// Variables</span>
+<span class="keyword">let</span> name = <span class="string">"Arthur"</span>;
+<span class="keyword">let</span> age = <span class="number">25</span>;
+
+<span class="comment">// Semicolons optional but recommended</span></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">index.js - Bot Setup</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">worldgate-judicial-bot/index.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Import the discord.js library</span>
+<span class="keyword">const</span> { Client, GatewayIntentBits } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="comment">// Create a new Discord client (bot)</span>
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">Client</span>({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
+});
+
+<span class="comment">// When the bot is ready, log a message</span>
+client.<span class="function">on</span>(<span class="string">'ready'</span>, () => {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">`Logged in as ${client.user.tag}!`</span>);
+});</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What function displays output in JavaScript?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>print()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>console.log()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>display()</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>echo()</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> How do you write a single-line comment in JavaScript?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="a">
+                            <span class="option-letter">A</span>
+                            <span># This is a comment</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>/* This is a comment */</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>// This is a comment</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>-- This is a comment</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="d">
+                    <p><strong>Question 3:</strong> What is Node.js?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>A web browser</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>A different programming language</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>A JavaScript library</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>A runtime to run JavaScript outside browsers</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <span></span>
+                <a href="#lesson2" class="nav-btn primary" onclick="goToLesson(2)">
+                    Next: Variables →
+                </a>
+            </div>
+        </div>
+
+        <!-- Lesson 2 -->
+        <div class="lesson" id="lesson2">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 2</div>
+                <h2>Variables (let, const, var)</h2>
+                <p class="lesson-desc">Learn the three ways to declare variables in JavaScript.</p>
+            </div>
+
+            <h3>📦 Three Ways to Declare Variables</h3>
+            <p>Unlike Python which just uses <code>name = value</code>, JavaScript has three keywords for creating variables:</p>
+
+            <table>
+                <tr>
+                    <th>Keyword</th>
+                    <th>Can Reassign?</th>
+                    <th>Scope</th>
+                    <th>When to Use</th>
+                </tr>
+                <tr>
+                    <td><code>const</code></td>
+                    <td>No ❌</td>
+                    <td>Block</td>
+                    <td>Values that won't change</td>
+                </tr>
+                <tr>
+                    <td><code>let</code></td>
+                    <td>Yes ✅</td>
+                    <td>Block</td>
+                    <td>Values that will change</td>
+                </tr>
+                <tr>
+                    <td><code>var</code></td>
+                    <td>Yes ✅</td>
+                    <td>Function</td>
+                    <td>Avoid (old style)</td>
+                </tr>
+            </table>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">variables.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// const - for values that don't change</span>
+<span class="keyword">const</span> BOT_NAME = <span class="string">"WorldGate"</span>;
+<span class="keyword">const</span> MAX_USERS = <span class="number">100</span>;
+
+<span class="comment">// let - for values that can change</span>
+<span class="keyword">let</span> score = <span class="number">0</span>;
+<span class="keyword">let</span> isOnline = <span class="keyword">true</span>;
+
+score = score + <span class="number">10</span>;  <span class="comment">// This works!</span>
+<span class="comment">// BOT_NAME = "New Name";  // Error! Can't reassign const</span>
+
+<span class="comment">// var - avoid this (old JavaScript)</span>
+<span class="keyword">var</span> oldStyle = <span class="string">"Don't use this"</span>;</pre>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>✅ Best Practice</h5>
+                <p>Use <code>const</code> by default. Only use <code>let</code> when you need to reassign the variable. Never use <code>var</code>.</p>
+            </div>
+
+            <h3>📝 Template Literals (String Interpolation)</h3>
+            <p>Like Python's f-strings, JavaScript has template literals using backticks:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">templates.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> name = <span class="string">"Arthur"</span>;
+<span class="keyword">const</span> age = <span class="number">25</span>;
+
+<span class="comment">// Old way (concatenation)</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"Hello, "</span> + name + <span class="string">". You are "</span> + age);
+
+<span class="comment">// Modern way (template literals with backticks)</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">`Hello, ${name}. You are ${age}`</span>);
+
+<span class="comment">// Can include expressions</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">`Next year you'll be ${age + 1}`</span>);</pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Using const and let</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">worldgate-judicial-bot/utils/helpers.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Constants that never change</span>
+<span class="keyword">const</span> DATABASE_PATH = <span class="string">'./data/judicial.db'</span>;
+<span class="keyword">const</span> EMBED_COLOR = <span class="number">0x5865F2</span>;
+
+<span class="comment">// Variables that can change</span>
+<span class="keyword">let</span> caseCount = <span class="number">0</span>;
+<span class="keyword">let</span> lastUpdate = <span class="keyword">null</span>;
+
+<span class="comment">// Template literal for messages</span>
+<span class="keyword">const</span> welcomeMsg = <span class="string">`Welcome to the judicial system!
+Current cases: ${caseCount}
+Database: ${DATABASE_PATH}`</span>;</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 1:</strong> Which keyword should you use for a value that won't change?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>const</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>let</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>var</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>static</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What character is used for template literals?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Single quotes '</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Double quotes "</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Backticks `</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Dollar sign $</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson1" class="nav-btn" onclick="goToLesson(1)">
+                    ← Previous
+                </a>
+                <a href="#lesson3" class="nav-btn primary" onclick="goToLesson(3)">
+                    Next: Data Types →
+                </a>
+            </div>
+        </div>
+
+        <!-- Lesson 3 -->
+        <div class="lesson" id="lesson3">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 3</div>
+                <h2>Data Types</h2>
+                <p class="lesson-desc">Learn about JavaScript's primitive and complex data types.</p>
+            </div>
+
+            <h3>📊 Primitive Data Types</h3>
+            <p>JavaScript has 7 primitive (basic) data types:</p>
+
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>string</code></td>
+                    <td><code>"Hello"</code></td>
+                    <td>Text data</td>
+                </tr>
+                <tr>
+                    <td><code>number</code></td>
+                    <td><code>42</code>, <code>3.14</code></td>
+                    <td>All numbers (int and float)</td>
+                </tr>
+                <tr>
+                    <td><code>boolean</code></td>
+                    <td><code>true</code>, <code>false</code></td>
+                    <td>True or false values</td>
+                </tr>
+                <tr>
+                    <td><code>undefined</code></td>
+                    <td><code>undefined</code></td>
+                    <td>Variable declared but not assigned</td>
+                </tr>
+                <tr>
+                    <td><code>null</code></td>
+                    <td><code>null</code></td>
+                    <td>Intentionally empty value</td>
+                </tr>
+                <tr>
+                    <td><code>bigint</code></td>
+                    <td><code>9007199254740991n</code></td>
+                    <td>Very large integers</td>
+                </tr>
+                <tr>
+                    <td><code>symbol</code></td>
+                    <td><code>Symbol('id')</code></td>
+                    <td>Unique identifiers (advanced)</td>
+                </tr>
+            </table>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">datatypes.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Strings - text in quotes</span>
+<span class="keyword">const</span> name = <span class="string">"WorldGate"</span>;
+<span class="keyword">const</span> message = <span class="string">'Single quotes work too'</span>;
+
+<span class="comment">// Numbers - no separate int/float like Python</span>
+<span class="keyword">const</span> age = <span class="number">25</span>;
+<span class="keyword">const</span> price = <span class="number">19.99</span>;
+<span class="keyword">const</span> negative = <span class="number">-10</span>;
+
+<span class="comment">// Booleans - true or false (lowercase!)</span>
+<span class="keyword">const</span> isOnline = <span class="keyword">true</span>;
+<span class="keyword">const</span> hasPermission = <span class="keyword">false</span>;
+
+<span class="comment">// undefined vs null</span>
+<span class="keyword">let</span> notAssigned;  <span class="comment">// undefined (no value yet)</span>
+<span class="keyword">let</span> emptyValue = <span class="keyword">null</span>;  <span class="comment">// null (intentionally empty)</span>
+
+<span class="comment">// Check type with typeof</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="keyword">typeof</span> name);     <span class="comment">// "string"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="keyword">typeof</span> age);      <span class="comment">// "number"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="keyword">typeof</span> isOnline); <span class="comment">// "boolean"</span></pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h5>⚠️ Python vs JavaScript Difference</h5>
+                <p>In Python, booleans are <code>True</code> and <code>False</code> (capitalized). In JavaScript, they're <code>true</code> and <code>false</code> (lowercase)!</p>
+            </div>
+
+            <h3>🔢 Working with Numbers</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">numbers.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Basic math operations</span>
+<span class="keyword">const</span> sum = <span class="number">10</span> + <span class="number">5</span>;      <span class="comment">// 15</span>
+<span class="keyword">const</span> diff = <span class="number">10</span> - <span class="number">5</span>;     <span class="comment">// 5</span>
+<span class="keyword">const</span> product = <span class="number">10</span> * <span class="number">5</span>;  <span class="comment">// 50</span>
+<span class="keyword">const</span> quotient = <span class="number">10</span> / <span class="number">5</span>; <span class="comment">// 2</span>
+<span class="keyword">const</span> remainder = <span class="number">10</span> % <span class="number">3</span>; <span class="comment">// 1 (modulo)</span>
+<span class="keyword">const</span> power = <span class="number">2</span> ** <span class="number">3</span>;    <span class="comment">// 8 (exponent)</span>
+
+<span class="comment">// Useful number methods</span>
+<span class="builtin">Math</span>.<span class="function">round</span>(<span class="number">4.7</span>);   <span class="comment">// 5</span>
+<span class="builtin">Math</span>.<span class="function">floor</span>(<span class="number">4.7</span>);   <span class="comment">// 4</span>
+<span class="builtin">Math</span>.<span class="function">ceil</span>(<span class="number">4.2</span>);    <span class="comment">// 5</span>
+<span class="builtin">Math</span>.<span class="function">random</span>();     <span class="comment">// Random 0-1</span>
+<span class="builtin">Math</span>.<span class="function">max</span>(<span class="number">1</span>,<span class="number">5</span>,<span class="number">3</span>);   <span class="comment">// 5</span>
+<span class="builtin">Math</span>.<span class="function">min</span>(<span class="number">1</span>,<span class="number">5</span>,<span class="number">3</span>);   <span class="comment">// 1</span></pre>
+                </div>
+            </div>
+
+            <h3>📝 Working with Strings</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">strings.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> text = <span class="string">"Hello, World!"</span>;
+
+<span class="comment">// String properties and methods</span>
+text.length;              <span class="comment">// 13</span>
+text.<span class="function">toUpperCase</span>();       <span class="comment">// "HELLO, WORLD!"</span>
+text.<span class="function">toLowerCase</span>();       <span class="comment">// "hello, world!"</span>
+text.<span class="function">includes</span>(<span class="string">"World"</span>);  <span class="comment">// true</span>
+text.<span class="function">startsWith</span>(<span class="string">"Hello"</span>); <span class="comment">// true</span>
+text.<span class="function">split</span>(<span class="string">", "</span>);         <span class="comment">// ["Hello", "World!"]</span>
+text.<span class="function">replace</span>(<span class="string">"World"</span>, <span class="string">"JS"</span>); <span class="comment">// "Hello, JS!"</span>
+
+<span class="comment">// Access characters (0-indexed)</span>
+text[<span class="number">0</span>];    <span class="comment">// "H"</span>
+text[<span class="number">7</span>];    <span class="comment">// "W"</span>
+
+<span class="comment">// Slice (substring)</span>
+text.<span class="function">slice</span>(<span class="number">0</span>, <span class="number">5</span>);   <span class="comment">// "Hello"</span>
+text.<span class="function">slice</span>(<span class="number">7</span>);       <span class="comment">// "World!"</span></pre>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <h5>📺 Video: JavaScript Data Types</h5>
+                <p style="margin-bottom: 15px;">Deep dive into data types:</p>
+                <a href="https://www.youtube.com/watch?v=808eYu9B9Yw" target="_blank" class="video-link">
+                    ▶️ Watch on YouTube
+                </a>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What is the result of <code>typeof 42</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>"integer"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>"number"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>"float"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>"int"</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> How do you write a boolean "true" in JavaScript?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>True</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>TRUE</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>true</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>"true"</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> What's the difference between <code>null</code> and <code>undefined</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>null is intentional, undefined means not assigned</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>They are exactly the same</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>null is for numbers, undefined is for strings</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>undefined is intentional, null means not assigned</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson2" class="nav-btn" onclick="goToLesson(2)">
+                    ← Previous
+                </a>
+                <a href="#lesson4" class="nav-btn primary" onclick="goToLesson(4)">
+                    Next: Conditionals →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson4">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 4</div>
+                <h2>Conditionals</h2>
+                <p class="lesson-desc">Learn if/else statements and comparison operators.</p>
+            </div>
+
+            <h3>🔀 If/Else Statements</h3>
+            <p>Conditionals let your code make decisions. The syntax uses curly braces instead of Python's colons and indentation:</p>
+
+            <div class="comparison">
+                <div class="comparison-col">
+                    <h5 style="color: var(--accent-blue);">Python</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">if</span> score >= <span class="number">90</span>:
+    <span class="builtin">print</span>(<span class="string">"A"</span>)
+<span class="keyword">elif</span> score >= <span class="number">80</span>:
+    <span class="builtin">print</span>(<span class="string">"B"</span>)
+<span class="keyword">else</span>:
+    <span class="builtin">print</span>(<span class="string">"C"</span>)</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-col">
+                    <h5 style="color: var(--js-yellow);">JavaScript</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">if</span> (score >= <span class="number">90</span>) {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"A"</span>);
+} <span class="keyword">else if</span> (score >= <span class="number">80</span>) {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"B"</span>);
+} <span class="keyword">else</span> {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"C"</span>);
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box important">
+                <h5>💡 Key Differences from Python</h5>
+                <ul>
+                    <li>Condition must be in parentheses <code>()</code></li>
+                    <li>Use curly braces <code>{}</code> instead of indentation</li>
+                    <li><code>else if</code> instead of <code>elif</code></li>
+                </ul>
+            </div>
+
+            <h3>⚖️ Comparison Operators</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">comparisons.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Equal (loose - converts types)</span>
+<span class="number">5</span> == <span class="string">"5"</span>     <span class="comment">// true (string converted to number)</span>
+<span class="number">5</span> == <span class="number">5</span>       <span class="comment">// true</span>
+
+<span class="comment">// Strict equal (recommended - no conversion)</span>
+<span class="number">5</span> === <span class="string">"5"</span>    <span class="comment">// false (different types)</span>
+<span class="number">5</span> === <span class="number">5</span>      <span class="comment">// true</span>
+
+<span class="comment">// Not equal</span>
+<span class="number">5</span> != <span class="string">"5"</span>     <span class="comment">// false (loose)</span>
+<span class="number">5</span> !== <span class="string">"5"</span>    <span class="comment">// true (strict)</span>
+
+<span class="comment">// Other comparisons</span>
+<span class="number">10</span> > <span class="number">5</span>       <span class="comment">// true</span>
+<span class="number">10</span> < <span class="number">5</span>       <span class="comment">// false</span>
+<span class="number">10</span> >= <span class="number">10</span>     <span class="comment">// true</span>
+<span class="number">10</span> <= <span class="number">5</span>      <span class="comment">// false</span></pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h5>⚠️ Always Use === and !==</h5>
+                <p>Always use strict equality (<code>===</code>) to avoid unexpected type conversion bugs. <code>==</code> can cause confusing results!</p>
+            </div>
+
+            <h3>🔗 Logical Operators</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">logical.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// AND - both must be true</span>
+<span class="keyword">if</span> (age >= <span class="number">18</span> && hasLicense) {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"Can drive"</span>);
+}
+
+<span class="comment">// OR - at least one must be true</span>
+<span class="keyword">if</span> (isAdmin || isModerator) {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"Has permissions"</span>);
+}
+
+<span class="comment">// NOT - inverts boolean</span>
+<span class="keyword">if</span> (!isBanned) {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"User allowed"</span>);
+}
+
+<span class="comment">// Python vs JavaScript</span>
+<span class="comment">// Python: and, or, not</span>
+<span class="comment">// JavaScript: &&, ||, !</span></pre>
+                </div>
+            </div>
+
+            <h3>❓ Ternary Operator</h3>
+            <p>A shorthand for simple if/else:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">ternary.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// condition ? valueIfTrue : valueIfFalse</span>
+
+<span class="keyword">const</span> age = <span class="number">20</span>;
+<span class="keyword">const</span> status = age >= <span class="number">18</span> ? <span class="string">"adult"</span> : <span class="string">"minor"</span>;
+<span class="builtin">console</span>.<span class="function">log</span>(status);  <span class="comment">// "adult"</span>
+
+<span class="comment">// Same as:</span>
+<span class="keyword">let</span> status2;
+<span class="keyword">if</span> (age >= <span class="number">18</span>) {
+    status2 = <span class="string">"adult"</span>;
+} <span class="keyword">else</span> {
+    status2 = <span class="string">"minor"</span>;
+}</pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Permission checking</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">commands/ban.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Check if user has permission to ban</span>
+<span class="keyword">if</span> (!interaction.member.permissions.<span class="function">has</span>(<span class="string">'BanMembers'</span>)) {
+    <span class="keyword">return</span> interaction.<span class="function">reply</span>({
+        content: <span class="string">'You do not have permission to ban members!'</span>,
+        ephemeral: <span class="keyword">true</span>
+    });
+}
+
+<span class="comment">// Check if target can be banned</span>
+<span class="keyword">if</span> (target.id === interaction.user.id) {
+    <span class="keyword">return</span> interaction.<span class="function">reply</span>(<span class="string">'You cannot ban yourself!'</span>);
+} <span class="keyword">else if</span> (target.roles.highest.position >= interaction.member.roles.highest.position) {
+    <span class="keyword">return</span> interaction.<span class="function">reply</span>(<span class="string">'You cannot ban someone with equal or higher role!'</span>);
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What is the JavaScript equivalent of Python's <code>elif</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>elseif</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>else if</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>elif</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>otherwise</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What does <code>5 === "5"</code> return?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>true</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>5</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>false</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Error</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="d">
+                    <p><strong>Question 3:</strong> What is the JavaScript equivalent of Python's <code>and</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>AND</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>&</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>and</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>&&</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson3" class="nav-btn" onclick="goToLesson(3)">
+                    ← Previous
+                </a>
+                <a href="#lesson5" class="nav-btn primary" onclick="goToLesson(5)">
+                    Next: Loops →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson5">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 5</div>
+                <h2>Loops</h2>
+                <p class="lesson-desc">Learn for, while, and for...of loops to repeat code.</p>
+            </div>
+
+            <h3>🔁 The For Loop</h3>
+            <p>The classic for loop has three parts: initialization, condition, and increment:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">forloop.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// for (start; condition; step)</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < <span class="number">5</span>; i++) {
+    <span class="builtin">console</span>.<span class="function">log</span>(i);  <span class="comment">// 0, 1, 2, 3, 4</span>
+}
+
+<span class="comment">// Count backwards</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">5</span>; i > <span class="number">0</span>; i--) {
+    <span class="builtin">console</span>.<span class="function">log</span>(i);  <span class="comment">// 5, 4, 3, 2, 1</span>
+}
+
+<span class="comment">// Skip by 2</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < <span class="number">10</span>; i += <span class="number">2</span>) {
+    <span class="builtin">console</span>.<span class="function">log</span>(i);  <span class="comment">// 0, 2, 4, 6, 8</span>
+}</pre>
+                </div>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-col">
+                    <h5 style="color: var(--accent-blue);">Python</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">5</span>):
+    <span class="builtin">print</span>(i)</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-col">
+                    <h5 style="color: var(--js-yellow);">JavaScript</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < <span class="number">5</span>; i++) {
+    <span class="builtin">console</span>.<span class="function">log</span>(i);
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔄 For...of Loop (Iterate Arrays)</h3>
+            <p>The modern way to loop through arrays (like Python's for-in):</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">forof.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>];
+
+<span class="comment">// for...of - get each item</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> fruit <span class="keyword">of</span> fruits) {
+    <span class="builtin">console</span>.<span class="function">log</span>(fruit);
+}
+<span class="comment">// apple, banana, cherry</span>
+
+<span class="comment">// If you need the index too, use entries()</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> [index, fruit] <span class="keyword">of</span> fruits.<span class="function">entries</span>()) {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">`${index}: ${fruit}`</span>);
+}
+<span class="comment">// 0: apple, 1: banana, 2: cherry</span></pre>
+                </div>
+            </div>
+
+            <h3>⚡ While Loop</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">while.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// While - runs while condition is true</span>
+<span class="keyword">let</span> count = <span class="number">0</span>;
+<span class="keyword">while</span> (count < <span class="number">5</span>) {
+    <span class="builtin">console</span>.<span class="function">log</span>(count);
+    count++;  <span class="comment">// Don't forget this or infinite loop!</span>
+}
+
+<span class="comment">// Do...while - runs at least once</span>
+<span class="keyword">let</span> num = <span class="number">10</span>;
+<span class="keyword">do</span> {
+    <span class="builtin">console</span>.<span class="function">log</span>(num);  <span class="comment">// Runs once even though condition is false</span>
+} <span class="keyword">while</span> (num < <span class="number">5</span>);</pre>
+                </div>
+            </div>
+
+            <h3>🛑 Break and Continue</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">control.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// break - exit the loop entirely</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < <span class="number">10</span>; i++) {
+    <span class="keyword">if</span> (i === <span class="number">5</span>) <span class="keyword">break</span>;
+    <span class="builtin">console</span>.<span class="function">log</span>(i);  <span class="comment">// 0, 1, 2, 3, 4</span>
+}
+
+<span class="comment">// continue - skip to next iteration</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < <span class="number">5</span>; i++) {
+    <span class="keyword">if</span> (i === <span class="number">2</span>) <span class="keyword">continue</span>;
+    <span class="builtin">console</span>.<span class="function">log</span>(i);  <span class="comment">// 0, 1, 3, 4 (skips 2)</span>
+}</pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Looping through guild members</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">commands/leaderboard.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Loop through leaderboard entries</span>
+<span class="keyword">const</span> entries = <span class="keyword">await</span> db.<span class="function">getTopUsers</span>(<span class="number">10</span>);
+<span class="keyword">let</span> description = <span class="string">''</span>;
+
+<span class="keyword">for</span> (<span class="keyword">const</span> [index, entry] <span class="keyword">of</span> entries.<span class="function">entries</span>()) {
+    <span class="keyword">const</span> medal = index === <span class="number">0</span> ? <span class="string">'🥇'</span> : index === <span class="number">1</span> ? <span class="string">'🥈'</span> : index === <span class="number">2</span> ? <span class="string">'🥉'</span> : <span class="string">`${index + 1}.`</span>;
+    description += <span class="string">`${medal} &lt;@${entry.userId}&gt; - ${entry.points} points\n`</span>;
+}
+
+<span class="keyword">const</span> embed = <span class="keyword">new</span> <span class="function">EmbedBuilder</span>()
+    .<span class="function">setTitle</span>(<span class="string">'Leaderboard'</span>)
+    .<span class="function">setDescription</span>(description);</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 1:</strong> What loop is best for iterating through array items directly?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>for (let i = 0; ...)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>while</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>for...of</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>do...while</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 2:</strong> What does <code>break</code> do in a loop?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Skips to the next iteration</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Exits the loop entirely</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Pauses the loop</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Restarts the loop</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> What does <code>i++</code> mean?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>i = i + 1</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>i = i + 2</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>i = i * 2</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>i = i - 1</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson4" class="nav-btn" onclick="goToLesson(4)">
+                    ← Previous
+                </a>
+                <a href="#lesson6" class="nav-btn primary" onclick="goToLesson(6)">
+                    Next: Functions →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson6">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 6</div>
+                <h2>Functions</h2>
+                <p class="lesson-desc">Learn to create reusable blocks of code.</p>
+            </div>
+
+            <h3>📦 Function Declaration</h3>
+            <p>Functions are reusable blocks of code. JavaScript has several ways to create them:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">functions.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Function declaration (most common)</span>
+<span class="keyword">function</span> <span class="function">greet</span>(name) {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+}
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">greet</span>(<span class="string">"Arthur"</span>));  <span class="comment">// "Hello, Arthur!"</span>
+
+<span class="comment">// Function with multiple parameters</span>
+<span class="keyword">function</span> <span class="function">add</span>(a, b) {
+    <span class="keyword">return</span> a + b;
+}
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">add</span>(<span class="number">5</span>, <span class="number">3</span>));  <span class="comment">// 8</span>
+
+<span class="comment">// Function with no return (returns undefined)</span>
+<span class="keyword">function</span> <span class="function">logMessage</span>(msg) {
+    <span class="builtin">console</span>.<span class="function">log</span>(msg);
+}</pre>
+                </div>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-col">
+                    <h5 style="color: var(--accent-blue);">Python</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">def</span> <span class="function">greet</span>(name):
+    <span class="keyword">return</span> <span class="string">f"Hello, {name}!"</span></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-col">
+                    <h5 style="color: var(--js-yellow);">JavaScript</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">function</span> <span class="function">greet</span>(name) {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>📝 Default Parameters</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">defaults.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Default parameter values</span>
+<span class="keyword">function</span> <span class="function">greet</span>(name = <span class="string">"Guest"</span>) {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+}
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">greet</span>());         <span class="comment">// "Hello, Guest!"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">greet</span>(<span class="string">"Arthur"</span>)); <span class="comment">// "Hello, Arthur!"</span>
+
+<span class="comment">// Multiple defaults</span>
+<span class="keyword">function</span> <span class="function">createEmbed</span>(title, color = <span class="number">0x5865F2</span>, footer = <span class="keyword">null</span>) {
+    <span class="keyword">return</span> { title, color, footer };
+}</pre>
+                </div>
+            </div>
+
+            <h3>🔄 Function Expressions</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">expressions.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Function stored in a variable</span>
+<span class="keyword">const</span> multiply = <span class="keyword">function</span>(a, b) {
+    <span class="keyword">return</span> a * b;
+};
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">multiply</span>(<span class="number">4</span>, <span class="number">5</span>));  <span class="comment">// 20</span>
+
+<span class="comment">// Arrow function (modern, shorter syntax)</span>
+<span class="keyword">const</span> divide = (a, b) => {
+    <span class="keyword">return</span> a / b;
+};
+
+<span class="comment">// Arrow function with implicit return (one line)</span>
+<span class="keyword">const</span> square = (x) => x * x;
+<span class="keyword">const</span> double = x => x * <span class="number">2</span>;  <span class="comment">// Parentheses optional for single param</span>
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">square</span>(<span class="number">5</span>));  <span class="comment">// 25</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">double</span>(<span class="number">5</span>));  <span class="comment">// 10</span></pre>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>✅ When to Use Each</h5>
+                <ul>
+                    <li><strong>Function Declaration</strong>: Most cases, especially for named functions</li>
+                    <li><strong>Arrow Functions</strong>: Callbacks, short one-liners, and when you need <code>this</code> from parent scope</li>
+                </ul>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Helper functions</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">utils/helpers.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Format a number with commas</span>
+<span class="keyword">function</span> <span class="function">formatNumber</span>(num) {
+    <span class="keyword">return</span> num.<span class="function">toLocaleString</span>();
+}
+
+<span class="comment">// Format time remaining</span>
+<span class="keyword">function</span> <span class="function">formatTimeRemaining</span>(seconds) {
+    <span class="keyword">const</span> hours = <span class="builtin">Math</span>.<span class="function">floor</span>(seconds / <span class="number">3600</span>);
+    <span class="keyword">const</span> minutes = <span class="builtin">Math</span>.<span class="function">floor</span>((seconds % <span class="number">3600</span>) / <span class="number">60</span>);
+    <span class="keyword">return</span> <span class="string">`${hours}h ${minutes}m`</span>;
+}
+
+<span class="comment">// Arrow function for filtering</span>
+<span class="keyword">const</span> isAdmin = (member) => member.permissions.<span class="function">has</span>(<span class="string">'Administrator'</span>);
+
+<span class="comment">// Usage</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">formatNumber</span>(<span class="number">1234567</span>));  <span class="comment">// "1,234,567"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">formatTimeRemaining</span>(<span class="number">3700</span>)); <span class="comment">// "1h 1m"</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What keyword is used to declare a function in JavaScript?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>def</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>function</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>func</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>fn</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What does <code>const add = (a, b) => a + b;</code> create?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>A class</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>An object</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>An arrow function</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>A variable</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="d">
+                    <p><strong>Question 3:</strong> What does a function return if there's no return statement?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>null</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>0</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>""</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>undefined</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson5" class="nav-btn" onclick="goToLesson(5)">
+                    ← Previous
+                </a>
+                <a href="#lesson7" class="nav-btn primary" onclick="goToLesson(7)">
+                    Next: Arrays →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson7">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 7</div>
+                <h2>Arrays</h2>
+                <p class="lesson-desc">Learn to store and manipulate collections of data.</p>
+            </div>
+
+            <h3>📚 Creating Arrays</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">arrays.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Create an array</span>
+<span class="keyword">const</span> fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"cherry"</span>];
+<span class="keyword">const</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+<span class="keyword">const</span> mixed = [<span class="string">"hello"</span>, <span class="number">42</span>, <span class="keyword">true</span>];  <span class="comment">// Can mix types</span>
+
+<span class="comment">// Access by index (0-based)</span>
+<span class="builtin">console</span>.<span class="function">log</span>(fruits[<span class="number">0</span>]);  <span class="comment">// "apple"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(fruits[<span class="number">2</span>]);  <span class="comment">// "cherry"</span>
+
+<span class="comment">// Get length</span>
+<span class="builtin">console</span>.<span class="function">log</span>(fruits.length);  <span class="comment">// 3</span>
+
+<span class="comment">// Last element</span>
+<span class="builtin">console</span>.<span class="function">log</span>(fruits[fruits.length - <span class="number">1</span>]);  <span class="comment">// "cherry"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(fruits.<span class="function">at</span>(-<span class="number">1</span>));  <span class="comment">// "cherry" (modern way)</span></pre>
+                </div>
+            </div>
+
+            <h3>✏️ Modifying Arrays</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">modify.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> arr = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>];
+
+<span class="comment">// Add to end</span>
+arr.<span class="function">push</span>(<span class="string">"d"</span>);        <span class="comment">// ["a", "b", "c", "d"]</span>
+
+<span class="comment">// Add to beginning</span>
+arr.<span class="function">unshift</span>(<span class="string">"z"</span>);     <span class="comment">// ["z", "a", "b", "c", "d"]</span>
+
+<span class="comment">// Remove from end</span>
+arr.<span class="function">pop</span>();            <span class="comment">// ["z", "a", "b", "c"] - returns "d"</span>
+
+<span class="comment">// Remove from beginning</span>
+arr.<span class="function">shift</span>();          <span class="comment">// ["a", "b", "c"] - returns "z"</span>
+
+<span class="comment">// Remove at index (splice)</span>
+arr.<span class="function">splice</span>(<span class="number">1</span>, <span class="number">1</span>);     <span class="comment">// ["a", "c"] - removes 1 item at index 1</span>
+
+<span class="comment">// Change an element</span>
+arr[<span class="number">0</span>] = <span class="string">"x"</span>;         <span class="comment">// ["x", "c"]</span></pre>
+                </div>
+            </div>
+
+            <h3>🔍 Array Methods</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">methods.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+
+<span class="comment">// find - get first matching element</span>
+nums.<span class="function">find</span>(n => n > <span class="number">3</span>);       <span class="comment">// 4</span>
+
+<span class="comment">// filter - get all matching elements</span>
+nums.<span class="function">filter</span>(n => n > <span class="number">2</span>);     <span class="comment">// [3, 4, 5]</span>
+
+<span class="comment">// map - transform each element</span>
+nums.<span class="function">map</span>(n => n * <span class="number">2</span>);        <span class="comment">// [2, 4, 6, 8, 10]</span>
+
+<span class="comment">// includes - check if contains</span>
+nums.<span class="function">includes</span>(<span class="number">3</span>);           <span class="comment">// true</span>
+
+<span class="comment">// indexOf - find position</span>
+nums.<span class="function">indexOf</span>(<span class="number">3</span>);            <span class="comment">// 2</span>
+
+<span class="comment">// join - convert to string</span>
+nums.<span class="function">join</span>(<span class="string">", "</span>);            <span class="comment">// "1, 2, 3, 4, 5"</span>
+
+<span class="comment">// reduce - accumulate values</span>
+nums.<span class="function">reduce</span>((sum, n) => sum + n, <span class="number">0</span>);  <span class="comment">// 15</span></pre>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>✅ Common Array Pattern</h5>
+                <p>Chain methods together for powerful data transformations:</p>
+                <div class="code-block">
+                    <div class="code-content">
+<pre><span class="keyword">const</span> users = [{name: <span class="string">"Alice"</span>, age: <span class="number">25</span>}, {name: <span class="string">"Bob"</span>, age: <span class="number">17</span>}];
+<span class="keyword">const</span> adultNames = users
+    .<span class="function">filter</span>(u => u.age >= <span class="number">18</span>)
+    .<span class="function">map</span>(u => u.name);  <span class="comment">// ["Alice"]</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Working with arrays</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">commands/stats.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Get top 10 users sorted by points</span>
+<span class="keyword">const</span> allUsers = <span class="keyword">await</span> db.<span class="function">getAllUsers</span>();
+<span class="keyword">const</span> topUsers = allUsers
+    .<span class="function">sort</span>((a, b) => b.points - a.points)  <span class="comment">// Sort descending</span>
+    .<span class="function">slice</span>(<span class="number">0</span>, <span class="number">10</span>);                        <span class="comment">// Get first 10</span>
+
+<span class="comment">// Check if user has a specific role</span>
+<span class="keyword">const</span> roleIds = member.roles.cache.<span class="function">map</span>(r => r.id);
+<span class="keyword">if</span> (roleIds.<span class="function">includes</span>(ADMIN_ROLE_ID)) {
+    <span class="comment">// User is admin</span>
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> How do you add an item to the end of an array?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>arr.append(item)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>arr.push(item)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>arr.add(item)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>arr.insert(item)</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What does <code>[1,2,3].map(x => x * 2)</code> return?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>6</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>[1, 2, 3]</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>[2, 4, 6]</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>12</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> How do you check if an array contains a value?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>arr.includes(value)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>arr.contains(value)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>value in arr</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>arr.has(value)</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson6" class="nav-btn" onclick="goToLesson(6)">
+                    ← Previous
+                </a>
+                <a href="#lesson8" class="nav-btn primary" onclick="goToLesson(8)">
+                    Next: Objects →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson8">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 8</div>
+                <h2>Objects</h2>
+                <p class="lesson-desc">Learn to store key-value pairs and organize data.</p>
+            </div>
+
+            <h3>📦 Creating Objects</h3>
+            <p>Objects store data as key-value pairs (like Python dictionaries):</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">objects.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Create an object</span>
+<span class="keyword">const</span> user = {
+    name: <span class="string">"Arthur"</span>,
+    age: <span class="number">25</span>,
+    isAdmin: <span class="keyword">true</span>,
+    roles: [<span class="string">"member"</span>, <span class="string">"moderator"</span>]
+};
+
+<span class="comment">// Access properties</span>
+<span class="builtin">console</span>.<span class="function">log</span>(user.name);     <span class="comment">// "Arthur" (dot notation)</span>
+<span class="builtin">console</span>.<span class="function">log</span>(user[<span class="string">"age"</span>]);   <span class="comment">// 25 (bracket notation)</span>
+
+<span class="comment">// Bracket notation for dynamic keys</span>
+<span class="keyword">const</span> key = <span class="string">"name"</span>;
+<span class="builtin">console</span>.<span class="function">log</span>(user[key]);     <span class="comment">// "Arthur"</span></pre>
+                </div>
+            </div>
+
+            <h3>✏️ Modifying Objects</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">modify.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> user = { name: <span class="string">"Arthur"</span> };
+
+<span class="comment">// Add or update properties</span>
+user.age = <span class="number">25</span>;           <span class="comment">// Add new property</span>
+user.name = <span class="string">"Bob"</span>;       <span class="comment">// Update existing</span>
+
+<span class="comment">// Delete a property</span>
+<span class="keyword">delete</span> user.age;
+
+<span class="comment">// Check if property exists</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">"name"</span> <span class="keyword">in</span> user);  <span class="comment">// true</span>
+<span class="builtin">console</span>.<span class="function">log</span>(user.<span class="function">hasOwnProperty</span>(<span class="string">"age"</span>));  <span class="comment">// false</span></pre>
+                </div>
+            </div>
+
+            <h3>🔄 Object Methods</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">methods.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> user = { name: <span class="string">"Arthur"</span>, age: <span class="number">25</span>, role: <span class="string">"admin"</span> };
+
+<span class="comment">// Get all keys</span>
+<span class="builtin">Object</span>.<span class="function">keys</span>(user);    <span class="comment">// ["name", "age", "role"]</span>
+
+<span class="comment">// Get all values</span>
+<span class="builtin">Object</span>.<span class="function">values</span>(user);  <span class="comment">// ["Arthur", 25, "admin"]</span>
+
+<span class="comment">// Get key-value pairs</span>
+<span class="builtin">Object</span>.<span class="function">entries</span>(user); <span class="comment">// [["name","Arthur"], ["age",25], ["role","admin"]]</span>
+
+<span class="comment">// Loop through object</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> [key, value] <span class="keyword">of</span> <span class="builtin">Object</span>.<span class="function">entries</span>(user)) {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">`${key}: ${value}`</span>);
+}</pre>
+                </div>
+            </div>
+
+            <h3>🔗 Destructuring</h3>
+            <p>Extract values from objects easily:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">destructure.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> user = { name: <span class="string">"Arthur"</span>, age: <span class="number">25</span>, role: <span class="string">"admin"</span> };
+
+<span class="comment">// Extract specific properties</span>
+<span class="keyword">const</span> { name, age } = user;
+<span class="builtin">console</span>.<span class="function">log</span>(name);  <span class="comment">// "Arthur"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(age);   <span class="comment">// 25</span>
+
+<span class="comment">// Rename while destructuring</span>
+<span class="keyword">const</span> { name: userName } = user;
+<span class="builtin">console</span>.<span class="function">log</span>(userName);  <span class="comment">// "Arthur"</span>
+
+<span class="comment">// Default values</span>
+<span class="keyword">const</span> { country = <span class="string">"USA"</span> } = user;
+<span class="builtin">console</span>.<span class="function">log</span>(country);  <span class="comment">// "USA" (default since not in user)</span></pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Discord.js uses objects everywhere</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">commands/userinfo.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Interaction object from Discord.js</span>
+<span class="keyword">const</span> { user, guild, member } = interaction;
+
+<span class="comment">// Create embed object</span>
+<span class="keyword">const</span> embed = {
+    title: <span class="string">`User Info: ${user.username}`</span>,
+    color: <span class="number">0x5865F2</span>,
+    fields: [
+        { name: <span class="string">'ID'</span>, value: user.id, inline: <span class="keyword">true</span> },
+        { name: <span class="string">'Joined'</span>, value: member.joinedAt.<span class="function">toDateString</span>(), inline: <span class="keyword">true</span> }
+    ],
+    thumbnail: { url: user.<span class="function">displayAvatarURL</span>() }
+};
+
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({ embeds: [embed] });</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> How do you access the "name" property of an object <code>user</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>user->name</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>user.name</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>user::name</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>user.get("name")</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What does <code>Object.keys({a:1, b:2})</code> return?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>[1, 2]</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>{a:1, b:2}</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>["a", "b"]</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>[["a",1], ["b",2]]</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="d">
+                    <p><strong>Question 3:</strong> What does <code>const {x, y} = {x: 1, y: 2}</code> do?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Creates an array [x, y]</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Causes an error</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Creates a new object</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Creates variables x=1 and y=2</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson7" class="nav-btn" onclick="goToLesson(7)">
+                    ← Previous
+                </a>
+                <a href="#lesson9" class="nav-btn primary" onclick="goToLesson(9)">
+                    Next: Arrow Functions →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson9">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 9</div>
+                <h2>Arrow Functions</h2>
+                <p class="lesson-desc">Master the modern, concise function syntax.</p>
+            </div>
+
+            <h3>➡️ Arrow Function Syntax</h3>
+            <p>Arrow functions are a shorter way to write functions:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">arrow.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Traditional function</span>
+<span class="keyword">function</span> <span class="function">add</span>(a, b) {
+    <span class="keyword">return</span> a + b;
+}
+
+<span class="comment">// Arrow function (full syntax)</span>
+<span class="keyword">const</span> add = (a, b) => {
+    <span class="keyword">return</span> a + b;
+};
+
+<span class="comment">// Arrow function (implicit return - one line)</span>
+<span class="keyword">const</span> add = (a, b) => a + b;
+
+<span class="comment">// Single parameter - no parentheses needed</span>
+<span class="keyword">const</span> double = x => x * <span class="number">2</span>;
+
+<span class="comment">// No parameters - empty parentheses required</span>
+<span class="keyword">const</span> greet = () => <span class="string">"Hello!"</span>;</pre>
+                </div>
+            </div>
+
+            <h3>📋 Arrow Functions with Arrays</h3>
+            <p>Arrow functions shine with array methods:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">arrays.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];
+
+<span class="comment">// map - transform each element</span>
+<span class="keyword">const</span> doubled = numbers.<span class="function">map</span>(n => n * <span class="number">2</span>);
+<span class="comment">// [2, 4, 6, 8, 10]</span>
+
+<span class="comment">// filter - keep matching elements</span>
+<span class="keyword">const</span> evens = numbers.<span class="function">filter</span>(n => n % <span class="number">2</span> === <span class="number">0</span>);
+<span class="comment">// [2, 4]</span>
+
+<span class="comment">// find - get first match</span>
+<span class="keyword">const</span> firstBig = numbers.<span class="function">find</span>(n => n > <span class="number">3</span>);
+<span class="comment">// 4</span>
+
+<span class="comment">// sort - custom sorting</span>
+<span class="keyword">const</span> sorted = numbers.<span class="function">sort</span>((a, b) => b - a);
+<span class="comment">// [5, 4, 3, 2, 1] (descending)</span>
+
+<span class="comment">// Chaining methods</span>
+<span class="keyword">const</span> result = numbers
+    .<span class="function">filter</span>(n => n > <span class="number">2</span>)
+    .<span class="function">map</span>(n => n * <span class="number">10</span>);
+<span class="comment">// [30, 40, 50]</span></pre>
+                </div>
+            </div>
+
+            <h3>🔙 Returning Objects</h3>
+            <p>Wrap object literals in parentheses:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">objects.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Wrong - JS thinks {} is a code block</span>
+<span class="keyword">const</span> makeUser = name => { name: name };  <span class="comment">// undefined!</span>
+
+<span class="comment">// Correct - wrap in parentheses</span>
+<span class="keyword">const</span> makeUser = name => ({ name: name });
+<span class="comment">// Or with shorthand</span>
+<span class="keyword">const</span> makeUser = name => ({ name });
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">makeUser</span>(<span class="string">"Arthur"</span>));
+<span class="comment">// { name: "Arthur" }</span></pre>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <h5>📺 Video: Arrow Functions Explained</h5>
+                <p style="margin-bottom: 15px;">Visual explanation of arrow functions:</p>
+                <a href="https://www.youtube.com/watch?v=h33Srr5J9nY" target="_blank" class="video-link">
+                    ▶️ Watch on YouTube
+                </a>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Event handlers and callbacks</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">index.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Event handlers with arrow functions</span>
+client.<span class="function">on</span>(<span class="string">'ready'</span>, () => {
+    <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">`Logged in as ${client.user.tag}`</span>);
+});
+
+client.<span class="function">on</span>(<span class="string">'messageCreate'</span>, message => {
+    <span class="keyword">if</span> (message.content === <span class="string">'!ping'</span>) {
+        message.<span class="function">reply</span>(<span class="string">'Pong!'</span>);
+    }
+});
+
+<span class="comment">// Filter members with roles</span>
+<span class="keyword">const</span> admins = guild.members.cache
+    .<span class="function">filter</span>(m => m.permissions.<span class="function">has</span>(<span class="string">'Administrator'</span>))
+    .<span class="function">map</span>(m => m.user.username);</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> What is the shortest way to write <code>x => { return x * 2; }</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>x => return x * 2</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>x => x * 2</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>(x) => (x * 2)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>x: x * 2</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> How do you return an object <code>{ a: 1 }</code> from an arrow function?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>() => { a: 1 }</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>() => return { a: 1 }</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>() => ({ a: 1 })</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>() => [{ a: 1 }]</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> When can you omit parentheses around parameters?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>When there's exactly one parameter</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Always</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>When there are no parameters</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Never</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson8" class="nav-btn" onclick="goToLesson(8)">
+                    ← Previous
+                </a>
+                <a href="#lesson10" class="nav-btn primary" onclick="goToLesson(10)">
+                    Next: Promises & Async/Await →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson10">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 10</div>
+                <h2>Promises & Async/Await</h2>
+                <p class="lesson-desc">Master asynchronous JavaScript - essential for Discord bots!</p>
+            </div>
+
+            <h3>⏳ What is Asynchronous Code?</h3>
+            <p>Async code lets your program continue while waiting for slow operations (API calls, database queries, etc.):</p>
+
+            <div class="diagram">
+                <h5>Synchronous vs Asynchronous</h5>
+                <div class="diagram-content">
+                    <div class="diagram-box">Task 1</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Wait...</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Task 2</div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-secondary);">Sync: Must wait. Async: Can continue while waiting!</p>
+            </div>
+
+            <h3>🤝 Promises</h3>
+            <p>A Promise represents a value that will be available later:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">promises.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// A Promise has 3 states: pending, fulfilled, rejected</span>
+
+<span class="comment">// Using .then() and .catch()</span>
+<span class="function">fetch</span>(<span class="string">'https://api.example.com/data'</span>)
+    .<span class="function">then</span>(response => response.<span class="function">json</span>())
+    .<span class="function">then</span>(data => {
+        <span class="builtin">console</span>.<span class="function">log</span>(data);
+    })
+    .<span class="function">catch</span>(error => {
+        <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">'Error:'</span>, error);
+    });
+
+<span class="comment">// Code here runs immediately (doesn't wait!)</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="string">'This prints first!'</span>);</pre>
+                </div>
+            </div>
+
+            <h3>✨ Async/Await (Modern Way)</h3>
+            <p>Makes async code look synchronous and easier to read:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">asyncawait.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// async function can use await</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">getData</span>() {
+    <span class="keyword">try</span> {
+        <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'https://api.example.com/data'</span>);
+        <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="function">json</span>();
+        <span class="builtin">console</span>.<span class="function">log</span>(data);
+        <span class="keyword">return</span> data;
+    } <span class="keyword">catch</span> (error) {
+        <span class="builtin">console</span>.<span class="function">log</span>(<span class="string">'Error:'</span>, error);
+    }
+}
+
+<span class="comment">// Arrow function version</span>
+<span class="keyword">const</span> getData = <span class="keyword">async</span> () => {
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'https://api.example.com/data'</span>);
+    <span class="keyword">return</span> response.<span class="function">json</span>();
+};</pre>
+                </div>
+            </div>
+
+            <div class="info-box important">
+                <h5>💡 Key Rules</h5>
+                <ul>
+                    <li><code>await</code> can only be used inside an <code>async</code> function</li>
+                    <li><code>await</code> pauses execution until the Promise resolves</li>
+                    <li>Always use <code>try/catch</code> for error handling</li>
+                    <li>Async functions always return a Promise</li>
+                </ul>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-col">
+                    <h5 style="color: var(--accent-blue);">Python (asyncio)</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">async def</span> <span class="function">get_data</span>():
+    data = <span class="keyword">await</span> <span class="function">fetch</span>(url)
+    <span class="keyword">return</span> data</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-col">
+                    <h5 style="color: var(--js-yellow);">JavaScript</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre><span class="keyword">async function</span> <span class="function">getData</span>() {
+    <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="function">fetch</span>(url);
+    <span class="keyword">return</span> data;
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Discord.js is all async!</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">commands/ban.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="comment">// Slash command handler (async)</span>
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">execute</span>(interaction) {
+    <span class="keyword">const</span> target = interaction.options.<span class="function">getUser</span>(<span class="string">'user'</span>);
+    <span class="keyword">const</span> reason = interaction.options.<span class="function">getString</span>(<span class="string">'reason'</span>) || <span class="string">'No reason'</span>;
+
+    <span class="keyword">try</span> {
+        <span class="comment">// await the ban operation</span>
+        <span class="keyword">await</span> interaction.guild.members.<span class="function">ban</span>(target, { reason });
+
+        <span class="comment">// await the reply</span>
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`Banned ${target.tag}`</span>);
+
+        <span class="comment">// await logging to database</span>
+        <span class="keyword">await</span> db.<span class="function">logAction</span>(<span class="string">'ban'</span>, target.id, reason);
+
+    } <span class="keyword">catch</span> (error) {
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">'Failed to ban user!'</span>);
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <h5>📺 Video: Async/Await in JavaScript</h5>
+                <p style="margin-bottom: 15px;">Visual guide to async programming:</p>
+                <a href="https://www.youtube.com/watch?v=vn3tm0quoqE" target="_blank" class="video-link">
+                    ▶️ Watch on YouTube
+                </a>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 1:</strong> Where can you use <code>await</code>?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Anywhere in your code</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Only inside loops</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Only inside async functions</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Only with Promises</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 2:</strong> What does an async function always return?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>undefined</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>A Promise</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>The return value directly</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>An object</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="d">
+                    <p><strong>Question 3:</strong> How do you handle errors with async/await?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>.catch() only</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>if/else statements</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Error callback</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q10_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>try/catch block</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson9" class="nav-btn" onclick="goToLesson(9)">
+                    ← Previous
+                </a>
+                <a href="#lesson11" class="nav-btn primary" onclick="goToLesson(11)">
+                    Next: Node.js Basics →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson11">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 11</div>
+                <h2>Node.js Basics</h2>
+                <p class="lesson-desc">Run JavaScript outside the browser to build Discord bots.</p>
+            </div>
+
+            <h3>🖥️ What is Node.js?</h3>
+            <p>Node.js lets you run JavaScript on your computer (not just in browsers). This is what powers your Discord bots!</p>
+
+            <div class="diagram">
+                <h5>JavaScript Runtime Environments</h5>
+                <div class="diagram-content">
+                    <div class="diagram-box">Browser<br><small>Chrome, Firefox</small></div>
+                    <span class="diagram-arrow">←</span>
+                    <div class="diagram-box" style="border-color: var(--accent-green);">JavaScript</div>
+                    <span class="diagram-arrow">→</span>
+                    <div class="diagram-box">Node.js<br><small>Server, Bots</small></div>
+                </div>
+            </div>
+
+            <h3>📂 File System Operations</h3>
+            <p>Node.js can read and write files on your computer:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">files.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="keyword">const</span> fs = <span class="function">require</span>(<span class="string">'fs'</span>);
+
+<span class="comment">// Read file (async)</span>
+fs.<span class="function">readFile</span>(<span class="string">'data.json'</span>, <span class="string">'utf8'</span>, (err, data) => {
+    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
+    <span class="builtin">console</span>.<span class="function">log</span>(data);
+});
+
+<span class="comment">// Read file (sync - blocks)</span>
+<span class="keyword">const</span> data = fs.<span class="function">readFileSync</span>(<span class="string">'data.json'</span>, <span class="string">'utf8'</span>);
+
+<span class="comment">// Write file</span>
+fs.<span class="function">writeFileSync</span>(<span class="string">'output.txt'</span>, <span class="string">'Hello World!'</span>);
+
+<span class="comment">// Modern async/await with promises</span>
+<span class="keyword">const</span> fsPromises = <span class="function">require</span>(<span class="string">'fs/promises'</span>);
+
+<span class="keyword">async</span> <span class="keyword">function</span> <span class="function">readConfig</span>() {
+    <span class="keyword">const</span> data = <span class="keyword">await</span> fsPromises.<span class="function">readFile</span>(<span class="string">'config.json'</span>, <span class="string">'utf8'</span>);
+    <span class="keyword">return</span> <span class="builtin">JSON</span>.<span class="function">parse</span>(data);
+}</pre>
+                </div>
+            </div>
+
+            <h3>🌍 Environment Variables</h3>
+            <p>Store secrets (like bot tokens) safely:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">.env</span>
+                    <span class="lang-badge">ENV</span>
+                </div>
+                <div class="code-content">
+<pre>DISCORD_TOKEN=your_secret_token_here
+DATABASE_URL=sqlite:data.db
+PREFIX=!</pre>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">index.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Load environment variables</span>
+<span class="function">require</span>(<span class="string">'dotenv'</span>).<span class="function">config</span>();
+
+<span class="comment">// Access them via process.env</span>
+<span class="keyword">const</span> token = process.env.DISCORD_TOKEN;
+<span class="keyword">const</span> prefix = process.env.PREFIX || <span class="string">'!'</span>;
+
+<span class="comment">// Never log or commit tokens!</span>
+client.<span class="function">login</span>(token);</pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <h5>⚠️ Never Commit Tokens!</h5>
+                <p>Add <code>.env</code> to your <code>.gitignore</code> file. Never share your bot token or push it to GitHub!</p>
+            </div>
+
+            <h3>📦 Built-in Modules</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">modules.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// File system</span>
+<span class="keyword">const</span> fs = <span class="function">require</span>(<span class="string">'fs'</span>);
+
+<span class="comment">// Path utilities</span>
+<span class="keyword">const</span> path = <span class="function">require</span>(<span class="string">'path'</span>);
+<span class="keyword">const</span> fullPath = path.<span class="function">join</span>(__dirname, <span class="string">'data'</span>, <span class="string">'file.json'</span>);
+
+<span class="comment">// HTTP requests (built-in, but axios/node-fetch are better)</span>
+<span class="keyword">const</span> https = <span class="function">require</span>(<span class="string">'https'</span>);
+
+<span class="comment">// Events</span>
+<span class="keyword">const</span> EventEmitter = <span class="function">require</span>(<span class="string">'events'</span>);
+
+<span class="comment">// Process info</span>
+<span class="builtin">console</span>.<span class="function">log</span>(process.version);  <span class="comment">// Node version</span>
+<span class="builtin">console</span>.<span class="function">log</span>(process.cwd());     <span class="comment">// Current directory</span></pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Node.js in action</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">database.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="keyword">const</span> fs = <span class="function">require</span>(<span class="string">'fs'</span>);
+<span class="keyword">const</span> path = <span class="function">require</span>(<span class="string">'path'</span>);
+
+<span class="comment">// Database file path</span>
+<span class="keyword">const</span> DB_PATH = path.<span class="function">join</span>(__dirname, <span class="string">'data'</span>, <span class="string">'database.json'</span>);
+
+<span class="comment">// Load data</span>
+<span class="keyword">function</span> <span class="function">loadData</span>() {
+    <span class="keyword">try</span> {
+        <span class="keyword">const</span> raw = fs.<span class="function">readFileSync</span>(DB_PATH, <span class="string">'utf8'</span>);
+        <span class="keyword">return</span> <span class="builtin">JSON</span>.<span class="function">parse</span>(raw);
+    } <span class="keyword">catch</span> {
+        <span class="keyword">return</span> {};  <span class="comment">// Return empty object if file doesn't exist</span>
+    }
+}
+
+<span class="comment">// Save data</span>
+<span class="keyword">function</span> <span class="function">saveData</span>(data) {
+    fs.<span class="function">writeFileSync</span>(DB_PATH, <span class="builtin">JSON</span>.<span class="function">stringify</span>(data, <span class="keyword">null</span>, <span class="number">2</span>));
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 1:</strong> How do you access environment variables in Node.js?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>env.VARIABLE</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>process.env.VARIABLE</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>os.getenv('VARIABLE')</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>dotenv.VARIABLE</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 2:</strong> What does <code>require('fs')</code> give you?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>Network module</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>Database module</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>File system module</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>Function service</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> Why should you never commit .env files?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>They contain secrets like API tokens</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>They make the repo too large</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>Git doesn't support .env files</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q11_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>They slow down Node.js</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson10" class="nav-btn" onclick="goToLesson(10)">
+                    ← Previous
+                </a>
+                <a href="#lesson12" class="nav-btn primary" onclick="goToLesson(12)">
+                    Next: npm & Modules →
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson" id="lesson12">
+            <div class="lesson-header">
+                <div class="lesson-number">Lesson 12</div>
+                <h2>npm & Modules</h2>
+                <p class="lesson-desc">Learn to use and manage packages with npm.</p>
+            </div>
+
+            <h3>📦 What is npm?</h3>
+            <p>npm (Node Package Manager) lets you install and manage libraries for your projects. It's like Python's pip!</p>
+
+            <div class="comparison">
+                <div class="comparison-col">
+                    <h5 style="color: var(--accent-blue);">Python (pip)</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre>pip install discord.py
+pip install -r requirements.txt</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="comparison-col">
+                    <h5 style="color: var(--js-yellow);">JavaScript (npm)</h5>
+                    <div class="code-block">
+                        <div class="code-content">
+<pre>npm install discord.js
+npm install</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🚀 Essential npm Commands</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">Terminal</span>
+                    <span class="lang-badge">Shell</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment"># Start a new project (creates package.json)</span>
+npm init -y
+
+<span class="comment"># Install a package</span>
+npm install discord.js
+
+<span class="comment"># Install a dev-only package</span>
+npm install --save-dev nodemon
+
+<span class="comment"># Install all dependencies from package.json</span>
+npm install
+
+<span class="comment"># Update packages</span>
+npm update
+
+<span class="comment"># Run scripts defined in package.json</span>
+npm start
+npm run dev</pre>
+                </div>
+            </div>
+
+            <h3>📄 package.json</h3>
+            <p>The package.json file tracks your project dependencies:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">package.json</span>
+                    <span class="lang-badge">JSON</span>
+                </div>
+                <div class="code-content">
+<pre>{
+  <span class="string">"name"</span>: <span class="string">"worldgate-bot"</span>,
+  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,
+  <span class="string">"main"</span>: <span class="string">"index.js"</span>,
+  <span class="string">"scripts"</span>: {
+    <span class="string">"start"</span>: <span class="string">"node index.js"</span>,
+    <span class="string">"dev"</span>: <span class="string">"nodemon index.js"</span>
+  },
+  <span class="string">"dependencies"</span>: {
+    <span class="string">"discord.js"</span>: <span class="string">"^14.14.1"</span>,
+    <span class="string">"dotenv"</span>: <span class="string">"^16.3.1"</span>,
+    <span class="string">"better-sqlite3"</span>: <span class="string">"^9.2.2"</span>
+  },
+  <span class="string">"devDependencies"</span>: {
+    <span class="string">"nodemon"</span>: <span class="string">"^3.0.2"</span>
+  }
+}</pre>
+                </div>
+            </div>
+
+            <h3>📥 Importing Modules</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">imports.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// CommonJS (traditional Node.js way)</span>
+<span class="keyword">const</span> discord = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+<span class="keyword">const</span> { Client, Intents } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+<span class="keyword">const</span> myModule = <span class="function">require</span>(<span class="string">'./myFile.js'</span>);
+
+<span class="comment">// ES Modules (modern way - needs "type": "module" in package.json)</span>
+<span class="keyword">import</span> discord <span class="keyword">from</span> <span class="string">'discord.js'</span>;
+<span class="keyword">import</span> { Client, Intents } <span class="keyword">from</span> <span class="string">'discord.js'</span>;
+<span class="keyword">import</span> myModule <span class="keyword">from</span> <span class="string">'./myFile.js'</span>;</pre>
+                </div>
+            </div>
+
+            <h3>📤 Exporting Your Code</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">utils.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// CommonJS exports</span>
+<span class="keyword">function</span> <span class="function">formatNumber</span>(num) {
+    <span class="keyword">return</span> num.<span class="function">toLocaleString</span>();
+}
+
+<span class="keyword">function</span> <span class="function">randomInt</span>(min, max) {
+    <span class="keyword">return</span> <span class="builtin">Math</span>.<span class="function">floor</span>(<span class="builtin">Math</span>.<span class="function">random</span>() * (max - min + <span class="number">1</span>)) + min;
+}
+
+<span class="comment">// Export multiple functions</span>
+module.exports = { formatNumber, randomInt };
+
+<span class="comment">// Or export one thing</span>
+module.exports = formatNumber;</pre>
+                </div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="filename">main.js</span>
+                    <span class="lang-badge">JavaScript</span>
+                </div>
+                <div class="code-content">
+<pre><span class="comment">// Import and use</span>
+<span class="keyword">const</span> { formatNumber, randomInt } = <span class="function">require</span>(<span class="string">'./utils.js'</span>);
+
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">formatNumber</span>(<span class="number">1234567</span>));  <span class="comment">// "1,234,567"</span>
+<span class="builtin">console</span>.<span class="function">log</span>(<span class="function">randomInt</span>(<span class="number">1</span>, <span class="number">100</span>));       <span class="comment">// Random number</span></pre>
+                </div>
+            </div>
+
+            <h3>🤖 From Your Bots</h3>
+            <div class="bot-example">
+                <div class="bot-example-header">
+                    <span class="bot-icon">🌍</span>
+                    <div>
+                        <h5>WorldGate Bot</h5>
+                        <span class="bot-name">Organized module structure</span>
+                    </div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="filename">commands/ping.js</span>
+                        <span class="lang-badge">JavaScript</span>
+                    </div>
+                    <div class="code-content">
+<pre><span class="keyword">const</span> { SlashCommandBuilder } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+module.exports = {
+    data: <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'ping'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Check bot latency'</span>),
+
+    <span class="keyword">async</span> <span class="function">execute</span>(interaction) {
+        <span class="keyword">const</span> latency = <span class="builtin">Date</span>.<span class="function">now</span>() - interaction.createdTimestamp;
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`Pong! Latency: ${latency}ms`</span>);
+    }
+};</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <h5>✅ Congratulations!</h5>
+                <p>You've completed the JavaScript & Node.js fundamentals course! You now know the basics needed to understand and modify your Discord.js bots. Ready for the Discord.js specific course next?</p>
+            </div>
+
+            <div class="quiz-section">
+                <h4>🧠 Final Knowledge Check</h4>
+
+                <div class="quiz-question" data-correct="c">
+                    <p><strong>Question 1:</strong> What file tracks your project's dependencies?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_1" value="a">
+                            <span class="option-letter">A</span>
+                            <span>requirements.txt</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_1" value="b">
+                            <span class="option-letter">B</span>
+                            <span>dependencies.json</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_1" value="c">
+                            <span class="option-letter">C</span>
+                            <span>package.json</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_1" value="d">
+                            <span class="option-letter">D</span>
+                            <span>node_modules.json</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="b">
+                    <p><strong>Question 2:</strong> What command installs all dependencies listed in package.json?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_2" value="a">
+                            <span class="option-letter">A</span>
+                            <span>npm download</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_2" value="b">
+                            <span class="option-letter">B</span>
+                            <span>npm install</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_2" value="c">
+                            <span class="option-letter">C</span>
+                            <span>npm get</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_2" value="d">
+                            <span class="option-letter">D</span>
+                            <span>npm setup</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+
+                <div class="quiz-question" data-correct="a">
+                    <p><strong>Question 3:</strong> How do you export a function in CommonJS?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_3" value="a">
+                            <span class="option-letter">A</span>
+                            <span>module.exports = myFunction</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_3" value="b">
+                            <span class="option-letter">B</span>
+                            <span>export myFunction</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_3" value="c">
+                            <span class="option-letter">C</span>
+                            <span>exports(myFunction)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q12_3" value="d">
+                            <span class="option-letter">D</span>
+                            <span>return myFunction</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                    <button class="check-answer-btn" onclick="checkAnswer(this)">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="lesson-nav">
+                <a href="#lesson11" class="nav-btn" onclick="goToLesson(11)">
+                    ← Previous
+                </a>
+                <a href="learn-to-code.html" class="nav-btn primary">
+                    Back to All Courses
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function goToLesson(lessonNum) {
+            document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+            document.getElementById('lesson' + lessonNum).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.lesson == lessonNum) {
+                    link.classList.add('active');
+                }
+            });
+            window.scrollTo(0, 0);
+            document.querySelector('.progress-fill').style.width = (lessonNum / 12 * 100) + '%';
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                goToLesson(parseInt(link.dataset.lesson));
+            });
+        });
+
+        function checkAnswer(button) {
+            const question = button.closest('.quiz-question');
+            const correctAnswer = question.dataset.correct;
+            const selected = question.querySelector('input:checked');
+            const feedback = question.querySelector('.quiz-feedback');
+
+            if (!selected) {
+                feedback.textContent = 'Please select an answer!';
+                feedback.className = 'quiz-feedback show incorrect';
+                return;
+            }
+
+            question.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                const input = opt.querySelector('input');
+                if (input.value === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (input.checked) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            if (selected.value === correctAnswer) {
+                feedback.textContent = '✅ Correct!';
+                feedback.className = 'quiz-feedback show correct';
+            } else {
+                feedback.textContent = '❌ Not quite. See the correct answer above.';
+                feedback.className = 'quiz-feedback show incorrect';
+            }
+
+            button.disabled = true;
+            button.textContent = 'Answered';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,2187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord.js Course - Bot Documentation Hub</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #5865F2;
+            --accent-green: #57F287;
+            --accent-yellow: #FEE75C;
+            --accent-red: #ED4245;
+            --border-color: #2f3542;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), #7289DA);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .sidebar h1 { font-size: 1.2rem; }
+
+        .nav-section { margin-bottom: 25px; }
+        .nav-section h3 {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .nav-item:hover { background: var(--bg-card); }
+        .nav-item.active {
+            background: rgba(88, 101, 242, 0.2);
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .nav-item .lesson-num {
+            background: var(--bg-card);
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-item.completed .lesson-num {
+            background: var(--accent-green);
+            color: #000;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 40px 60px;
+            max-width: 900px;
+        }
+
+        .progress-bar {
+            background: var(--bg-card);
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .lesson { display: none; }
+        .lesson.active { display: block; }
+
+        .lesson h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent-blue);
+        }
+
+        .lesson-meta {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .lesson-content h3 {
+            font-size: 1.4rem;
+            margin: 30px 0 15px;
+            color: var(--text-primary);
+        }
+
+        .lesson-content p { margin-bottom: 15px; color: var(--text-secondary); }
+
+        .code-block {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #e6edf3;
+            white-space: pre;
+        }
+
+        .code-label {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: var(--accent-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: rgba(88, 101, 242, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .warning-box {
+            background: rgba(254, 231, 92, 0.1);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .success-box {
+            background: rgba(87, 242, 135, 0.1);
+            border-left: 4px solid var(--accent-green);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        /* Quiz */
+        .quiz-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .quiz-section h4 {
+            color: var(--accent-yellow);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-question { margin-bottom: 25px; }
+        .quiz-question p { color: var(--text-primary); font-weight: 500; margin-bottom: 12px; }
+
+        .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+
+        .quiz-option {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover { border-color: var(--accent-blue); }
+        .quiz-option.correct { background: rgba(87, 242, 135, 0.2); border-color: var(--accent-green); }
+        .quiz-option.incorrect { background: rgba(237, 66, 69, 0.2); border-color: var(--accent-red); }
+
+        .btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-color); }
+
+        .video-placeholder {
+            background: var(--bg-card);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .video-placeholder span { font-size: 3rem; display: block; margin-bottom: 10px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover { color: var(--accent-blue); }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .function { color: #d2a8ff; }
+        .comment { color: #8b949e; }
+        .number { color: #79c0ff; }
+        .property { color: #7ee787; }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">JS</div>
+                <h1>Discord.js Course</h1>
+            </div>
+
+            <div class="nav-section">
+                <h3>Getting Started</h3>
+                <a class="nav-item active" data-lesson="1">
+                    <span class="lesson-num">1</span> Your First Bot
+                </a>
+                <a class="nav-item" data-lesson="2">
+                    <span class="lesson-num">2</span> Events
+                </a>
+                <a class="nav-item" data-lesson="3">
+                    <span class="lesson-num">3</span> Message Commands
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Slash Commands</h3>
+                <a class="nav-item" data-lesson="4">
+                    <span class="lesson-num">4</span> Slash Commands
+                </a>
+                <a class="nav-item" data-lesson="5">
+                    <span class="lesson-num">5</span> Command Options
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Rich Content</h3>
+                <a class="nav-item" data-lesson="6">
+                    <span class="lesson-num">6</span> Embeds
+                </a>
+                <a class="nav-item" data-lesson="7">
+                    <span class="lesson-num">7</span> Buttons
+                </a>
+                <a class="nav-item" data-lesson="8">
+                    <span class="lesson-num">8</span> Select Menus
+                </a>
+                <a class="nav-item" data-lesson="9">
+                    <span class="lesson-num">9</span> Modals
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Advanced</h3>
+                <a class="nav-item" data-lesson="10">
+                    <span class="lesson-num">10</span> Command Handler
+                </a>
+                <a class="nav-item" data-lesson="11">
+                    <span class="lesson-num">11</span> Database (SQLite)
+                </a>
+                <a class="nav-item" data-lesson="12">
+                    <span class="lesson-num">12</span> Error Handling
+                </a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <a href="learn-to-code.html" class="back-link">← Back to Learning Hub</a>
+
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 8%"></div>
+            </div>
+
+            <!-- Lesson 1: Your First Bot -->
+            <div class="lesson active" id="lesson-1">
+                <h2>Lesson 1: Your First Bot</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 20 minutes</span>
+                    <span>📚 Beginner</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Let's create your first Discord bot using Discord.js! This is the same library used by the WorldGate Judicial Bot.</p>
+
+                    <div class="video-placeholder">
+                        <span>🎬</span>
+                        <p>Video: Setting Up Your First Discord.js Bot</p>
+                    </div>
+
+                    <h3>Prerequisites</h3>
+                    <p>Before we start, make sure you have:</p>
+                    <ul style="color: var(--text-secondary); margin-left: 20px; margin-bottom: 20px;">
+                        <li>Node.js 16.9.0 or higher installed</li>
+                        <li>A code editor (VS Code recommended)</li>
+                        <li>A Discord account</li>
+                    </ul>
+
+                    <h3>Step 1: Create a Discord Application</h3>
+                    <p>Go to the <a href="https://discord.com/developers/applications" style="color: var(--accent-blue);">Discord Developer Portal</a> and create a new application. Then:</p>
+                    <ol style="color: var(--text-secondary); margin-left: 20px; margin-bottom: 20px;">
+                        <li>Click "New Application" and give it a name</li>
+                        <li>Go to the "Bot" section and click "Add Bot"</li>
+                        <li>Copy your bot token (keep this secret!)</li>
+                        <li>Enable "Message Content Intent" under Privileged Intents</li>
+                    </ol>
+
+                    <h3>Step 2: Set Up Your Project</h3>
+                    <div class="code-block">
+                        <span class="code-label">Terminal</span>
+                        <code><span class="comment"># Create a new folder and initialize npm</span>
+mkdir my-discord-bot
+cd my-discord-bot
+npm init -y
+
+<span class="comment"># Install discord.js</span>
+npm install discord.js
+
+<span class="comment"># Install dotenv for environment variables</span>
+npm install dotenv</code>
+                    </div>
+
+                    <h3>Step 3: Create Your Bot File</h3>
+                    <p>Create a file called <code>index.js</code>:</p>
+
+                    <div class="code-block">
+                        <span class="code-label">index.js</span>
+                        <code><span class="keyword">const</span> { <span class="property">Client</span>, <span class="property">GatewayIntentBits</span> } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+<span class="keyword">require</span>(<span class="string">'dotenv'</span>).<span class="function">config</span>();
+
+<span class="comment">// Create a new client instance</span>
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">Client</span>({
+    intents: [
+        GatewayIntentBits.<span class="property">Guilds</span>,
+        GatewayIntentBits.<span class="property">GuildMessages</span>,
+        GatewayIntentBits.<span class="property">MessageContent</span>
+    ]
+});
+
+<span class="comment">// When the bot is ready</span>
+client.<span class="function">once</span>(<span class="string">'ready'</span>, () => {
+    console.<span class="function">log</span>(<span class="string">`Logged in as ${client.user.tag}!`</span>);
+});
+
+<span class="comment">// Log in to Discord</span>
+client.<span class="function">login</span>(process.env.<span class="property">TOKEN</span>);</code>
+                    </div>
+
+                    <h3>Step 4: Create Environment File</h3>
+                    <p>Create a <code>.env</code> file to store your token securely:</p>
+
+                    <div class="code-block">
+                        <span class="code-label">.env</span>
+                        <code>TOKEN=your_bot_token_here</code>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Never share your token!</strong> Add <code>.env</code> to your <code>.gitignore</code> file to prevent accidentally uploading it.
+                    </div>
+
+                    <h3>Step 5: Run Your Bot</h3>
+                    <div class="code-block">
+                        <span class="code-label">Terminal</span>
+                        <code>node index.js</code>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>🎉 Success!</strong> If you see "Logged in as YourBot#1234!" your bot is running!
+                    </div>
+
+                    <h3>Discord.js vs Discord.py</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Concept</th>
+                            <th>Discord.js</th>
+                            <th>Discord.py</th>
+                        </tr>
+                        <tr>
+                            <td>Create client</td>
+                            <td><code>new Client({ intents: [...] })</code></td>
+                            <td><code>commands.Bot(intents=...)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Ready event</td>
+                            <td><code>client.once('ready', ...)</code></td>
+                            <td><code>@bot.event async def on_ready():</code></td>
+                        </tr>
+                        <tr>
+                            <td>Login</td>
+                            <td><code>client.login(token)</code></td>
+                            <td><code>bot.run(token)</code></td>
+                        </tr>
+                    </table>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. What method do you use to log in your Discord.js bot?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">client.run(token)</div>
+                                <div class="quiz-option" data-correct="true">client.login(token)</div>
+                                <div class="quiz-option" data-correct="false">client.connect(token)</div>
+                                <div class="quiz-option" data-correct="false">client.start(token)</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. Which intent is required to read message content?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">GatewayIntentBits.Guilds</div>
+                                <div class="quiz-option" data-correct="false">GatewayIntentBits.GuildMessages</div>
+                                <div class="quiz-option" data-correct="true">GatewayIntentBits.MessageContent</div>
+                                <div class="quiz-option" data-correct="false">GatewayIntentBits.DirectMessages</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <div></div>
+                    <button class="btn" onclick="nextLesson()">Next: Events →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 2: Events -->
+            <div class="lesson" id="lesson-2">
+                <h2>Lesson 2: Events</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 15 minutes</span>
+                    <span>📚 Beginner</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Discord.js uses an event-driven architecture. Your bot listens for events and responds to them.</p>
+
+                    <h3>Common Events</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="comment">// Bot is ready (use 'once' for one-time events)</span>
+client.<span class="function">once</span>(<span class="string">'ready'</span>, () => {
+    console.<span class="function">log</span>(<span class="string">'Bot is online!'</span>);
+});
+
+<span class="comment">// Message received</span>
+client.<span class="function">on</span>(<span class="string">'messageCreate'</span>, (message) => {
+    <span class="comment">// Ignore bot messages</span>
+    <span class="keyword">if</span> (message.author.bot) <span class="keyword">return</span>;
+
+    console.<span class="function">log</span>(<span class="string">`${message.author.tag}: ${message.content}`</span>);
+});
+
+<span class="comment">// Member joins server</span>
+client.<span class="function">on</span>(<span class="string">'guildMemberAdd'</span>, (member) => {
+    <span class="keyword">const</span> channel = member.guild.channels.cache.<span class="function">find</span>(
+        ch => ch.name === <span class="string">'welcome'</span>
+    );
+    <span class="keyword">if</span> (channel) {
+        channel.<span class="function">send</span>(<span class="string">`Welcome to the server, ${member}!`</span>);
+    }
+});
+
+<span class="comment">// Member leaves server</span>
+client.<span class="function">on</span>(<span class="string">'guildMemberRemove'</span>, (member) => {
+    console.<span class="function">log</span>(<span class="string">`${member.user.tag} left the server`</span>);
+});</code>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 on() vs once()</strong><br>
+                        Use <code>once()</code> for events that should only trigger once (like 'ready'). Use <code>on()</code> for recurring events.
+                    </div>
+
+                    <h3>Event: interactionCreate</h3>
+                    <p>This is the most important event for modern bots - it handles slash commands, buttons, and more:</p>
+
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code>client.<span class="function">on</span>(<span class="string">'interactionCreate'</span>, <span class="keyword">async</span> (interaction) => {
+    <span class="comment">// Handle slash commands</span>
+    <span class="keyword">if</span> (interaction.<span class="function">isChatInputCommand</span>()) {
+        <span class="keyword">if</span> (interaction.commandName === <span class="string">'ping'</span>) {
+            <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">'Pong!'</span>);
+        }
+    }
+
+    <span class="comment">// Handle button clicks</span>
+    <span class="keyword">if</span> (interaction.<span class="function">isButton</span>()) {
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`You clicked: ${interaction.customId}`</span>);
+    }
+});</code>
+                    </div>
+
+                    <h3>Setting Bot Status</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code>client.<span class="function">once</span>(<span class="string">'ready'</span>, () => {
+    <span class="comment">// Set the bot's activity</span>
+    client.user.<span class="function">setActivity</span>(<span class="string">'with Discord.js'</span>, {
+        type: <span class="number">0</span> <span class="comment">// 0 = Playing, 1 = Streaming, 2 = Listening, 3 = Watching</span>
+    });
+
+    <span class="comment">// Or set presence with status</span>
+    client.user.<span class="function">setPresence</span>({
+        activities: [{ name: <span class="string">'for commands'</span>, type: <span class="number">3</span> }], <span class="comment">// Watching</span>
+        status: <span class="string">'online'</span> <span class="comment">// online, idle, dnd, invisible</span>
+    });
+});</code>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. Which method should you use for one-time events like 'ready'?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">client.on()</div>
+                                <div class="quiz-option" data-correct="true">client.once()</div>
+                                <div class="quiz-option" data-correct="false">client.listen()</div>
+                                <div class="quiz-option" data-correct="false">client.when()</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. What event is triggered when a slash command is used?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">messageCreate</div>
+                                <div class="quiz-option" data-correct="false">commandRun</div>
+                                <div class="quiz-option" data-correct="true">interactionCreate</div>
+                                <div class="quiz-option" data-correct="false">slashCommand</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Message Commands →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 3: Message Commands -->
+            <div class="lesson" id="lesson-3">
+                <h2>Lesson 3: Message Commands</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 15 minutes</span>
+                    <span>📚 Beginner</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>While slash commands are preferred, understanding message commands helps you read older code and handle prefix-based bots.</p>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Note:</strong> Message commands require the MessageContent intent, which is a privileged intent. Enable it in the Developer Portal.
+                    </div>
+
+                    <h3>Basic Message Command</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> prefix = <span class="string">'!'</span>;
+
+client.<span class="function">on</span>(<span class="string">'messageCreate'</span>, (message) => {
+    <span class="comment">// Ignore bots and messages without prefix</span>
+    <span class="keyword">if</span> (message.author.bot) <span class="keyword">return</span>;
+    <span class="keyword">if</span> (!message.content.<span class="function">startsWith</span>(prefix)) <span class="keyword">return</span>;
+
+    <span class="comment">// Parse command and arguments</span>
+    <span class="keyword">const</span> args = message.content.<span class="function">slice</span>(prefix.length).<span class="function">trim</span>().<span class="function">split</span>(<span class="string">/\s+/</span>);
+    <span class="keyword">const</span> command = args.<span class="function">shift</span>().<span class="function">toLowerCase</span>();
+
+    <span class="keyword">if</span> (command === <span class="string">'ping'</span>) {
+        message.<span class="function">reply</span>(<span class="string">'Pong!'</span>);
+    }
+
+    <span class="keyword">if</span> (command === <span class="string">'say'</span>) {
+        <span class="keyword">const</span> text = args.<span class="function">join</span>(<span class="string">' '</span>);
+        <span class="keyword">if</span> (text) {
+            message.channel.<span class="function">send</span>(text);
+        }
+    }
+});</code>
+                    </div>
+
+                    <h3>Command with Multiple Arguments</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="comment">// Usage: !kick @user reason here</span>
+<span class="keyword">if</span> (command === <span class="string">'kick'</span>) {
+    <span class="comment">// Check permissions</span>
+    <span class="keyword">if</span> (!message.member.permissions.<span class="function">has</span>(<span class="string">'KickMembers'</span>)) {
+        <span class="keyword">return</span> message.<span class="function">reply</span>(<span class="string">'You need Kick Members permission!'</span>);
+    }
+
+    <span class="comment">// Get the mentioned user</span>
+    <span class="keyword">const</span> target = message.mentions.members.<span class="function">first</span>();
+    <span class="keyword">if</span> (!target) {
+        <span class="keyword">return</span> message.<span class="function">reply</span>(<span class="string">'Please mention a user to kick.'</span>);
+    }
+
+    <span class="comment">// Get the reason (everything after the mention)</span>
+    <span class="keyword">const</span> reason = args.<span class="function">slice</span>(<span class="number">1</span>).<span class="function">join</span>(<span class="string">' '</span>) || <span class="string">'No reason provided'</span>;
+
+    <span class="keyword">try</span> {
+        <span class="keyword">await</span> target.<span class="function">kick</span>(reason);
+        message.<span class="function">reply</span>(<span class="string">`Kicked ${target.user.tag} for: ${reason}`</span>);
+    } <span class="keyword">catch</span> (error) {
+        message.<span class="function">reply</span>(<span class="string">'Failed to kick that user.'</span>);
+    }
+}</code>
+                    </div>
+
+                    <h3>Replying vs Sending</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="comment">// Reply (mentions the user)</span>
+message.<span class="function">reply</span>(<span class="string">'This replies to you!'</span>);
+
+<span class="comment">// Send to channel (no mention)</span>
+message.channel.<span class="function">send</span>(<span class="string">'This just sends a message.'</span>);
+
+<span class="comment">// React to the message</span>
+message.<span class="function">react</span>(<span class="string">'👍'</span>);
+
+<span class="comment">// Delete the command message</span>
+message.<span class="function">delete</span>();</code>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. What does <code>args.shift()</code> do?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">Adds an element to args</div>
+                                <div class="quiz-option" data-correct="true">Removes and returns the first element</div>
+                                <div class="quiz-option" data-correct="false">Removes and returns the last element</div>
+                                <div class="quiz-option" data-correct="false">Reverses the array</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. How do you get the first mentioned user?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="true">message.mentions.members.first()</div>
+                                <div class="quiz-option" data-correct="false">message.mentions[0]</div>
+                                <div class="quiz-option" data-correct="false">message.getMention()</div>
+                                <div class="quiz-option" data-correct="false">message.users.first()</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Slash Commands →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 4: Slash Commands -->
+            <div class="lesson" id="lesson-4">
+                <h2>Lesson 4: Slash Commands</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 20 minutes</span>
+                    <span>📚 Intermediate</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Slash commands are the modern way to interact with Discord bots. They provide autocomplete, validation, and a better user experience.</p>
+
+                    <h3>Registering Slash Commands</h3>
+                    <p>Create a file called <code>deploy-commands.js</code>:</p>
+
+                    <div class="code-block">
+                        <span class="code-label">deploy-commands.js</span>
+                        <code><span class="keyword">const</span> { <span class="property">REST</span>, <span class="property">Routes</span>, <span class="property">SlashCommandBuilder</span> } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+<span class="keyword">require</span>(<span class="string">'dotenv'</span>).<span class="function">config</span>();
+
+<span class="keyword">const</span> commands = [
+    <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'ping'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Replies with Pong!'</span>),
+
+    <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'user'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Shows user info'</span>),
+].<span class="function">map</span>(cmd => cmd.<span class="function">toJSON</span>());
+
+<span class="keyword">const</span> rest = <span class="keyword">new</span> <span class="function">REST</span>({ version: <span class="string">'10'</span> }).<span class="function">setToken</span>(process.env.<span class="property">TOKEN</span>);
+
+(<span class="keyword">async</span> () => {
+    <span class="keyword">try</span> {
+        console.<span class="function">log</span>(<span class="string">'Registering slash commands...'</span>);
+
+        <span class="keyword">await</span> rest.<span class="function">put</span>(
+            Routes.<span class="function">applicationCommands</span>(process.env.<span class="property">CLIENT_ID</span>),
+            { body: commands }
+        );
+
+        console.<span class="function">log</span>(<span class="string">'Successfully registered commands!'</span>);
+    } <span class="keyword">catch</span> (error) {
+        console.<span class="function">error</span>(error);
+    }
+})();</code>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 Guild vs Global Commands</strong><br>
+                        Guild commands update instantly but only work in one server. Global commands take up to an hour to update but work everywhere.
+                    </div>
+
+                    <h3>Handling Slash Commands</h3>
+                    <div class="code-block">
+                        <span class="code-label">index.js</span>
+                        <code>client.<span class="function">on</span>(<span class="string">'interactionCreate'</span>, <span class="keyword">async</span> (interaction) => {
+    <span class="keyword">if</span> (!interaction.<span class="function">isChatInputCommand</span>()) <span class="keyword">return</span>;
+
+    <span class="keyword">const</span> { commandName } = interaction;
+
+    <span class="keyword">if</span> (commandName === <span class="string">'ping'</span>) {
+        <span class="keyword">const</span> latency = Date.<span class="function">now</span>() - interaction.createdTimestamp;
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`Pong! Latency: ${latency}ms`</span>);
+    }
+
+    <span class="keyword">if</span> (commandName === <span class="string">'user'</span>) {
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(
+            <span class="string">`Username: ${interaction.user.username}\nID: ${interaction.user.id}`</span>
+        );
+    }
+});</code>
+                    </div>
+
+                    <h3>Ephemeral (Private) Responses</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="comment">// Only the user who ran the command can see this</span>
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({
+    content: <span class="string">'This is private!'</span>,
+    ephemeral: <span class="keyword">true</span>
+});</code>
+                    </div>
+
+                    <h3>Deferred Responses</h3>
+                    <p>Use defer when your command takes more than 3 seconds:</p>
+
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">if</span> (commandName === <span class="string">'fetch-data'</span>) {
+    <span class="comment">// Show "Bot is thinking..."</span>
+    <span class="keyword">await</span> interaction.<span class="function">deferReply</span>();
+
+    <span class="comment">// Do something that takes time</span>
+    <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="function">fetchFromAPI</span>();
+
+    <span class="comment">// Edit the deferred reply</span>
+    <span class="keyword">await</span> interaction.<span class="function">editReply</span>(<span class="string">`Data: ${data}`</span>);
+}</code>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. What method checks if an interaction is a slash command?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.isCommand()</div>
+                                <div class="quiz-option" data-correct="true">interaction.isChatInputCommand()</div>
+                                <div class="quiz-option" data-correct="false">interaction.isSlashCommand()</div>
+                                <div class="quiz-option" data-correct="false">interaction.type === 'command'</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. How do you make a response only visible to the command user?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">{ private: true }</div>
+                                <div class="quiz-option" data-correct="false">{ hidden: true }</div>
+                                <div class="quiz-option" data-correct="true">{ ephemeral: true }</div>
+                                <div class="quiz-option" data-correct="false">{ dm: true }</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Command Options →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 5: Command Options -->
+            <div class="lesson" id="lesson-5">
+                <h2>Lesson 5: Command Options</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 20 minutes</span>
+                    <span>📚 Intermediate</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Slash commands can accept options (parameters) with type validation and autocomplete.</p>
+
+                    <h3>Adding Options</h3>
+                    <div class="code-block">
+                        <span class="code-label">deploy-commands.js</span>
+                        <code><span class="keyword">const</span> commands = [
+    <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'echo'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Repeats your message'</span>)
+        .<span class="function">addStringOption</span>(option =>
+            option.<span class="function">setName</span>(<span class="string">'message'</span>)
+                .<span class="function">setDescription</span>(<span class="string">'The message to echo'</span>)
+                .<span class="function">setRequired</span>(<span class="keyword">true</span>)
+        ),
+
+    <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'kick'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Kick a member'</span>)
+        .<span class="function">addUserOption</span>(option =>
+            option.<span class="function">setName</span>(<span class="string">'target'</span>)
+                .<span class="function">setDescription</span>(<span class="string">'The member to kick'</span>)
+                .<span class="function">setRequired</span>(<span class="keyword">true</span>)
+        )
+        .<span class="function">addStringOption</span>(option =>
+            option.<span class="function">setName</span>(<span class="string">'reason'</span>)
+                .<span class="function">setDescription</span>(<span class="string">'Reason for the kick'</span>)
+        ),
+];</code>
+                    </div>
+
+                    <h3>Option Types</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Method</th>
+                            <th>Type</th>
+                            <th>Example</th>
+                        </tr>
+                        <tr>
+                            <td><code>addStringOption</code></td>
+                            <td>Text</td>
+                            <td>"hello world"</td>
+                        </tr>
+                        <tr>
+                            <td><code>addIntegerOption</code></td>
+                            <td>Whole number</td>
+                            <td>42</td>
+                        </tr>
+                        <tr>
+                            <td><code>addNumberOption</code></td>
+                            <td>Any number</td>
+                            <td>3.14</td>
+                        </tr>
+                        <tr>
+                            <td><code>addBooleanOption</code></td>
+                            <td>True/False</td>
+                            <td>true</td>
+                        </tr>
+                        <tr>
+                            <td><code>addUserOption</code></td>
+                            <td>User mention</td>
+                            <td>@User</td>
+                        </tr>
+                        <tr>
+                            <td><code>addChannelOption</code></td>
+                            <td>Channel</td>
+                            <td>#general</td>
+                        </tr>
+                        <tr>
+                            <td><code>addRoleOption</code></td>
+                            <td>Role</td>
+                            <td>@Moderator</td>
+                        </tr>
+                    </table>
+
+                    <h3>Getting Option Values</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">if</span> (commandName === <span class="string">'echo'</span>) {
+    <span class="keyword">const</span> message = interaction.options.<span class="function">getString</span>(<span class="string">'message'</span>);
+    <span class="keyword">await</span> interaction.<span class="function">reply</span>(message);
+}
+
+<span class="keyword">if</span> (commandName === <span class="string">'kick'</span>) {
+    <span class="keyword">const</span> target = interaction.options.<span class="function">getUser</span>(<span class="string">'target'</span>);
+    <span class="keyword">const</span> reason = interaction.options.<span class="function">getString</span>(<span class="string">'reason'</span>) ?? <span class="string">'No reason'</span>;
+
+    <span class="comment">// Get as member to access guild-specific methods</span>
+    <span class="keyword">const</span> member = interaction.options.<span class="function">getMember</span>(<span class="string">'target'</span>);
+
+    <span class="keyword">await</span> member.<span class="function">kick</span>(reason);
+    <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`Kicked ${target.tag}`</span>);
+}</code>
+                    </div>
+
+                    <h3>Choices (Dropdown Options)</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+    .<span class="function">setName</span>(<span class="string">'sport'</span>)
+    .<span class="function">setDescription</span>(<span class="string">'Get scores for a sport'</span>)
+    .<span class="function">addStringOption</span>(option =>
+        option.<span class="function">setName</span>(<span class="string">'league'</span>)
+            .<span class="function">setDescription</span>(<span class="string">'Choose a league'</span>)
+            .<span class="function">setRequired</span>(<span class="keyword">true</span>)
+            .<span class="function">addChoices</span>(
+                { name: <span class="string">'NBA'</span>, value: <span class="string">'nba'</span> },
+                { name: <span class="string">'NFL'</span>, value: <span class="string">'nfl'</span> },
+                { name: <span class="string">'MLB'</span>, value: <span class="string">'mlb'</span> },
+                { name: <span class="string">'NHL'</span>, value: <span class="string">'nhl'</span> }
+            )
+    )</code>
+                    </div>
+
+                    <h3>Subcommands</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+    .<span class="function">setName</span>(<span class="string">'settings'</span>)
+    .<span class="function">setDescription</span>(<span class="string">'Manage bot settings'</span>)
+    .<span class="function">addSubcommand</span>(sub =>
+        sub.<span class="function">setName</span>(<span class="string">'view'</span>)
+            .<span class="function">setDescription</span>(<span class="string">'View current settings'</span>)
+    )
+    .<span class="function">addSubcommand</span>(sub =>
+        sub.<span class="function">setName</span>(<span class="string">'set'</span>)
+            .<span class="function">setDescription</span>(<span class="string">'Change a setting'</span>)
+            .<span class="function">addStringOption</span>(opt =>
+                opt.<span class="function">setName</span>(<span class="string">'key'</span>).<span class="function">setDescription</span>(<span class="string">'Setting name'</span>).<span class="function">setRequired</span>(<span class="keyword">true</span>)
+            )
+            .<span class="function">addStringOption</span>(opt =>
+                opt.<span class="function">setName</span>(<span class="string">'value'</span>).<span class="function">setDescription</span>(<span class="string">'New value'</span>).<span class="function">setRequired</span>(<span class="keyword">true</span>)
+            )
+    )
+
+<span class="comment">// Handle subcommands</span>
+<span class="keyword">if</span> (commandName === <span class="string">'settings'</span>) {
+    <span class="keyword">const</span> subcommand = interaction.options.<span class="function">getSubcommand</span>();
+
+    <span class="keyword">if</span> (subcommand === <span class="string">'view'</span>) {
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">'Current settings...'</span>);
+    } <span class="keyword">else</span> <span class="keyword">if</span> (subcommand === <span class="string">'set'</span>) {
+        <span class="keyword">const</span> key = interaction.options.<span class="function">getString</span>(<span class="string">'key'</span>);
+        <span class="keyword">const</span> value = interaction.options.<span class="function">getString</span>(<span class="string">'value'</span>);
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`Set ${key} to ${value}`</span>);
+    }
+}</code>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. How do you get a user option value?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.options.get('target')</div>
+                                <div class="quiz-option" data-correct="true">interaction.options.getUser('target')</div>
+                                <div class="quiz-option" data-correct="false">interaction.getOption('target')</div>
+                                <div class="quiz-option" data-correct="false">interaction.options.target</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. What method adds predefined choices to a string option?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">setOptions()</div>
+                                <div class="quiz-option" data-correct="false">addOptions()</div>
+                                <div class="quiz-option" data-correct="true">addChoices()</div>
+                                <div class="quiz-option" data-correct="false">setChoices()</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Embeds →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 6: Embeds -->
+            <div class="lesson" id="lesson-6">
+                <h2>Lesson 6: Embeds</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 15 minutes</span>
+                    <span>📚 Intermediate</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Embeds are rich formatted messages with colors, images, fields, and more. They're used extensively in the WorldGate Bot for displaying case information.</p>
+
+                    <h3>Creating a Basic Embed</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> { <span class="property">EmbedBuilder</span> } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> embed = <span class="keyword">new</span> <span class="function">EmbedBuilder</span>()
+    .<span class="function">setColor</span>(<span class="number">0x5865F2</span>) <span class="comment">// Discord Blurple</span>
+    .<span class="function">setTitle</span>(<span class="string">'Embed Title'</span>)
+    .<span class="function">setDescription</span>(<span class="string">'This is the main description text.'</span>)
+    .<span class="function">setTimestamp</span>();
+
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({ embeds: [embed] });</code>
+                    </div>
+
+                    <h3>Full Featured Embed</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> embed = <span class="keyword">new</span> <span class="function">EmbedBuilder</span>()
+    .<span class="function">setColor</span>(<span class="number">0xED4245</span>) <span class="comment">// Red</span>
+    .<span class="function">setTitle</span>(<span class="string">'Case #1234'</span>)
+    .<span class="function">setURL</span>(<span class="string">'https://example.com/case/1234'</span>)
+    .<span class="function">setAuthor</span>({
+        name: <span class="string">'WorldGate Judicial'</span>,
+        iconURL: <span class="string">'https://i.imgur.com/icon.png'</span>
+    })
+    .<span class="function">setDescription</span>(<span class="string">'**Defendant:** User#1234\n**Charge:** Spam'</span>)
+    .<span class="function">setThumbnail</span>(<span class="string">'https://i.imgur.com/thumb.png'</span>)
+    .<span class="function">addFields</span>(
+        { name: <span class="string">'Status'</span>, value: <span class="string">'Open'</span>, inline: <span class="keyword">true</span> },
+        { name: <span class="string">'Judge'</span>, value: <span class="string">'Admin#0001'</span>, inline: <span class="keyword">true</span> },
+        { name: <span class="string">'Filed'</span>, value: <span class="string">'Jan 1, 2025'</span>, inline: <span class="keyword">true</span> },
+        { name: <span class="string">'Evidence'</span>, value: <span class="string">'See attached screenshots'</span> }
+    )
+    .<span class="function">setImage</span>(<span class="string">'https://i.imgur.com/large.png'</span>)
+    .<span class="function">setFooter</span>({
+        text: <span class="string">'WorldGate Judicial System'</span>,
+        iconURL: <span class="string">'https://i.imgur.com/footer.png'</span>
+    })
+    .<span class="function">setTimestamp</span>();
+
+<span class="keyword">await</span> channel.<span class="function">send</span>({ embeds: [embed] });</code>
+                    </div>
+
+                    <h3>Common Colors</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="comment">// Discord brand colors</span>
+<span class="keyword">const</span> colors = {
+    blurple: <span class="number">0x5865F2</span>,
+    green: <span class="number">0x57F287</span>,
+    yellow: <span class="number">0xFEE75C</span>,
+    red: <span class="number">0xED4245</span>,
+    white: <span class="number">0xFFFFFF</span>,
+    black: <span class="number">0x23272A</span>
+};
+
+embed.<span class="function">setColor</span>(colors.green);</code>
+                    </div>
+
+                    <h3>Multiple Embeds</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> embed1 = <span class="keyword">new</span> <span class="function">EmbedBuilder</span>().<span class="function">setTitle</span>(<span class="string">'First'</span>).<span class="function">setColor</span>(<span class="number">0x5865F2</span>);
+<span class="keyword">const</span> embed2 = <span class="keyword">new</span> <span class="function">EmbedBuilder</span>().<span class="function">setTitle</span>(<span class="string">'Second'</span>).<span class="function">setColor</span>(<span class="number">0x57F287</span>);
+
+<span class="comment">// Send up to 10 embeds at once</span>
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({ embeds: [embed1, embed2] });</code>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 Embed Limits</strong><br>
+                        Title: 256 chars, Description: 4096 chars, Fields: 25 max, Field name: 256 chars, Field value: 1024 chars, Total: 6000 chars.
+                    </div>
+
+                    <div class="success-box">
+                        <strong>📁 See It In Your Code</strong><br>
+                        Check out <code>WorldGateBot/commands/report.js</code> at line 9 - it creates a report center embed with fields and footer!
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. What class do you use to create embeds in Discord.js v14?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">MessageEmbed</div>
+                                <div class="quiz-option" data-correct="true">EmbedBuilder</div>
+                                <div class="quiz-option" data-correct="false">RichEmbed</div>
+                                <div class="quiz-option" data-correct="false">Embed</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. How do you make fields appear side by side?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">{ sideBySide: true }</div>
+                                <div class="quiz-option" data-correct="true">{ inline: true }</div>
+                                <div class="quiz-option" data-correct="false">{ horizontal: true }</div>
+                                <div class="quiz-option" data-correct="false">{ row: true }</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Buttons →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 7: Buttons -->
+            <div class="lesson" id="lesson-7">
+                <h2>Lesson 7: Buttons</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 20 minutes</span>
+                    <span>📚 Intermediate</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Buttons allow users to interact with your bot by clicking. They're organized in rows using ActionRowBuilder.</p>
+
+                    <h3>Creating Buttons</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> {
+    <span class="property">ActionRowBuilder</span>,
+    <span class="property">ButtonBuilder</span>,
+    <span class="property">ButtonStyle</span>
+} = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> row = <span class="keyword">new</span> <span class="function">ActionRowBuilder</span>()
+    .<span class="function">addComponents</span>(
+        <span class="keyword">new</span> <span class="function">ButtonBuilder</span>()
+            .<span class="function">setCustomId</span>(<span class="string">'approve'</span>)
+            .<span class="function">setLabel</span>(<span class="string">'Approve'</span>)
+            .<span class="function">setStyle</span>(ButtonStyle.<span class="property">Success</span>)
+            .<span class="function">setEmoji</span>(<span class="string">'✅'</span>),
+        <span class="keyword">new</span> <span class="function">ButtonBuilder</span>()
+            .<span class="function">setCustomId</span>(<span class="string">'deny'</span>)
+            .<span class="function">setLabel</span>(<span class="string">'Deny'</span>)
+            .<span class="function">setStyle</span>(ButtonStyle.<span class="property">Danger</span>)
+            .<span class="function">setEmoji</span>(<span class="string">'❌'</span>)
+    );
+
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({
+    content: <span class="string">'Make your choice:'</span>,
+    components: [row]
+});</code>
+                    </div>
+
+                    <h3>Button Styles</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Style</th>
+                            <th>Color</th>
+                            <th>Use Case</th>
+                        </tr>
+                        <tr>
+                            <td><code>ButtonStyle.Primary</code></td>
+                            <td>Blurple</td>
+                            <td>Main actions</td>
+                        </tr>
+                        <tr>
+                            <td><code>ButtonStyle.Secondary</code></td>
+                            <td>Grey</td>
+                            <td>Secondary actions</td>
+                        </tr>
+                        <tr>
+                            <td><code>ButtonStyle.Success</code></td>
+                            <td>Green</td>
+                            <td>Confirm/approve</td>
+                        </tr>
+                        <tr>
+                            <td><code>ButtonStyle.Danger</code></td>
+                            <td>Red</td>
+                            <td>Delete/deny</td>
+                        </tr>
+                        <tr>
+                            <td><code>ButtonStyle.Link</code></td>
+                            <td>Grey</td>
+                            <td>External URL (no customId)</td>
+                        </tr>
+                    </table>
+
+                    <h3>Handling Button Clicks</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code>client.<span class="function">on</span>(<span class="string">'interactionCreate'</span>, <span class="keyword">async</span> (interaction) => {
+    <span class="keyword">if</span> (!interaction.<span class="function">isButton</span>()) <span class="keyword">return</span>;
+
+    <span class="keyword">if</span> (interaction.customId === <span class="string">'approve'</span>) {
+        <span class="keyword">await</span> interaction.<span class="function">update</span>({
+            content: <span class="string">'Request approved!'</span>,
+            components: [] <span class="comment">// Remove buttons</span>
+        });
+    }
+
+    <span class="keyword">if</span> (interaction.customId === <span class="string">'deny'</span>) {
+        <span class="keyword">await</span> interaction.<span class="function">update</span>({
+            content: <span class="string">'Request denied.'</span>,
+            components: []
+        });
+    }
+});</code>
+                    </div>
+
+                    <h3>Button Collector (Recommended)</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> response = <span class="keyword">await</span> interaction.<span class="function">reply</span>({
+    content: <span class="string">'Choose wisely!'</span>,
+    components: [row]
+});
+
+<span class="comment">// Create collector - only original user can click</span>
+<span class="keyword">const</span> filter = (i) => i.user.id === interaction.user.id;
+
+<span class="keyword">try</span> {
+    <span class="keyword">const</span> buttonInteraction = <span class="keyword">await</span> response.<span class="function">awaitMessageComponent</span>({
+        filter,
+        time: <span class="number">60_000</span> <span class="comment">// 60 seconds</span>
+    });
+
+    <span class="keyword">if</span> (buttonInteraction.customId === <span class="string">'approve'</span>) {
+        <span class="keyword">await</span> buttonInteraction.<span class="function">update</span>({
+            content: <span class="string">'Approved!'</span>,
+            components: []
+        });
+    }
+} <span class="keyword">catch</span> (error) {
+    <span class="comment">// Timeout - no button clicked</span>
+    <span class="keyword">await</span> interaction.<span class="function">editReply</span>({
+        content: <span class="string">'Timed out.'</span>,
+        components: []
+    });
+}</code>
+                    </div>
+
+                    <h3>Disabling Buttons</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> disabledButton = <span class="keyword">new</span> <span class="function">ButtonBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'used'</span>)
+    .<span class="function">setLabel</span>(<span class="string">'Already Clicked'</span>)
+    .<span class="function">setStyle</span>(ButtonStyle.<span class="property">Secondary</span>)
+    .<span class="function">setDisabled</span>(<span class="keyword">true</span>);</code>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>📁 See It In Your Code</strong><br>
+                        Check out <code>WorldGateBot/commands/leaderboard.js</code> at line 27 - it creates a refresh button with ActionRowBuilder!<br>
+                        Also see <code>WorldGateBot/handlers/interactionHandlers.js</code> at line 22 for the interaction routing that handles button clicks.
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. What method checks if an interaction is a button click?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.isClick()</div>
+                                <div class="quiz-option" data-correct="true">interaction.isButton()</div>
+                                <div class="quiz-option" data-correct="false">interaction.type === 'button'</div>
+                                <div class="quiz-option" data-correct="false">interaction.isComponent()</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. What method updates the original message after a button click?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.reply()</div>
+                                <div class="quiz-option" data-correct="false">interaction.edit()</div>
+                                <div class="quiz-option" data-correct="true">interaction.update()</div>
+                                <div class="quiz-option" data-correct="false">interaction.modify()</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Select Menus →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 8: Select Menus -->
+            <div class="lesson" id="lesson-8">
+                <h2>Lesson 8: Select Menus</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 15 minutes</span>
+                    <span>📚 Intermediate</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Select menus (dropdowns) let users choose from a list of options. Great for team selection, settings, and more.</p>
+
+                    <h3>String Select Menu</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> {
+    <span class="property">ActionRowBuilder</span>,
+    <span class="property">StringSelectMenuBuilder</span>
+} = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> row = <span class="keyword">new</span> <span class="function">ActionRowBuilder</span>()
+    .<span class="function">addComponents</span>(
+        <span class="keyword">new</span> <span class="function">StringSelectMenuBuilder</span>()
+            .<span class="function">setCustomId</span>(<span class="string">'team-select'</span>)
+            .<span class="function">setPlaceholder</span>(<span class="string">'Select a team'</span>)
+            .<span class="function">addOptions</span>(
+                { label: <span class="string">'Lakers'</span>, value: <span class="string">'lakers'</span>, emoji: <span class="string">'🏀'</span> },
+                { label: <span class="string">'Celtics'</span>, value: <span class="string">'celtics'</span>, emoji: <span class="string">'☘️'</span> },
+                { label: <span class="string">'Warriors'</span>, value: <span class="string">'warriors'</span>, emoji: <span class="string">'🌉'</span> },
+                { label: <span class="string">'Heat'</span>, value: <span class="string">'heat'</span>, emoji: <span class="string">'🔥'</span> }
+            )
+    );
+
+<span class="keyword">await</span> interaction.<span class="function">reply</span>({
+    content: <span class="string">'Choose your favorite team:'</span>,
+    components: [row]
+});</code>
+                    </div>
+
+                    <h3>Handling Selection</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code>client.<span class="function">on</span>(<span class="string">'interactionCreate'</span>, <span class="keyword">async</span> (interaction) => {
+    <span class="keyword">if</span> (!interaction.<span class="function">isStringSelectMenu</span>()) <span class="keyword">return</span>;
+
+    <span class="keyword">if</span> (interaction.customId === <span class="string">'team-select'</span>) {
+        <span class="keyword">const</span> selected = interaction.values[<span class="number">0</span>]; <span class="comment">// First selection</span>
+        <span class="keyword">await</span> interaction.<span class="function">update</span>({
+            content: <span class="string">`You selected: ${selected}`</span>,
+            components: []
+        });
+    }
+});</code>
+                    </div>
+
+                    <h3>Multi-Select</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">new</span> <span class="function">StringSelectMenuBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'roles-select'</span>)
+    .<span class="function">setPlaceholder</span>(<span class="string">'Select your roles'</span>)
+    .<span class="function">setMinValues</span>(<span class="number">1</span>)
+    .<span class="function">setMaxValues</span>(<span class="number">3</span>) <span class="comment">// Allow up to 3 selections</span>
+    .<span class="function">addOptions</span>(
+        { label: <span class="string">'Gamer'</span>, value: <span class="string">'gamer'</span> },
+        { label: <span class="string">'Artist'</span>, value: <span class="string">'artist'</span> },
+        { label: <span class="string">'Developer'</span>, value: <span class="string">'developer'</span> },
+        { label: <span class="string">'Musician'</span>, value: <span class="string">'musician'</span> }
+    )
+
+<span class="comment">// Get all selected values</span>
+<span class="keyword">const</span> selections = interaction.values; <span class="comment">// Array of strings</span>
+console.<span class="function">log</span>(selections); <span class="comment">// ['gamer', 'artist']</span></code>
+                    </div>
+
+                    <h3>User/Role/Channel Select Menus</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> { <span class="property">UserSelectMenuBuilder</span>, <span class="property">RoleSelectMenuBuilder</span> } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="comment">// User select menu</span>
+<span class="keyword">new</span> <span class="function">UserSelectMenuBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'user-select'</span>)
+    .<span class="function">setPlaceholder</span>(<span class="string">'Select a user'</span>)
+
+<span class="comment">// Role select menu</span>
+<span class="keyword">new</span> <span class="function">RoleSelectMenuBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'role-select'</span>)
+    .<span class="function">setPlaceholder</span>(<span class="string">'Select a role'</span>)
+
+<span class="comment">// Handle user select</span>
+<span class="keyword">if</span> (interaction.<span class="function">isUserSelectMenu</span>()) {
+    <span class="keyword">const</span> users = interaction.users; <span class="comment">// Collection of users</span>
+    <span class="keyword">const</span> firstUser = users.<span class="function">first</span>();
+}</code>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. How do you access the selected values from a select menu?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.selected</div>
+                                <div class="quiz-option" data-correct="true">interaction.values</div>
+                                <div class="quiz-option" data-correct="false">interaction.choices</div>
+                                <div class="quiz-option" data-correct="false">interaction.options</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. What method allows multiple selections in a select menu?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">setMultiple(true)</div>
+                                <div class="quiz-option" data-correct="true">setMaxValues()</div>
+                                <div class="quiz-option" data-correct="false">allowMultiple()</div>
+                                <div class="quiz-option" data-correct="false">setMultiSelect(true)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Modals →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 9: Modals -->
+            <div class="lesson" id="lesson-9">
+                <h2>Lesson 9: Modals</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 15 minutes</span>
+                    <span>📚 Intermediate</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Modals are popup forms that collect text input from users. Perfect for feedback forms, appeals, and detailed submissions.</p>
+
+                    <h3>Creating a Modal</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> {
+    <span class="property">ModalBuilder</span>,
+    <span class="property">TextInputBuilder</span>,
+    <span class="property">TextInputStyle</span>,
+    <span class="property">ActionRowBuilder</span>
+} = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'feedback-modal'</span>)
+    .<span class="function">setTitle</span>(<span class="string">'Submit Feedback'</span>);
+
+<span class="comment">// Short text input</span>
+<span class="keyword">const</span> titleInput = <span class="keyword">new</span> <span class="function">TextInputBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'title'</span>)
+    .<span class="function">setLabel</span>(<span class="string">'Title'</span>)
+    .<span class="function">setStyle</span>(TextInputStyle.<span class="property">Short</span>)
+    .<span class="function">setPlaceholder</span>(<span class="string">'Brief summary'</span>)
+    .<span class="function">setRequired</span>(<span class="keyword">true</span>)
+    .<span class="function">setMaxLength</span>(<span class="number">100</span>);
+
+<span class="comment">// Long text input (paragraph)</span>
+<span class="keyword">const</span> descInput = <span class="keyword">new</span> <span class="function">TextInputBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'description'</span>)
+    .<span class="function">setLabel</span>(<span class="string">'Description'</span>)
+    .<span class="function">setStyle</span>(TextInputStyle.<span class="property">Paragraph</span>)
+    .<span class="function">setPlaceholder</span>(<span class="string">'Detailed feedback...'</span>)
+    .<span class="function">setRequired</span>(<span class="keyword">true</span>)
+    .<span class="function">setMinLength</span>(<span class="number">10</span>)
+    .<span class="function">setMaxLength</span>(<span class="number">1000</span>);
+
+<span class="comment">// Each input needs its own ActionRow</span>
+<span class="keyword">const</span> row1 = <span class="keyword">new</span> <span class="function">ActionRowBuilder</span>().<span class="function">addComponents</span>(titleInput);
+<span class="keyword">const</span> row2 = <span class="keyword">new</span> <span class="function">ActionRowBuilder</span>().<span class="function">addComponents</span>(descInput);
+
+modal.<span class="function">addComponents</span>(row1, row2);
+
+<span class="comment">// Show the modal</span>
+<span class="keyword">await</span> interaction.<span class="function">showModal</span>(modal);</code>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 Modal Limits</strong><br>
+                        Modals can have up to 5 text inputs. Each input must be in its own ActionRow.
+                    </div>
+
+                    <h3>Handling Modal Submission</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code>client.<span class="function">on</span>(<span class="string">'interactionCreate'</span>, <span class="keyword">async</span> (interaction) => {
+    <span class="keyword">if</span> (!interaction.<span class="function">isModalSubmit</span>()) <span class="keyword">return</span>;
+
+    <span class="keyword">if</span> (interaction.customId === <span class="string">'feedback-modal'</span>) {
+        <span class="comment">// Get the values</span>
+        <span class="keyword">const</span> title = interaction.fields.<span class="function">getTextInputValue</span>(<span class="string">'title'</span>);
+        <span class="keyword">const</span> description = interaction.fields.<span class="function">getTextInputValue</span>(<span class="string">'description'</span>);
+
+        <span class="comment">// Send to a feedback channel</span>
+        <span class="keyword">const</span> feedbackChannel = interaction.guild.channels.cache.<span class="function">get</span>(<span class="string">'CHANNEL_ID'</span>);
+
+        <span class="keyword">const</span> embed = <span class="keyword">new</span> <span class="function">EmbedBuilder</span>()
+            .<span class="function">setTitle</span>(title)
+            .<span class="function">setDescription</span>(description)
+            .<span class="function">setAuthor</span>({ name: interaction.user.tag })
+            .<span class="function">setColor</span>(<span class="number">0x5865F2</span>);
+
+        <span class="keyword">await</span> feedbackChannel.<span class="function">send</span>({ embeds: [embed] });
+
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>({
+            content: <span class="string">'Thank you for your feedback!'</span>,
+            ephemeral: <span class="keyword">true</span>
+        });
+    }
+});</code>
+                    </div>
+
+                    <h3>WorldGate Appeal Modal Example</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="comment">// From WorldGate Judicial Bot - Appeal submission</span>
+<span class="keyword">const</span> appealModal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">`appeal-${caseId}`</span>)
+    .<span class="function">setTitle</span>(<span class="string">`Appeal Case #${caseId}`</span>);
+
+<span class="keyword">const</span> reasonInput = <span class="keyword">new</span> <span class="function">TextInputBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'reason'</span>)
+    .<span class="function">setLabel</span>(<span class="string">'Why should this case be reconsidered?'</span>)
+    .<span class="function">setStyle</span>(TextInputStyle.<span class="property">Paragraph</span>)
+    .<span class="function">setRequired</span>(<span class="keyword">true</span>)
+    .<span class="function">setMinLength</span>(<span class="number">50</span>);
+
+<span class="keyword">const</span> evidenceInput = <span class="keyword">new</span> <span class="function">TextInputBuilder</span>()
+    .<span class="function">setCustomId</span>(<span class="string">'evidence'</span>)
+    .<span class="function">setLabel</span>(<span class="string">'Any new evidence? (Links)'</span>)
+    .<span class="function">setStyle</span>(TextInputStyle.<span class="property">Short</span>)
+    .<span class="function">setRequired</span>(<span class="keyword">false</span>);</code>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. What method shows a modal to the user?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.reply(modal)</div>
+                                <div class="quiz-option" data-correct="false">interaction.sendModal(modal)</div>
+                                <div class="quiz-option" data-correct="true">interaction.showModal(modal)</div>
+                                <div class="quiz-option" data-correct="false">interaction.displayModal(modal)</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. How do you get a text input value from a submitted modal?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.values.get('id')</div>
+                                <div class="quiz-option" data-correct="true">interaction.fields.getTextInputValue('id')</div>
+                                <div class="quiz-option" data-correct="false">interaction.inputs.get('id')</div>
+                                <div class="quiz-option" data-correct="false">interaction.getField('id')</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Command Handler →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 10: Command Handler -->
+            <div class="lesson" id="lesson-10">
+                <h2>Lesson 10: Command Handler</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 25 minutes</span>
+                    <span>📚 Advanced</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>As your bot grows, keeping all commands in one file becomes messy. A command handler organizes commands into separate files.</p>
+
+                    <h3>Project Structure</h3>
+                    <div class="code-block">
+                        <span class="code-label">Structure</span>
+                        <code>my-bot/
+├── commands/
+│   ├── utility/
+│   │   ├── ping.js
+│   │   └── user.js
+│   └── moderation/
+│       ├── kick.js
+│       └── ban.js
+├── events/
+│   ├── ready.js
+│   └── interactionCreate.js
+├── index.js
+└── deploy-commands.js</code>
+                    </div>
+
+                    <h3>Command File Template</h3>
+                    <div class="code-block">
+                        <span class="code-label">commands/utility/ping.js</span>
+                        <code><span class="keyword">const</span> { <span class="property">SlashCommandBuilder</span> } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+module.exports = {
+    data: <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'ping'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Replies with Pong!'</span>),
+
+    <span class="keyword">async</span> <span class="function">execute</span>(interaction) {
+        <span class="keyword">const</span> latency = Date.<span class="function">now</span>() - interaction.createdTimestamp;
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(<span class="string">`Pong! 🏓 Latency: ${latency}ms`</span>);
+    }
+};</code>
+                    </div>
+
+                    <h3>Loading Commands</h3>
+                    <div class="code-block">
+                        <span class="code-label">index.js</span>
+                        <code><span class="keyword">const</span> fs = <span class="function">require</span>(<span class="string">'node:fs'</span>);
+<span class="keyword">const</span> path = <span class="function">require</span>(<span class="string">'node:path'</span>);
+<span class="keyword">const</span> { <span class="property">Client</span>, <span class="property">Collection</span>, <span class="property">GatewayIntentBits</span> } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">Client</span>({ intents: [GatewayIntentBits.<span class="property">Guilds</span>] });
+
+<span class="comment">// Create a collection to store commands</span>
+client.commands = <span class="keyword">new</span> <span class="function">Collection</span>();
+
+<span class="comment">// Load commands from folders</span>
+<span class="keyword">const</span> foldersPath = path.<span class="function">join</span>(__dirname, <span class="string">'commands'</span>);
+<span class="keyword">const</span> commandFolders = fs.<span class="function">readdirSync</span>(foldersPath);
+
+<span class="keyword">for</span> (<span class="keyword">const</span> folder <span class="keyword">of</span> commandFolders) {
+    <span class="keyword">const</span> commandsPath = path.<span class="function">join</span>(foldersPath, folder);
+    <span class="keyword">const</span> commandFiles = fs.<span class="function">readdirSync</span>(commandsPath)
+        .<span class="function">filter</span>(file => file.<span class="function">endsWith</span>(<span class="string">'.js'</span>));
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> file <span class="keyword">of</span> commandFiles) {
+        <span class="keyword">const</span> filePath = path.<span class="function">join</span>(commandsPath, file);
+        <span class="keyword">const</span> command = <span class="function">require</span>(filePath);
+
+        <span class="keyword">if</span> (<span class="string">'data'</span> <span class="keyword">in</span> command && <span class="string">'execute'</span> <span class="keyword">in</span> command) {
+            client.commands.<span class="function">set</span>(command.data.name, command);
+        } <span class="keyword">else</span> {
+            console.<span class="function">log</span>(<span class="string">`[WARNING] Missing data or execute in ${filePath}`</span>);
+        }
+    }
+}
+
+console.<span class="function">log</span>(<span class="string">`Loaded ${client.commands.size} commands`</span>);</code>
+                    </div>
+
+                    <h3>Event Handler</h3>
+                    <div class="code-block">
+                        <span class="code-label">events/interactionCreate.js</span>
+                        <code>module.exports = {
+    name: <span class="string">'interactionCreate'</span>,
+
+    <span class="keyword">async</span> <span class="function">execute</span>(interaction) {
+        <span class="keyword">if</span> (!interaction.<span class="function">isChatInputCommand</span>()) <span class="keyword">return</span>;
+
+        <span class="keyword">const</span> command = interaction.client.commands.<span class="function">get</span>(interaction.commandName);
+
+        <span class="keyword">if</span> (!command) {
+            console.<span class="function">error</span>(<span class="string">`No command matching ${interaction.commandName}`</span>);
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">try</span> {
+            <span class="keyword">await</span> command.<span class="function">execute</span>(interaction);
+        } <span class="keyword">catch</span> (error) {
+            console.<span class="function">error</span>(error);
+            <span class="keyword">const</span> reply = {
+                content: <span class="string">'There was an error executing this command!'</span>,
+                ephemeral: <span class="keyword">true</span>
+            };
+
+            <span class="keyword">if</span> (interaction.replied || interaction.deferred) {
+                <span class="keyword">await</span> interaction.<span class="function">followUp</span>(reply);
+            } <span class="keyword">else</span> {
+                <span class="keyword">await</span> interaction.<span class="function">reply</span>(reply);
+            }
+        }
+    }
+};</code>
+                    </div>
+
+                    <h3>Loading Events</h3>
+                    <div class="code-block">
+                        <span class="code-label">index.js (continued)</span>
+                        <code><span class="comment">// Load events</span>
+<span class="keyword">const</span> eventsPath = path.<span class="function">join</span>(__dirname, <span class="string">'events'</span>);
+<span class="keyword">const</span> eventFiles = fs.<span class="function">readdirSync</span>(eventsPath)
+    .<span class="function">filter</span>(file => file.<span class="function">endsWith</span>(<span class="string">'.js'</span>));
+
+<span class="keyword">for</span> (<span class="keyword">const</span> file <span class="keyword">of</span> eventFiles) {
+    <span class="keyword">const</span> filePath = path.<span class="function">join</span>(eventsPath, file);
+    <span class="keyword">const</span> event = <span class="function">require</span>(filePath);
+
+    <span class="keyword">if</span> (event.once) {
+        client.<span class="function">once</span>(event.name, (...args) => event.<span class="function">execute</span>(...args));
+    } <span class="keyword">else</span> {
+        client.<span class="function">on</span>(event.name, (...args) => event.<span class="function">execute</span>(...args));
+    }
+}
+
+client.<span class="function">login</span>(process.env.<span class="property">TOKEN</span>);</code>
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. What Collection is used to store commands on the client?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="true">client.commands</div>
+                                <div class="quiz-option" data-correct="false">client.cmds</div>
+                                <div class="quiz-option" data-correct="false">client.slashCommands</div>
+                                <div class="quiz-option" data-correct="false">client.handlers</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. What two properties must each command file export?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">name and run</div>
+                                <div class="quiz-option" data-correct="true">data and execute</div>
+                                <div class="quiz-option" data-correct="false">command and handler</div>
+                                <div class="quiz-option" data-correct="false">slash and callback</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Database (SQLite) →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 11: Database (SQLite) -->
+            <div class="lesson" id="lesson-11">
+                <h2>Lesson 11: Database (SQLite)</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 25 minutes</span>
+                    <span>📚 Advanced</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>SQLite is a lightweight database perfect for Discord bots. The WorldGate Bot uses it to store cases, appeals, and user data.</p>
+
+                    <h3>Installing better-sqlite3</h3>
+                    <div class="code-block">
+                        <span class="code-label">Terminal</span>
+                        <code>npm install better-sqlite3</code>
+                    </div>
+
+                    <h3>Setting Up the Database</h3>
+                    <div class="code-block">
+                        <span class="code-label">database.js</span>
+                        <code><span class="keyword">const</span> Database = <span class="function">require</span>(<span class="string">'better-sqlite3'</span>);
+<span class="keyword">const</span> db = <span class="keyword">new</span> <span class="function">Database</span>(<span class="string">'bot.db'</span>);
+
+<span class="comment">// Create tables</span>
+db.<span class="function">exec</span>(<span class="string">`
+    CREATE TABLE IF NOT EXISTS warnings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        guild_id TEXT NOT NULL,
+        moderator_id TEXT NOT NULL,
+        reason TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+`</span>);
+
+module.exports = db;</code>
+                    </div>
+
+                    <h3>CRUD Operations</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">const</span> db = <span class="function">require</span>(<span class="string">'./database'</span>);
+
+<span class="comment">// CREATE - Insert a warning</span>
+<span class="keyword">function</span> <span class="function">addWarning</span>(userId, guildId, modId, reason) {
+    <span class="keyword">const</span> stmt = db.<span class="function">prepare</span>(<span class="string">`
+        INSERT INTO warnings (user_id, guild_id, moderator_id, reason)
+        VALUES (?, ?, ?, ?)
+    `</span>);
+    <span class="keyword">return</span> stmt.<span class="function">run</span>(userId, guildId, modId, reason);
+}
+
+<span class="comment">// READ - Get all warnings for a user</span>
+<span class="keyword">function</span> <span class="function">getWarnings</span>(userId, guildId) {
+    <span class="keyword">const</span> stmt = db.<span class="function">prepare</span>(<span class="string">`
+        SELECT * FROM warnings
+        WHERE user_id = ? AND guild_id = ?
+        ORDER BY created_at DESC
+    `</span>);
+    <span class="keyword">return</span> stmt.<span class="function">all</span>(userId, guildId);
+}
+
+<span class="comment">// READ - Get single warning</span>
+<span class="keyword">function</span> <span class="function">getWarning</span>(id) {
+    <span class="keyword">const</span> stmt = db.<span class="function">prepare</span>(<span class="string">'SELECT * FROM warnings WHERE id = ?'</span>);
+    <span class="keyword">return</span> stmt.<span class="function">get</span>(id);
+}
+
+<span class="comment">// UPDATE - Edit a warning reason</span>
+<span class="keyword">function</span> <span class="function">updateWarning</span>(id, newReason) {
+    <span class="keyword">const</span> stmt = db.<span class="function">prepare</span>(<span class="string">'UPDATE warnings SET reason = ? WHERE id = ?'</span>);
+    <span class="keyword">return</span> stmt.<span class="function">run</span>(newReason, id);
+}
+
+<span class="comment">// DELETE - Remove a warning</span>
+<span class="keyword">function</span> <span class="function">deleteWarning</span>(id) {
+    <span class="keyword">const</span> stmt = db.<span class="function">prepare</span>(<span class="string">'DELETE FROM warnings WHERE id = ?'</span>);
+    <span class="keyword">return</span> stmt.<span class="function">run</span>(id);
+}</code>
+                    </div>
+
+                    <h3>Using in Commands</h3>
+                    <div class="code-block">
+                        <span class="code-label">commands/moderation/warn.js</span>
+                        <code><span class="keyword">const</span> { <span class="property">SlashCommandBuilder</span> } = <span class="function">require</span>(<span class="string">'discord.js'</span>);
+<span class="keyword">const</span> { addWarning, getWarnings } = <span class="function">require</span>(<span class="string">'../../database'</span>);
+
+module.exports = {
+    data: <span class="keyword">new</span> <span class="function">SlashCommandBuilder</span>()
+        .<span class="function">setName</span>(<span class="string">'warn'</span>)
+        .<span class="function">setDescription</span>(<span class="string">'Warn a user'</span>)
+        .<span class="function">addUserOption</span>(opt => opt.<span class="function">setName</span>(<span class="string">'user'</span>).<span class="function">setDescription</span>(<span class="string">'User to warn'</span>).<span class="function">setRequired</span>(<span class="keyword">true</span>))
+        .<span class="function">addStringOption</span>(opt => opt.<span class="function">setName</span>(<span class="string">'reason'</span>).<span class="function">setDescription</span>(<span class="string">'Reason'</span>).<span class="function">setRequired</span>(<span class="keyword">true</span>)),
+
+    <span class="keyword">async</span> <span class="function">execute</span>(interaction) {
+        <span class="keyword">const</span> user = interaction.options.<span class="function">getUser</span>(<span class="string">'user'</span>);
+        <span class="keyword">const</span> reason = interaction.options.<span class="function">getString</span>(<span class="string">'reason'</span>);
+
+        <span class="comment">// Add warning to database</span>
+        <span class="keyword">const</span> result = <span class="function">addWarning</span>(
+            user.id,
+            interaction.guild.id,
+            interaction.user.id,
+            reason
+        );
+
+        <span class="comment">// Get total warnings</span>
+        <span class="keyword">const</span> warnings = <span class="function">getWarnings</span>(user.id, interaction.guild.id);
+
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(
+            <span class="string">`⚠️ ${user.tag} has been warned. They now have ${warnings.length} warning(s).`</span>
+        );
+    }
+};</code>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 better-sqlite3 vs sqlite3</strong><br>
+                        <code>better-sqlite3</code> is synchronous and faster. <code>sqlite3</code> is async with callbacks. For Discord bots, better-sqlite3 is usually the better choice.
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Quiz Time!</h4>
+                        <div class="quiz-question">
+                            <p>1. Which method returns all matching rows?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">stmt.run()</div>
+                                <div class="quiz-option" data-correct="false">stmt.get()</div>
+                                <div class="quiz-option" data-correct="true">stmt.all()</div>
+                                <div class="quiz-option" data-correct="false">stmt.exec()</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. Which method returns only the first matching row?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">stmt.first()</div>
+                                <div class="quiz-option" data-correct="true">stmt.get()</div>
+                                <div class="quiz-option" data-correct="false">stmt.one()</div>
+                                <div class="quiz-option" data-correct="false">stmt.single()</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>📁 See It In Your Code</strong><br>
+                        Check out <code>WorldGateBot/database.js</code> at line 503 - the <code>updateCase()</code> function shows parameterized queries with field validation for security!
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <button class="btn" onclick="nextLesson()">Next: Error Handling →</button>
+                </div>
+            </div>
+
+            <!-- Lesson 12: Error Handling -->
+            <div class="lesson" id="lesson-12">
+                <h2>Lesson 12: Error Handling</h2>
+                <div class="lesson-meta">
+                    <span>⏱️ 15 minutes</span>
+                    <span>📚 Advanced</span>
+                </div>
+
+                <div class="lesson-content">
+                    <p>Proper error handling keeps your bot running smoothly and helps you debug issues.</p>
+
+                    <h3>Try-Catch in Commands</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">async</span> <span class="function">execute</span>(interaction) {
+    <span class="keyword">try</span> {
+        <span class="comment">// Your command logic</span>
+        <span class="keyword">const</span> data = <span class="keyword">await</span> <span class="function">fetchSomeData</span>();
+        <span class="keyword">await</span> interaction.<span class="function">reply</span>(data);
+    } <span class="keyword">catch</span> (error) {
+        console.<span class="function">error</span>(<span class="string">`Error in command: ${error}`</span>);
+
+        <span class="keyword">const</span> errorMessage = {
+            content: <span class="string">'Something went wrong!'</span>,
+            ephemeral: <span class="keyword">true</span>
+        };
+
+        <span class="comment">// Handle already replied interactions</span>
+        <span class="keyword">if</span> (interaction.replied || interaction.deferred) {
+            <span class="keyword">await</span> interaction.<span class="function">followUp</span>(errorMessage);
+        } <span class="keyword">else</span> {
+            <span class="keyword">await</span> interaction.<span class="function">reply</span>(errorMessage);
+        }
+    }
+}</code>
+                    </div>
+
+                    <h3>Global Error Handling</h3>
+                    <div class="code-block">
+                        <span class="code-label">index.js</span>
+                        <code><span class="comment">// Unhandled promise rejections</span>
+process.<span class="function">on</span>(<span class="string">'unhandledRejection'</span>, (error) => {
+    console.<span class="function">error</span>(<span class="string">'Unhandled promise rejection:'</span>, error);
+});
+
+<span class="comment">// Uncaught exceptions</span>
+process.<span class="function">on</span>(<span class="string">'uncaughtException'</span>, (error) => {
+    console.<span class="function">error</span>(<span class="string">'Uncaught exception:'</span>, error);
+    <span class="comment">// Optionally exit: process.exit(1);</span>
+});
+
+<span class="comment">// Discord.js errors</span>
+client.<span class="function">on</span>(<span class="string">'error'</span>, (error) => {
+    console.<span class="function">error</span>(<span class="string">'Discord client error:'</span>, error);
+});
+
+<span class="comment">// Warn events</span>
+client.<span class="function">on</span>(<span class="string">'warn'</span>, (warning) => {
+    console.<span class="function">warn</span>(<span class="string">'Discord warning:'</span>, warning);
+});</code>
+                    </div>
+
+                    <h3>Permission Checks</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">async</span> <span class="function">execute</span>(interaction) {
+    <span class="comment">// Check user permissions</span>
+    <span class="keyword">if</span> (!interaction.member.permissions.<span class="function">has</span>(<span class="string">'BanMembers'</span>)) {
+        <span class="keyword">return</span> interaction.<span class="function">reply</span>({
+            content: <span class="string">'You need Ban Members permission!'</span>,
+            ephemeral: <span class="keyword">true</span>
+        });
+    }
+
+    <span class="comment">// Check bot permissions</span>
+    <span class="keyword">if</span> (!interaction.guild.members.me.permissions.<span class="function">has</span>(<span class="string">'BanMembers'</span>)) {
+        <span class="keyword">return</span> interaction.<span class="function">reply</span>({
+            content: <span class="string">'I need Ban Members permission!'</span>,
+            ephemeral: <span class="keyword">true</span>
+        });
+    }
+
+    <span class="comment">// Check role hierarchy</span>
+    <span class="keyword">const</span> target = interaction.options.<span class="function">getMember</span>(<span class="string">'user'</span>);
+    <span class="keyword">if</span> (target.roles.highest.position >= interaction.member.roles.highest.position) {
+        <span class="keyword">return</span> interaction.<span class="function">reply</span>({
+            content: <span class="string">'You cannot ban someone with equal or higher role!'</span>,
+            ephemeral: <span class="keyword">true</span>
+        });
+    }
+}</code>
+                    </div>
+
+                    <h3>API Error Handling</h3>
+                    <div class="code-block">
+                        <span class="code-label">JavaScript</span>
+                        <code><span class="keyword">try</span> {
+    <span class="keyword">await</span> member.<span class="function">ban</span>({ reason });
+} <span class="keyword">catch</span> (error) {
+    <span class="keyword">if</span> (error.code === <span class="number">50013</span>) {
+        <span class="comment">// Missing Permissions</span>
+        <span class="keyword">return</span> interaction.<span class="function">reply</span>(<span class="string">'I don\'t have permission to ban this user.'</span>);
+    }
+    <span class="keyword">if</span> (error.code === <span class="number">10007</span>) {
+        <span class="comment">// Unknown Member</span>
+        <span class="keyword">return</span> interaction.<span class="function">reply</span>(<span class="string">'That user is not in this server.'</span>);
+    }
+    <span class="keyword">throw</span> error; <span class="comment">// Re-throw unknown errors</span>
+}</code>
+                    </div>
+
+                    <h3>Common Discord.js Error Codes</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Code</th>
+                            <th>Meaning</th>
+                        </tr>
+                        <tr><td>10007</td><td>Unknown Member</td></tr>
+                        <tr><td>10008</td><td>Unknown Message</td></tr>
+                        <tr><td>10013</td><td>Unknown User</td></tr>
+                        <tr><td>50001</td><td>Missing Access</td></tr>
+                        <tr><td>50013</td><td>Missing Permissions</td></tr>
+                        <tr><td>50035</td><td>Invalid Form Body</td></tr>
+                    </table>
+
+                    <div class="success-box">
+                        <strong>🎉 Congratulations!</strong><br>
+                        You've completed the Discord.js course! You now know how to build powerful Discord bots with slash commands, embeds, buttons, modals, databases, and error handling.
+                    </div>
+
+                    <div class="quiz-section">
+                        <h4>📝 Final Quiz!</h4>
+                        <div class="quiz-question">
+                            <p>1. What process event catches unhandled promise rejections?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">uncaughtException</div>
+                                <div class="quiz-option" data-correct="true">unhandledRejection</div>
+                                <div class="quiz-option" data-correct="false">promiseError</div>
+                                <div class="quiz-option" data-correct="false">rejectionError</div>
+                            </div>
+                        </div>
+                        <div class="quiz-question">
+                            <p>2. What property checks if a reply has already been sent?</p>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">interaction.sent</div>
+                                <div class="quiz-option" data-correct="true">interaction.replied</div>
+                                <div class="quiz-option" data-correct="false">interaction.responded</div>
+                                <div class="quiz-option" data-correct="false">interaction.answered</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn" onclick="prevLesson()">← Previous</button>
+                    <a href="learn-to-code.html" class="btn">Back to Learning Hub</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentLesson = 1;
+        const totalLessons = 12;
+
+        function showLesson(num) {
+            document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            document.getElementById(`lesson-${num}`).classList.add('active');
+            document.querySelector(`[data-lesson="${num}"]`).classList.add('active');
+
+            currentLesson = num;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function nextLesson() {
+            if (currentLesson < totalLessons) {
+                markCompleted(currentLesson);
+                showLesson(currentLesson + 1);
+            }
+        }
+
+        function prevLesson() {
+            if (currentLesson > 1) {
+                showLesson(currentLesson - 1);
+            }
+        }
+
+        function markCompleted(num) {
+            document.querySelector(`[data-lesson="${num}"]`).classList.add('completed');
+            localStorage.setItem(`discordjs-lesson-${num}`, 'completed');
+        }
+
+        function updateProgress() {
+            const completed = document.querySelectorAll('.nav-item.completed').length;
+            const percent = (completed / totalLessons) * 100;
+            document.querySelector('.progress-fill').style.width = `${Math.max(percent, 8)}%`;
+        }
+
+        // Quiz handling
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.parentElement;
+                if (question.classList.contains('answered')) return;
+
+                question.classList.add('answered');
+
+                if (this.dataset.correct === 'true') {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('incorrect');
+                    question.querySelector('[data-correct="true"]').classList.add('correct');
+                }
+            });
+        });
+
+        // Navigation clicks
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                showLesson(parseInt(item.dataset.lesson));
+            });
+        });
+
+        // Load saved progress
+        for (let i = 1; i <= totalLessons; i++) {
+            if (localStorage.getItem(`discordjs-lesson-${i}`) === 'completed') {
+                document.querySelector(`[data-lesson="${i}"]`).classList.add('completed');
+            }
+        }
+        updateProgress();
+    </script>
+</body>
+</html>
