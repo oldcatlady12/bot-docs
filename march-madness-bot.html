@@ -70,23 +70,134 @@
                     <div class="feature-item">
                         <div class="feature-icon">&#127936;</div>
                         <h4>Bracket Builder</h4>
-                        <p>Create and manage tournament brackets</p>
+                        <p>Create and manage tournament brackets with visual previews</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128176;</div>
                         <h4>Betting System</h4>
-                        <p>Place bets on individual games</p>
+                        <p>Place bets on individual brackets and games</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128184;</div>
                         <h4>Economy</h4>
-                        <p>Earn and spend coins throughout the tournament</p>
+                        <p>Earn and spend coins with daily/weekly/monthly rewards</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#127941;</div>
                         <h4>Leaderboards</h4>
-                        <p>Compete against other users</p>
+                        <p>Multiple leaderboard categories for competition</p>
                     </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128683;</div>
+                        <h4>Elimination Pool</h4>
+                        <p>Track who's still alive in elimination-style pools</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128200;</div>
+                        <h4>Bracket Visualization</h4>
+                        <p>Generate visual bracket images with stats</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+                <p>The bot has 10 slash commands: 3 setup commands, 3 user commands, and 4 admin commands.</p>
+
+                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name">/setup_channels</span></td>
+                            <td>Set up the bot channels. Requires <code>submission_channel</code> (for bracket submissions) and <code>alerts_channel</code> (for March Madness alerts).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/create_submission_button</span></td>
+                            <td>Create the bracket submission button. Posts an interactive message with a button users can click to submit their bracket.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/create_coin_collector</span></td>
+                            <td>Create coin collection buttons. Posts buttons for daily, weekly, and monthly coin claims.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>User Commands <span class="tag user">Everyone</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name">/balance [member]</span></td>
+                            <td>Check your coin balance or another member's balance. Shows current coins available.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/my_bracket</span></td>
+                            <td>View your March Madness bracket and stats. Displays your bracket as an image along with stats (correct picks, accuracy percentage, elimination status, current streak).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/leaderboard &lt;category&gt;</span></td>
+                            <td>View March Madness leaderboards. Categories: <code>elimination</code> (Still Alive), <code>accuracy</code> (Most Correct Picks), <code>coins</code> (Most Coins), <code>gambled</code> (Most Coins Gambled), <code>highest_bet</code> (Highest Single Bet).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Admin Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name">/lock_submissions</span></td>
+                            <td>Lock bracket submissions. Use when the tournament starts to prevent new brackets.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/unlock_submissions</span></td>
+                            <td>Unlock bracket submissions. Re-enables bracket submissions if needed.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/update_game_result</span></td>
+                            <td>Update a game result. Requires <code>round_number</code> (1-6), <code>game_number</code> (game in that round), and <code>winner</code> (team name). Automatically checks elimination status.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/end_tournament</span></td>
+                            <td>End the tournament and show final results. Generates final report showing elimination winner, top predictors, and participation statistics.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 10</h4>
+                    <p><strong>Setup (3):</strong> setup_channels, create_submission_button, create_coin_collector</p>
+                    <p><strong>User (3):</strong> balance, my_bracket, leaderboard</p>
+                    <p><strong>Admin (4):</strong> lock_submissions, unlock_submissions, update_game_result, end_tournament</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Interactive UI Components</h2>
+                <p>The bot uses Discord buttons and modals for interactive features:</p>
+
+                <div class="card">
+                    <h4>Bracket Submission Button</h4>
+                    <p>Created via <code>/create_submission_button</code>. Users click to open a modal where they fill in their tournament bracket picks.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Coin Collection Buttons</h4>
+                    <p>Created via <code>/create_coin_collector</code>. Three buttons for:</p>
+                    <ul>
+                        <li><strong>Daily:</strong> Claim every 24 hours</li>
+                        <li><strong>Weekly:</strong> Claim every 7 days</li>
+                        <li><strong>Monthly:</strong> Claim every 30 days</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Bracket Betting View</h4>
+                    <p>Buttons to place bets on brackets and view your existing bets.</p>
                 </div>
             </section>
 
@@ -95,19 +206,19 @@
 
                 <div class="card">
                     <h4>&#127936; Bracket Management</h4>
-                    <p>Users can create tournament brackets with their predictions. The advanced bracket builder supports selecting winners for each round from First Four through the Championship game.</p>
+                    <p>Users create tournament brackets with predictions for all rounds. The advanced bracket builder supports selecting winners from First Four through the Championship game. Brackets generate visual images for easy viewing.</p>
                 </div>
 
                 <div class="card">
                     <h4>&#128176; Betting System</h4>
-                    <p>Place bets on upcoming tournament games. Supports moneylines, spreads, and more. Payouts calculated based on odds from data providers.</p>
+                    <p>Place bets on brackets using coins. Track your betting history, view active bets, and see potential payouts.</p>
                 </div>
 
                 <div class="card">
                     <h4>&#128184; Economy System</h4>
-                    <p>Users start with coins and can earn more through:</p>
+                    <p>Users earn coins through:</p>
                     <ul>
-                        <li>Daily claims</li>
+                        <li>Daily/weekly/monthly claims</li>
                         <li>Correct bracket picks</li>
                         <li>Winning bets</li>
                         <li>Bonus activities</li>
@@ -115,59 +226,51 @@
                 </div>
 
                 <div class="card">
+                    <h4>&#128683; Elimination Pool</h4>
+                    <p>Track who's still alive based on their bracket picks. When a user's championship pick is eliminated, they're marked as eliminated from the pool.</p>
+                </div>
+
+                <div class="card">
                     <h4>&#128200; Bracket Visualization</h4>
-                    <p>Generate visual bracket images showing all picks and results. Track your progress through each round.</p>
+                    <p>Generate visual bracket images showing all picks, results, and accuracy statistics. Track progress through each tournament round.</p>
                 </div>
             </section>
 
             <section class="content-section">
-                <h2>Setup</h2>
+                <h2>Leaderboard Categories</h2>
+                <table class="command-table">
+                    <thead><tr><th>Category</th><th>Key</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td>Elimination Pool</td><td><code>elimination</code></td><td>Users still alive in the elimination pool</td></tr>
+                        <tr><td>Most Correct Picks</td><td><code>accuracy</code></td><td>Ranked by correct bracket predictions</td></tr>
+                        <tr><td>Most Coins</td><td><code>coins</code></td><td>Ranked by current coin balance</td></tr>
+                        <tr><td>Most Coins Gambled</td><td><code>gambled</code></td><td>Ranked by total coins wagered</td></tr>
+                        <tr><td>Highest Single Bet</td><td><code>highest_bet</code></td><td>Ranked by largest individual bet placed</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup & Installation</h2>
                 <div class="code-block">
+# Navigate to bot directory
 cd march_madness_bot/march_madness_bot
+
+# Create virtual environment
 python -m venv venv
+
+# Activate venv (Windows)
 .\venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 
-# Configure .env
-# DISCORD_TOKEN=your_token
+# Configure .env file
+# DISCORD_TOKEN=your_token_here
 
+# Run the bot
 python bot.py
                 </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Commands</h2>
-
-                <h3>Bracket Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">/bracket create</span></td><td>Start creating a new bracket</td></tr>
-                        <tr><td><span class="command-name">/bracket view</span></td><td>View your current bracket</td></tr>
-                        <tr><td><span class="command-name">/bracket edit</span></td><td>Edit your bracket (before lock)</td></tr>
-                        <tr><td><span class="command-name">/bracket score</span></td><td>Check your bracket score</td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Betting Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">/bet place [game] [amount]</span></td><td>Place a bet on a game</td></tr>
-                        <tr><td><span class="command-name">/bet list</span></td><td>View your active bets</td></tr>
-                        <tr><td><span class="command-name">/bet history</span></td><td>View past bet results</td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Economy Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">/balance</span></td><td>Check your coin balance</td></tr>
-                        <tr><td><span class="command-name">/daily</span></td><td>Claim daily coins</td></tr>
-                        <tr><td><span class="command-name">/leaderboard</span></td><td>View top users</td></tr>
-                    </tbody>
-                </table>
             </section>
 
             <section class="content-section">
@@ -192,6 +295,17 @@ game_results: game_id, round, winner, score, settled
             </section>
 
             <section class="content-section">
+                <h2>Configuration Files</h2>
+                <table class="command-table">
+                    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>.env</code></td><td>Discord token and secrets</td></tr>
+                        <tr><td><code>march_madness.db</code></td><td>SQLite database (auto-created)</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
                 <h2>Management Tools</h2>
                 <p>The <code>manage.py</code> script provides admin utilities:</p>
                 <div class="code-block">
@@ -207,24 +321,13 @@ python manage.py
             </section>
 
             <section class="content-section">
-                <h2>Configuration Files</h2>
-                <table class="command-table">
-                    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
-                    <tbody>
-                        <tr><td><code>.env</code></td><td>DISCORD_TOKEN</td></tr>
-                        <tr><td><code>march_madness.db</code></td><td>SQLite database</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="content-section">
                 <h2>Seasonal Usage</h2>
                 <p>This bot is primarily active during the NCAA Tournament (March-April). The workflow is:</p>
                 <ol style="margin-left: 24px; color: var(--text-secondary);">
-                    <li>Before tournament: Users create brackets</li>
-                    <li>Tournament starts: Brackets lock, betting opens</li>
-                    <li>Each round: Scores update, bets settle</li>
-                    <li>End: Final leaderboards, economy persists</li>
+                    <li>Before tournament: Set up channels, create buttons, users submit brackets</li>
+                    <li>Tournament starts: Lock submissions with <code>/lock_submissions</code></li>
+                    <li>Each round: Update game results with <code>/update_game_result</code></li>
+                    <li>End: Run <code>/end_tournament</code> for final leaderboards</li>
                     <li>Off-season: Use <code>manage.py</code> to reset for next year</li>
                 </ol>
             </section>

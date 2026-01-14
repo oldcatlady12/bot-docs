@@ -44,12 +44,15 @@
         .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
         .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
         .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        .tag.new { background: rgba(233, 30, 140, 0.2); color: var(--accent-pink); }
         ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
         li { margin-bottom: 8px; }
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
         .category-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; text-align: center; }
         .category-item .emoji { font-size: 28px; display: block; margin-bottom: 4px; }
         .category-item .name { font-weight: 600; }
+        .category-item.new { border-color: var(--accent-pink); }
+        .category-item .new-badge { font-size: 0.7rem; background: var(--accent-pink); color: white; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -69,13 +72,13 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Media Recommendation Bot is a comprehensive recommendation tracking system for Discord servers. Members can recommend and vote on various types of media including games, movies, TV shows, anime, manga, and more. Features automatic forum organization, voting systems, leaderboards, and optional Google Calendar integration for unreleased media.</p>
+                <p>The Media Recommendation Bot is a comprehensive recommendation tracking system for Discord servers. Members can recommend and vote on various types of media including games, movies, TV shows, anime, manga, and more. Features automatic forum organization, voting systems, leaderboards, approval system, and optional Google Calendar integration for unreleased media.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">&#127918;</div>
-                        <h4>Multi-Category Support</h4>
-                        <p>11 media categories from video games to websites</p>
+                        <h4>15 Media Categories</h4>
+                        <p>From video games to anime movies, with new split categories for better organization</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128077;</div>
@@ -93,21 +96,21 @@
                         <p>Add unreleased media to Google Calendar</p>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">&#127942;</div>
-                        <h4>Leaderboards</h4>
-                        <p>Track top contributors and popular recommendations</p>
+                        <div class="feature-icon">&#9989;</div>
+                        <h4>Approval System</h4>
+                        <p>Optional admin approval before recommendations are posted</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128269;</div>
                         <h4>Media Info Lookup</h4>
-                        <p>Auto-fetch details from OMDB, Jikan, and RAWG APIs</p>
+                        <p>Auto-fetch details from OMDB, TMDB, Jikan, AniList, Kitsu, and RAWG APIs</p>
                     </div>
                 </div>
             </section>
 
             <section class="content-section">
                 <h2>Media Categories</h2>
-                <p>The bot supports 11 different media categories, each with its own dedicated forum channel:</p>
+                <p>The bot supports 15 different media categories, each with its own dedicated forum channel. New categories provide better organization for anime, cartoons, and documentaries:</p>
                 <div class="category-grid">
                     <div class="category-item">
                         <span class="emoji">&#127918;</span>
@@ -129,24 +132,46 @@
                         <span class="emoji">&#128250;</span>
                         <span class="name">TV Shows</span>
                     </div>
-                    <div class="category-item">
-                        <span class="emoji">&#128126;</span>
-                        <span class="name">Anime</span>
+                    <div class="category-item new">
+                        <span class="emoji">&#127800;</span>
+                        <span class="name">Anime Movies</span>
+                        <span class="new-badge">NEW</span>
+                    </div>
+                    <div class="category-item new">
+                        <span class="emoji">&#128250;</span>
+                        <span class="name">Anime TV Shows</span>
+                        <span class="new-badge">NEW</span>
+                    </div>
+                    <div class="category-item new">
+                        <span class="emoji">&#127912;</span>
+                        <span class="name">Cartoon Movies</span>
+                        <span class="new-badge">NEW</span>
+                    </div>
+                    <div class="category-item new">
+                        <span class="emoji">&#128250;</span>
+                        <span class="name">Cartoon TV Shows</span>
+                        <span class="new-badge">NEW</span>
+                    </div>
+                    <div class="category-item new">
+                        <span class="emoji">&#127909;</span>
+                        <span class="name">Documentary Films</span>
+                        <span class="new-badge">NEW</span>
+                    </div>
+                    <div class="category-item new">
+                        <span class="emoji">&#128249;</span>
+                        <span class="name">Docuseries</span>
+                        <span class="new-badge">NEW</span>
                     </div>
                     <div class="category-item">
                         <span class="emoji">&#128214;</span>
                         <span class="name">Manga</span>
                     </div>
                     <div class="category-item">
-                        <span class="emoji">&#128218;</span>
+                        <span class="emoji">&#128165;</span>
                         <span class="name">Comics</span>
                     </div>
                     <div class="category-item">
-                        <span class="emoji">&#127912;</span>
-                        <span class="name">Cartoons</span>
-                    </div>
-                    <div class="category-item">
-                        <span class="emoji">&#128308;</span>
+                        <span class="emoji">&#128225;</span>
                         <span class="name">Streams</span>
                     </div>
                     <div class="category-item">
@@ -154,6 +179,93 @@
                         <span class="name">Websites</span>
                     </div>
                 </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+
+                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!setup_media</span></td><td>Create all media category forums and genre threads (initial setup)</td></tr>
+                        <tr><td><span class="command-name">!setup_recommend_channel [#channel]</span></td><td>Set up the recommendation submission channel. Uses current channel if none specified.</td></tr>
+                        <tr><td><span class="command-name">!setup_missing</span></td><td>Check and create any missing categories, forums, leaderboards, daily posts, and genre posts. Use this to fix incomplete setups or add missing components.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Approval System Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!set_approval_channel [#channel]</span></td><td>Set up the approval channel for recommendation reviews. All recommendations will be sent here for admin approval.</td></tr>
+                        <tr><td><span class="command-name">!enable_approval</span></td><td>Enable the approval system for recommendations</td></tr>
+                        <tr><td><span class="command-name">!disable_approval</span></td><td>Disable the approval system - recommendations will be posted directly</td></tr>
+                        <tr><td><span class="command-name">!approval_status</span></td><td>Check the current approval system status</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Deletion Notification Commands <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!set_deletion_channel [#channel]</span></td><td>Set up the channel for deletion notifications. When forum channels, posts, or threads are manually deleted, the bot will send a notification here allowing admins to confirm database cleanup.</td></tr>
+                        <tr><td><span class="command-name">!disable_deletion_notifications</span></td><td>Disable deletion notifications - deleted items will be auto-removed from database</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Category Management Commands <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!reorganize [mode]</span></td><td>Check and reorganize misplaced recommendations. Modes: <code>report</code> (default) - shows which need to be moved; <code>execute</code> - actually moves recommendations to correct categories</td></tr>
+                        <tr><td><span class="command-name">!migrate_categories</span></td><td>Migrate old category names to new ones in the database (anime -> anime_tv, cartoons -> cartoon_tv). Run before reorganize.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>User Commands <span class="tag user">Everyone</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!leaderboard [category]</span></td><td>View top recommendations. Optional category filter (e.g., movies, anime_movies, video_games).</td></tr>
+                        <tr><td><span class="command-name">!random_rec [category]</span></td><td>Get a random recommendation from the database</td></tr>
+                        <tr><td><span class="command-name">!media_stats</span></td><td>View server statistics (total recommendations by category)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Calendar Commands (Optional) <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!setup_calendar</span></td><td>View Google Calendar setup instructions</td></tr>
+                        <tr><td><span class="command-name">!authenticate_calendar</span></td><td>Authenticate with Google Calendar API</td></tr>
+                        <tr><td><span class="command-name">!set_calendar &lt;id&gt;</span></td><td>Set which calendar to use for release dates</td></tr>
+                        <tr><td><span class="command-name">!list_calendars</span></td><td>View all available Google Calendars</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>New Features</h2>
+
+                <h3>Split Category Detection</h3>
+                <p>The bot now automatically detects and categorizes media more accurately:</p>
+                <ul>
+                    <li><strong>Anime Movies vs Anime TV</strong> - Anime films (e.g., Studio Ghibli movies) go to anime_movies, while series go to anime_tv</li>
+                    <li><strong>Cartoon Movies vs Cartoon TV</strong> - Western animated films (e.g., Pixar, Disney) go to cartoon_movies, while series go to cartoon_tv</li>
+                    <li><strong>Documentary Films vs Docuseries</strong> - Documentary movies go to documentary_films, documentary series go to docuseries</li>
+                </ul>
+
+                <h3>Deletion Notifications</h3>
+                <p>When forum posts or threads are manually deleted by admins:</p>
+                <ul>
+                    <li>If a notification channel is set, the bot sends an alert with "Delete from Database" and "Keep in Database" buttons</li>
+                    <li>Admins can choose to remove the entry from the database or keep it for potential re-submission</li>
+                    <li>Bulk deletion notifications when an entire forum channel is deleted</li>
+                </ul>
+
+                <h3>Reorganize Command</h3>
+                <p>Use <code>!reorganize report</code> to analyze all recommendations and find any that should be moved to different categories. Then use <code>!reorganize execute</code> to automatically move them.</p>
             </section>
 
             <section class="content-section">
@@ -172,7 +284,7 @@ python -m venv venv
 # Install dependencies
 pip install -r requirements.txt
 
-# Configure .env file (copy from .env.example)
+# Configure .env file
 # DISCORD_TOKEN=your_token_here
 # OMDB_API_KEY=your_omdb_key (optional)
 # RAWG_API_KEY=your_rawg_key (optional)
@@ -180,13 +292,6 @@ pip install -r requirements.txt
 # Run the bot
 python bot.py
                 </div>
-
-                <h3>Bot Invite Scopes</h3>
-                <p>When inviting the bot to your server, enable these OAuth2 scopes:</p>
-                <ul>
-                    <li><strong>bot</strong> - Basic bot functionality</li>
-                    <li><strong>applications.commands</strong> - Slash commands (if used)</li>
-                </ul>
 
                 <h3>Bot Permissions</h3>
                 <p>The bot requires these permissions:</p>
@@ -202,158 +307,28 @@ python bot.py
             </section>
 
             <section class="content-section">
-                <h2>Commands</h2>
-                <h3>Setup Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">!setup_media</span></td><td>Create all media category forums and genre threads (initial setup)</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!setup_recommend_channel</span></td><td>Set up the current channel as the recommendation submission channel</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!setup_missing</span></td><td>Check and create any missing categories, forums, leaderboards, daily posts, and genre posts. Use this to fix incomplete setups or add missing components.</td><td><span class="tag admin">Admin</span></td></tr>
-                    </tbody>
-                </table>
-
-                <h3>User Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">!leaderboard [category]</span></td><td>View top recommendations. Optional category filter.</td><td><span class="tag user">Everyone</span></td></tr>
-                        <tr><td><span class="command-name">!random_rec [category]</span></td><td>Get a random recommendation from the database</td><td><span class="tag user">Everyone</span></td></tr>
-                        <tr><td><span class="command-name">!media_stats</span></td><td>View server statistics (total recommendations, votes, etc.)</td><td><span class="tag user">Everyone</span></td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Calendar Commands (Optional)</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">!setup_calendar</span></td><td>View Google Calendar setup instructions</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!authenticate_calendar</span></td><td>Authenticate with Google Calendar API</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!set_calendar &lt;id&gt;</span></td><td>Set which calendar to use for release dates</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!list_calendars</span></td><td>View all available Google Calendars</td><td><span class="tag admin">Admin</span></td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="content-section">
-                <h2>How to Submit Recommendations</h2>
-                <p>After setting up the bot with <code>!setup_recommend_channel</code>, users can submit recommendations using the dropdown menu. The streamlined process:</p>
-                <ol style="margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary);">
-                    <li>Use the dropdown in the recommendation channel to select media type</li>
-                    <li>Choose release status: "Already Released" or "Upcoming / Not Released Yet"</li>
-                    <li>Enter the title and optionally a YouTube or IMDB link in the search form</li>
-                    <li>If multiple results are found, select the correct one from the list (or choose "Enter manually")</li>
-                    <li>For games, specify the game type (Video, Board, or Card)</li>
-                    <li>Select the genre (Action, Comedy, Horror, etc.)</li>
-                    <li>Review and confirm your recommendation</li>
-                    <li>Your recommendation is posted to the appropriate forum with a Like button</li>
-                </ol>
-
-                <h3>Search Features</h3>
-                <ul>
-                    <li><strong>Title Search</strong> - Enter the media name to search</li>
-                    <li><strong>IMDB Link</strong> - Paste an IMDB URL to auto-fetch exact media info</li>
-                    <li><strong>YouTube Link</strong> - Include a trailer or review link</li>
-                    <li><strong>Multiple Results</strong> - Choose from search results if multiple matches found</li>
-                    <li><strong>Manual Entry</strong> - Enter details manually if the search doesn't find your media</li>
-                </ul>
-
-                <h3>Likes & Leaderboards</h3>
-                <p>Each recommendation has a Like button. Users can like a recommendation once, and likes are tracked persistently. Leaderboards show the top 5 most-liked recommendations per category and update in real-time when votes are cast.</p>
-
-                <h3>Navigation</h3>
-                <ul>
-                    <li><strong>Back Button</strong> - Return to media type selection</li>
-                    <li><strong>Cancel Button</strong> - Cancel the recommendation and reset the menu</li>
-                    <li><strong>Refresh Button</strong> - Reset the recommendation menu to its initial state</li>
-                </ul>
-            </section>
-
-            <section class="content-section">
-                <h2>Forum Organization</h2>
-                <p>The bot automatically creates organized forum channels for each media category:</p>
-                <div class="card">
-                    <h4>Category Forums</h4>
-                    <p>Each media type gets its own forum channel (e.g., "video-games-recommendations", "movies-recommendations")</p>
-                </div>
-                <div class="card">
-                    <h4>Genre Threads</h4>
-                    <p>Within each forum, threads are created for each genre (Action, Comedy, Horror, RPG, etc.) keeping recommendations organized and easy to browse.</p>
-                </div>
-                <div class="card">
-                    <h4>Leaderboard Updates</h4>
-                    <p>The bot maintains leaderboard posts showing the top 5 most-liked recommendations in each category. Updates in real-time when likes are added.</p>
-                </div>
-                <div class="card">
-                    <h4>Auto-Delete Sync</h4>
-                    <p>When an admin deletes a recommendation post from a forum, the bot automatically removes it from the database and updates the leaderboard.</p>
-                </div>
-            </section>
-
-            <section class="content-section">
                 <h2>Auto-Fetched Media Info</h2>
-                <p>The bot can automatically fetch additional information for certain media types using external APIs:</p>
+                <p>The bot automatically fetches information from multiple APIs:</p>
                 <table class="command-table">
                     <thead><tr><th>Media Type</th><th>API Source</th><th>Info Fetched</th></tr></thead>
                     <tbody>
-                        <tr><td>Movies & TV Shows</td><td>OMDB API</td><td>Year, Rating, Plot, Poster</td></tr>
-                        <tr><td>Anime & Manga</td><td>Jikan API</td><td>Synopsis, Score, Episodes, Image</td></tr>
-                        <tr><td>Video Games</td><td>RAWG API</td><td>Release Date, Rating, Description, Image</td></tr>
-                    </tbody>
-                </table>
-                <p><em>Note: API keys are optional. The bot works without them but won't fetch additional details.</em></p>
-            </section>
-
-            <section class="content-section">
-                <h2>Google Calendar Integration</h2>
-                <p>Optionally track unreleased media by adding release dates to Google Calendar:</p>
-                <ol style="margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary);">
-                    <li>Go to <a href="https://console.cloud.google.com" style="color: var(--accent-blue);">Google Cloud Console</a></li>
-                    <li>Create a new project and enable the Google Calendar API</li>
-                    <li>Create OAuth 2.0 credentials (Desktop application type)</li>
-                    <li>Download <code>credentials.json</code> and place it in the bot folder</li>
-                    <li>Run <code>!authenticate_calendar</code> - a browser will open to authorize</li>
-                    <li>Run <code>!set_calendar &lt;calendar_id&gt;</code> to select which calendar to use</li>
-                </ol>
-                <p>When unreleased media is recommended, the bot will automatically add a calendar event with reminders 1 week and 1 day before release.</p>
-            </section>
-
-            <section class="content-section">
-                <h2>Configuration Files</h2>
-                <table class="command-table">
-                    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
-                    <tbody>
-                        <tr><td><code>.env</code></td><td>Discord token and API keys</td></tr>
-                        <tr><td><code>media_bot.db</code></td><td>SQLite database for recommendations and votes</td></tr>
-                        <tr><td><code>credentials.json</code></td><td>Google OAuth credentials (optional)</td></tr>
-                        <tr><td><code>token.pickle</code></td><td>Google auth token (auto-generated)</td></tr>
+                        <tr><td>Movies & TV Shows</td><td>OMDB, TMDB</td><td>Year, Rating, Plot, Poster, Genre</td></tr>
+                        <tr><td>Anime & Manga</td><td>Jikan, AniList, Kitsu</td><td>Synopsis, Score, Episodes, Type (Movie/TV), Image</td></tr>
+                        <tr><td>Video Games</td><td>RAWG</td><td>Release Date, Rating, Description, Image</td></tr>
+                        <tr><td>Documentaries</td><td>TMDB</td><td>Year, Synopsis, Type (Film/Series), Image</td></tr>
+                        <tr><td>Cartoons</td><td>TMDB</td><td>Year, Synopsis, Type (Movie/TV), Image</td></tr>
                     </tbody>
                 </table>
             </section>
 
             <section class="content-section">
-                <h2>Background Tasks & Real-Time Updates</h2>
-                <p>The bot runs automated tasks and real-time updates to keep content fresh:</p>
-
-                <h3>Real-Time Updates</h3>
-                <ul>
-                    <li><strong>Leaderboard on New Recommendation</strong> - When a new recommendation is submitted, the category leaderboard updates immediately</li>
-                    <li><strong>Leaderboard on Like</strong> - When someone likes a recommendation, the leaderboard updates to reflect the new rankings</li>
-                    <li><strong>Leaderboard on Delete</strong> - When an admin deletes a recommendation, it's removed from the database and leaderboard</li>
-                    <li><strong>Menu Reset</strong> - The recommendation submission menu resets to its initial state after each submission or cancellation</li>
-                </ul>
-
-                <h3>Scheduled Tasks</h3>
-                <ul>
-                    <li><strong>Daily Random Recommendation</strong> - Posts a random recommendation from the database each day</li>
-                    <li><strong>Hourly Leaderboard Updates</strong> - Backup update of all leaderboard posts with current like counts</li>
-                </ul>
-
-                <h3>Unreleased Media</h3>
-                <ul>
-                    <li><strong>Discord Timestamp</strong> - Unreleased media shows a Discord timestamp for the release date</li>
-                    <li><strong>Google Calendar</strong> - Optionally auto-adds unreleased media to Google Calendar with reminders</li>
-                </ul>
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 14</h4>
+                    <p><strong>Admin Commands:</strong> 11 (setup_media, setup_recommend_channel, setup_missing, set_approval_channel, enable_approval, disable_approval, approval_status, set_deletion_channel, disable_deletion_notifications, reorganize, migrate_categories)</p>
+                    <p><strong>User Commands:</strong> 3 (leaderboard, random_rec, media_stats)</p>
+                    <p><strong>Calendar Commands:</strong> 4 (setup_calendar, authenticate_calendar, set_calendar, list_calendars)</p>
+                </div>
             </section>
         </div>
     </main>

@@ -108,6 +108,82 @@
             </section>
 
             <section class="content-section">
+                <h2>Commands</h2>
+                <p>All commands require Administrator permissions.</p>
+
+                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!setup_sports &lt;sports&gt;</span></td><td>Enable sports tracking for the guild. Accepts multiple sport names (e.g., <code>!setup_sports nba nfl mlb</code>)</td></tr>
+                        <tr><td><span class="command-name">!set_category [category_id]</span></td><td>Set the category where game forums will be created. Creates a new "Live Games" category if no ID provided.</td></tr>
+                        <tr><td><span class="command-name">!setup_alerts &lt;sports&gt;</span></td><td>Create alert roles for sports leagues. Use <code>all</code> for all sports (e.g., <code>!setup_alerts nba nfl</code> or <code>!setup_alerts all</code>)</td></tr>
+                        <tr><td><span class="command-name">!delete_alerts &lt;sports&gt;</span></td><td>Delete alert roles for specified sports or all sports</td></tr>
+                        <tr><td><span class="command-name">!setup_guide</span></td><td>Create the user guide channel in the same category as game posts</td></tr>
+                        <tr><td><span class="command-name">!set_admin_guide &lt;channel_id&gt;</span></td><td>Post complete admin documentation to a specified channel</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Team Tracking Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!track_team &lt;sport&gt; &lt;team_name&gt;</span></td><td>Track a specific team's games for a particular sport</td></tr>
+                        <tr><td><span class="command-name">!set_team_role @Role &lt;TeamName&gt;</span></td><td>Link a Discord role to a team for game alerts (e.g., <code>!set_team_role @Lakers Los Angeles Lakers</code>). Team roles get mentioned instead of general sport role.</td></tr>
+                        <tr><td><span class="command-name">!remove_team_role &lt;TeamName&gt;</span></td><td>Remove a team role link</td></tr>
+                        <tr><td><span class="command-name">!list_team_roles</span></td><td>List all team-to-role mappings for this server</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Monitoring Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!bot_status</span></td><td>Check bot's current status including enabled sports, live games, upcoming games, finished games, and monitoring status</td></tr>
+                        <tr><td><span class="command-name">!restart_games</span></td><td>Delete all existing game posts and recreate them from scratch for games in progress or starting within 30 minutes</td></tr>
+                        <tr><td><span class="command-name">!check_games</span></td><td>Manually check for games and create posts for any missing. Resumes monitoring if paused.</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 13</h4>
+                    <p><strong>All Admin Commands:</strong> setup_sports, set_category, setup_alerts, delete_alerts, setup_guide, set_admin_guide, track_team, set_team_role, remove_team_role, list_team_roles, bot_status, restart_games, check_games</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Game Thread Features</h2>
+                <p>When a game starts, the bot automatically creates a forum thread with:</p>
+                <ul>
+                    <li>Live score updates every 30 seconds</li>
+                    <li>Quarter/Half/Period transitions with stats</li>
+                    <li>Lead changes and key plays</li>
+                    <li>Final score with complete box score</li>
+                    <li>Components V2 styling for modern Discord look</li>
+                    <li>Links to both teams' ESPN schedule pages in the game description</li>
+                    <li>Channel mentions for other live games (not URL links)</li>
+                    <li>Thread title automatically updates to "FINAL" with scores when game ends</li>
+                </ul>
+
+                <h3>Statistics Displayed</h3>
+                <div class="card">
+                    <h4>Basketball (NBA/NCAAM/NCAAW/WNBA)</h4>
+                    <p>Field Goals, 3-Pointers, Free Throws, Rebounds, Assists, Steals, Blocks, Turnovers, Points in Paint, Fast Break Points</p>
+                </div>
+                <div class="card">
+                    <h4>Football (NFL/CFB)</h4>
+                    <p>Total Yards, Passing Yards, Rushing Yards, First Downs, 3rd/4th Down Efficiency, Turnovers, Time of Possession, Penalties</p>
+                </div>
+                <div class="card">
+                    <h4>Baseball (MLB)</h4>
+                    <p>Runs, Hits, Errors, Home Runs, RBIs, Stolen Bases, Strikeouts, Walks, Batting Average, OPS</p>
+                </div>
+            </section>
+
+            <section class="content-section">
                 <h2>Setup & Configuration</h2>
                 <h3>Installation</h3>
                 <div class="code-block">
@@ -130,79 +206,7 @@ pip install -r requirements.txt
 python bot.py
                 </div>
 
-            </section>
-
-            <section class="content-section">
-                <h2>Commands</h2>
-                <h3>Setup Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">!setup_sports &lt;sports&gt;</span></td><td>Enable sports for tracking (e.g., nfl nba mlb)</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!set_category &lt;category_id&gt;</span></td><td>Set category for game thread forums</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!setup_alerts &lt;sports&gt;</span></td><td>Create alert roles for sports</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!delete_alerts &lt;sports&gt;</span></td><td>Remove alert roles</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!setup_guide</span></td><td>Create user guide channel</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!set_admin_guide &lt;channel_id&gt;</span></td><td>Post admin guide to channel</td><td><span class="tag admin">Admin</span></td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Utility Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">!track_team &lt;sport&gt; &lt;team_name&gt;</span></td><td>Track a specific team</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!bot_status</span></td><td>View current bot configuration</td><td><span class="tag user">Everyone</span></td></tr>
-                        <tr><td><span class="command-name">!restart_games</span></td><td>Restart game tracking tasks</td><td><span class="tag admin">Admin</span></td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Team Role Commands</h3>
-                <p>Link Discord roles to specific teams for targeted game alerts. When a game starts, users with the team role will be mentioned instead of the general sport role.</p>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">!set_team_role @Role &lt;TeamName&gt;</span></td><td>Link a Discord role to a specific team (e.g., !set_team_role @Lakers Los Angeles Lakers)</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!remove_team_role &lt;TeamName&gt;</span></td><td>Remove a team role link</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">!list_team_roles</span></td><td>View all configured team roles</td><td><span class="tag user">Everyone</span></td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="content-section">
-                <h2>Game Thread Features</h2>
-                <p>When a game starts, the bot automatically creates a forum thread with:</p>
-                <ul>
-                    <li>Live score updates every 30 seconds</li>
-                    <li>Quarter/Half/Period transitions with stats</li>
-                    <li>Lead changes and key plays</li>
-                    <li>Final score with complete box score</li>
-                    <li>Components V2 styling for modern Discord look</li>
-                    <li>Links to both teams' ESPN schedule pages in the game description</li>
-                    <li>Channel mentions for other live games (not URL links)</li>
-                    <li>Thread title automatically updates to "FINAL" with scores when game ends</li>
-                </ul>
-
-                <h3>Team Schedule Links</h3>
-                <p>Each game thread description includes direct links to both teams' ESPN schedule pages. For professional leagues (NFL, NBA, MLB, WNBA), links use team abbreviations. For college sports (CFB, NCAAM, NCAAW), links use team IDs for accurate routing.</p>
-
-                <h3>Statistics Displayed</h3>
-                <div class="card">
-                    <h4>Basketball (NBA/NCAAM/NCAAW/WNBA)</h4>
-                    <p>Field Goals, 3-Pointers, Free Throws, Rebounds, Assists, Steals, Blocks, Turnovers, Points in Paint, Fast Break Points</p>
-                </div>
-                <div class="card">
-                    <h4>Football (NFL/CFB)</h4>
-                    <p>Total Yards, Passing Yards, Rushing Yards, First Downs, 3rd/4th Down Efficiency, Turnovers, Time of Possession, Penalties</p>
-                </div>
-                <div class="card">
-                    <h4>Baseball (MLB)</h4>
-                    <p>Runs, Hits, Errors, Home Runs, RBIs, Stolen Bases, Strikeouts, Walks, Batting Average, OPS</p>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Configuration Files</h2>
+                <h3>Configuration Files</h3>
                 <table class="command-table">
                     <thead><tr><th>File</th><th>Purpose</th></tr></thead>
                     <tbody>

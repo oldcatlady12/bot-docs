@@ -29,11 +29,12 @@
         .content-section { margin-bottom: 48px; }
         .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
         .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-blue); }
+        .content-section h4 { font-size: 1.1rem; margin: 20px 0 10px; color: var(--accent-purple); }
         .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
         .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
         .feature-icon { font-size: 24px; margin-bottom: 8px; }
-        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item h4 { margin-bottom: 4px; color: var(--text-primary); }
         .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
         .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
         .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
@@ -43,11 +44,13 @@
         .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
         .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
         .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
-        .tag.dev { background: rgba(255, 212, 0, 0.2); color: var(--accent-yellow); }
+        .tag.owner { background: rgba(244, 33, 46, 0.2); color: var(--accent-red); }
         ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
         li { margin-bottom: 8px; }
         .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-        .status-badge { display: inline-block; background: rgba(255, 212, 0, 0.2); color: var(--accent-yellow); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; margin-left: 12px; }
+        .status-badge { display: inline-block; background: rgba(0, 186, 124, 0.2); color: var(--accent-green); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; margin-left: 12px; }
+        .cog-header { background: var(--bg-card); padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .cog-count { color: var(--accent-blue); font-weight: 600; }
     </style>
 </head>
 <body>
@@ -57,7 +60,7 @@
                 <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <div class="bot-icon">&#127944;</div>
-                    <h1>M.W Fantasy Bot <span class="status-badge">In Development</span></h1>
+                    <h1>M.W Fantasy Bot <span class="status-badge">Active</span></h1>
                 </div>
             </div>
         </div>
@@ -88,19 +91,262 @@
                     <div class="feature-item">
                         <div class="feature-icon">&#128176;</div>
                         <h4>Betting</h4>
-                        <p>Spreads, moneylines, props, parlays</p>
+                        <p>Spreads, moneylines, and over/under</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128184;</div>
                         <h4>Economy</h4>
-                        <p>Earn coins from activity and wins</p>
+                        <p>Daily/weekly/monthly coin rewards</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128483;</div>
-                        <h4>Drafts</h4>
-                        <p>Live and async draft modes</p>
+                        <h4>Live Drafts</h4>
+                        <p>Snake and linear draft modes</p>
                     </div>
                 </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 81</h4>
+                    <p>Organized across 12 cogs (modules) covering all aspects of fantasy football, betting, and economy management.</p>
+                    <table class="command-table">
+                        <thead><tr><th>Cog</th><th>Commands</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td>Bot Core</td><td>2</td><td>Help and ping</td></tr>
+                            <tr><td>Setup</td><td>11</td><td>Server configuration</td></tr>
+                            <tr><td>Registration</td><td>3</td><td>User registration</td></tr>
+                            <tr><td>Economy</td><td>8</td><td>Coins and rewards</td></tr>
+                            <tr><td>EA Integration</td><td>8</td><td>Madden data sync</td></tr>
+                            <tr><td>Betting</td><td>6</td><td>Game betting</td></tr>
+                            <tr><td>Fantasy</td><td>8</td><td>Season-long leagues</td></tr>
+                            <tr><td>Draft</td><td>9</td><td>Draft management</td></tr>
+                            <tr><td>DFS</td><td>10</td><td>Daily Fantasy Sports</td></tr>
+                            <tr><td>Leaderboard</td><td>7</td><td>Rankings and history</td></tr>
+                            <tr><td>Admin</td><td>6</td><td>Administrative tools</td></tr>
+                            <tr><td>Reports</td><td>4</td><td>Abuse reporting</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands by Category</h2>
+
+                <!-- Bot Core -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Bot Core Commands</h3>
+                    <span class="cog-count">2 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/help</span></td><td>Show help information for M.W Fantasy</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/ping</span></td><td>Check bot latency</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Setup Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Setup Commands</h3>
+                    <span class="cog-count">11 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/setup</span></td><td>Configure M.W Fantasy channels and settings (setup wizard)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/set_channel &lt;type&gt; &lt;channel&gt;</span></td><td>Set a channel for a specific purpose (Registration, Betting, Fantasy, DFS, Leaderboard, Admin, Logs)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/set_madden_version &lt;version&gt;</span></td><td>Set the Madden version (Madden 25, 24, or 23)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/set_scoring &lt;preset&gt;</span></td><td>Set the fantasy scoring preset (Standard, PPR, Half PPR, or Madden)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/set_starting_coins &lt;amount&gt;</span></td><td>Set starting coin balance for new users (100-10000)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/lock_betting &lt;locked&gt;</span></td><td>Lock or unlock betting (true/false)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/set_week &lt;week&gt;</span></td><td>Set the current Madden week (1-22)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/server_status</span></td><td>View server configuration status</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/create_fantasy_roles</span></td><td>Create default fantasy league roles</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/set_fantasy_role &lt;type&gt; &lt;role&gt;</span></td><td>Assign an existing role for fantasy functions (Fantasy Player, League Manager, Draft Participant, Betting VIP)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/view_fantasy_roles</span></td><td>View configured fantasy roles</td><td><span class="tag admin">Admin</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Registration Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Registration Commands</h3>
+                    <span class="cog-count">3 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/post_registration [channel]</span></td><td>Post the registration message to a channel</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/profile</span></td><td>View your fantasy profile (balance, earnings, spending, betting records)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/register</span></td><td>Register for M.W Fantasy and receive starting balance</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Economy Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Economy Commands</h3>
+                    <span class="cog-count">8 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/daily</span></td><td>Claim your daily coins (100 coins, 24hr cooldown)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/weekly</span></td><td>Claim your weekly coins (500 coins, 7 day cooldown)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/monthly</span></td><td>Claim your monthly coins (2000 coins, 30 day cooldown)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/balance</span></td><td>Check your coin balance (current, total earned, spent, won, lost)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/leaderboard</span></td><td>View the coin leaderboard (top 10 richest players)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/give_coins &lt;user&gt; &lt;amount&gt;</span></td><td>Give coins to a user (1-1,000,000)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/remove_coins &lt;user&gt; &lt;amount&gt;</span></td><td>Remove coins from a user (1-1,000,000)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/set_balance &lt;user&gt; &lt;amount&gt;</span></td><td>Set a user's balance (0-10,000,000)</td><td><span class="tag admin">Admin</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- EA Integration Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">EA Integration Commands</h3>
+                    <span class="cog-count">8 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/set_ea_credentials</span></td><td>Set your EA account login (opens modal)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/delete_ea_credentials</span></td><td>Delete stored EA credentials</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/ea_status</span></td><td>Check EA connection status</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/sync_madden</span></td><td>Sync Madden franchise data from EA</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/teams</span></td><td>View all Madden teams (grouped by AFC/NFC with ratings and records)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/team_roster &lt;team&gt;</span></td><td>View a Madden team's roster (e.g., KC, DAL, BUF)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/schedule [week]</span></td><td>View the Madden game schedule for a week</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/post_betting_games [week]</span></td><td>Post games with betting buttons to the betting channel</td><td><span class="tag admin">Admin</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Betting Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Betting Commands</h3>
+                    <span class="cog-count">6 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/betting</span></td><td>View available games and place bets (shows open betting lines with spreads and O/U)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/my_bets</span></td><td>View your active and recent bets (pending, won, lost + summary stats)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/create_lines [week]</span></td><td>Create betting lines for games</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/close_betting &lt;week&gt;</span></td><td>Close betting for a week</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/settle_bets &lt;week&gt;</span></td><td>Settle bets for completed games</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/bet_leaderboard</span></td><td>View betting leaderboard (top 10 by net profit)</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Fantasy Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Fantasy League Commands</h3>
+                    <span class="cog-count">8 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/create_league &lt;name&gt; [max_teams] [draft_type] [scoring]</span></td><td>Create a new fantasy league (2-16 teams, snake/linear draft, PPR/Standard/etc.)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/leagues</span></td><td>View available fantasy leagues (team counts and draft status)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/join_league &lt;league_id&gt; &lt;team_name&gt;</span></td><td>Join a fantasy league with your team name</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/leave_league &lt;league_id&gt;</span></td><td>Leave a fantasy league</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/my_teams</span></td><td>View your fantasy teams across all leagues</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/roster &lt;league_id&gt;</span></td><td>View your fantasy roster (starters and bench)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/standings &lt;league_id&gt;</span></td><td>View league standings (ranked by wins, losses, points for)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/matchups &lt;league_id&gt; [week]</span></td><td>View weekly matchups</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Draft Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Draft Commands</h3>
+                    <span class="cog-count">9 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/start_draft &lt;league_id&gt;</span></td><td>Start the draft for a league</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/pause_draft &lt;league_id&gt;</span></td><td>Pause the draft</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/resume_draft &lt;league_id&gt;</span></td><td>Resume the draft</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/randomize_order &lt;league_id&gt;</span></td><td>Randomize draft order</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/force_pick &lt;league_id&gt;</span></td><td>Force auto-pick for current team</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/draft_pick &lt;league_id&gt; &lt;player_name&gt;</span></td><td>Make a draft pick (search by player name)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/draft_board &lt;league_id&gt; [position]</span></td><td>View available players (top 25, filter by QB/RB/WR/TE/K)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/draft_status &lt;league_id&gt;</span></td><td>View current draft status and recent picks</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/draft_results &lt;league_id&gt;</span></td><td>View all draft picks grouped by round</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- DFS Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Daily Fantasy (DFS) Commands</h3>
+                    <span class="cog-count">10 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/dfs_contests</span></td><td>View available DFS contests (entry fees, prize pools)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/create_dfs_contest &lt;name&gt; &lt;week&gt; [entry_fee] [max_entries]</span></td><td>Create a DFS contest (entry fee 10-10,000, max entries 2-1,000)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/dfs_enter &lt;contest_id&gt; [lineup_name]</span></td><td>Enter a DFS contest</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/dfs_lineup &lt;lineup_id&gt;</span></td><td>View your DFS lineup (roster slots, salary usage, remaining cap)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/dfs_players &lt;week&gt; [position]</span></td><td>View available DFS players with salaries (filter by QB/RB/WR/TE)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/dfs_set_player &lt;lineup_id&gt; &lt;slot&gt; &lt;player_name&gt;</span></td><td>Add a player to your DFS lineup (QB, RB1, RB2, WR1, WR2, WR3, TE, FLEX)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/generate_dfs_salaries &lt;week&gt;</span></td><td>Generate DFS salaries for a week</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/lock_dfs_contest &lt;contest_id&gt;</span></td><td>Lock a DFS contest</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/settle_dfs_contest &lt;contest_id&gt;</span></td><td>Settle a DFS contest and distribute prizes</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/dfs_leaderboard &lt;contest_id&gt;</span></td><td>View DFS contest leaderboard (top 10 with points and winnings)</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Leaderboard Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Leaderboard Commands</h3>
+                    <span class="cog-count">7 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/top_coins</span></td><td>View the richest players (top 10 by balance)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/top_bettors</span></td><td>View top bettors by profit (top 10 by net profit)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/top_earners</span></td><td>View top earners overall (top 10 by total earned)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/fantasy_standings &lt;league_id&gt;</span></td><td>View fantasy league standings (ranked by record and points)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/dfs_history</span></td><td>View your DFS contest history (last 10 contests with results)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/bet_history</span></td><td>View your betting history (last 10 bets with win/loss record)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/activity</span></td><td>View recent server activity</td><td><span class="tag admin">Admin</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Admin Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Admin Commands</h3>
+                    <span class="cog-count">6 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/reset_user &lt;user&gt; &lt;reset_type&gt;</span></td><td>Reset a user's data (Balance Only, Stats Only, or Everything)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/ban_user &lt;user&gt; [reason]</span></td><td>Ban a user from M.W Fantasy</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/revert_payout &lt;bet_id&gt; [reason]</span></td><td>Revert a bet payout</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/economy_stats</span></td><td>View economy statistics</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/reset_economy</span></td><td>Reset entire server economy (requires button confirmation)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/sync_commands</span></td><td>Sync slash commands</td><td><span class="tag owner">Owner</span></td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Reports Cog -->
+                <div class="cog-header">
+                    <h3 style="margin: 0; color: var(--text-primary);">Reports Commands</h3>
+                    <span class="cog-count">4 commands</span>
+                </div>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/report &lt;user&gt; &lt;report_type&gt; &lt;description&gt; [evidence]</span></td><td>Report a user for abuse (Cheating, Harassment, Exploiting, Other)</td><td><span class="tag user">Everyone</span></td></tr>
+                        <tr><td><span class="command-name">/view_reports</span></td><td>View pending reports</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/resolve_report &lt;report_id&gt; &lt;action&gt; [resolution]</span></td><td>Resolve a report (No Action, Warning Issued, User Banned, Coins Deducted, Invalid Report)</td><td><span class="tag admin">Admin</span></td></tr>
+                        <tr><td><span class="command-name">/my_reports</span></td><td>View your submitted reports with status</td><td><span class="tag user">Everyone</span></td></tr>
+                    </tbody>
+                </table>
             </section>
 
             <section class="content-section">
@@ -112,17 +358,17 @@ mw_fantasy/
 ├── database/
 │   └── database.py         # SQLite async database
 ├── cogs/
-│   ├── setup_cog.py        # Guild setup
-│   ├── registration_cog.py # User registration
-│   ├── economy_cog.py      # Daily/weekly rewards
-│   ├── fantasy_cog.py      # Season-long fantasy
-│   ├── draft_cog.py        # Draft management
-│   ├── betting_cog.py      # Betting commands
-│   ├── dfs_cog.py          # Daily fantasy
-│   ├── ea_cog.py           # EA Madden integration
-│   ├── leaderboard_cog.py  # Leaderboards
-│   ├── admin_cog.py        # Admin controls
-│   └── reports_cog.py      # Abuse reporting
+│   ├── setup_cog.py        # Guild setup (11 commands)
+│   ├── registration_cog.py # User registration (3 commands)
+│   ├── economy_cog.py      # Daily/weekly rewards (8 commands)
+│   ├── ea_cog.py           # EA Madden integration (8 commands)
+│   ├── betting_cog.py      # Betting commands (6 commands)
+│   ├── fantasy_cog.py      # Season-long fantasy (8 commands)
+│   ├── draft_cog.py        # Draft management (9 commands)
+│   ├── dfs_cog.py          # Daily fantasy (10 commands)
+│   ├── leaderboard_cog.py  # Leaderboards (7 commands)
+│   ├── admin_cog.py        # Admin controls (6 commands)
+│   └── reports_cog.py      # Abuse reporting (4 commands)
 ├── services/               # Business logic
 ├── ui/
 │   ├── views/              # Discord Components V2
@@ -133,7 +379,7 @@ mw_fantasy/
             </section>
 
             <section class="content-section">
-                <h2>Core Features (Planned)</h2>
+                <h2>Core Features</h2>
 
                 <div class="card">
                     <h4>&#127944; EA Madden Integration</h4>
@@ -142,127 +388,78 @@ mw_fantasy/
 
                 <div class="card">
                     <h4>&#127919; Daily Fantasy (DFS)</h4>
-                    <p>Create salary-capped lineups each game week. Contests include:</p>
+                    <p>Create salary-capped lineups each game week. Features include:</p>
                     <ul>
-                        <li>Free contests for coins</li>
-                        <li>Paid contests with bigger prizes</li>
-                        <li>Head-to-head and tournament formats</li>
+                        <li>$50,000 salary cap per lineup</li>
+                        <li>8 roster slots: QB, RB1, RB2, WR1, WR2, WR3, TE, FLEX</li>
+                        <li>Entry fees from 10 to 10,000 coins</li>
+                        <li>Automatic prize pool distribution</li>
                     </ul>
                 </div>
 
                 <div class="card">
                     <h4>&#127942; Season-Long Fantasy</h4>
-                    <p>Traditional fantasy leagues with drafts, weekly matchups, trades, and waivers. Supports standard and PPR scoring.</p>
+                    <p>Traditional fantasy leagues with drafts, weekly matchups, trades, and waivers. Supports multiple scoring formats:</p>
+                    <ul>
+                        <li><strong>Standard:</strong> 4pt passing TD, 6pt rush/rec TD, no PPR</li>
+                        <li><strong>PPR:</strong> 1 point per reception</li>
+                        <li><strong>Half PPR:</strong> 0.5 points per reception</li>
+                        <li><strong>Madden:</strong> Custom Madden-specific scoring with bonuses</li>
+                    </ul>
                 </div>
 
                 <div class="card">
                     <h4>&#128176; Betting System</h4>
-                    <p>Bet on Madden franchise games:</p>
-                    <ul>
-                        <li>Spreads and moneylines</li>
-                        <li>Over/under totals</li>
-                        <li>Player props</li>
-                        <li>Parlays</li>
-                    </ul>
+                    <p>Bet on Madden franchise games with spreads, moneylines, and over/under totals. Lines are auto-generated based on team ratings.</p>
                 </div>
 
                 <div class="card">
                     <h4>&#128184; Economy System</h4>
                     <p>Coin rewards for activity:</p>
                     <table class="command-table">
-                        <tr><td>Daily Claim</td><td>100 coins</td></tr>
-                        <tr><td>Weekly Claim</td><td>500 coins</td></tr>
-                        <tr><td>Monthly Claim</td><td>2,000 coins</td></tr>
-                        <tr><td>Game Win</td><td>200 coins</td></tr>
-                        <tr><td>MVP Award</td><td>500 coins</td></tr>
+                        <tr><td>Daily Claim</td><td>100 coins</td><td>24hr cooldown</td></tr>
+                        <tr><td>Weekly Claim</td><td>500 coins</td><td>7 day cooldown</td></tr>
+                        <tr><td>Monthly Claim</td><td>2,000 coins</td><td>30 day cooldown</td></tr>
+                        <tr><td>Starting Balance</td><td>Configurable</td><td>100-10,000 coins</td></tr>
                     </table>
                 </div>
             </section>
 
             <section class="content-section">
-                <h2>Commands (Planned)</h2>
-
-                <h3>Setup & Economy</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th><th>Access</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">/setup</span></td><td>Configure bot channels and settings</td><td><span class="tag admin">Admin</span></td></tr>
-                        <tr><td><span class="command-name">/register</span></td><td>Register for fantasy</td><td><span class="tag user">Everyone</span></td></tr>
-                        <tr><td><span class="command-name">/daily</span></td><td>Claim daily coins</td><td><span class="tag user">Everyone</span></td></tr>
-                        <tr><td><span class="command-name">/balance</span></td><td>Check coin balance</td><td><span class="tag user">Everyone</span></td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Fantasy Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">/league create</span></td><td>Create a new fantasy league</td></tr>
-                        <tr><td><span class="command-name">/league join</span></td><td>Join an existing league</td></tr>
-                        <tr><td><span class="command-name">/draft start</span></td><td>Start league draft (commissioner)</td></tr>
-                        <tr><td><span class="command-name">/roster</span></td><td>View your roster</td></tr>
-                        <tr><td><span class="command-name">/trade</span></td><td>Propose a trade</td></tr>
-                        <tr><td><span class="command-name">/waivers</span></td><td>Make waiver claims</td></tr>
-                    </tbody>
-                </table>
-
-                <h3>Betting Commands</h3>
-                <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
-                    <tbody>
-                        <tr><td><span class="command-name">/games</span></td><td>View upcoming games with betting lines</td></tr>
-                        <tr><td><span class="command-name">/bet</span></td><td>Place a bet</td></tr>
-                        <tr><td><span class="command-name">/mybets</span></td><td>View your active bets</td></tr>
-                        <tr><td><span class="command-name">/parlay</span></td><td>Create a parlay bet</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="content-section">
-                <h2>Setup</h2>
+                <h2>Setup & Installation</h2>
                 <div class="code-block">
+# Navigate to bot directory
 cd mw_fantasy
+
+# Create virtual environment
 python -m venv venv
+
+# Activate venv (Windows)
 .\venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 
-# Configure .env
-# DISCORD_TOKEN=your_token
+# Configure .env file
+# DISCORD_TOKEN=your_token_here
 # OWNER_ID=your_discord_id
 # WORLDGATE_WEBHOOK=webhook_url (for abuse reports)
 
+# Run the bot
 python bot.py
                 </div>
             </section>
 
             <section class="content-section">
-                <h2>Configuration</h2>
-                <p>Edit <code>config.py</code> for economy settings, scoring presets, and defaults.</p>
-
-                <h3>Scoring Presets</h3>
+                <h2>Configuration Files</h2>
                 <table class="command-table">
-                    <thead><tr><th>Preset</th><th>Pass TD</th><th>Rush/Rec TD</th><th>Reception</th></tr></thead>
+                    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
                     <tbody>
-                        <tr><td>Standard</td><td>4 pts</td><td>6 pts</td><td>0 pts</td></tr>
-                        <tr><td>PPR</td><td>4 pts</td><td>6 pts</td><td>1 pt</td></tr>
-                        <tr><td>Madden</td><td>4 pts</td><td>6 pts</td><td>1 pt + bonuses</td></tr>
+                        <tr><td><code>.env</code></td><td>Discord token, owner ID, webhook URLs</td></tr>
+                        <tr><td><code>config.py</code></td><td>Economy settings, scoring presets, defaults</td></tr>
+                        <tr><td><code>mw_fantasy.db</code></td><td>SQLite database (auto-created)</td></tr>
                     </tbody>
                 </table>
-            </section>
-
-            <section class="content-section">
-                <h2>Development Status</h2>
-                <p>This bot is currently in active development. The following features are in progress:</p>
-                <ul>
-                    <li><span class="tag" style="background: rgba(0, 186, 124, 0.2); color: #00ba7c;">Done</span> Bot framework and cog structure</li>
-                    <li><span class="tag" style="background: rgba(0, 186, 124, 0.2); color: #00ba7c;">Done</span> Database schema</li>
-                    <li><span class="tag" style="background: rgba(0, 186, 124, 0.2); color: #00ba7c;">Done</span> Registration system</li>
-                    <li><span class="tag dev">In Progress</span> Economy commands</li>
-                    <li><span class="tag dev">In Progress</span> EA integration</li>
-                    <li><span class="tag" style="background: rgba(139, 152, 165, 0.2); color: #8b98a5;">Planned</span> Betting system</li>
-                    <li><span class="tag" style="background: rgba(139, 152, 165, 0.2); color: #8b98a5;">Planned</span> Draft system</li>
-                    <li><span class="tag" style="background: rgba(139, 152, 165, 0.2); color: #8b98a5;">Planned</span> DFS contests</li>
-                </ul>
             </section>
         </div>
     </main>
