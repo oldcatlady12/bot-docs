@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Sports Stats Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --accent-red: #f4212e;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #013369, #C9082A); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-blue); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-blue); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; white-space: pre-wrap; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        .flow-diagram { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .flow-step { display: flex; align-items: center; margin-bottom: 16px; }
+        .flow-step:last-child { margin-bottom: 0; }
+        .flow-number { width: 32px; height: 32px; background: var(--accent-purple); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 16px; flex-shrink: 0; }
+        .flow-arrow { color: var(--text-secondary); margin: 0 16px 16px 8px; font-size: 20px; }
+        .league-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; margin-right: 8px; }
+        .league-nfl { background: #013369; color: white; }
+        .league-nba { background: #C9082A; color: white; }
+        .league-wnba { background: #FF6900; color: white; }
+        .league-mlb { background: #002D72; color: white; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin: 24px 0; }
+        .stat-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: bold; color: var(--accent-blue); }
+        .stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#128200;</div>
+                    <h1>Fantasy Sports Stats Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>The Fantasy Sports Stats Bot is a comprehensive Discord bot for fantasy sports statistics, predictions, and draft analysis. It covers NFL, NBA, WNBA, and MLB during their respective offseasons, providing player rankings, consistency metrics, rookie profiles, team reviews, and automated forum posts.</p>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Leagues Supported</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">32</div>
+                        <div class="stat-label">Commands</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Scoring Systems</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Chart Types</div>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128202;</div>
+                        <h4>Player Statistics</h4>
+                        <p>Rankings for fantasy points, yards, touchdowns, and all major stats</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128200;</div>
+                        <h4>Consistency Analysis</h4>
+                        <p>Boom/bust metrics, weekly consistency scores, and career trends</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>Rookie Profiles</h4>
+                        <p>Draft analysis, college comparisons, and opportunity scores</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127944;</div>
+                        <h4>Draft Guides</h4>
+                        <p>Pre-draft analysis, sleepers, busts, and strategy tips</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127968;</div>
+                        <h4>Team Reviews</h4>
+                        <p>Coaching analysis, depth charts, and offseason moves</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128197;</div>
+                        <h4>Auto Updates</h4>
+                        <p>Weekly scheduled updates and season-aware activation</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Supported Leagues</h2>
+                <table class="command-table">
+                    <thead>
+                        <tr><th>League</th><th>Season</th><th>Offseason (Bot Active)</th><th>Fantasy Draft Window</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="league-badge league-nfl">NFL</span></td>
+                            <td>September - February</td>
+                            <td>February - September</td>
+                            <td>August - Early September</td>
+                        </tr>
+                        <tr>
+                            <td><span class="league-badge league-nba">NBA</span></td>
+                            <td>October - June</td>
+                            <td>June - October</td>
+                            <td>Mid-October</td>
+                        </tr>
+                        <tr>
+                            <td><span class="league-badge league-wnba">WNBA</span></td>
+                            <td>May - October</td>
+                            <td>October - May</td>
+                            <td>Early May</td>
+                        </tr>
+                        <tr>
+                            <td><span class="league-badge league-mlb">MLB</span></td>
+                            <td>March - November</td>
+                            <td>November - March</td>
+                            <td>Mid-March - Early April</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Forum Channel Structure</h2>
+                <p>The bot creates organized forum channels for each league during setup:</p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128202;</div>
+                        <h4>{league}-statistics</h4>
+                        <p>Fantasy points, passing yards, rushing yards, receiving stats</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127891;</div>
+                        <h4>{league}-rookies</h4>
+                        <p>Position-based rookie profiles with auto-close after 7 days</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127968;</div>
+                        <h4>{league}-teams</h4>
+                        <p>Team reviews, coaching analysis, offseason moves</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128221;</div>
+                        <h4>{league}-draft</h4>
+                        <p>Draft guides, mock drafts, prospect analysis</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+
+                <h3>Statistics Commands <span class="tag user">All Users</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/stats &lt;league&gt; [stat_type] [limit]</span></td><td>View player statistics rankings for any stat type (fantasy_points, passing_yards, rushing_tds, etc.)</td></tr>
+                        <tr><td><span class="command-name">/fantasy &lt;league&gt; [scoring] [position]</span></td><td>View fantasy point rankings with Standard/PPR/Half-PPR scoring options</td></tr>
+                        <tr><td><span class="command-name">/consistency &lt;league&gt; [position]</span></td><td>View consistency rankings with boom/bust analysis</td></tr>
+                        <tr><td><span class="command-name">/player &lt;name&gt; [league]</span></td><td>View detailed stats for a specific player</td></tr>
+                        <tr><td><span class="command-name">/status</span></td><td>View all league statuses, offseason status, and upcoming dates</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Draft Analysis Commands <span class="tag user">All Users</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/draft_guide &lt;league&gt;</span></td><td>Get comprehensive fantasy draft preparation guide with strategies</td></tr>
+                        <tr><td><span class="command-name">/team_review &lt;league&gt; &lt;team&gt;</span></td><td>Get detailed team analysis for fantasy (e.g., /team_review NFL KC)</td></tr>
+                        <tr><td><span class="command-name">/coaching_analysis &lt;league&gt; &lt;team&gt;</span></td><td>View coaching staff analysis and scheme information</td></tr>
+                        <tr><td><span class="command-name">/sleepers &lt;league&gt;</span></td><td>View potential fantasy sleepers to target in drafts</td></tr>
+                        <tr><td><span class="command-name">/busts &lt;league&gt;</span></td><td>View potential fantasy busts to avoid in drafts</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Rookie Analysis Commands <span class="tag user">All Users</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/rookies &lt;league&gt; [position]</span></td><td>View rookie class overview with draft picks by round</td></tr>
+                        <tr><td><span class="command-name">/rookie &lt;name&gt; [league]</span></td><td>View detailed rookie profile with college stats and projections</td></tr>
+                        <tr><td><span class="command-name">/dynasty_rookies &lt;league&gt;</span></td><td>View rookies ranked for dynasty fantasy leagues</td></tr>
+                        <tr><td><span class="command-name">/college_compare &lt;name&gt;</span></td><td>Compare rookie's college performance to pro projections</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Team Commands <span class="tag user">All Users</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/teams &lt;league&gt;</span></td><td>View all teams in a league</td></tr>
+                        <tr><td><span class="command-name">/roster &lt;league&gt; &lt;team&gt;</span></td><td>View a team's current roster grouped by position</td></tr>
+                        <tr><td><span class="command-name">/offseason_moves &lt;league&gt; &lt;team&gt;</span></td><td>View a team's offseason transactions and their fantasy impact</td></tr>
+                        <tr><td><span class="command-name">/depth_chart &lt;league&gt; &lt;team&gt;</span></td><td>View projected depth chart for a team</td></tr>
+                        <tr><td><span class="command-name">/coaching_changes &lt;league&gt;</span></td><td>View recent coaching changes and fantasy implications</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Schedule Commands <span class="tag user">All Users</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/schedule</span></td><td>View the bot's automatic update schedule</td></tr>
+                        <tr><td><span class="command-name">/next_update</span></td><td>View when the next automatic statistics update will occur</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/setup</span></td><td>Start the interactive setup wizard to configure the bot</td></tr>
+                        <tr><td><span class="command-name">/settings</span></td><td>View current bot configuration for the server</td></tr>
+                        <tr><td><span class="command-name">/reset</span></td><td>Reset all bot configuration for the server</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Admin Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/refresh [league]</span></td><td>Manually refresh statistics data for one or all leagues</td></tr>
+                        <tr><td><span class="command-name">/force_update [league]</span></td><td>Force an immediate statistics update bypassing schedule</td></tr>
+                        <tr><td><span class="command-name">/post_stats &lt;league&gt;</span></td><td>Post statistics rankings to configured forum channels</td></tr>
+                        <tr><td><span class="command-name">/post_rookies &lt;league&gt;</span></td><td>Post rookie profiles to forum (auto-closes after 7 days)</td></tr>
+                        <tr><td><span class="command-name">/post_team_reviews &lt;league&gt;</span></td><td>Post comprehensive team reviews to forum</td></tr>
+                        <tr><td><span class="command-name">/post_draft_analysis &lt;league&gt;</span></td><td>Post draft guides and analysis to forum</td></tr>
+                        <tr><td><span class="command-name">/cleanup [days]</span></td><td>Archive forum posts older than specified days (default: 30)</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Fantasy Scoring Systems</h2>
+                <p>The bot supports multiple fantasy scoring systems:</p>
+
+                <h3>NFL Scoring</h3>
+                <div class="card">
+                    <strong>Standard Scoring:</strong>
+                    <ul>
+                        <li>Passing: 0.04 pts/yard (1 pt per 25 yards), 4 pts/TD, -2 pts/INT</li>
+                        <li>Rushing: 0.1 pts/yard, 6 pts/TD</li>
+                        <li>Receiving: 0.1 pts/yard, 6 pts/TD, 0 pts/reception</li>
+                        <li>Fumbles: -2 pts</li>
+                    </ul>
+                    <strong>PPR (Points Per Reception):</strong> Same as standard + 1 pt/reception<br>
+                    <strong>Half PPR:</strong> Same as standard + 0.5 pts/reception
+                </div>
+
+                <h3>NBA Scoring (DraftKings Style)</h3>
+                <div class="card">
+                    <ul>
+                        <li>Points: 1 pt, Three-pointers: +0.5 pts</li>
+                        <li>Rebounds: 1.25 pts, Assists: 1.5 pts</li>
+                        <li>Steals: 2 pts, Blocks: 2 pts</li>
+                        <li>Turnovers: -0.5 pts</li>
+                        <li>Double-double: +1.5 pts, Triple-double: +3 pts</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup Flow</h2>
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div>Admin runs <code>/setup</code> command</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div>Select which leagues to enable (NFL, NBA, WNBA, MLB)</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div>Choose to create fantasy roles, use existing roles, or skip</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div>Choose to create forum channels or link existing ones</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <div>Select category for forum channels (or create new)</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">6</div>
+                        <div>Bot creates forums: {league}-statistics, {league}-rookies, {league}-teams, {league}-draft</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">7</div>
+                        <div>Run <code>/refresh</code> to populate initial statistics</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Visualization & Charts</h2>
+                <p>The bot generates various charts for Discord embeds:</p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>Bar Charts</h4>
+                        <p>Player rankings with gradient colors (top 20 players)</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Line Charts</h4>
+                        <p>Season-over-season progression with player comparisons</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Heatmaps</h4>
+                        <p>Weekly consistency showing game-by-game performance</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Radar Charts</h4>
+                        <p>Multi-stat player comparison profiles</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Scatter Plots</h4>
+                        <p>Opportunities vs fantasy points analysis</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Boom/Bust Charts</h4>
+                        <p>Donut charts showing game distribution</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Automatic Updates</h2>
+                <p>The bot automatically updates statistics during each league's offseason:</p>
+                <ul>
+                    <li><strong>Weekly Updates:</strong> Every Sunday at 6:00 AM UTC (configurable)</li>
+                    <li><strong>Season Awareness:</strong> Bot only activates during offseasons</li>
+                    <li><strong>Post Auto-Close:</strong> Rookie forum posts automatically close after 7 days</li>
+                    <li><strong>Season Tags:</strong> All posts are tagged with the season year for organization</li>
+                    <li><strong>Manual Refresh:</strong> Admins can trigger updates anytime with <code>/refresh</code></li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Data Sources</h2>
+                <p>The bot fetches data from multiple free sources:</p>
+                <ul>
+                    <li><strong>ESPN API:</strong> Primary source for all leagues - player stats, teams, draft info</li>
+                    <li><strong>Sports Reference:</strong> Historical data and career statistics</li>
+                    <li><strong>NBA API (nba_api):</strong> Official NBA statistics with game logs</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Quick Start Guide</h2>
+                <div class="code-block"># 1. Initial Setup
+/setup
+
+# 2. Select leagues (NFL, NBA, WNBA, MLB)
+# 3. Configure roles (create, link, or skip)
+# 4. Configure forum channels
+# 5. Populate initial data
+/refresh
+
+# 6. Post statistics to forums
+/post_stats NFL
+/post_rookies NFL
+/post_team_reviews NFL
+
+# 7. View league status
+/status
+
+# 8. Check update schedule
+/schedule</div>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <table class="command-table">
+                    <thead><tr><th>Category</th><th>Count</th><th>Permission</th></tr></thead>
+                    <tbody>
+                        <tr><td>Statistics Commands</td><td>5</td><td>All Users</td></tr>
+                        <tr><td>Draft Analysis Commands</td><td>5</td><td>All Users</td></tr>
+                        <tr><td>Rookie Analysis Commands</td><td>4</td><td>All Users</td></tr>
+                        <tr><td>Team Commands</td><td>5</td><td>All Users</td></tr>
+                        <tr><td>Schedule Commands</td><td>2</td><td>All Users</td></tr>
+                        <tr><td>Setup Commands</td><td>3</td><td>Admin Only</td></tr>
+                        <tr><td>Admin Commands</td><td>7</td><td>Admin Only</td></tr>
+                        <tr><td><strong>Total</strong></td><td><strong>31</strong></td><td></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Technical Stack</h2>
+                <div class="card">
+                    <ul>
+                        <li><strong>Language:</strong> Python 3.11+</li>
+                        <li><strong>Discord Library:</strong> discord.py 2.3+</li>
+                        <li><strong>Database:</strong> SQLite with SQLAlchemy ORM</li>
+                        <li><strong>Visualization:</strong> Matplotlib + Seaborn</li>
+                        <li><strong>Scheduling:</strong> APScheduler</li>
+                        <li><strong>Data Fetching:</strong> aiohttp, requests, BeautifulSoup4</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
