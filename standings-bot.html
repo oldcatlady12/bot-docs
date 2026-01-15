@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standings Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-orange: #ff7a00;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #ff7a00, #ffd400); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-blue); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-blue); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#128202;</div>
+                    <h1>Standings Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>The Standings Bot provides real-time sports standings for multiple leagues. It automatically creates and updates a dedicated standings channel with the latest league standings, updated every 30 minutes.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128202;</div>
+                        <h4>Live Standings</h4>
+                        <p>Real-time standings from ESPN API</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128260;</div>
+                        <h4>Auto Updates</h4>
+                        <p>Standings refresh every 30 minutes</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127941;</div>
+                        <h4>7 Leagues</h4>
+                        <p>NBA, WNBA, NFL, MLB, CFB, NCAAM, NCAAW</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#11088;</div>
+                        <h4>Premium Features</h4>
+                        <p>Custom update frequency and more</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Supported Leagues</h2>
+                <table class="command-table">
+                    <thead>
+                        <tr><th>League</th><th>Full Name</th><th>Sport</th><th>Playoff Teams</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>🏀 NBA</td><td>National Basketball Association</td><td>Basketball</td><td>16</td></tr>
+                        <tr><td>🏀 WNBA</td><td>Women's National Basketball Association</td><td>Basketball</td><td>12</td></tr>
+                        <tr><td>🏈 NFL</td><td>National Football League</td><td>Football</td><td>14</td></tr>
+                        <tr><td>⚾ MLB</td><td>Major League Baseball</td><td>Baseball</td><td>12</td></tr>
+                        <tr><td>🏈 CFB</td><td>College Football</td><td>Football</td><td>12</td></tr>
+                        <tr><td>🏀 NCAAM</td><td>NCAA Men's Basketball</td><td>Basketball</td><td>68</td></tr>
+                        <tr><td>🏀 NCAAW</td><td>NCAA Women's Basketball</td><td>Basketball</td><td>68</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+
+                <h3>User Commands <span class="tag user">All Users</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/standings [league]</span></td><td>View current standings for a specific league or all leagues</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/setup channel</span></td><td>Create or reset the dedicated standings channel</td></tr>
+                        <tr><td><span class="command-name">/setup forum &lt;forum&gt;</span></td><td>Link a sports forum channel for automatic standings posts</td></tr>
+                        <tr><td><span class="command-name">/setup refresh</span></td><td>Force refresh the standings message immediately</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Premium Commands <span class="tag admin">Premium</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/premium</span></td><td>View premium features and subscription options</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Features</h2>
+
+                <h3>Automatic Standings Channel</h3>
+                <p>When you run <code>/setup channel</code>, the bot creates a dedicated channel called <code>#sports-standings</code> that displays current standings for all enabled leagues. The message is automatically updated every 30 minutes.</p>
+
+                <h3>Forum Integration</h3>
+                <p>Link a sports forum channel with <code>/setup forum</code> and the bot will automatically post standings updates to new forum threads.</p>
+
+                <h3>Premium Features</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>Custom Update Frequency:</strong> Set standings updates from 1-7 days</li>
+                        <li><strong>Priority Support:</strong> Get help faster with premium support</li>
+                        <li><strong>Coming Soon:</strong> Custom league filtering, team highlights, and more</li>
+                    </ul>
+                    <p style="margin-top: 12px; margin-bottom: 0;"><strong>Pricing:</strong> $4.99/month or $49.99/year</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Quick Setup</h2>
+                <div class="code-block">
+# 1. Create the standings channel
+/setup channel
+
+# 2. (Optional) Link a sports forum
+/setup forum #sports-forum
+
+# 3. View standings anytime
+/standings NBA
+
+# 4. Force refresh if needed
+/setup refresh
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <table class="command-table">
+                    <thead><tr><th>Category</th><th>Count</th><th>Permission</th></tr></thead>
+                    <tbody>
+                        <tr><td>User Commands</td><td>1</td><td>All Users</td></tr>
+                        <tr><td>Setup Commands</td><td>3</td><td>Admin Only</td></tr>
+                        <tr><td>Premium Commands</td><td>1</td><td>Premium</td></tr>
+                        <tr><td><strong>Total</strong></td><td><strong>5</strong></td><td></td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

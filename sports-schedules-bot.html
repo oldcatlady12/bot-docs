@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Schedules Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #7856ff, #ff7a00); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-blue); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-blue); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        .tag.premium { background: rgba(255, 212, 0, 0.2); color: #ffd400; }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#128197;</div>
+                    <h1>Sports Schedules Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>The Sports Schedules Bot posts daily game schedules with links to game posts created by the Sports Bot. It automatically updates schedules every 10 minutes and offers premium DM notifications for game alerts.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128197;</div>
+                        <h4>Daily Schedules</h4>
+                        <p>Automatic daily schedule posts at configurable times</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128260;</div>
+                        <h4>Auto Updates</h4>
+                        <p>Schedule messages update every 10 minutes</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128279;</div>
+                        <h4>Game Post Links</h4>
+                        <p>Direct links to game threads from Sports Bot</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128276;</div>
+                        <h4>DM Notifications</h4>
+                        <p>Premium users get game alerts via DM</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Integration with Sports Bot</h2>
+                <p>This bot is designed to work alongside the Sports Bot. It:</p>
+                <ul>
+                    <li>Finds game posts created by Sports Bot in forum channels</li>
+                    <li>Adds direct links to those game threads in schedule messages</li>
+                    <li>Uses team roles to notify premium users when their team's game post is created</li>
+                    <li>Fetches live game data from ESPN API</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+
+                <h3>Admin Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!schedule_set_channel [#channel]</span></td><td>Set the channel for daily schedule messages. Uses current channel if none specified.</td></tr>
+                        <tr><td><span class="command-name">!schedule_post [#channel]</span></td><td>Manually post the schedule to a channel</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Premium Management <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!schedule_grant_premium @user [days]</span></td><td>Grant premium to a user (default: 30 days)</td></tr>
+                        <tr><td><span class="command-name">!schedule_revoke_premium @user</span></td><td>Revoke premium from a user</td></tr>
+                        <tr><td><span class="command-name">!schedule_extend_premium @user [days]</span></td><td>Extend an existing premium subscription</td></tr>
+                        <tr><td><span class="command-name">!schedule_list_premium</span></td><td>List all premium subscribers in the server</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Automatic Features</h2>
+
+                <h3>Daily Schedule Posts</h3>
+                <div class="card">
+                    <p>At a configurable time each day (default: 7:00 AM ET), the bot automatically posts the day's game schedule to all configured channels.</p>
+                </div>
+
+                <h3>Auto-Updating Messages</h3>
+                <div class="card">
+                    <p>Schedule messages are automatically updated every 10 minutes to reflect:</p>
+                    <ul>
+                        <li>New game posts created by Sports Bot</li>
+                        <li>Game status changes (upcoming, in progress, final)</li>
+                        <li>Score updates for live games</li>
+                    </ul>
+                </div>
+
+                <h3>DM Notifications (Premium)</h3>
+                <div class="card">
+                    <p>Premium users receive direct message notifications when:</p>
+                    <ul>
+                        <li>A game post is created for a team they have a role for</li>
+                        <li>Notifications include direct links to the game thread</li>
+                        <li>Notifications are checked every few minutes</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Premium Features</h2>
+                <div class="card">
+                    <h4>What Premium Users Get:</h4>
+                    <ul>
+                        <li><strong>DM Notifications:</strong> Get alerted when game posts are created for your teams</li>
+                        <li><strong>Team Role Integration:</strong> Notifications based on team roles you have in the server</li>
+                        <li><strong>Priority Updates:</strong> Be the first to know when game threads are available</li>
+                    </ul>
+                    <p style="margin-top: 12px; margin-bottom: 0;"><strong>Default Duration:</strong> 30 days per grant</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Quick Setup</h2>
+                <div class="code-block">
+# 1. Set the schedule channel
+!schedule_set_channel #daily-schedules
+
+# 2. Post a schedule immediately
+!schedule_post
+
+# 3. Grant premium to a user
+!schedule_grant_premium @user 30
+
+# 4. Check premium subscribers
+!schedule_list_premium
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Background Tasks</h2>
+                <table class="command-table">
+                    <thead><tr><th>Task</th><th>Interval</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td>Schedule Updater</td><td>Every 10 minutes</td><td>Updates all schedule messages with latest game info</td></tr>
+                        <tr><td>Daily Schedule Sender</td><td>Daily (configurable)</td><td>Posts fresh schedule to all configured channels</td></tr>
+                        <tr><td>Notification Checker</td><td>Every few minutes</td><td>Checks for new game posts and sends DM notifications</td></tr>
+                        <tr><td>Cleanup Task</td><td>Every 24 hours</td><td>Cleans up old notification logs</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <table class="command-table">
+                    <thead><tr><th>Category</th><th>Count</th><th>Permission</th></tr></thead>
+                    <tbody>
+                        <tr><td>Admin Commands</td><td>2</td><td>Administrator</td></tr>
+                        <tr><td>Premium Management</td><td>4</td><td>Administrator</td></tr>
+                        <tr><td><strong>Total</strong></td><td><strong>6</strong></td><td></td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
