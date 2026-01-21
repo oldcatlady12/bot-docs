@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI vs Humans Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-purple: #9b59b6;
+            --accent-orange: #e67e22;
+            --accent-red: #e74c3c;
+            --accent-cyan: #00d4ff;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .bot-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bot-title h1 {
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h3 {
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Commands Table */
+        .commands-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .commands-table th,
+        .commands-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .commands-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .commands-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .command-name {
+            font-family: 'Fira Code', monospace;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .command-admin {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Game Modes */
+        .game-modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .game-card .game-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .game-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .game-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Setup Section */
+        .setup-steps {
+            max-width: 800px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .commands-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link">
+                    ← Back to All Bots
+                </a>
+                <div class="bot-title">
+                    <div class="bot-icon">🤖</div>
+                    <h1>AI vs Humans Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Can You Tell the Difference?</h2>
+                    <p>
+                        An interactive Discord game where players try to distinguish between AI-generated and human-created content.
+                        Features multiple game modes including images, text, art, and more. Test your ability to spot the machine!
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Python 3.11+</span>
+                        <span class="tech-badge">discord.py</span>
+                        <span class="tech-badge">SQLite</span>
+                        <span class="tech-badge">AI Detection</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="container">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">10+</div>
+                    <div class="stat-label">Commands</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Game Modes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">Content Rounds</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">ELO</div>
+                    <div class="stat-label">Ranking System</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Modes Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🎮</span> Game Modes</h3>
+                <div class="game-modes">
+                    <div class="game-card">
+                        <div class="game-icon">🖼️</div>
+                        <h4>Image Mode</h4>
+                        <p>Distinguish between AI-generated images and real photographs. Can you spot the telltale signs?</p>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-icon">📝</div>
+                        <h4>Text Mode</h4>
+                        <p>Read passages and determine if they were written by AI or a human author.</p>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-icon">🎨</div>
+                        <h4>Art Mode</h4>
+                        <p>Examine artwork and decide if it was created by an AI or a human artist.</p>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-icon">🎵</div>
+                        <h4>Music Mode</h4>
+                        <p>Listen to audio clips and identify AI-composed vs human-composed music.</p>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-icon">🎲</div>
+                        <h4>Random Mode</h4>
+                        <p>Mix of all content types for the ultimate challenge!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">✨</span> Key Features</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🏆 ELO Ranking System</h4>
+                        <p>Competitive ranking that adjusts based on your performance. Climb the leaderboard and prove your detection skills!</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Detailed Statistics</h4>
+                        <p>Track your accuracy by category, total games played, win streaks, and improvement over time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚡ Quick Play</h4>
+                        <p>Jump into a game instantly with a single command. No setup required!</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎯 Difficulty Levels</h4>
+                        <p>From easy obvious examples to expert-level challenges that fool even the best.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>👥 Multiplayer</h4>
+                        <p>Compete against friends in real-time. First to answer correctly wins bonus points!</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📚 Learn Mode</h4>
+                        <p>After each round, learn what clues indicate AI vs human content.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commands Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">💻</span> Commands</h3>
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                            <th>Access</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name">/play</span></td>
+                            <td>Start a new game round. Optionally specify mode (image, text, art, music, random).</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/quick</span></td>
+                            <td>Instantly start a random mode game without options.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/stats</span></td>
+                            <td>View your personal statistics, accuracy rates, and ranking.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/leaderboard</span></td>
+                            <td>View the server or global leaderboard by ELO rating.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/challenge @user</span></td>
+                            <td>Challenge another user to a head-to-head match.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/tournament</span></td>
+                            <td>Start a multi-round tournament for multiple players.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/daily</span></td>
+                            <td>Play the daily challenge for bonus points.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/streak</span></td>
+                            <td>View your current winning streak and best streak.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/learn</span></td>
+                            <td>Access educational content about AI detection techniques.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/add-content</span></td>
+                            <td>Submit new AI or human content to the game database.</td>
+                            <td>Admin</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">❓</span> How It Works</h3>
+                <div class="setup-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Start a Game</h4>
+                            <p>Use <code>/play</code> or <code>/quick</code> to begin. You'll be shown a piece of content (image, text, etc.).</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Make Your Guess</h4>
+                            <p>Click the "AI" or "Human" button to submit your answer before the timer runs out.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>See Results</h4>
+                            <p>The correct answer is revealed along with an explanation of the key indicators.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Earn Points</h4>
+                            <p>Correct guesses increase your ELO rating. Faster answers earn bonus points!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Setup Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🚀</span> Setup Guide</h3>
+                <div class="setup-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Create Discord Bot</h4>
+                            <p>Go to the Discord Developer Portal, create a new application, and add a bot.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Configure Environment</h4>
+                            <p>Create a <code>.env</code> file with your bot token:</p>
+                            <div class="code-block">
+DISCORD_TOKEN=your_bot_token_here<br>
+DATABASE_PATH=data/game.db
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Install Dependencies</h4>
+                            <p>Set up Python virtual environment and install packages:</p>
+                            <div class="code-block">
+python -m venv venv<br>
+venv\Scripts\activate  # Windows<br>
+pip install -r requirements.txt
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Run the Bot</h4>
+                            <p>Start the bot:</p>
+                            <div class="code-block">
+python main.py
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Permissions Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🔑</span> Required Permissions</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>OAuth2 Scopes</h4>
+                        <p>
+                            ✅ bot<br>
+                            ✅ applications.commands
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Bot Permissions</h4>
+                        <p>
+                            ✅ Send Messages<br>
+                            ✅ Embed Links<br>
+                            ✅ Attach Files<br>
+                            ✅ Use Slash Commands<br>
+                            ✅ Add Reactions
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Gateway Intents</h4>
+                        <p>
+                            ✅ Guilds<br>
+                            ✅ GuildMessages<br>
+                            ✅ MessageContent (for learn mode)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>AI vs Humans Bot Documentation | <a href="index.html">Back to Bot Hub</a></p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                Test your AI detection skills and learn to spot the difference!
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

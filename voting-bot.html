@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting & Legislature Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-purple: #9b59b6;
+            --accent-orange: #e67e22;
+            --accent-red: #e74c3c;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .bot-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bot-title h1 {
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h3 {
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Commands Table */
+        .commands-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .commands-table th,
+        .commands-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .commands-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .commands-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .command-name {
+            font-family: 'Fira Code', monospace;
+            background: var(--accent-blue);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .command-admin {
+            background: var(--accent-orange);
+        }
+
+        /* Level Colors */
+        .level-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .level-federal {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .level-state {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .level-city {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Setup Section */
+        .setup-steps {
+            max-width: 800px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .commands-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link">
+                    ← Back to All Bots
+                </a>
+                <div class="bot-title">
+                    <div class="bot-icon">🗳️</div>
+                    <h1>Voting & Legislature Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Comprehensive Civic Engagement Bot</h2>
+                    <p>
+                        A Discord bot that tracks elections, monitors legislation at federal, state, and city levels,
+                        provides representative information, and enables community voting on bills with leaderboards.
+                        Built with privacy-focused voter information lookup.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Python 3.11+</span>
+                        <span class="tech-badge">discord.py</span>
+                        <span class="tech-badge">SQLite</span>
+                        <span class="tech-badge">OpenStates API</span>
+                        <span class="tech-badge">Congress.gov API</span>
+                        <span class="tech-badge">Google Civic API</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="container">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">15+</div>
+                    <div class="stat-label">Commands</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">50</div>
+                    <div class="stat-label">State Roles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Legislation Levels</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">API Sources</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Color Coding Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🎨</span> Legislation Color Coding</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    All legislation posts are color-coded by level for easy identification:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><span class="level-badge level-federal">🔵 Federal</span></h4>
+                        <p>Bills from Congress (House & Senate). Tracked via Congress.gov API. Posted to #federal-legislation forum.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><span class="level-badge level-state">🟢 State</span></h4>
+                        <p>State legislature bills. Tracked via OpenStates API. Posted to state-specific forum threads.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4><span class="level-badge level-city">🟠 City/Local</span></h4>
+                        <p>City council and local ordinances. Manually tracked. Posted alongside state legislation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">✨</span> Key Features</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🏛️ Automatic Server Setup</h4>
+                        <p>Creates 50 state roles, forum channels for legislation tracking, election update channels, and passed legislation archives.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📋 Bill Tracking</h4>
+                        <p>Automatically posts new bills to appropriate forums. Tracks status changes from proposed to committee to voting to passed/failed.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🗳️ Community Voting</h4>
+                        <p>Members can vote support/oppose on legislation. Leaderboards track top participants. Personal voting history available.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔔 Election Alerts</h4>
+                        <p>Notifies relevant state roles about upcoming elections. Explains impact (governor, senate, local positions).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>👤 Representative Info</h4>
+                        <p>Dropdown menus show current officials: Governor, US Senators, US Representatives, and state legislators.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔒 Privacy-First Voter Info</h4>
+                        <p>Polling place lookups use modal forms with ephemeral responses. Location data is never stored.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commands Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">💻</span> Commands</h3>
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                            <th>Access</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name">/search-bills</span></td>
+                            <td>Search legislation by keyword. Filter by federal, state, or all levels.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/bill [id]</span></td>
+                            <td>Get detailed information about a specific bill including sponsors, status, and community votes.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/recent-bills</span></td>
+                            <td>View recently introduced bills at federal or state level.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/tracked-bills</span></td>
+                            <td>View all bills being tracked in this server with community vote counts.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/voter-info</span></td>
+                            <td>Look up voter registration status and polling locations (private).</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/find-polling-place</span></td>
+                            <td>Find your polling location using private modal form input.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/elections</span></td>
+                            <td>List upcoming elections for a specific state or nationwide.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/subscribe [state]</span></td>
+                            <td>Subscribe to a state role for election and legislation notifications.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/representatives</span></td>
+                            <td>View your current elected officials by address.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/leaderboard</span></td>
+                            <td>View top voters by community participation.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/my-votes</span></td>
+                            <td>View your personal voting history on legislation.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/voting-panel</span></td>
+                            <td>Display interactive voter information panel with buttons.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/setup</span></td>
+                            <td>Automatically create all state roles, forum channels, and configure the server.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/refresh-legislation</span></td>
+                            <td>Manually trigger a refresh of legislation data from APIs.</td>
+                            <td>Admin</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Auto Setup Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">⚙️</span> Automatic Server Setup</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    The <code>/setup</code> command automatically creates all necessary infrastructure:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🏷️ 50 State Roles</h4>
+                        <p>Creates roles for all 50 states (e.g., @California, @Texas). Members can subscribe for targeted notifications.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📁 State Legislation Forum</h4>
+                        <p>Forum channel with 50 threads (one per state) for posting state-level bills.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🏛️ Federal Legislation Forum</h4>
+                        <p>Dedicated forum for congressional bills with threads by topic or chamber.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>✅ Passed Legislation Forum</h4>
+                        <p>Archive forum for bills that have passed, organized by state and federal.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📢 Election Updates Channel</h4>
+                        <p>Channel for election announcements. Mentions relevant state roles automatically.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Sources Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🔗</span> Data Sources</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>Congress.gov API</h4>
+                        <p>Official Library of Congress API for federal legislation. Provides bill text, status, sponsors, and voting records.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>OpenStates API</h4>
+                        <p>Comprehensive state legislature data for all 50 states. Bill tracking, legislator info, and committee data.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Google Civic API</h4>
+                        <p>Election information, polling locations, voter registration, and representative lookups by address.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Setup Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🚀</span> Setup Guide</h3>
+                <div class="setup-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Get API Keys</h4>
+                            <p>Obtain API keys from all three sources:</p>
+                            <div class="code-block">
+# OpenStates: https://openstates.org/accounts/register/<br>
+# Congress.gov: https://api.congress.gov/sign-up/<br>
+# Google Civic: https://console.cloud.google.com/
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Configure Environment</h4>
+                            <p>Create a <code>.env</code> file with your credentials:</p>
+                            <div class="code-block">
+DISCORD_TOKEN=your_bot_token<br>
+OPENSTATES_API_KEY=your_key<br>
+CONGRESS_GOV_API_KEY=your_key<br>
+GOOGLE_CIVIC_API_KEY=your_key
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Install Dependencies</h4>
+                            <p>Set up Python virtual environment and install packages:</p>
+                            <div class="code-block">
+python -m venv venv<br>
+venv\Scripts\activate  # Windows<br>
+pip install -r requirements.txt
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Run the Bot</h4>
+                            <p>Start the bot:</p>
+                            <div class="code-block">
+python bot.py
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Server Setup</h4>
+                            <p>Use <code>/setup</code> in your server to automatically create all roles, channels, and forums.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Permissions Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🔑</span> Required Permissions</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>OAuth2 Scopes</h4>
+                        <p>
+                            ✅ bot<br>
+                            ✅ applications.commands
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Bot Permissions</h4>
+                        <p>
+                            ✅ Manage Roles<br>
+                            ✅ Manage Channels<br>
+                            ✅ Send Messages<br>
+                            ✅ Embed Links<br>
+                            ✅ Use Slash Commands<br>
+                            ✅ Create Public Threads
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Gateway Intents</h4>
+                        <p>
+                            ✅ Guilds<br>
+                            ✅ GuildMessages<br>
+                            ✅ GuildMembers (privileged)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Voting & Legislature Bot Documentation | <a href="index.html">Back to Bot Hub</a></p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                This bot provides civic engagement tools. Always verify official voting information through your state's election office.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Many Worlds Economy Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-gold: #ffd700;
+            --accent-green: #2ecc71;
+            --accent-purple: #9b59b6;
+            --accent-orange: #e67e22;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--accent-gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .bot-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bot-title h1 {
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h3 {
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Commands Table */
+        .commands-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .commands-table th,
+        .commands-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .commands-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .commands-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .command-name {
+            font-family: 'Fira Code', monospace;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .command-admin {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        .command-prefix {
+            background: var(--accent-purple);
+            color: white;
+        }
+
+        /* Economy Features */
+        .economy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .economy-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .economy-card .economy-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .economy-card h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .economy-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Setup Section */
+        .setup-steps {
+            max-width: 800px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .commands-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link">
+                    ← Back to All Bots
+                </a>
+                <div class="bot-title">
+                    <div class="bot-icon">💰</div>
+                    <h1>Many Worlds Economy Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Complete Discord Economy System</h2>
+                    <p>
+                        A feature-rich economy bot with banking, stocks, lottery, shops, and activity rewards.
+                        Built with TypeScript for reliability and scalability. Engage your community with
+                        a full virtual economy ecosystem.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">TypeScript</span>
+                        <span class="tech-badge">Discord.js v14</span>
+                        <span class="tech-badge">SQLite</span>
+                        <span class="tech-badge">Node.js</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="container">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">25+</div>
+                    <div class="stat-label">Commands</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Economy Systems</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Command Types</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Activity Tracking</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Economy Systems Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🏛️</span> Economy Systems</h3>
+                <div class="economy-grid">
+                    <div class="economy-card">
+                        <div class="economy-icon">💵</div>
+                        <h4>Currency</h4>
+                        <p>Earn coins through activity, transfers, and rewards</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🏦</div>
+                        <h4>Banking</h4>
+                        <p>Deposit, withdraw, earn interest on savings</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">📈</div>
+                        <h4>Stocks</h4>
+                        <p>Buy and sell virtual stocks with real-time prices</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🎰</div>
+                        <h4>Lottery</h4>
+                        <p>Daily and weekly lottery drawings</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🛒</div>
+                        <h4>Shop</h4>
+                        <p>Buy roles, items, and perks</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">💱</div>
+                        <h4>Exchange</h4>
+                        <p>Currency exchange between servers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">✨</span> Key Features</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📊 Activity Rewards</h4>
+                        <p>Earn currency automatically by sending messages, reacting, joining voice channels, and being active in the server.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🏦 Banking System</h4>
+                        <p>Deposit money to earn interest over time. Set up savings accounts with different interest rates and terms.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📈 Stock Market</h4>
+                        <p>Virtual stock market with fluctuating prices. Buy low, sell high! Track your portfolio and trading history.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎰 Lottery System</h4>
+                        <p>Daily and weekly lottery drawings. Buy tickets for a chance to win the jackpot!</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🛒 Server Shop</h4>
+                        <p>Admins can create custom shop items including roles, custom commands, and special perks.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🏆 Leaderboards</h4>
+                        <p>Compete for the top spot on wealth leaderboards. Track richest members and most active traders.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commands Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">💻</span> Slash Commands</h3>
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                            <th>Access</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name">/balance</span></td>
+                            <td>Check your current wallet and bank balance.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/transfer</span></td>
+                            <td>Send money to another user.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/bank deposit</span></td>
+                            <td>Deposit money from wallet to bank.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/bank withdraw</span></td>
+                            <td>Withdraw money from bank to wallet.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/bank interest</span></td>
+                            <td>View your earned interest.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/stocks buy</span></td>
+                            <td>Purchase stocks at current market price.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/stocks sell</span></td>
+                            <td>Sell stocks from your portfolio.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/stocks portfolio</span></td>
+                            <td>View your stock holdings and performance.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/lottery buy</span></td>
+                            <td>Purchase lottery tickets.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/lottery jackpot</span></td>
+                            <td>View current jackpot amount.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/shop view</span></td>
+                            <td>Browse available shop items.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/shop buy</span></td>
+                            <td>Purchase an item from the shop.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/exchange</span></td>
+                            <td>Exchange currency with other servers.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/leaderboard</span></td>
+                            <td>View wealth and activity leaderboards.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/economy give</span></td>
+                            <td>Give currency to a user (admin).</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/economy take</span></td>
+                            <td>Remove currency from a user (admin).</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/shop add</span></td>
+                            <td>Add a new item to the shop (admin).</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/lottery draw</span></td>
+                            <td>Force a lottery drawing (admin).</td>
+                            <td>Admin</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Prefix Commands Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">⌨️</span> Prefix Commands</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Quick text-based commands using the default prefix <code>!</code>
+                </p>
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name command-prefix">!bal</span></td>
+                            <td>Quick balance check</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-prefix">!pay @user amount</span></td>
+                            <td>Quick transfer to another user</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-prefix">!lb</span></td>
+                            <td>Quick leaderboard view</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-prefix">!help</span></td>
+                            <td>Show all available commands</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Activity Rewards Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🎯</span> Activity Rewards</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Users automatically earn currency through various server activities:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>💬 Messages</h4>
+                        <p>Earn coins for each message sent (with cooldown to prevent spam).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>😀 Reactions</h4>
+                        <p>Earn coins for adding reactions to messages.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎤 Voice Activity</h4>
+                        <p>Earn coins for time spent in voice channels.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📅 Daily Bonus</h4>
+                        <p>Claim daily rewards with streak multipliers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Setup Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🚀</span> Setup Guide</h3>
+                <div class="setup-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Create Discord Bot</h4>
+                            <p>Go to the Discord Developer Portal, create a new application, and add a bot.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Configure Environment</h4>
+                            <p>Create a <code>.env</code> file with your credentials:</p>
+                            <div class="code-block">
+DISCORD_TOKEN=your_bot_token_here<br>
+CLIENT_ID=your_client_id<br>
+DATABASE_PATH=./data/economy.db
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Install Dependencies</h4>
+                            <p>Install Node.js packages:</p>
+                            <div class="code-block">
+npm install
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Run the Bot</h4>
+                            <p>Start the bot using ts-node:</p>
+                            <div class="code-block">
+npx ts-node src/index.ts<br>
+# Or for production:<br>
+npm run build && npm start
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Permissions Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🔑</span> Required Permissions</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>OAuth2 Scopes</h4>
+                        <p>
+                            ✅ bot<br>
+                            ✅ applications.commands
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Bot Permissions</h4>
+                        <p>
+                            ✅ Send Messages<br>
+                            ✅ Embed Links<br>
+                            ✅ Use Slash Commands<br>
+                            ✅ Manage Roles (for shop)
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Gateway Intents</h4>
+                        <p>
+                            ✅ Guilds<br>
+                            ✅ GuildMessages<br>
+                            ✅ GuildVoiceStates<br>
+                            ✅ GuildMessageReactions<br>
+                            ✅ MessageContent (privileged)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Many Worlds Economy Bot Documentation | <a href="index.html">Back to Bot Hub</a></p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                Build a thriving virtual economy in your Discord server!
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
