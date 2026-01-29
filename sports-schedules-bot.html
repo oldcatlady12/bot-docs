@@ -15,6 +15,7 @@
             --accent-green: #00ba7c;
             --accent-purple: #7856ff;
             --accent-orange: #ff7a00;
+            --accent-gold: #ffd700;
             --border-color: #2f3542;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,9 +44,11 @@
         .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
         .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
         .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
-        .tag.premium { background: rgba(255, 212, 0, 0.2); color: #ffd400; }
+        .tag.new { background: rgba(255, 215, 0, 0.2); color: var(--accent-gold); }
         ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
         li { margin-bottom: 8px; }
+        .integration-card { background: linear-gradient(135deg, rgba(29, 155, 240, 0.1), rgba(120, 86, 255, 0.1)); border: 1px solid var(--accent-blue); }
+        .highlight { color: var(--accent-gold); font-weight: 600; }
     </style>
 </head>
 <body>
@@ -65,123 +68,192 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Sports Schedules Bot posts daily game schedules with links to game posts created by the Sports Bot. It automatically updates schedules every 10 minutes and offers premium DM notifications for game alerts.</p>
+                <p>The Sports Schedules Bot posts game schedules with direct links to game posts created by the Sports Bot. It auto-updates when game posts are created and includes a <span class="highlight">Game Results dropdown</span> that connects to the AI vs Humans Bot for viewing prediction outcomes.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">&#128197;</div>
-                        <h4>Daily Schedules</h4>
-                        <p>Automatic daily schedule posts at configurable times</p>
+                        <h4>Live Schedules</h4>
+                        <p>Real-time game schedules with Discord timestamps</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128260;</div>
                         <h4>Auto Updates</h4>
-                        <p>Schedule messages update every 10 minutes</p>
+                        <p>Updates when Sports Bot creates new game posts</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128279;</div>
                         <h4>Game Post Links</h4>
-                        <p>Direct links to game threads from Sports Bot</p>
+                        <p>Direct channel mentions to game threads</p>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">&#128276;</div>
-                        <h4>DM Notifications</h4>
-                        <p>Premium users get game alerts via DM</p>
+                        <div class="feature-icon">&#128200;</div>
+                        <h4>Game Results</h4>
+                        <p>View AI vs Human prediction outcomes</p>
                     </div>
                 </div>
             </section>
 
             <section class="content-section">
-                <h2>Integration with Sports Bot</h2>
-                <p>This bot is designed to work alongside the Sports Bot. It:</p>
-                <ul>
-                    <li>Finds game posts created by Sports Bot in forum channels</li>
-                    <li>Adds direct links to those game threads in schedule messages</li>
-                    <li>Uses team roles to notify premium users when their team's game post is created</li>
-                    <li>Fetches live game data from ESPN API</li>
-                </ul>
+                <h2>Bot Integration</h2>
+
+                <h3>Sports Bot Integration</h3>
+                <div class="card">
+                    <p>Works alongside the Sports Bot to:</p>
+                    <ul>
+                        <li>Monitor when game posts are created in forum channels</li>
+                        <li>Auto-update schedule messages with channel mentions</li>
+                        <li>Remove games from schedule when they finish</li>
+                        <li>Detect changes by watching the sports-bot settings file</li>
+                    </ul>
+                </div>
+
+                <h3>AI vs Humans Bot Integration <span class="tag new">NEW</span></h3>
+                <div class="card integration-card">
+                    <p>Connects to the AI vs Humans Bot database to display game results:</p>
+                    <ul>
+                        <li><strong>Results Dropdown:</strong> Select completed games from a dropdown menu</li>
+                        <li><strong>Final Scores:</strong> View game outcomes with winner indicators</li>
+                        <li><strong>AI Predictions:</strong> See what each AI model predicted and accuracy</li>
+                        <li><strong>Human Stats:</strong> View how many users predicted correctly</li>
+                        <li><strong>AI vs Humans:</strong> See who won the prediction battle for each game</li>
+                    </ul>
+                </div>
             </section>
 
             <section class="content-section">
                 <h2>Commands</h2>
 
-                <h3>Admin Commands <span class="tag admin">Admin Only</span></h3>
+                <h3>Schedule Commands <span class="tag admin">Admin Only</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!schedule_set_channel [#channel]</span></td><td>Set the channel for daily schedule messages. Uses current channel if none specified.</td></tr>
-                        <tr><td><span class="command-name">!schedule_post [#channel]</span></td><td>Manually post the schedule to a channel</td></tr>
+                        <tr><td><span class="command-name">!schedule_set_channel #channel</span></td><td>Set the channel for schedule messages</td></tr>
+                        <tr><td><span class="command-name">!schedule_post [#channel]</span></td><td>Post the schedule message</td></tr>
+                        <tr><td><span class="command-name">!schedule_refresh</span></td><td>Manually refresh and restart auto-updates</td></tr>
                     </tbody>
                 </table>
 
-                <h3>Premium Management <span class="tag admin">Admin Only</span></h3>
+                <h3>Results Commands <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!schedule_grant_premium @user [days]</span></td><td>Grant premium to a user (default: 30 days)</td></tr>
-                        <tr><td><span class="command-name">!schedule_revoke_premium @user</span></td><td>Revoke premium from a user</td></tr>
-                        <tr><td><span class="command-name">!schedule_extend_premium @user [days]</span></td><td>Extend an existing premium subscription</td></tr>
-                        <tr><td><span class="command-name">!schedule_list_premium</span></td><td>List all premium subscribers in the server</td></tr>
+                        <tr><td><span class="command-name">!schedule_post_results [#channel]</span></td><td>Post the game results dropdown message</td></tr>
+                        <tr><td><span class="command-name">!schedule_post_all [#channel]</span></td><td>Post both schedule and results messages</td></tr>
+                        <tr><td><span class="command-name">!schedule_refresh_results</span></td><td>Manually refresh the results message</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Utility Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!schedule_status</span></td><td>Show bot status and integration info</td></tr>
+                        <tr><td><span class="command-name">!schedule_debug</span></td><td>Show debug info for troubleshooting</td></tr>
+                        <tr><td><span class="command-name">!schedule_help_schedule</span></td><td>Show all available commands</td></tr>
                     </tbody>
                 </table>
             </section>
 
             <section class="content-section">
-                <h2>Automatic Features</h2>
+                <h2>Game Results Feature <span class="tag new">NEW</span></h2>
 
-                <h3>Daily Schedule Posts</h3>
-                <div class="card">
-                    <p>At a configurable time each day (default: 7:00 AM ET), the bot automatically posts the day's game schedule to all configured channels.</p>
-                </div>
-
-                <h3>Auto-Updating Messages</h3>
-                <div class="card">
-                    <p>Schedule messages are automatically updated every 10 minutes to reflect:</p>
+                <div class="card integration-card">
+                    <h4>How It Works</h4>
+                    <p>The results message displays a dropdown menu with completed games from the AI vs Humans Bot:</p>
                     <ul>
-                        <li>New game posts created by Sports Bot</li>
-                        <li>Game status changes (upcoming, in progress, final)</li>
-                        <li>Score updates for live games</li>
+                        <li><strong>Step 1:</strong> Select a completed game from the dropdown</li>
+                        <li><strong>Step 2:</strong> View an ephemeral embed with full results</li>
+                        <li><strong>Step 3:</strong> See final score, AI predictions, and human stats</li>
+                        <li><strong>Step 4:</strong> Find out who won: AI or Humans!</li>
                     </ul>
                 </div>
 
-                <h3>DM Notifications (Premium)</h3>
+                <h3>Results Display Includes:</h3>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>Final Score</h4>
+                        <p>Game outcome with winner indicator and total points vs O/U line</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#129302;</div>
+                        <h4>AI Predictions</h4>
+                        <p>Each AI model's picks with confidence and correct/incorrect status</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128101;</div>
+                        <h4>Human Stats</h4>
+                        <p>Total predictions, pick distribution, and accuracy rates</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#9876;</div>
+                        <h4>Battle Results</h4>
+                        <p>Who won the game: AI or Humans with accuracy comparison</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Auto-Update System</h2>
+
+                <h3>Settings File Watcher</h3>
                 <div class="card">
-                    <p>Premium users receive direct message notifications when:</p>
+                    <p>The bot monitors the Sports Bot's settings file for changes:</p>
                     <ul>
-                        <li>A game post is created for a team they have a role for</li>
-                        <li>Notifications include direct links to the game thread</li>
-                        <li>Notifications are checked every few minutes</li>
+                        <li><strong>Check Interval:</strong> Every 3 seconds</li>
+                        <li><strong>Detection:</strong> Watches file modification time</li>
+                        <li><strong>Action:</strong> Immediately updates schedule when changes detected</li>
+                    </ul>
+                </div>
+
+                <h3>Schedule Updater</h3>
+                <div class="card">
+                    <p>When games are active, the schedule auto-updates:</p>
+                    <ul>
+                        <li><strong>Interval:</strong> Every 10 minutes</li>
+                        <li><strong>Triggers:</strong> New game posts, game status changes</li>
+                        <li><strong>Auto-Stop:</strong> Stops updating when no active games</li>
                     </ul>
                 </div>
             </section>
 
             <section class="content-section">
-                <h2>Premium Features</h2>
-                <div class="card">
-                    <h4>What Premium Users Get:</h4>
-                    <ul>
-                        <li><strong>DM Notifications:</strong> Get alerted when game posts are created for your teams</li>
-                        <li><strong>Team Role Integration:</strong> Notifications based on team roles you have in the server</li>
-                        <li><strong>Priority Updates:</strong> Be the first to know when game threads are available</li>
-                    </ul>
-                    <p style="margin-top: 12px; margin-bottom: 0;"><strong>Default Duration:</strong> 30 days per grant</p>
-                </div>
+                <h2>Interactive Buttons</h2>
+
+                <h3>Schedule Message</h3>
+                <table class="command-table">
+                    <thead><tr><th>Button</th><th>Action</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td>&#128260; Refresh</td><td>Immediately update the schedule message</td><td>Everyone</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Results Message</h3>
+                <table class="command-table">
+                    <thead><tr><th>Element</th><th>Action</th><th>Access</th></tr></thead>
+                    <tbody>
+                        <tr><td>&#128203; Game Dropdown</td><td>Select a completed game to view results</td><td>Everyone</td></tr>
+                        <tr><td>&#128260; Refresh Results</td><td>Refresh the dropdown with latest games</td><td>Everyone</td></tr>
+                    </tbody>
+                </table>
             </section>
 
             <section class="content-section">
                 <h2>Quick Setup</h2>
                 <div class="code-block">
 # 1. Set the schedule channel
-!schedule_set_channel #daily-schedules
+!schedule_set_channel #game-schedules
 
-# 2. Post a schedule immediately
+# 2. Post both schedule and results messages
+!schedule_post_all
+
+# 3. Or post them separately:
 !schedule_post
+!schedule_post_results
 
-# 3. Grant premium to a user
-!schedule_grant_premium @user 30
-
-# 4. Check premium subscribers
-!schedule_list_premium
+# 4. Check bot status
+!schedule_status
                 </div>
             </section>
 
@@ -190,10 +262,8 @@
                 <table class="command-table">
                     <thead><tr><th>Task</th><th>Interval</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td>Schedule Updater</td><td>Every 10 minutes</td><td>Updates all schedule messages with latest game info</td></tr>
-                        <tr><td>Daily Schedule Sender</td><td>Daily (configurable)</td><td>Posts fresh schedule to all configured channels</td></tr>
-                        <tr><td>Notification Checker</td><td>Every few minutes</td><td>Checks for new game posts and sends DM notifications</td></tr>
-                        <tr><td>Cleanup Task</td><td>Every 24 hours</td><td>Cleans up old notification logs</td></tr>
+                        <tr><td>Settings Watcher</td><td>Every 3 seconds</td><td>Monitors Sports Bot settings for changes</td></tr>
+                        <tr><td>Schedule Updater</td><td>Every 10 minutes</td><td>Updates schedule messages when games are active</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -203,9 +273,10 @@
                 <table class="command-table">
                     <thead><tr><th>Category</th><th>Count</th><th>Permission</th></tr></thead>
                     <tbody>
-                        <tr><td>Admin Commands</td><td>2</td><td>Administrator</td></tr>
-                        <tr><td>Premium Management</td><td>4</td><td>Administrator</td></tr>
-                        <tr><td><strong>Total</strong></td><td><strong>6</strong></td><td></td></tr>
+                        <tr><td>Schedule Commands</td><td>3</td><td>Administrator</td></tr>
+                        <tr><td>Results Commands</td><td>3</td><td>Administrator</td></tr>
+                        <tr><td>Utility Commands</td><td>3</td><td>Administrator</td></tr>
+                        <tr><td><strong>Total</strong></td><td><strong>9</strong></td><td></td></tr>
                     </tbody>
                 </table>
             </section>
