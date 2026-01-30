@@ -68,29 +68,58 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Sports Schedules Bot posts game schedules with direct links to game posts created by the Sports Bot. It auto-updates when game posts are created and includes a <span class="highlight">Game Results dropdown</span> that connects to the AI vs Humans Bot for viewing prediction outcomes.</p>
+                <p>The Sports Schedules Bot posts a single schedule message per channel with direct links to active game posts created by the Sports Bot. It automatically updates when the Sports Bot creates or removes game posts, and includes a <span class="highlight">Game Results dropdown</span> that connects to the AI vs Humans Bot for viewing prediction outcomes.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">&#128197;</div>
                         <h4>Live Schedules</h4>
-                        <p>Real-time game schedules with Discord timestamps</p>
+                        <p>Real-time game schedules grouped by sport with Discord timestamps</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128260;</div>
                         <h4>Auto Updates</h4>
-                        <p>Updates when Sports Bot creates new game posts</p>
+                        <p>Watches Sports Bot settings file and updates on any change</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128279;</div>
                         <h4>Game Post Links</h4>
-                        <p>Direct channel mentions to game threads</p>
+                        <p>Direct channel mentions to forum game threads</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128200;</div>
                         <h4>Game Results</h4>
-                        <p>View AI vs Human prediction outcomes</p>
+                        <p>Dropdown to view AI vs Human prediction outcomes per game</p>
                     </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Schedule Message Format</h2>
+
+                <div class="card">
+                    <h4>Active Games Display</h4>
+                    <p>The schedule message groups games by sport and shows different formats based on game state:</p>
+                    <ul>
+                        <li><strong>Pre-Game:</strong> <code>&#8226; <b>AWAY</b> @ <b>HOME</b> &#8226; starts in 2 hours &#8226; #game-thread</code></li>
+                        <li><strong>Live Game:</strong> <code>&#8226; &#128308; <b>AWAY</b> @ <b>HOME</b> &#8226; LIVE - 3rd Quarter &#8226; #game-thread</code></li>
+                        <li><strong>No Active Games:</strong> Shows "No active games at the moment" with a note that all games have finished or no posts have been created yet</li>
+                    </ul>
+                    <p>Finished games (state = "post") are automatically excluded from the schedule. The message footer reads "Updates automatically &#8226; Refresh button for instant update".</p>
+                </div>
+
+                <h3>Sports Ordering</h3>
+                <div class="card">
+                    <p>Games are grouped and ordered by sport in this order:</p>
+                    <ul>
+                        <li>&#127944; NFL</li>
+                        <li>&#127891; College Football (CFB)</li>
+                        <li>&#127936; NBA</li>
+                        <li>&#127936; WNBA</li>
+                        <li>&#9918; MLB</li>
+                        <li>&#127936; NCAA Men's Basketball</li>
+                        <li>&#127936; NCAA Women's Basketball</li>
+                    </ul>
                 </div>
             </section>
 
@@ -99,25 +128,27 @@
 
                 <h3>Sports Bot Integration</h3>
                 <div class="card">
-                    <p>Works alongside the Sports Bot to:</p>
+                    <p>Works alongside the Sports Bot by reading its <code>bot_settings.json</code> file:</p>
                     <ul>
-                        <li>Monitor when game posts are created in forum channels</li>
-                        <li>Auto-update schedule messages with channel mentions</li>
-                        <li>Remove games from schedule when they finish</li>
-                        <li>Detect changes by watching the sports-bot settings file</li>
+                        <li><strong>game_threads:</strong> Maps game IDs to forum thread IDs for channel mentions</li>
+                        <li><strong>team_roles:</strong> Maps team names to Discord role IDs</li>
+                        <li><strong>sport_forums:</strong> Maps sport keys to forum channel IDs</li>
+                        <li><strong>enabled_sports:</strong> List of sports enabled per guild</li>
                     </ul>
+                    <p>The bot detects changes by monitoring the settings file modification time every 3 seconds. When any change is detected, the schedule is immediately updated regardless of whether games were added or removed.</p>
                 </div>
 
-                <h3>AI vs Humans Bot Integration <span class="tag new">NEW</span></h3>
+                <h3>AI vs Humans Bot Integration</h3>
                 <div class="card integration-card">
-                    <p>Connects to the AI vs Humans Bot database to display game results:</p>
+                    <p>Connects read-only to the AI vs Humans Bot SQLite database (<code>ai_vs_humans.db</code>) to display game results:</p>
                     <ul>
-                        <li><strong>Results Dropdown:</strong> Select completed games from a dropdown menu</li>
-                        <li><strong>Final Scores:</strong> View game outcomes with winner indicators</li>
-                        <li><strong>AI Predictions:</strong> See what each AI model predicted and accuracy</li>
-                        <li><strong>Human Stats:</strong> View how many users predicted correctly</li>
-                        <li><strong>AI vs Humans:</strong> See who won the prediction battle for each game</li>
+                        <li><strong>Results Dropdown:</strong> Select from up to 25 recent completed games</li>
+                        <li><strong>Final Scores:</strong> Game outcomes with winner indicator (&#127942;) and total points vs O/U line</li>
+                        <li><strong>AI Predictions:</strong> Each AI model's winner/O/U picks with &#9989;/&#10060; correctness indicators and confidence %</li>
+                        <li><strong>Human Stats:</strong> Total predictions, pick distribution (home/away, over/under), and accuracy rates</li>
+                        <li><strong>AI vs Humans:</strong> Overall accuracy comparison to determine who won the prediction battle</li>
                     </ul>
+                    <p>If the AI vs Humans database is not found at startup, the results feature is disabled and a warning is logged. The bot checks database availability before any results operation.</p>
                 </div>
             </section>
 
@@ -128,44 +159,76 @@
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!schedule_set_channel #channel</span></td><td>Set the channel for schedule messages</td></tr>
-                        <tr><td><span class="command-name">!schedule_post [#channel]</span></td><td>Post the schedule message</td></tr>
-                        <tr><td><span class="command-name">!schedule_refresh</span></td><td>Manually refresh and restart auto-updates</td></tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_set_channel #channel</span></td>
+                            <td>Set the channel for schedule messages. If no channel is mentioned, uses the current channel. Saves the channel ID to bot settings and confirms with the update interval.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_post [#channel]</span></td>
+                            <td>Post a new schedule message to the specified channel (or current channel if omitted). Builds the schedule embed with all active game posts grouped by sport, attaches the Refresh button, saves the message to the database for tracking, and starts the auto-update cycle.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_refresh</span></td>
+                            <td>Manually refresh the existing tracked schedule message with the latest game data and restart the auto-update cycle. If no schedule message exists, prompts to use <code>!schedule_post</code> first.</td>
+                        </tr>
                     </tbody>
                 </table>
 
-                <h3>Results Commands <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
+                <h3>Results Commands <span class="tag admin">Admin Only</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!schedule_post_results [#channel]</span></td><td>Post the game results dropdown message</td></tr>
-                        <tr><td><span class="command-name">!schedule_post_all [#channel]</span></td><td>Post both schedule and results messages</td></tr>
-                        <tr><td><span class="command-name">!schedule_refresh_results</span></td><td>Manually refresh the results message</td></tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_post_results [#channel]</span></td>
+                            <td>Post the game results dropdown message to the specified channel (or current). Displays a menu embed with a dropdown of up to 25 recent completed games and a Refresh Results button. Requires the AI vs Humans database to be available.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_post_all [#channel]</span></td>
+                            <td>Post both the schedule message and the results dropdown message together in the specified channel. Posts the schedule first, then the results. Starts auto-updates and reports success/failure for each message independently.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_refresh_results</span></td>
+                            <td>Manually refresh the existing results dropdown message with the latest completed games from the AI vs Humans database. If no results message exists, prompts to use <code>!schedule_post_results</code> first.</td>
+                        </tr>
                     </tbody>
                 </table>
 
-                <h3>Utility Commands <span class="tag admin">Admin Only</span></h3>
+                <h3>Utility Commands</h3>
                 <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!schedule_status</span></td><td>Show bot status and integration info</td></tr>
-                        <tr><td><span class="command-name">!schedule_debug</span></td><td>Show debug info for troubleshooting</td></tr>
-                        <tr><td><span class="command-name">!schedule_help_schedule</span></td><td>Show all available commands</td></tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_status</span></td>
+                            <td>Shows a status embed with: active game post count, schedule channel, auto-update state (active/waiting), last schedule update timestamp, results feature availability (database found + message posted), background task statuses (settings watcher and schedule updater), and list of enabled sports with emojis.</td>
+                            <td><span class="tag admin">Admin</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_debug</span></td>
+                            <td>Shows a debug embed with: Sports Bot settings file path and last modification time, current vs tracked game thread counts with IDs, settings watcher and schedule updater running status, and all tracked schedule message IDs per guild.</td>
+                            <td><span class="tag admin">Admin</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">!schedule_help_schedule</span></td>
+                            <td>Shows help information for all users including: Refresh button usage, Game Results dropdown explanation, and auto-update behavior. Admins additionally see a full list of all admin commands.</td>
+                            <td><span class="tag user">Everyone</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </section>
 
             <section class="content-section">
-                <h2>Game Results Feature <span class="tag new">NEW</span></h2>
+                <h2>Game Results Feature</h2>
 
                 <div class="card integration-card">
                     <h4>How It Works</h4>
-                    <p>The results message displays a dropdown menu with completed games from the AI vs Humans Bot:</p>
+                    <p>The results message displays a dropdown menu with up to 25 recent completed games from the AI vs Humans Bot database:</p>
                     <ul>
-                        <li><strong>Step 1:</strong> Select a completed game from the dropdown</li>
-                        <li><strong>Step 2:</strong> View an ephemeral embed with full results</li>
-                        <li><strong>Step 3:</strong> See final score, AI predictions, and human stats</li>
-                        <li><strong>Step 4:</strong> Find out who won: AI or Humans!</li>
+                        <li><strong>Step 1:</strong> Select a completed game from the dropdown (shows team abbreviations, scores, sport emoji, and date)</li>
+                        <li><strong>Step 2:</strong> View an ephemeral embed (only visible to you) with full results</li>
+                        <li><strong>Step 3:</strong> See final score with winner indicator, game date as Discord timestamp, and total points vs O/U line</li>
+                        <li><strong>Step 4:</strong> View each AI model's predictions with confidence % and correct/incorrect markers</li>
+                        <li><strong>Step 5:</strong> See human prediction totals, pick distribution, and accuracy rates</li>
+                        <li><strong>Step 6:</strong> Find out who won the prediction battle: AI or Humans (based on overall accuracy %)</li>
                     </ul>
                 </div>
 
@@ -174,22 +237,22 @@
                     <div class="feature-item">
                         <div class="feature-icon">&#127942;</div>
                         <h4>Final Score</h4>
-                        <p>Game outcome with winner indicator and total points vs O/U line</p>
+                        <p>Game outcome with winner indicator, Discord timestamp for game date, and total points vs O/U line (OVER/UNDER result)</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#129302;</div>
                         <h4>AI Predictions</h4>
-                        <p>Each AI model's picks with confidence and correct/incorrect status</p>
+                        <p>Each AI model's winner pick and O/U pick with confidence percentage and &#9989;/&#10060; correctness indicators. Shows X/Y correct in header.</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128101;</div>
                         <h4>Human Stats</h4>
-                        <p>Total predictions, pick distribution, and accuracy rates</p>
+                        <p>Total prediction count, winner pick distribution (home vs away), O/U pick distribution, correct winner count, and correct O/U count</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#9876;</div>
                         <h4>Battle Results</h4>
-                        <p>Who won the game: AI or Humans with accuracy comparison</p>
+                        <p>Compares overall AI accuracy vs human accuracy. Declares &#129302; AI Wins, &#128101; Humans Win, or &#129309; Tie with exact percentages</p>
                     </div>
                 </div>
             </section>
@@ -199,33 +262,41 @@
 
                 <h3>Settings File Watcher</h3>
                 <div class="card">
-                    <p>The bot monitors the Sports Bot's settings file for changes:</p>
+                    <p>The bot monitors the Sports Bot's <code>bot_settings.json</code> file for changes:</p>
                     <ul>
                         <li><strong>Check Interval:</strong> Every 3 seconds</li>
-                        <li><strong>Detection:</strong> Watches file modification time</li>
-                        <li><strong>Action:</strong> Immediately updates schedule when changes detected</li>
+                        <li><strong>Detection Method:</strong> Compares file modification time (<code>os.path.getmtime</code>) against last known value</li>
+                        <li><strong>On Change:</strong> Reloads game threads, detects new/removed games, and immediately updates all tracked schedule messages</li>
+                        <li><strong>Auto-Start:</strong> When new active game threads are detected, starts the schedule updater loop</li>
+                        <li><strong>Always Updates:</strong> Schedule messages are updated on any settings file change, even if no game threads changed (handles edge cases like games finishing)</li>
                     </ul>
                 </div>
 
                 <h3>Schedule Updater</h3>
                 <div class="card">
-                    <p>When games are active, the schedule auto-updates:</p>
+                    <p>When games are active, a periodic update loop runs:</p>
                     <ul>
                         <li><strong>Interval:</strong> Every 10 minutes</li>
-                        <li><strong>Triggers:</strong> New game posts, game status changes</li>
-                        <li><strong>Auto-Stop:</strong> Stops updating when no active games</li>
+                        <li><strong>Purpose:</strong> Keeps the schedule message current with game state changes (pre-game &#8594; live &#8594; final)</li>
+                        <li><strong>Final Update:</strong> When all games finish, performs one last update to show "No active games" before stopping</li>
+                        <li><strong>Auto-Stop:</strong> Cancels itself when no active game threads remain</li>
+                        <li><strong>Restart:</strong> Automatically restarted by the settings watcher when new games appear, or manually via <code>!schedule_refresh</code></li>
                     </ul>
                 </div>
             </section>
 
             <section class="content-section">
-                <h2>Interactive Buttons</h2>
+                <h2>Interactive Elements</h2>
 
                 <h3>Schedule Message</h3>
                 <table class="command-table">
-                    <thead><tr><th>Button</th><th>Action</th><th>Access</th></tr></thead>
+                    <thead><tr><th>Element</th><th>Action</th><th>Access</th></tr></thead>
                     <tbody>
-                        <tr><td>&#128260; Refresh</td><td>Immediately update the schedule message</td><td>Everyone</td></tr>
+                        <tr>
+                            <td>&#128260; Refresh Button</td>
+                            <td>Immediately rebuilds the schedule embed with latest ESPN game data and channel mentions. Also restarts the auto-update cycle if not already running. Response is ephemeral (only visible to the user who clicked).</td>
+                            <td>Everyone</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -233,10 +304,23 @@
                 <table class="command-table">
                     <thead><tr><th>Element</th><th>Action</th><th>Access</th></tr></thead>
                     <tbody>
-                        <tr><td>&#128203; Game Dropdown</td><td>Select a completed game to view results</td><td>Everyone</td></tr>
-                        <tr><td>&#128260; Refresh Results</td><td>Refresh the dropdown with latest games</td><td>Everyone</td></tr>
+                        <tr>
+                            <td>&#128203; Game Dropdown</td>
+                            <td>Select a completed game to view an ephemeral embed with final score, AI predictions with correctness indicators, human prediction stats, and AI vs Humans battle result. Shows up to 25 recent games with sport emoji, team abbreviations, scores, and date.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td>&#128260; Refresh Results Button</td>
+                            <td>Reloads the dropdown with the latest completed games from the AI vs Humans database. Updates both the embed and the dropdown options on the message itself.</td>
+                            <td>Everyone</td>
+                        </tr>
                     </tbody>
                 </table>
+
+                <h3>Persistent Views</h3>
+                <div class="card">
+                    <p>Both the Schedule and Results views use persistent custom IDs (<code>schedule_refresh_button</code>, <code>game_results_select</code>, <code>results_refresh_button</code>) so buttons and dropdowns continue working after bot restarts. Views are re-registered on startup in the <code>on_ready</code> event.</p>
+                </div>
             </section>
 
             <section class="content-section">
@@ -254,18 +338,46 @@
 
 # 4. Check bot status
 !schedule_status
+
+# 5. View debug info if something isn't working
+!schedule_debug
                 </div>
             </section>
 
             <section class="content-section">
                 <h2>Background Tasks</h2>
                 <table class="command-table">
-                    <thead><tr><th>Task</th><th>Interval</th><th>Description</th></tr></thead>
+                    <thead><tr><th>Task</th><th>Interval</th><th>Description</th><th>State</th></tr></thead>
                     <tbody>
-                        <tr><td>Settings Watcher</td><td>Every 3 seconds</td><td>Monitors Sports Bot settings for changes</td></tr>
-                        <tr><td>Schedule Updater</td><td>Every 10 minutes</td><td>Updates schedule messages when games are active</td></tr>
+                        <tr>
+                            <td>Settings Watcher</td>
+                            <td>Every 3 seconds</td>
+                            <td>Monitors Sports Bot <code>bot_settings.json</code> file modification time. Updates all schedule messages on any change and starts the updater when games appear.</td>
+                            <td>Always running</td>
+                        </tr>
+                        <tr>
+                            <td>Schedule Updater</td>
+                            <td>Every 10 minutes</td>
+                            <td>Periodically updates all tracked schedule messages with latest game states from ESPN. Performs a final update and auto-stops when no games are active.</td>
+                            <td>Runs only when games are active</td>
+                        </tr>
                     </tbody>
                 </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Error Handling</h2>
+                <div class="card">
+                    <p>The bot handles common Discord command errors:</p>
+                    <ul>
+                        <li><strong>Missing Permissions:</strong> Shows "You don't have permission to use this command" for admin-only commands</li>
+                        <li><strong>Missing Arguments:</strong> Shows which required argument was missing</li>
+                        <li><strong>Bad Arguments:</strong> Reports the invalid argument</li>
+                        <li><strong>Unknown Commands:</strong> Silently ignored (only responds to <code>!schedule_</code> prefix commands)</li>
+                        <li><strong>Missing Messages:</strong> If a tracked schedule/results message is deleted, removes it from the database on next update attempt</li>
+                        <li><strong>Missing Channels:</strong> Logs a warning if the configured channel no longer exists</li>
+                    </ul>
+                </div>
             </section>
 
             <section class="content-section">
@@ -275,7 +387,7 @@
                     <tbody>
                         <tr><td>Schedule Commands</td><td>3</td><td>Administrator</td></tr>
                         <tr><td>Results Commands</td><td>3</td><td>Administrator</td></tr>
-                        <tr><td>Utility Commands</td><td>3</td><td>Administrator</td></tr>
+                        <tr><td>Utility Commands</td><td>3</td><td>2 Admin + 1 Everyone</td></tr>
                         <tr><td><strong>Total</strong></td><td><strong>9</strong></td><td></td></tr>
                     </tbody>
                 </table>
