@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fantasy Sports Stats Bot - Documentation</title>
+    <title>NFL Fantasy AI Bot - Documentation</title>
     <style>
         :root {
             --bg-primary: #0f1419;
@@ -24,7 +24,7 @@
         header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
         .header-content { display: flex; justify-content: space-between; align-items: center; }
         .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #013369, #C9082A); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #013369, #9b59b6); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
         main { padding: 40px 0; }
         .content-section { margin-bottom: 48px; }
         .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
@@ -53,9 +53,7 @@
         .flow-arrow { color: var(--text-secondary); margin: 0 16px 16px 8px; font-size: 20px; }
         .league-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; margin-right: 8px; }
         .league-nfl { background: #013369; color: white; }
-        .league-nba { background: #C9082A; color: white; }
-        .league-wnba { background: #FF6900; color: white; }
-        .league-mlb { background: #002D72; color: white; }
+        .ai-badge { background: rgba(155, 89, 182, 0.2); color: #9b59b6; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin: 24px 0; }
         .stat-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; text-align: center; }
         .stat-value { font-size: 2rem; font-weight: bold; color: var(--accent-blue); }
@@ -69,7 +67,7 @@
                 <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <div class="bot-icon">&#128200;</div>
-                    <h1>Fantasy Sports Stats Bot</h1>
+                    <h1>NFL Fantasy AI Bot</h1>
                 </div>
             </div>
         </div>
@@ -77,137 +75,228 @@
 
     <main>
         <div class="container">
+            <!-- Overview Section -->
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Fantasy Sports Stats Bot is a comprehensive Discord bot for fantasy sports statistics, predictions, and draft analysis. It covers NFL, NBA, WNBA, and MLB during their respective offseasons, providing player rankings, consistency metrics, rookie profiles, team reviews, and automated forum posts.</p>
+                <p>The NFL Fantasy AI Bot is an AI-powered Discord bot dedicated to NFL fantasy football analysis. It uses dual AI providers (OpenAI GPT-4o and Anthropic Claude) with a consensus engine to deliver comprehensive analysis, weekly reports, fantasy cheat sheets, and Google Docs exports. The bot is NFL-only and adapts its behavior based on the current NFL season phase.</p>
 
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <div class="stat-value">4</div>
-                        <div class="stat-label">Leagues Supported</div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">AI Providers</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-value">32</div>
+                        <div class="stat-value">53</div>
                         <div class="stat-label">Commands</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">Scoring Systems</div>
+                        <div class="stat-value">32</div>
+                        <div class="stat-label">NFL Teams</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-value">6</div>
-                        <div class="stat-label">Chart Types</div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Scoring Formats</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Season Phases</div>
                     </div>
                 </div>
 
                 <div class="feature-grid">
                     <div class="feature-item">
-                        <div class="feature-icon">&#128202;</div>
-                        <h4>Player Statistics</h4>
-                        <p>Rankings for fantasy points, yards, touchdowns, and all major stats</p>
+                        <div class="feature-icon">&#129302;</div>
+                        <h4>Dual AI Analysis</h4>
+                        <p>GPT-4o and Claude analyze independently, then a consensus engine merges results with Borda count ranking and confidence scores</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128200;</div>
-                        <h4>Consistency Analysis</h4>
-                        <p>Boom/bust metrics, weekly consistency scores, and career trends</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">&#127942;</div>
-                        <h4>Rookie Profiles</h4>
-                        <p>Draft analysis, college comparisons, and opportunity scores</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">&#127944;</div>
-                        <h4>Draft Guides</h4>
-                        <p>Pre-draft analysis, sleepers, busts, and strategy tips</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">&#127968;</div>
-                        <h4>Team Reviews</h4>
-                        <p>Coaching analysis, depth charts, and offseason moves</p>
+                        <h4>Fantasy Cheat Sheets</h4>
+                        <p>Tiered player rankings, Top 200 lists, and draft strategies for Standard, PPR, and Half-PPR scoring</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128197;</div>
-                        <h4>Auto Updates</h4>
-                        <p>Weekly scheduled updates and season-aware activation</p>
+                        <h4>Automated Weekly Reports</h4>
+                        <p>Scheduled AI-generated reports for all 32 NFL teams posted to dedicated forum threads</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128196;</div>
+                        <h4>Google Docs Export</h4>
+                        <p>Export comprehensive analysis to shareable Google Docs with formatted sections and weekly appendix</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128202;</div>
+                        <h4>Player Statistics</h4>
+                        <p>Fantasy points, passing, rushing, receiving leaders with consistency and boom/bust analysis</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>Rookie & Draft Analysis</h4>
+                        <p>NFL draft pick profiles, college comparisons, dynasty rankings, and draft strategy guides</p>
                     </div>
                 </div>
             </section>
 
+            <!-- AI Architecture Section -->
             <section class="content-section">
-                <h2>Supported Leagues</h2>
+                <h2>AI Architecture</h2>
+                <p>The bot queries both AI providers with the same prompt and NFL data context, then merges their responses using a consensus engine. Disagreements between providers are flagged for user review.</p>
+
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div>User triggers AI analysis command (e.g., <code>/sos</code>, <code>/cheat-sheet</code>)</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div>Rate limiter checks per-provider limits (RPM, token budget, max 3 concurrent per provider)</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div>Prompt template filled with NFL data and sent to <strong>both</strong> OpenAI and Anthropic concurrently</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div>Consensus engine merges: averages numeric ratings, Borda count for rankings, combines narrative analysis</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <div>Disagreements flagged (>5 rank difference), confidence score calculated based on agreement level</div>
+                    </div>
+                    <div class="flow-arrow">&#8595;</div>
+                    <div class="flow-step">
+                        <div class="flow-number">6</div>
+                        <div>Results stored in database, formatted as Discord embeds with color-coded tiers, and sent to user</div>
+                    </div>
+                </div>
+
+                <h3>AI Providers</h3>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>OpenAI (GPT-4o)</h4>
+                        <p>Primary analysis provider with native JSON mode. Strong quantitative analysis and structured output.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Anthropic (Claude)</h4>
+                        <p>Secondary analysis with nuanced narrative reasoning. JSON extracted from code blocks automatically.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Consensus Engine</h4>
+                        <p>Borda count ranking merge, averaged numeric ratings, combined narratives, flagged disagreements with confidence scores.</p>
+                    </div>
+                </div>
+
+                <h3>Rate Limiting</h3>
+                <div class="card">
+                    <p>Token bucket algorithm with per-provider limits:</p>
+                    <ul>
+                        <li><strong>Requests per minute:</strong> 10 per provider (configurable)</li>
+                        <li><strong>Tokens per minute:</strong> 100,000 per provider</li>
+                        <li><strong>Max concurrent:</strong> 3 simultaneous requests per provider</li>
+                        <li><strong>Retry:</strong> Automatic exponential backoff on rate limit errors</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- NFL Season Phases Section -->
+            <section class="content-section">
+                <h2>NFL Season Phases</h2>
+                <p>The bot detects the current NFL calendar phase and adapts its automated behavior accordingly:</p>
                 <table class="command-table">
                     <thead>
-                        <tr><th>League</th><th>Season</th><th>Offseason (Bot Active)</th><th>Fantasy Draft Window</th></tr>
+                        <tr><th>Phase</th><th>Period</th><th>Bot Behavior</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><span class="league-badge league-nfl">NFL</span></td>
-                            <td>September - February</td>
-                            <td>February - September</td>
-                            <td>August - Early September</td>
-                        </tr>
-                        <tr>
-                            <td><span class="league-badge league-nba">NBA</span></td>
-                            <td>October - June</td>
-                            <td>June - October</td>
-                            <td>Mid-October</td>
-                        </tr>
-                        <tr>
-                            <td><span class="league-badge league-wnba">WNBA</span></td>
-                            <td>May - October</td>
-                            <td>October - May</td>
-                            <td>Early May</td>
-                        </tr>
-                        <tr>
-                            <td><span class="league-badge league-mlb">MLB</span></td>
-                            <td>March - November</td>
-                            <td>November - March</td>
-                            <td>Mid-March - Early April</td>
-                        </tr>
+                        <tr><td>Offseason</td><td>Feb - Mar</td><td>Weekly Monday noon ET updates on free agency and trades</td></tr>
+                        <tr><td>Pre-Draft</td><td>Mar - Apr</td><td>Draft prospect analysis, mock drafts, and trade rumors</td></tr>
+                        <tr><td>Post-Draft</td><td>Apr - May</td><td>Rookie impact analysis, landing spot grades, depth chart projections</td></tr>
+                        <tr><td>OTA</td><td>May - Jun</td><td>Voluntary workouts, scheme installation, depth chart updates</td></tr>
+                        <tr><td>Training Camp</td><td>Jul - Aug</td><td>Camp battles, injury reports, roster cut analysis</td></tr>
+                        <tr><td>Preseason</td><td>Aug - Sep</td><td>Preseason performance analysis, final roster projections</td></tr>
+                        <tr><td>Regular Season</td><td>Sep - Jan</td><td>Friday 10 PM ET comprehensive weekly reports for all 32 teams</td></tr>
+                        <tr><td>Playoffs</td><td>Jan - Feb</td><td>Playoff team analysis, championship matchup breakdowns</td></tr>
                     </tbody>
                 </table>
             </section>
 
+            <!-- Forum Channel Structure Section -->
             <section class="content-section">
                 <h2>Forum Channel Structure</h2>
-                <p>The bot creates organized forum channels for each league during setup:</p>
+                <p>The bot creates organized Discord forum channels for NFL analysis. Each channel has pre-configured tags for easy filtering:</p>
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">&#128202;</div>
-                        <h4>{league}-statistics</h4>
-                        <p>Fantasy points, passing yards, rushing yards, receiving stats</p>
+                        <h4>nfl-statistics</h4>
+                        <p>Fantasy points, passing, rushing, receiving stats. Tags: Fantasy Points, Passing, Rushing, Receiving, Season Stats</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#127891;</div>
-                        <h4>{league}-rookies</h4>
-                        <p>Position-based rookie profiles with auto-close after 7 days</p>
+                        <h4>nfl-rookies</h4>
+                        <p>Position-based rookie profiles with auto-close after 7 days. Tags: QB, RB, WR, TE, Rookie Watch</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#127968;</div>
-                        <h4>{league}-teams</h4>
-                        <p>Team reviews, coaching analysis, offseason moves</p>
+                        <h4>nfl-teams</h4>
+                        <p>32 team threads with weekly AI-generated reports. Tags: AFC, NFC, Coaching, Offseason Moves</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128221;</div>
-                        <h4>{league}-draft</h4>
-                        <p>Draft guides, mock drafts, prospect analysis</p>
+                        <h4>nfl-draft</h4>
+                        <p>Draft guides, prospect analysis, mock drafts. Tags: Mock Draft, Prospects, Analysis</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#129302;</div>
+                        <h4>nfl-ai-reports</h4>
+                        <p>AI-generated weekly reports, cheat sheets, and rankings. Tags: Weekly Report, AI Analysis, Cheat Sheet, Rankings</p>
                     </div>
                 </div>
             </section>
 
+            <!-- Commands Section -->
             <section class="content-section">
                 <h2>Commands</h2>
+
+                <h3>AI Analysis Commands <span class="tag user">All Users</span> <span class="tag admin">+1 Admin</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/sos [view]</span></td><td>AI strength of schedule rankings for all 32 teams. Optional view: "full" (default) or "remaining" schedule only.</td></tr>
+                        <tr><td><span class="command-name">/player-value &lt;player&gt; [scoring]</span></td><td>AI analysis of whether a player is overvalued, undervalued, or fair value at their ADP. Supports Standard/PPR/Half-PPR scoring.</td></tr>
+                        <tr><td><span class="command-name">/injury-risks</span></td><td>AI-assessed injury risk rankings for top fantasy players, including injury history, risk level (1-10), and handcuff recommendations.</td></tr>
+                        <tr><td><span class="command-name">/breakout-candidates</span></td><td>AI-identified top 15 breakout candidates across all positions with confidence scores and reasoning.</td></tr>
+                        <tr><td><span class="command-name">/coaching-rankings</span></td><td>AI-ranked coaching staffs (HC/OC/DC) by fantasy friendliness, including scheme type and pass/run tendency.</td></tr>
+                        <tr><td><span class="command-name">/position-rankings &lt;position&gt; [scoring]</span></td><td>AI positional rankings for QB, RB, WR, TE, K, or DEF with tiers, floor/ceiling, and schedule grade.</td></tr>
+                        <tr><td><span class="command-name">/offensive-line</span></td><td>AI offensive line rankings for all 32 teams with pass protection/run blocking grades and fantasy impact on QB/RB/WR.</td></tr>
+                        <tr><td><span class="command-name">/adp-value [scoring]</span></td><td>AI comparison of ADP vs expected fantasy return, identifying the biggest value discrepancies.</td></tr>
+                        <tr><td><span class="command-name">/ai-status</span></td><td>View AI provider health status, configured models, and rate limiter state for both OpenAI and Anthropic.</td></tr>
+                        <tr><td><span class="command-name">/team-deep-dive &lt;team&gt;</span></td><td><strong>Admin only.</strong> Comprehensive AI deep dive covering offense, QB/RB/WR/TE analysis, O-line, schedule, fantasy values, sleepers, and busts.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Cheat Sheet Commands <span class="tag user">All Users</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/cheat-sheet [scoring] [league_size]</span></td><td>Generate AI tiered cheat sheet with 6 tiers, value picks, overvalued players, sleepers, and draft strategy. League size defaults to 12.</td></tr>
+                        <tr><td><span class="command-name">/top-200 [scoring]</span></td><td>AI-generated Top 200 overall player rankings with position rank, tier (1-8), bye week, and projection note.</td></tr>
+                        <tr><td><span class="command-name">/tiers &lt;position&gt; [scoring]</span></td><td>View AI-generated player tiers for a specific position (QB/RB/WR/TE/K/DEF) with color-coded tier groupings.</td></tr>
+                        <tr><td><span class="command-name">/draft-strategy [position] [scoring]</span></td><td>AI draft strategy advice, either overall or position-specific. Includes round-by-round recommendations.</td></tr>
+                    </tbody>
+                </table>
 
                 <h3>Statistics Commands <span class="tag user">All Users</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">/stats &lt;league&gt; [stat_type] [limit]</span></td><td>View player statistics rankings for any stat type (fantasy_points, passing_yards, rushing_tds, etc.)</td></tr>
-                        <tr><td><span class="command-name">/fantasy &lt;league&gt; [scoring] [position]</span></td><td>View fantasy point rankings with Standard/PPR/Half-PPR scoring options</td></tr>
-                        <tr><td><span class="command-name">/consistency &lt;league&gt; [position]</span></td><td>View consistency rankings with boom/bust analysis</td></tr>
-                        <tr><td><span class="command-name">/player &lt;name&gt; [league]</span></td><td>View detailed stats for a specific player</td></tr>
-                        <tr><td><span class="command-name">/status</span></td><td>View all league statuses, offseason status, and upcoming dates</td></tr>
+                        <tr><td><span class="command-name">/stats [stat_type] [limit]</span></td><td>View NFL player statistics rankings. Stat types include: fantasy_points, passing_yards, passing_tds, rushing_yards, rushing_tds, receiving_yards, receptions, receiving_tds, targets, interceptions. Default: fantasy_points, top 20.</td></tr>
+                        <tr><td><span class="command-name">/fantasy [scoring] [position]</span></td><td>View fantasy point rankings with Standard/PPR/Half-PPR scoring. Optionally filter by position (QB, RB, WR, TE, K, DEF).</td></tr>
+                        <tr><td><span class="command-name">/consistency [position]</span></td><td>View consistency rankings with boom/bust analysis, weekly variance, and reliability scores.</td></tr>
+                        <tr><td><span class="command-name">/player &lt;name&gt;</span></td><td>View detailed stats for a specific NFL player including season totals and consistency score.</td></tr>
+                        <tr><td><span class="command-name">/status</span></td><td>View current NFL season phase, days until season start/draft, and bot operational status.</td></tr>
                     </tbody>
                 </table>
 
@@ -215,22 +304,22 @@
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">/draft_guide &lt;league&gt;</span></td><td>Get comprehensive fantasy draft preparation guide with strategies</td></tr>
-                        <tr><td><span class="command-name">/team_review &lt;league&gt; &lt;team&gt;</span></td><td>Get detailed team analysis for fantasy (e.g., /team_review NFL KC)</td></tr>
-                        <tr><td><span class="command-name">/coaching_analysis &lt;league&gt; &lt;team&gt;</span></td><td>View coaching staff analysis and scheme information</td></tr>
-                        <tr><td><span class="command-name">/sleepers &lt;league&gt;</span></td><td>View potential fantasy sleepers to target in drafts</td></tr>
-                        <tr><td><span class="command-name">/busts &lt;league&gt;</span></td><td>View potential fantasy busts to avoid in drafts</td></tr>
+                        <tr><td><span class="command-name">/draft_guide</span></td><td>NFL fantasy draft preparation guide with key strategies, position priority order, and links to AI-powered analysis commands.</td></tr>
+                        <tr><td><span class="command-name">/team_review &lt;team&gt;</span></td><td>Detailed team analysis for fantasy including coaching staff, fantasy outlook, and offseason moves. Team abbreviation (e.g., KC, PHI, SF).</td></tr>
+                        <tr><td><span class="command-name">/coaching_analysis &lt;team&gt;</span></td><td>Coaching staff analysis including head coach tendencies, coordinator schemes, and fantasy implications.</td></tr>
+                        <tr><td><span class="command-name">/sleepers</span></td><td>Potential fantasy sleepers identified by opportunity changes, usage rate increases, and scheme fit improvements.</td></tr>
+                        <tr><td><span class="command-name">/busts</span></td><td>Potential fantasy busts to avoid based on decreased opportunity, age regression, injury concerns, and coaching changes.</td></tr>
                     </tbody>
                 </table>
 
-                <h3>Rookie Analysis Commands <span class="tag user">All Users</span></h3>
+                <h3>Rookie Commands <span class="tag user">All Users</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">/rookies &lt;league&gt; [position]</span></td><td>View rookie class overview with draft picks by round</td></tr>
-                        <tr><td><span class="command-name">/rookie &lt;name&gt; [league]</span></td><td>View detailed rookie profile with college stats and projections</td></tr>
-                        <tr><td><span class="command-name">/dynasty_rookies &lt;league&gt;</span></td><td>View rookies ranked for dynasty fantasy leagues</td></tr>
-                        <tr><td><span class="command-name">/college_compare &lt;name&gt;</span></td><td>Compare rookie's college performance to pro projections</td></tr>
+                        <tr><td><span class="command-name">/rookies [position]</span></td><td>NFL rookie class overview showing top draft picks grouped by round. Optionally filter by position (QB, RB, WR, TE).</td></tr>
+                        <tr><td><span class="command-name">/rookie &lt;name&gt;</span></td><td>Detailed rookie profile with draft info, college performance, coaching comparison, and fantasy outlook.</td></tr>
+                        <tr><td><span class="command-name">/dynasty_rookies</span></td><td>Rookies ranked for dynasty leagues by long-term fantasy value, tiered into Elite, High Upside, and Solid Contributors.</td></tr>
+                        <tr><td><span class="command-name">/college_compare &lt;name&gt;</span></td><td>Compare rookie's college performance to pro projections including conference level, historical translations, and similar player comparisons.</td></tr>
                     </tbody>
                 </table>
 
@@ -238,11 +327,11 @@
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">/teams &lt;league&gt;</span></td><td>View all teams in a league</td></tr>
-                        <tr><td><span class="command-name">/roster &lt;league&gt; &lt;team&gt;</span></td><td>View a team's current roster grouped by position</td></tr>
-                        <tr><td><span class="command-name">/offseason_moves &lt;league&gt; &lt;team&gt;</span></td><td>View a team's offseason transactions and their fantasy impact</td></tr>
-                        <tr><td><span class="command-name">/depth_chart &lt;league&gt; &lt;team&gt;</span></td><td>View projected depth chart for a team</td></tr>
-                        <tr><td><span class="command-name">/coaching_changes &lt;league&gt;</span></td><td>View recent coaching changes and fantasy implications</td></tr>
+                        <tr><td><span class="command-name">/teams</span></td><td>View all 32 NFL teams organized by conference (AFC/NFC) and division (East/North/South/West).</td></tr>
+                        <tr><td><span class="command-name">/roster &lt;team&gt;</span></td><td>View a team's current roster grouped by position (QB, RB, WR, TE, OL, DL, LB, DB, K, P).</td></tr>
+                        <tr><td><span class="command-name">/offseason_moves &lt;team&gt;</span></td><td>View offseason transactions including additions, departures, and their fantasy impact analysis.</td></tr>
+                        <tr><td><span class="command-name">/depth_chart &lt;team&gt;</span></td><td>View projected depth chart for key fantasy positions: QB, RB, WR1, WR2, WR3, TE.</td></tr>
+                        <tr><td><span class="command-name">/coaching_changes</span></td><td>View recent coaching hires and fires across the NFL and their fantasy implications.</td></tr>
                     </tbody>
                 </table>
 
@@ -250,41 +339,56 @@
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">/schedule</span></td><td>View the bot's automatic update schedule</td></tr>
-                        <tr><td><span class="command-name">/next_update</span></td><td>View when the next automatic statistics update will occur</td></tr>
+                        <tr><td><span class="command-name">/schedule</span></td><td>View the bot's automatic update schedule including weekly stats updates and rookie post auto-close timing.</td></tr>
+                        <tr><td><span class="command-name">/next_update</span></td><td>View when the next automatic statistics update will occur, including current NFL phase information.</td></tr>
                     </tbody>
                 </table>
 
-                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <h3>Weekly Reports Commands <span class="tag user">User</span> <span class="tag admin">+3 Admin</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">/setup</span></td><td>Start the interactive setup wizard to configure the bot</td></tr>
-                        <tr><td><span class="command-name">/settings</span></td><td>View current bot configuration for the server</td></tr>
-                        <tr><td><span class="command-name">/reset</span></td><td>Reset all bot configuration for the server</td></tr>
+                        <tr><td><span class="command-name">/setup-team-forum &lt;forum_channel&gt;</span></td><td><strong>Admin only.</strong> Set the Discord forum channel where 32 NFL team report posts will be created.</td></tr>
+                        <tr><td><span class="command-name">/create-team-posts</span></td><td><strong>Admin only.</strong> Create forum posts for all 32 NFL teams with season hub embeds. Checks for existing posts before creating.</td></tr>
+                        <tr><td><span class="command-name">/trigger-weekly-update</span></td><td><strong>Admin only.</strong> Manually trigger AI-generated weekly reports for all 32 teams. Reports are posted to each team's forum thread.</td></tr>
+                        <tr><td><span class="command-name">/report-status</span></td><td>View status of automated weekly reports including schedule, last report time, and team forum configuration.</td></tr>
                     </tbody>
                 </table>
 
-                <h3>Admin Commands <span class="tag admin">Admin Only</span></h3>
+                <h3>Google Docs Commands <span class="tag user">User</span> <span class="tag admin">+2 Admin</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">/refresh [league]</span></td><td>Manually refresh statistics data for one or all leagues</td></tr>
-                        <tr><td><span class="command-name">/force_update [league]</span></td><td>Force an immediate statistics update bypassing schedule</td></tr>
-                        <tr><td><span class="command-name">/post_stats &lt;league&gt;</span></td><td>Post statistics rankings to configured forum channels</td></tr>
-                        <tr><td><span class="command-name">/post_rookies &lt;league&gt;</span></td><td>Post rookie profiles to forum (auto-closes after 7 days)</td></tr>
-                        <tr><td><span class="command-name">/post_team_reviews &lt;league&gt;</span></td><td>Post comprehensive team reviews to forum</td></tr>
-                        <tr><td><span class="command-name">/post_draft_analysis &lt;league&gt;</span></td><td>Post draft guides and analysis to forum</td></tr>
-                        <tr><td><span class="command-name">/cleanup [days]</span></td><td>Archive forum posts older than specified days (default: 30)</td></tr>
+                        <tr><td><span class="command-name">/create-comprehensive-doc</span></td><td><strong>Admin only.</strong> Create a Google Doc with cheat sheets, Top 200, 32 team deep dives, SoS, player values, breakout candidates, and coaching rankings.</td></tr>
+                        <tr><td><span class="command-name">/append-weekly-reports</span></td><td><strong>Admin only.</strong> Append latest 32-team weekly reports to existing comprehensive Google Doc.</td></tr>
+                        <tr><td><span class="command-name">/doc-status</span></td><td>View links to created Google Docs and their creation/update timestamps.</td></tr>
+                        <tr><td><span class="command-name">/setup-google</span></td><td>Step-by-step setup guide for Google Cloud Console service account configuration.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Setup & Admin Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/setup</span></td><td>Interactive setup wizard: configure fantasy roles, create forum channels, and initialize bot for your server.</td></tr>
+                        <tr><td><span class="command-name">/settings</span></td><td>View current bot configuration including league, AI status, fantasy roles, and forum category.</td></tr>
+                        <tr><td><span class="command-name">/reset</span></td><td>Reset all bot configuration for this server. Forum channels are preserved but need re-linking.</td></tr>
+                        <tr><td><span class="command-name">/refresh</span></td><td>Manually refresh NFL statistics data from ESPN. Only runs during offseason periods.</td></tr>
+                        <tr><td><span class="command-name">/force_update</span></td><td>Force an immediate NFL statistics update regardless of schedule.</td></tr>
+                        <tr><td><span class="command-name">/post_stats</span></td><td>Post top 10 stat category rankings to configured stats forum channel with consistency analysis.</td></tr>
+                        <tr><td><span class="command-name">/post_rookies</span></td><td>Post rookie profiles grouped by position to forum. Posts auto-close after 7 days.</td></tr>
+                        <tr><td><span class="command-name">/post_team_reviews</span></td><td>Post comprehensive team reviews for all 32 NFL teams to teams forum channel.</td></tr>
+                        <tr><td><span class="command-name">/post_draft_analysis</span></td><td>Post draft guide and NFL trends analysis to draft forum channel.</td></tr>
+                        <tr><td><span class="command-name">/cleanup [days]</span></td><td>Archive forum posts older than specified days (default: 30).</td></tr>
                     </tbody>
                 </table>
             </section>
 
+            <!-- Fantasy Scoring Section -->
             <section class="content-section">
                 <h2>Fantasy Scoring Systems</h2>
-                <p>The bot supports multiple fantasy scoring systems:</p>
+                <p>The bot supports three NFL fantasy scoring systems used across all AI analysis, cheat sheets, and rankings:</p>
 
-                <h3>NFL Scoring</h3>
                 <div class="card">
                     <strong>Standard Scoring:</strong>
                     <ul>
@@ -293,167 +397,245 @@
                         <li>Receiving: 0.1 pts/yard, 6 pts/TD, 0 pts/reception</li>
                         <li>Fumbles: -2 pts</li>
                     </ul>
-                    <strong>PPR (Points Per Reception):</strong> Same as standard + 1 pt/reception<br>
-                    <strong>Half PPR:</strong> Same as standard + 0.5 pts/reception
+                    <strong>PPR (Points Per Reception):</strong> Same as Standard + 1 pt per reception<br>
+                    <strong>Half PPR:</strong> Same as Standard + 0.5 pts per reception
+                </div>
+            </section>
+
+            <!-- Google Docs Section -->
+            <section class="content-section">
+                <h2>Google Docs Integration</h2>
+                <p>The bot exports comprehensive analysis to Google Docs using a service account. Documents are made publicly viewable via link for easy sharing.</p>
+                <div class="card">
+                    <strong>Comprehensive Document Structure:</strong>
+                    <ul>
+                        <li><strong>Title Page:</strong> Season year and generation date</li>
+                        <li><strong>Table of Contents:</strong> Linked section headers</li>
+                        <li><strong>Fantasy Cheat Sheet:</strong> Tiered rankings for Standard/PPR/Half-PPR</li>
+                        <li><strong>Top 200 Rankings:</strong> Overall player rankings by scoring format</li>
+                        <li><strong>32 Team Deep Dives:</strong> Alphabetical team analysis with coaching, roster, and fantasy outlook</li>
+                        <li><strong>Strength of Schedule:</strong> SoS rankings with fantasy impact per team</li>
+                        <li><strong>Player Value Analysis:</strong> Overvalued and undervalued players at ADP</li>
+                        <li><strong>Breakout Candidates:</strong> AI-identified breakout picks with confidence</li>
+                        <li><strong>Coaching &amp; Scheme Rankings:</strong> Fantasy-friendly coaching staffs</li>
+                        <li><strong>Weekly Reports Appendix:</strong> Appended each week with <code>/append-weekly-reports</code></li>
+                    </ul>
                 </div>
 
-                <h3>NBA Scoring (DraftKings Style)</h3>
+                <h3>Google Setup Requirements</h3>
                 <div class="card">
                     <ul>
-                        <li>Points: 1 pt, Three-pointers: +0.5 pts</li>
-                        <li>Rebounds: 1.25 pts, Assists: 1.5 pts</li>
-                        <li>Steals: 2 pts, Blocks: 2 pts</li>
-                        <li>Turnovers: -0.5 pts</li>
-                        <li>Double-double: +1.5 pts, Triple-double: +3 pts</li>
+                        <li>Google Cloud project with Docs and Drive APIs enabled</li>
+                        <li>Service account with JSON key file</li>
+                        <li>Key file placed at path specified in <code>GOOGLE_CREDENTIALS_PATH</code></li>
+                        <li>Run <code>/setup-google</code> for step-by-step instructions</li>
                     </ul>
                 </div>
             </section>
 
+            <!-- Setup Flow Section -->
             <section class="content-section">
                 <h2>Setup Flow</h2>
                 <div class="flow-diagram">
                     <div class="flow-step">
                         <div class="flow-number">1</div>
-                        <div>Admin runs <code>/setup</code> command</div>
+                        <div>Configure <code>.env</code> file with Discord token, AI API keys, and optional Google credentials</div>
                     </div>
                     <div class="flow-arrow">&#8595;</div>
                     <div class="flow-step">
                         <div class="flow-number">2</div>
-                        <div>Select which leagues to enable (NFL, NBA, WNBA, MLB)</div>
+                        <div>Admin runs <code>/setup</code> to start the interactive setup wizard</div>
                     </div>
                     <div class="flow-arrow">&#8595;</div>
                     <div class="flow-step">
                         <div class="flow-number">3</div>
-                        <div>Choose to create fantasy roles, use existing roles, or skip</div>
+                        <div>Configure roles: create "NFL Fantasy" role, link existing roles, or skip</div>
                     </div>
                     <div class="flow-arrow">&#8595;</div>
                     <div class="flow-step">
                         <div class="flow-number">4</div>
-                        <div>Choose to create forum channels or link existing ones</div>
+                        <div>Create forum channels (stats, rookies, teams, drafts) or link existing ones</div>
                     </div>
                     <div class="flow-arrow">&#8595;</div>
                     <div class="flow-step">
                         <div class="flow-number">5</div>
-                        <div>Select category for forum channels (or create new)</div>
+                        <div>Run <code>/refresh</code> to populate initial NFL statistics from ESPN</div>
                     </div>
                     <div class="flow-arrow">&#8595;</div>
                     <div class="flow-step">
                         <div class="flow-number">6</div>
-                        <div>Bot creates forums: {league}-statistics, {league}-rookies, {league}-teams, {league}-draft</div>
+                        <div>Run <code>/setup-team-forum</code> and <code>/create-team-posts</code> for 32 team weekly report threads</div>
                     </div>
                     <div class="flow-arrow">&#8595;</div>
                     <div class="flow-step">
                         <div class="flow-number">7</div>
-                        <div>Run <code>/refresh</code> to populate initial statistics</div>
+                        <div>Optional: Run <code>/setup-google</code> to configure Google Docs export</div>
                     </div>
                 </div>
             </section>
 
-            <section class="content-section">
-                <h2>Visualization & Charts</h2>
-                <p>The bot generates various charts for Discord embeds:</p>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <h4>Bar Charts</h4>
-                        <p>Player rankings with gradient colors (top 20 players)</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Line Charts</h4>
-                        <p>Season-over-season progression with player comparisons</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Heatmaps</h4>
-                        <p>Weekly consistency showing game-by-game performance</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Radar Charts</h4>
-                        <p>Multi-stat player comparison profiles</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Scatter Plots</h4>
-                        <p>Opportunities vs fantasy points analysis</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Boom/Bust Charts</h4>
-                        <p>Donut charts showing game distribution</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Automatic Updates</h2>
-                <p>The bot automatically updates statistics during each league's offseason:</p>
-                <ul>
-                    <li><strong>Weekly Updates:</strong> Every Sunday at 6:00 AM UTC (configurable)</li>
-                    <li><strong>Season Awareness:</strong> Bot only activates during offseasons</li>
-                    <li><strong>Post Auto-Close:</strong> Rookie forum posts automatically close after 7 days</li>
-                    <li><strong>Season Tags:</strong> All posts are tagged with the season year for organization</li>
-                    <li><strong>Manual Refresh:</strong> Admins can trigger updates anytime with <code>/refresh</code></li>
-                </ul>
-            </section>
-
-            <section class="content-section">
-                <h2>Data Sources</h2>
-                <p>The bot fetches data from multiple free sources:</p>
-                <ul>
-                    <li><strong>ESPN API:</strong> Primary source for all leagues - player stats, teams, draft info</li>
-                    <li><strong>Sports Reference:</strong> Historical data and career statistics</li>
-                    <li><strong>NBA API (nba_api):</strong> Official NBA statistics with game logs</li>
-                </ul>
-            </section>
-
+            <!-- Quick Start Guide -->
             <section class="content-section">
                 <h2>Quick Start Guide</h2>
-                <div class="code-block"># 1. Initial Setup
+                <div class="code-block"># 1. Initial Setup (admin)
 /setup
 
-# 2. Select leagues (NFL, NBA, WNBA, MLB)
-# 3. Configure roles (create, link, or skip)
-# 4. Configure forum channels
-# 5. Populate initial data
+# 2. Populate NFL statistics
 /refresh
 
-# 6. Post statistics to forums
-/post_stats NFL
-/post_rookies NFL
-/post_team_reviews NFL
+# 3. Post content to forums (admin)
+/post_stats
+/post_rookies
+/post_team_reviews
+/post_draft_analysis
 
-# 7. View league status
-/status
+# 4. Set up 32 team forum threads for weekly AI reports (admin)
+/setup-team-forum #nfl-teams
+/create-team-posts
 
-# 8. Check update schedule
-/schedule</div>
+# 5. Generate AI analysis (all users)
+/sos                          # Strength of schedule
+/cheat-sheet ppr              # Fantasy cheat sheet (PPR)
+/top-200 standard             # Top 200 rankings (Standard)
+/player-value "Patrick Mahomes" ppr
+/breakout-candidates
+/coaching-rankings
+/position-rankings QB ppr
+
+# 6. Trigger weekly reports manually (admin)
+/trigger-weekly-update
+
+# 7. Export to Google Docs (admin)
+/setup-google                 # One-time Google setup
+/create-comprehensive-doc     # Full analysis document
+/append-weekly-reports        # Add weekly updates
+
+# 8. Monitor status
+/ai-status                    # AI provider health
+/status                       # NFL season phase
+/report-status                # Weekly report status
+/schedule                     # Update schedule
+/next_update                  # Next scheduled update</div>
             </section>
 
+            <!-- Automatic Updates -->
+            <section class="content-section">
+                <h2>Automatic Updates</h2>
+                <p>The bot runs several automated tasks based on the NFL calendar:</p>
+                <ul>
+                    <li><strong>Offseason (Feb-Sep):</strong> Weekly Monday updates at noon ET with latest news, trades, and transactions for all teams</li>
+                    <li><strong>Regular Season (Sep-Feb):</strong> Friday 10 PM ET comprehensive AI-generated weekly reports for all 32 teams</li>
+                    <li><strong>Season Phase Detection:</strong> Bot automatically detects the current NFL phase (8 phases) and adapts behavior</li>
+                    <li><strong>Post Auto-Close:</strong> Rookie forum posts automatically archive after 7 days</li>
+                    <li><strong>Forum Cleanup:</strong> Admins can archive old posts with <code>/cleanup [days]</code></li>
+                    <li><strong>Google Docs Append:</strong> Weekly reports can be appended to the comprehensive doc with <code>/append-weekly-reports</code></li>
+                </ul>
+            </section>
+
+            <!-- Data Sources -->
+            <section class="content-section">
+                <h2>Data Sources</h2>
+                <ul>
+                    <li><strong>ESPN Public API:</strong> NFL player stats, team rosters, draft info, schedules, and injury reports</li>
+                    <li><strong>Pro Football Reference:</strong> Historical statistics, coaching staff data, and career records (via BeautifulSoup scraping)</li>
+                    <li><strong>OpenAI GPT-4o:</strong> AI-powered analysis, rankings generation, and structured JSON output</li>
+                    <li><strong>Anthropic Claude:</strong> AI-powered narrative analysis, contextual reasoning, and consensus validation</li>
+                </ul>
+            </section>
+
+            <!-- Command Summary -->
             <section class="content-section">
                 <h2>Command Summary</h2>
                 <table class="command-table">
                     <thead><tr><th>Category</th><th>Count</th><th>Permission</th></tr></thead>
                     <tbody>
+                        <tr><td>AI Analysis Commands</td><td>10</td><td>9 User + 1 Admin (/team-deep-dive)</td></tr>
+                        <tr><td>Cheat Sheet Commands</td><td>4</td><td>All Users</td></tr>
                         <tr><td>Statistics Commands</td><td>5</td><td>All Users</td></tr>
                         <tr><td>Draft Analysis Commands</td><td>5</td><td>All Users</td></tr>
-                        <tr><td>Rookie Analysis Commands</td><td>4</td><td>All Users</td></tr>
+                        <tr><td>Rookie Commands</td><td>4</td><td>All Users</td></tr>
                         <tr><td>Team Commands</td><td>5</td><td>All Users</td></tr>
                         <tr><td>Schedule Commands</td><td>2</td><td>All Users</td></tr>
-                        <tr><td>Setup Commands</td><td>3</td><td>Admin Only</td></tr>
-                        <tr><td>Admin Commands</td><td>7</td><td>Admin Only</td></tr>
-                        <tr><td><strong>Total</strong></td><td><strong>31</strong></td><td></td></tr>
+                        <tr><td>Weekly Reports Commands</td><td>4</td><td>1 User + 3 Admin</td></tr>
+                        <tr><td>Google Docs Commands</td><td>4</td><td>2 User + 2 Admin</td></tr>
+                        <tr><td>Setup &amp; Admin Commands</td><td>10</td><td>Admin Only</td></tr>
+                        <tr><td><strong>Total</strong></td><td><strong>53</strong></td><td><strong>31 User / 22 Admin</strong></td></tr>
                     </tbody>
                 </table>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">
+                    <em>Note: Additionally, the bot runs 3 automated background tasks (weekly statistics update, forum post auto-close, and season status check) and 1 automated report loop (30-minute interval for weekly team reports).</em>
+                </p>
             </section>
 
+            <!-- Technical Stack -->
             <section class="content-section">
                 <h2>Technical Stack</h2>
                 <div class="card">
                     <ul>
                         <li><strong>Language:</strong> Python 3.11+</li>
-                        <li><strong>Discord Library:</strong> discord.py 2.3+</li>
-                        <li><strong>Database:</strong> SQLite with SQLAlchemy ORM</li>
-                        <li><strong>Visualization:</strong> Matplotlib + Seaborn</li>
-                        <li><strong>Scheduling:</strong> APScheduler</li>
-                        <li><strong>Data Fetching:</strong> aiohttp, requests, BeautifulSoup4</li>
+                        <li><strong>Discord Library:</strong> discord.py 2.3+ (slash commands via app_commands)</li>
+                        <li><strong>Database:</strong> SQLite with async SQLAlchemy ORM (aiosqlite)</li>
+                        <li><strong>AI - OpenAI:</strong> openai &gt;= 1.0.0 (AsyncOpenAI client, GPT-4o model)</li>
+                        <li><strong>AI - Anthropic:</strong> anthropic &gt;= 0.18.0 (AsyncAnthropic client, Claude model)</li>
+                        <li><strong>Google Docs:</strong> google-api-python-client with service account authentication</li>
+                        <li><strong>Visualization:</strong> Matplotlib + Seaborn for chart generation</li>
+                        <li><strong>Data Fetching:</strong> aiohttp (async HTTP), BeautifulSoup4 (HTML scraping)</li>
+                        <li><strong>Rate Limiting:</strong> Custom token bucket with per-provider concurrency semaphores</li>
+                        <li><strong>Scheduling:</strong> discord.ext.tasks loops + APScheduler for cron-style triggers</li>
                     </ul>
                 </div>
+            </section>
+
+            <!-- Database Schema -->
+            <section class="content-section">
+                <h2>Database Schema</h2>
+                <p>The bot uses SQLite with SQLAlchemy async ORM. Key tables include:</p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>Core Tables</h4>
+                        <p>ServerConfig, Team, Player, PlayerStat, ForumChannel, ForumPost, RookieProfile</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>AI Tables</h4>
+                        <p>AIAnalysisResult, AIConsensusResult (stores provider responses and merged results)</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Report Tables</h4>
+                        <p>WeeklyReport, NFLTeamForum (32 team thread tracking)</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Analysis Tables</h4>
+                        <p>StrengthOfSchedule, PlayerValue (overvalued/undervalued/fair with injury risk 1-10)</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Export Tables</h4>
+                        <p>GoogleDocExport (tracks doc IDs, URLs, and update timestamps)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Environment Variables -->
+            <section class="content-section">
+                <h2>Environment Variables</h2>
+                <div class="code-block"># Discord Bot (required)
+DISCORD_TOKEN=your_discord_bot_token
+DISCORD_GUILD_ID=your_guild_id
+
+# Database (required)
+DATABASE_URL=sqlite+aiosqlite:///database/fantasy_sports.db
+
+# AI Providers (required for AI commands)
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=gpt-4o
+ANTHROPIC_API_KEY=your_anthropic_api_key
+ANTHROPIC_MODEL=claude-sonnet-4-20250514
+
+# Google Docs (optional - for /create-comprehensive-doc)
+GOOGLE_CREDENTIALS_PATH=google/credentials/service_account.json
+GOOGLE_DOCS_FOLDER_ID=optional_google_drive_folder_id
+
+# Debug (optional)
+DEBUG_MODE=false</div>
             </section>
         </div>
     </main>

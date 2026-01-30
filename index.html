@@ -157,7 +157,7 @@
         .bot-icon.march-madness { background: linear-gradient(135deg, #ff7a00, #ffd400); }
         .bot-icon.mw-fantasy { background: linear-gradient(135deg, #f4212e, #7856ff); }
         .bot-icon.media-rec { background: linear-gradient(135deg, #e91e8c, #7856ff); }
-        .bot-icon.fantasy-team { background: linear-gradient(135deg, #00ba7c, #7856ff); }
+
         .bot-icon.standings { background: linear-gradient(135deg, #ff7a00, #ffd400); }
         .bot-icon.sports-schedules { background: linear-gradient(135deg, #7856ff, #ff7a00); }
         .bot-icon.fantasy-stats { background: linear-gradient(135deg, #013369, #C9082A); }
@@ -166,6 +166,7 @@
         .bot-icon.ai-humans { background: linear-gradient(135deg, #00d4ff, #9b59b6); }
         .bot-icon.economy { background: linear-gradient(135deg, #ffd700, #e67e22); }
         .bot-icon.sports-war { background: linear-gradient(135deg, #1d9bf0, #f4212e); }
+        .bot-icon.invite-battles { background: linear-gradient(135deg, #ffd700, #ff6b35); }
 
         .bot-info h3 {
             font-size: 1.25rem;
@@ -318,7 +319,7 @@
                         <div class="stat-label">Active</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">340+</div>
+                        <div class="stat-value">350+</div>
                         <div class="stat-label">Commands</div>
                     </div>
                     <div class="stat-item">
@@ -473,35 +474,6 @@
                     </div>
                 </a>
 
-                <!-- Fantasy Team Bot -->
-                <a href="fantasy-team-bot.html" class="bot-card">
-                    <div class="bot-header">
-                        <div class="bot-icon fantasy-team">&#127942;</div>
-                        <div class="bot-info">
-                            <h3>Fantasy Team Bot</h3>
-                            <div class="bot-tech">
-                                <span class="tech-badge">Python</span>
-                                <span class="tech-badge">discord.py</span>
-                                <span class="tech-badge">SQLite</span>
-                                <span class="tech-badge">APScheduler</span>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="bot-description">
-                        Fantasy team submissions with admin approval, record predictions, and leaderboards. Supports NFL, NBA, WNBA, and MLB with automatic seasonal forum posts.
-                    </p>
-                    <div class="bot-features">
-                        <span class="feature-tag">Team Submissions</span>
-                        <span class="feature-tag">Admin Approval</span>
-                        <span class="feature-tag">Predictions</span>
-                        <span class="feature-tag">Leaderboards</span>
-                    </div>
-                    <div class="bot-status">
-                        <span class="status-dot active"></span>
-                        <span class="status-text">Active - 19 Commands</span>
-                    </div>
-                </a>
-
                 <!-- Standings Bot -->
                 <a href="standings-bot.html" class="bot-card">
                     <div class="bot-header">
@@ -560,32 +532,33 @@
                     </div>
                 </a>
 
-                <!-- Fantasy Sports Stats Bot -->
+                <!-- NFL Fantasy AI Analysis Bot -->
                 <a href="fantasy-stats-bot.html" class="bot-card">
                     <div class="bot-header">
                         <div class="bot-icon fantasy-stats">&#128200;</div>
                         <div class="bot-info">
-                            <h3>Fantasy Sports Stats Bot</h3>
+                            <h3>NFL Fantasy AI Bot</h3>
                             <div class="bot-tech">
                                 <span class="tech-badge">Python</span>
                                 <span class="tech-badge">discord.py</span>
-                                <span class="tech-badge">SQLite</span>
-                                <span class="tech-badge">ESPN API</span>
+                                <span class="tech-badge">OpenAI</span>
+                                <span class="tech-badge">Anthropic</span>
+                                <span class="tech-badge">Google Docs</span>
                             </div>
                         </div>
                     </div>
                     <p class="bot-description">
-                        Comprehensive fantasy sports statistics, predictions, and draft analysis. Covers NFL, NBA, WNBA, and MLB with player rankings, consistency metrics, rookie profiles, and auto-updating forum posts.
+                        AI-powered NFL fantasy analysis using dual AI providers (GPT-4 + Claude) with consensus merging. Provides strength of schedule, player value analysis, cheat sheets, weekly reports, and Google Docs exports.
                     </p>
                     <div class="bot-features">
-                        <span class="feature-tag">4 Leagues</span>
-                        <span class="feature-tag">Player Rankings</span>
-                        <span class="feature-tag">Draft Guides</span>
-                        <span class="feature-tag">Auto Forums</span>
+                        <span class="feature-tag">AI Analysis</span>
+                        <span class="feature-tag">Cheat Sheets</span>
+                        <span class="feature-tag">Weekly Reports</span>
+                        <span class="feature-tag">Google Docs</span>
                     </div>
                     <div class="bot-status">
                         <span class="status-dot active"></span>
-                        <span class="status-text">Active - 31 Commands</span>
+                        <span class="status-text">Active - 53 Commands</span>
                     </div>
                 </a>
 
@@ -730,6 +703,34 @@
                     <div class="bot-status">
                         <span class="status-dot active"></span>
                         <span class="status-text">Active - 15+ Commands</span>
+                    </div>
+                </a>
+
+                <!-- Invite Battles Bot -->
+                <a href="invite-battles-bot.html" class="bot-card">
+                    <div class="bot-header">
+                        <div class="bot-icon invite-battles">&#9876;</div>
+                        <div class="bot-info">
+                            <h3>Invite Battles Bot</h3>
+                            <div class="bot-tech">
+                                <span class="tech-badge">Node.js</span>
+                                <span class="tech-badge">Discord.js</span>
+                                <span class="tech-badge">SQLite</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="bot-description">
+                        King of the hill for server invites. Submit an invite, set a secret number, and defend your throne while challengers guess to dethrone you.
+                    </p>
+                    <div class="bot-features">
+                        <span class="feature-tag">King of the Hill</span>
+                        <span class="feature-tag">Perks System</span>
+                        <span class="feature-tag">Leaderboards</span>
+                        <span class="feature-tag">Multi-Server</span>
+                    </div>
+                    <div class="bot-status">
+                        <span class="status-dot active"></span>
+                        <span class="status-text">Active - 6 Commands</span>
                     </div>
                 </a>
             </div>

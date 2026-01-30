@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite Battles Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-gold: #ffd700;
+            --accent-green: #2ecc71;
+            --accent-purple: #9b59b6;
+            --accent-orange: #e67e22;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --accent-crown: #ffd700;
+            --accent-flame: #ff6b35;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--accent-crown);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .bot-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-crown), var(--accent-flame));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bot-title h1 {
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-crown), var(--accent-flame));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-crown);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h3 {
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Commands Table */
+        .commands-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .commands-table th,
+        .commands-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .commands-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .commands-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .command-name {
+            font-family: 'Fira Code', monospace;
+            background: var(--accent-crown);
+            color: var(--bg-primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .command-admin {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Game Mechanics Grid */
+        .mechanics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .mechanic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .mechanic-card .mechanic-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .mechanic-card h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .mechanic-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Perk Cards */
+        .perk-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            border-left: 4px solid var(--accent-crown);
+        }
+
+        .perk-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .perk-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Flow Diagram */
+        .flow-steps {
+            max-width: 700px;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+            align-items: flex-start;
+        }
+
+        .flow-number {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-crown);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .flow-content h4 {
+            margin-bottom: 4px;
+            font-size: 1.05rem;
+        }
+
+        .flow-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Setup Section */
+        .setup-steps {
+            max-width: 800px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-crown);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-crown);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .commands-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .step, .flow-step {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link">
+                    &larr; Back to All Bots
+                </a>
+                <div class="bot-title">
+                    <div class="bot-icon">&#9876;</div>
+                    <h1>Invite Battles Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>King of the Hill for Server Invites</h2>
+                    <p>
+                        A competitive Discord game where users battle for their server invite to be displayed
+                        in a channel. Submit an invite, set a secret number, and defend your throne while
+                        challengers try to guess it. Features perks, leaderboards, and multi-server support.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Discord.js v14</span>
+                        <span class="tech-badge">SQLite</span>
+                        <span class="tech-badge">Node.js</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="container">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Slash Commands</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Perk Types</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Leaderboard Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">&#8734;</div>
+                    <div class="stat-label">Multi-Server</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#9876;</span> How It Works</h3>
+                <div class="mechanics-grid">
+                    <div class="mechanic-card">
+                        <div class="mechanic-icon">&#128229;</div>
+                        <h4>Submit Invite</h4>
+                        <p>Post a discord.gg link or use /invite in a game channel</p>
+                    </div>
+                    <div class="mechanic-card">
+                        <div class="mechanic-icon">&#128274;</div>
+                        <h4>Set Secret Number</h4>
+                        <p>Pick a number 1-100 via a private modal popup</p>
+                    </div>
+                    <div class="mechanic-card">
+                        <div class="mechanic-icon">&#127919;</div>
+                        <h4>Challengers Guess</h4>
+                        <p>Others use /guess — within 10 of the number wins</p>
+                    </div>
+                    <div class="mechanic-card">
+                        <div class="mechanic-icon">&#128081;</div>
+                        <h4>New King</h4>
+                        <p>Winner's invite replaces the old one on the hill</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Flow Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128260;</span> Game Flow</h3>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div class="flow-content">
+                            <h4>User submits an invite link</h4>
+                            <p>Via <code>/invite &lt;link&gt;</code> or by posting a discord.gg link in a game channel.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div class="flow-content">
+                            <h4>If the hill is empty — become the King</h4>
+                            <p>A modal appears asking for a secret number (1-100). The invite embed is posted to the channel.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div class="flow-content">
+                            <h4>If the hill is occupied — join the queue</h4>
+                            <p>Your invite is queued. Use <code>/guess</code> to try to dethrone the current king.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div class="flow-content">
+                            <h4>Guess within 10 of the secret number to win</h4>
+                            <p>Each user gets one guess per day per channel. If <code>|guess - secret| &le; 10</code>, you win!</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <div class="flow-content">
+                            <h4>Winner takes the hill</h4>
+                            <p>The old invite is deleted, the reign is archived, and the winner sets their own secret number.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">6</div>
+                        <div class="flow-content">
+                            <h4>Auto-expiration after 7 days</h4>
+                            <p>If nobody guesses the number within a week, the invite expires and the next person in queue is promoted.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#10024;</span> Key Features</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>&#128081; King of the Hill</h4>
+                        <p>Only one invite can reign per channel at a time. Defend your throne by choosing a hard-to-guess number.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128270; Dual Input Detection</h4>
+                        <p>Submit invites via slash command <code>/invite</code> or just paste a discord.gg link — the bot detects both.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128197; Daily Guess Limit</h4>
+                        <p>Each user gets one guess per day per channel, keeping the game strategic and drawn out.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#9200; 7-Day Expiration</h4>
+                        <p>Unguessed invites automatically expire after one week. The queue advances automatically.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128202; Interactive Leaderboards</h4>
+                        <p>Dropdown menus to switch views (longest streak, most wins, top defenders) with pagination buttons.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127760; Multi-Server Support</h4>
+                        <p>Independent game state per server and channel. Global leaderboard aggregates across all servers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commands Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128187;</span> Slash Commands</h3>
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                            <th>Access</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name">/invite &lt;link&gt;</span></td>
+                            <td>Submit a Discord invite link. If the hill is empty, you become king. Otherwise, your invite is queued.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/guess &lt;number&gt;</span></td>
+                            <td>Guess the king's secret number (1-100). Within 10 wins. One guess per day.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/tip</span></td>
+                            <td>Get a hint about the secret number (20-wide range). Requires Guess Tip perk role.</td>
+                            <td>Perk Role</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/leaderboard</span></td>
+                            <td>View interactive leaderboard with dropdown views and pagination (server + global).</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/setup</span></td>
+                            <td>Initialize Invite Battles for the server. Run once to get started.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config channel add/remove</span></td>
+                            <td>Add or remove a text channel as a game channel.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config channel list</span></td>
+                            <td>List all configured game channels.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config perks add/remove</span></td>
+                            <td>Assign or remove a perk (Extra Life, Number Reset, Guess Tip) to a role.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config perks list</span></td>
+                            <td>List all perk role assignments.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config tips &lt;limit&gt;</span></td>
+                            <td>Set the daily tip limit per user (0-10).</td>
+                            <td>Admin</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Perks Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#127775;</span> Special Perks</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Admins assign perks to roles via <code>/config perks add &lt;perk&gt; @role</code>. Members with the role gain the perk ability.
+                </p>
+                <div class="features-grid">
+                    <div class="perk-card">
+                        <h4>&#128155; Extra Life</h4>
+                        <p>If the king has this perk and someone guesses their number, instead of losing the hill, the bot automatically picks a new random secret number. <strong>One-time use per reign.</strong></p>
+                    </div>
+                    <div class="perk-card">
+                        <h4>&#128260; Number Reset</h4>
+                        <p>Allows resetting the king's secret number to a new random value. Useful for refreshing a stale game when the number hasn't been guessed.</p>
+                    </div>
+                    <div class="perk-card">
+                        <h4>&#128161; Guess Tip</h4>
+                        <p>Use <code>/tip</code> to get a hint — a 20-wide range containing the secret number (e.g., "between 35 and 55"). Limited uses per day, configurable by admin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#127942;</span> Leaderboard System</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    The <code>/leaderboard</code> command displays an interactive embed with a dropdown menu and pagination buttons.
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>&#128336; Longest Streak (Server)</h4>
+                        <p>Users whose invites lasted the longest on the hill, measured by duration.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127942; Most Wins (Server)</h4>
+                        <p>Users who have dethroned the most kings by guessing correctly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128737; Top Defenders (Server)</h4>
+                        <p>Users who survived the most failed guesses during a single reign.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128081; Current King</h4>
+                        <p>Shows the active invite holder in each game channel.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127760; Global Longest Streak</h4>
+                        <p>Longest reigns across all servers the bot is in.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127760; Global Most Wins</h4>
+                        <p>Top dethronements across all servers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Database Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128451;</span> Database Architecture</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    SQLite database with 8 tables, all scoped by <code>guild_id</code> for multi-server isolation.
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>guild_config</h4>
+                        <p>Per-server settings: setup status, daily tip limit.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>game_channels</h4>
+                        <p>Which channels run the game. Multiple per server.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>active_invites</h4>
+                        <p>Current king per channel: user, link, secret number, expiration, guess count.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>invite_queue</h4>
+                        <p>FIFO queue of pending invites waiting to claim the hill.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>guess_log</h4>
+                        <p>Every guess recorded. Enforces one guess per user per day.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>reign_history</h4>
+                        <p>Archived reigns with duration, guesses survived, and who dethroned them. Powers leaderboards.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>perk_roles</h4>
+                        <p>Maps Discord roles to perks (extra_life, number_reset, guess_tip).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>tip_usage</h4>
+                        <p>Tracks daily tip usage per user to enforce configurable limits.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Setup Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128640;</span> Setup Guide</h3>
+                <div class="setup-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Create Discord Bot</h4>
+                            <p>Go to the Discord Developer Portal, create a new application, and add a bot. Enable <strong>Message Content</strong> and <strong>Server Members</strong> privileged intents.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Configure Bot Token</h4>
+                            <p>Edit <code>config.json</code> with your credentials:</p>
+                            <div class="code-block">
+{<br>
+&nbsp;&nbsp;"token": "YOUR_BOT_TOKEN",<br>
+&nbsp;&nbsp;"clientId": "YOUR_APPLICATION_ID",<br>
+&nbsp;&nbsp;"guildId": "YOUR_DEV_GUILD_ID"<br>
+}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Install Dependencies</h4>
+                            <div class="code-block">npm install</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Register Slash Commands</h4>
+                            <div class="code-block">
+npm run deploy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Global (all servers)<br>
+npm run deploy -- --dev&nbsp;&nbsp;# Dev guild only (instant)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Start the Bot</h4>
+                            <div class="code-block">npm start</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>In Discord: Initialize a Server</h4>
+                            <div class="code-block">
+/setup<br>
+/config channel add #invite-battles
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Permissions Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128273;</span> Required Permissions</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>OAuth2 Scopes</h4>
+                        <p>
+                            &#9989; bot<br>
+                            &#9989; applications.commands
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Bot Permissions</h4>
+                        <p>
+                            &#9989; Send Messages<br>
+                            &#9989; Embed Links<br>
+                            &#9989; Manage Messages<br>
+                            &#9989; Use Slash Commands<br>
+                            &#9989; Read Message History
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Gateway Intents (Privileged)</h4>
+                        <p>
+                            &#9989; Guilds<br>
+                            &#9989; GuildMessages<br>
+                            &#9989; MessageContent &#128312;<br>
+                            &#9989; GuildMembers &#128312;<br>
+                            <small>&#128312; = Privileged, enable in Developer Portal</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Invite Battles Bot Documentation | <a href="index.html">Back to Bot Hub</a></p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                Battle for the hill. Defend your throne. Claim the crown.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
