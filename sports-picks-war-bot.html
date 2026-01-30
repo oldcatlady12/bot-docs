@@ -17,6 +17,7 @@
             --accent-orange: #ff7a00;
             --accent-red: #f4212e;
             --accent-yellow: #ffd400;
+            --accent-cyan: #39d2c0;
             --border-color: #2f3542;
         }
 
@@ -155,6 +156,7 @@
 
         .stat-value.red { color: var(--accent-red); }
         .stat-value.green { color: var(--accent-green); }
+        .stat-value.purple { color: var(--accent-purple); }
 
         .stat-label {
             color: var(--text-secondary);
@@ -181,6 +183,12 @@
 
         .section-icon {
             font-size: 1.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-size: 1.05rem;
         }
 
         /* War Bar Demo */
@@ -264,15 +272,28 @@
             font-size: 0.85rem;
         }
 
-        /* Commands Table */
+        /* Commands Section */
+        .command-group {
+            margin-bottom: 36px;
+        }
+
+        .command-group-title {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
         .commands-table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 12px;
         }
 
         .commands-table th,
         .commands-table td {
-            padding: 16px;
+            padding: 14px 16px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
         }
@@ -281,6 +302,8 @@
             background: var(--bg-card);
             font-weight: 600;
             color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
         }
 
         .commands-table tr:hover {
@@ -288,17 +311,32 @@
         }
 
         .command-name {
-            font-family: 'Fira Code', monospace;
+            font-family: 'Fira Code', 'SFMono-Regular', Consolas, monospace;
             background: var(--accent-blue);
             color: var(--bg-primary);
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.85rem;
+            white-space: nowrap;
         }
 
         .command-admin {
             background: var(--accent-orange);
             color: white;
+        }
+
+        .command-params {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .command-params code {
+            background: var(--bg-secondary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-family: 'Fira Code', monospace;
         }
 
         /* Forum Posts Section */
@@ -405,6 +443,98 @@
             font-size: 0.85rem;
         }
 
+        /* Betting Tables */
+        .betting-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .betting-table th,
+        .betting-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .betting-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .betting-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .multiplier {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        /* Season Prediction Section */
+        .season-category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .season-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .season-card h4 {
+            margin-bottom: 6px;
+        }
+
+        .season-card .picks-count {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .season-card .multiplier-badge {
+            display: inline-block;
+            background: rgba(0, 186, 124, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 186, 124, 0.3);
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .season-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        /* Callout */
+        .callout {
+            border-left: 4px solid var(--accent-blue);
+            background: var(--bg-card);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+
+        .callout p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .callout strong {
+            color: var(--text-primary);
+        }
+
         /* Footer */
         footer {
             background: var(--bg-secondary);
@@ -434,6 +564,11 @@
                 flex-direction: column;
                 gap: 12px;
             }
+
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
         }
     </style>
 </head>
@@ -460,16 +595,17 @@
                     <h2>AI vs Humans: The Sports Prediction Battle</h2>
                     <p>
                         A competitive sports prediction Discord bot where humans compete against AI models.
-                        Make daily picks on game winners and over/unders, track your accuracy, and see if
-                        humanity can outsmart the machines!
+                        Make daily picks on game winners and over/unders, predict NFL seasons and playoff brackets,
+                        bet with economy coins, and see if humanity can outsmart the machines!
                     </p>
                     <div class="tech-stack">
-                        <span class="tech-badge">Python 3.11+</span>
+                        <span class="tech-badge">Python 3.10+</span>
                         <span class="tech-badge">discord.py</span>
                         <span class="tech-badge">SQLite</span>
                         <span class="tech-badge">ESPN API</span>
                         <span class="tech-badge">OpenAI</span>
                         <span class="tech-badge">Anthropic</span>
+                        <span class="tech-badge">Economy Integration</span>
                     </div>
                 </div>
             </div>
@@ -479,7 +615,7 @@
         <div class="container">
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-value">15+</div>
+                    <div class="stat-value">27</div>
                     <div class="stat-label">Commands</div>
                 </div>
                 <div class="stat-card">
@@ -497,6 +633,10 @@
                 <div class="stat-card">
                     <div class="stat-value" style="color: var(--accent-blue);">Humans</div>
                     <div class="stat-label">War!</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value purple">10x</div>
+                    <div class="stat-label">Max Bet Multiplier</div>
                 </div>
             </div>
         </div>
@@ -581,29 +721,27 @@
             <div class="container">
                 <h3><span class="section-icon">&#128196;</span> Auto-Generated Forum Posts</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 24px;">
-                    Each sport creates 4 forum posts that automatically update daily:
+                    Each sport creates 3 forum threads that automatically update:
                 </p>
                 <div class="forum-posts">
                     <div class="forum-card">
                         <div class="forum-icon">&#127922;</div>
-                        <h4>Daily Games</h4>
-                        <p>Dropdown menu with all games. Select to make winner + O/U picks.</p>
+                        <h4>Human Predictions</h4>
+                        <p>Dropdown menu with all daily games. Select to make winner + O/U picks with optional betting.</p>
                     </div>
                     <div class="forum-card">
                         <div class="forum-icon">&#129302;</div>
                         <h4>AI Predictions</h4>
-                        <p>AI model picks with reasoning. Click for detailed analysis.</p>
+                        <p>Hub with clickable game links. Each game has all 3 AI model picks with reasoning and detail buttons.</p>
                     </div>
                     <div class="forum-card">
                         <div class="forum-icon">&#127942;</div>
-                        <h4>Leaderboard</h4>
-                        <p>War bar + top predictors. Filter by sport in dropdown.</p>
+                        <h4>Leaderboard &amp; War Stats</h4>
+                        <p>Visual war bar + top predictors. Auto-updates every 5 minutes with latest stats.</p>
                     </div>
-                    <div class="forum-card">
-                        <div class="forum-icon">&#128203;</div>
-                        <h4>Results</h4>
-                        <p>Final scores with visual indicators for correct/incorrect picks.</p>
-                    </div>
+                </div>
+                <div class="callout" style="margin-top: 24px;">
+                    <p><strong>Results:</strong> Game results are handled via a separate results forum. Use <code>/setup-results-forum</code> to create per-sport results threads. Users are also notified via DM when their predictions are graded.</p>
                 </div>
             </div>
         </section>
@@ -613,23 +751,26 @@
             <div class="container">
                 <h3><span class="section-icon">&#129302;</span> AI Competitors</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 24px;">
-                    Multiple AI models compete against human predictions:
+                    Three AI models compete against human predictions on every game:
                 </p>
                 <div class="ai-models">
                     <div class="ai-card">
                         <div class="ai-icon">&#129302;</div>
-                        <h4>ChatGPT (GPT-3.5)</h4>
+                        <h4>ChatGPT</h4>
+                        <p>OpenAI gpt-4o-mini</p>
                         <p>Fast, cost-effective predictions</p>
                     </div>
                     <div class="ai-card">
                         <div class="ai-icon">&#129504;</div>
-                        <h4>GPT-4</h4>
-                        <p>Advanced reasoning model</p>
+                        <h4>Claude</h4>
+                        <p>Anthropic claude-sonnet-4-20250514</p>
+                        <p>Analytical reasoning model</p>
                     </div>
                     <div class="ai-card">
-                        <div class="ai-icon">&#128171;</div>
-                        <h4>Claude</h4>
-                        <p>Anthropic's analytical model</p>
+                        <div class="ai-icon">&#128187;</div>
+                        <h4>GPT-4</h4>
+                        <p>OpenAI gpt-4o</p>
+                        <p>Advanced reasoning model</p>
                     </div>
                 </div>
             </div>
@@ -642,27 +783,143 @@
                 <div class="features-grid">
                     <div class="feature-card">
                         <h4>&#128337; Auto-Close Predictions</h4>
-                        <p>Predictions automatically lock when games start. No late picks allowed!</p>
+                        <p>Predictions automatically lock when games start. Checked every 60 seconds.</p>
                     </div>
                     <div class="feature-card">
                         <h4>&#128260; Daily Refresh</h4>
-                        <p>All game messages update at 8 AM ET daily with fresh matchups.</p>
+                        <p>Game messages update at 8 AM ET daily with fresh matchups from ESPN.</p>
                     </div>
                     <div class="feature-card">
                         <h4>&#128202; Detailed Stats</h4>
-                        <p>Track your accuracy by sport, pick type (winner/O-U), and time period.</p>
+                        <p>Track accuracy by sport, pick type (winner/O-U), and compare against AI models.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>&#128176; Economy Integration</h4>
-                        <p>Optional betting system integrates with Many Worlds Economy Bot.</p>
+                        <h4>&#128176; Economy Betting</h4>
+                        <p>Bet economy coins on daily games (up to 3.5x payout) and season predictions (up to 10x).</p>
                     </div>
                     <div class="feature-card">
-                        <h4>&#128269; AI Detail Button</h4>
-                        <p>Click to see full AI reasoning including matchup analysis and key factors.</p>
+                        <h4>&#127944; NFL Season Predictions</h4>
+                        <p>Pick division winners, conference champions, playoff teams, Super Bowl winner, and playoff bracket.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>&#128259; Refresh Buttons</h4>
-                        <p>All messages have refresh buttons to manually update data on demand.</p>
+                        <h4>&#128269; AI Detail Buttons</h4>
+                        <p>Click to see full AI reasoning including matchup analysis, key factors, and confidence scores.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128232; DM Notifications</h4>
+                        <p>Users receive DM notifications with bet results and payouts when games finish.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128203; Auto Results</h4>
+                        <p>Game scores fetched from ESPN automatically. Predictions graded and payouts processed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Betting & Economy -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128176;</span> Betting &amp; Economy</h3>
+                <p class="section-subtitle">
+                    Wager coins from the Many Worlds economy bot on your predictions. Betting is optional&mdash;predictions work without it.
+                </p>
+
+                <h4 style="margin-bottom: 12px;">Daily Game Bets</h4>
+                <table class="betting-table">
+                    <thead>
+                        <tr><th>Outcome</th><th>Multiplier</th><th>Example (100-coin bet)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Winner Correct Only</td><td class="multiplier">1.9x</td><td>+90 coins profit</td></tr>
+                        <tr><td>Over/Under Correct Only</td><td class="multiplier">1.85x</td><td>+85 coins profit</td></tr>
+                        <tr><td>Both Correct</td><td class="multiplier">3.5x</td><td>+250 coins profit</td></tr>
+                        <tr><td>Both Wrong</td><td style="color: var(--accent-red);">0x</td><td>-100 coins (lost)</td></tr>
+                    </tbody>
+                </table>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">
+                    Bet range: <strong>10 &ndash; 10,000</strong> coins per game. Default: 100 coins.
+                </p>
+
+                <h4 style="margin-top: 32px; margin-bottom: 12px;">Season Prediction Bets</h4>
+                <table class="betting-table">
+                    <thead>
+                        <tr><th>Category</th><th>Multiplier</th><th>Grading Method</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Division Winners (8 picks)</td><td class="multiplier">3.0x</td><td>Proportional: correct/8</td></tr>
+                        <tr><td>Conference Champions (2 picks)</td><td class="multiplier">5.0x</td><td>Both = full, 1 = half</td></tr>
+                        <tr><td>Playoff Teams (14 picks)</td><td class="multiplier">3.0x</td><td>Proportional: correct/14</td></tr>
+                        <tr><td>Super Bowl Winner (1 pick)</td><td class="multiplier">10.0x</td><td>Right or wrong</td></tr>
+                        <tr><td>Wild Card Winners (6 picks)</td><td class="multiplier">2.5x</td><td>Proportional: correct/6</td></tr>
+                        <tr><td>Divisional Round Winners (4 picks)</td><td class="multiplier">3.0x</td><td>Proportional: correct/4</td></tr>
+                        <tr><td>Conference Champ Winners (2 picks)</td><td class="multiplier">5.0x</td><td>Both = full, 1 = half</td></tr>
+                    </tbody>
+                </table>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">
+                    Season bet range: <strong>50 &ndash; 50,000</strong> coins per category.
+                </p>
+            </div>
+        </section>
+
+        <!-- NFL Season Predictions -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#127944;</span> NFL Season Predictions</h3>
+                <p class="section-subtitle">
+                    Full-season NFL prediction system with pre-season picks and playoff bracket predictions. Both AI models and humans make predictions.
+                </p>
+
+                <h4 style="margin-bottom: 12px;">Pre-Season Categories (available immediately)</h4>
+                <div class="season-category-grid">
+                    <div class="season-card">
+                        <h4>&#127942; Division Winners</h4>
+                        <span class="picks-count">8 picks</span>
+                        <span class="multiplier-badge">3.0x</span>
+                        <p>Pick the winner of each NFL division (AFC/NFC North, South, East, West).</p>
+                    </div>
+                    <div class="season-card">
+                        <h4>&#127941; Conference Champions</h4>
+                        <span class="picks-count">2 picks</span>
+                        <span class="multiplier-badge">5.0x</span>
+                        <p>Pick the AFC and NFC conference champions.</p>
+                    </div>
+                    <div class="season-card">
+                        <h4>&#127947; Playoff Teams</h4>
+                        <span class="picks-count">14 picks</span>
+                        <span class="multiplier-badge">3.0x</span>
+                        <p>Pick all 7 playoff teams per conference (4 division winners + 3 wild cards).</p>
+                    </div>
+                    <div class="season-card">
+                        <h4>&#127944; Super Bowl Winner</h4>
+                        <span class="picks-count">1 pick</span>
+                        <span class="multiplier-badge">10.0x</span>
+                        <p>Pick the Super Bowl champion. Highest payout multiplier!</p>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 32px; margin-bottom: 12px;">Playoff Bracket Categories (opened by admin)</h4>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                    These open when admins run <code>/open-playoff-bracket</code> with real matchups.
+                </p>
+                <div class="season-category-grid">
+                    <div class="season-card">
+                        <h4>Wild Card Winners</h4>
+                        <span class="picks-count">6 picks</span>
+                        <span class="multiplier-badge">2.5x</span>
+                        <p>Pick winners of all 6 Wild Card round games.</p>
+                    </div>
+                    <div class="season-card">
+                        <h4>Divisional Round Winners</h4>
+                        <span class="picks-count">4 picks</span>
+                        <span class="multiplier-badge">3.0x</span>
+                        <p>Pick winners of all 4 Divisional round games.</p>
+                    </div>
+                    <div class="season-card">
+                        <h4>Conference Championship Winners</h4>
+                        <span class="picks-count">2 picks</span>
+                        <span class="multiplier-badge">5.0x</span>
+                        <p>Pick both Conference Championship winners.</p>
                     </div>
                 </div>
             </div>
@@ -671,63 +928,174 @@
         <!-- Commands Section -->
         <section class="section">
             <div class="container">
-                <h3><span class="section-icon">&#128187;</span> Commands</h3>
-                <table class="commands-table">
-                    <thead>
-                        <tr>
-                            <th>Command</th>
-                            <th>Description</th>
-                            <th>Access</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="command-name">/my-predictions</span></td>
-                            <td>View your pending and past predictions.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/my-stats</span></td>
-                            <td>View your prediction accuracy stats with sport filter.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/leaderboard</span></td>
-                            <td>View the top predictors and war bar status.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/war-stats</span></td>
-                            <td>View detailed AI vs Humans statistics.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/ai-records</span></td>
-                            <td>View individual AI model performance records.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name command-admin">/setup-sport</span></td>
-                            <td>Initialize a sport with forum channel and auto-posts.</td>
-                            <td>Admin</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name command-admin">/fetch-games</span></td>
-                            <td>Manually fetch games for a sport from ESPN API.</td>
-                            <td>Admin</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name command-admin">/generate-ai-predictions</span></td>
-                            <td>Generate AI predictions for upcoming games.</td>
-                            <td>Admin</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name command-admin">/post-ai-predictions</span></td>
-                            <td>Post AI predictions to the forum channel.</td>
-                            <td>Admin</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3><span class="section-icon">&#128187;</span> All Commands</h3>
+
+                <!-- User Commands -->
+                <div class="command-group">
+                    <h4 class="command-group-title">&#128100; User Commands (Everyone)</h4>
+                    <table class="commands-table">
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>Description</th>
+                                <th>Parameters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="command-name">/games</span></td>
+                                <td>View upcoming games with times, O/U lines, and prediction status.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/game-predictions</span></td>
+                                <td>View AI and human predictions for the next upcoming game.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/my-predictions</span></td>
+                                <td>View your pending and past predictions with correctness status.</td>
+                                <td><div class="command-params"><code>sport</code> optional (default: all)</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/my-stats</span></td>
+                                <td>View your prediction accuracy, betting performance, and comparison to AI.</td>
+                                <td>&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/war-stats</span></td>
+                                <td>View AI vs Humans war statistics with visual war bar.</td>
+                                <td><div class="command-params"><code>sport</code> optional (default: all)</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/ai-records</span></td>
+                                <td>View individual AI model prediction records per sport.</td>
+                                <td><div class="command-params"><code>model</code> required, <code>sport</code> optional</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/results</span></td>
+                                <td>View recent finished games with final scores and prediction accuracy.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/game-result</span></td>
+                                <td>View detailed result for the most recent finished game.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/currency-settings</span></td>
+                                <td>Enable/disable automatic currency conversion from other servers.</td>
+                                <td><div class="command-params"><code>auto_convert</code> required (boolean)</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/my-season-predictions</span></td>
+                                <td>View your NFL season predictions for the active season.</td>
+                                <td><div class="command-params"><code>season_year</code> optional</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name">/season-status</span></td>
+                                <td>View NFL season prediction status, results, and leaderboards.</td>
+                                <td><div class="command-params"><code>season_year</code> optional</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Admin Commands -->
+                <div class="command-group">
+                    <h4 class="command-group-title">&#128272; Admin Commands (Administrator)</h4>
+                    <table class="commands-table">
+                        <thead>
+                            <tr>
+                                <th>Command</th>
+                                <th>Description</th>
+                                <th>Parameters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="command-name command-admin">/setup-sport</span></td>
+                                <td>Initialize a sport. Creates Human Predictions, AI Predictions, and Leaderboard forum threads.</td>
+                                <td><div class="command-params"><code>sport</code> required, <code>forum_channel</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/setup-results-forum</span></td>
+                                <td>Setup a results forum with per-sport threads for posting game results.</td>
+                                <td><div class="command-params"><code>forum_channel</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/leaderboard</span></td>
+                                <td>Create an auto-updating global leaderboard in the current channel (refreshes every 5 min).</td>
+                                <td>&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/fetch-games</span></td>
+                                <td>Manually fetch and update games from ESPN API.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/refresh-daily-games</span></td>
+                                <td>Fetch fresh games from ESPN and refresh the daily games message.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/close-voting</span></td>
+                                <td>Manually close predictions for all games of a sport.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/refresh-leaderboard</span></td>
+                                <td>Force immediate refresh of all leaderboard posts.</td>
+                                <td>&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/refresh-results</span></td>
+                                <td>Manually refresh game results from ESPN. Grades predictions and processes payouts.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/generate-ai-predictions</span></td>
+                                <td>Generate AI predictions from all 3 models for today's games.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/post-ai-predictions</span></td>
+                                <td>Post AI predictions to the AI thread. Auto-generates missing predictions first.</td>
+                                <td><div class="command-params"><code>sport</code> required, <code>force</code> optional</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/post-result</span></td>
+                                <td>Manually post a game result to the results thread.</td>
+                                <td><div class="command-params"><code>sport</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/setup-season</span></td>
+                                <td>Initialize NFL season predictions. Creates Human and AI season prediction threads.</td>
+                                <td><div class="command-params"><code>season_year</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/generate-season-predictions</span></td>
+                                <td>Generate AI season predictions (division winners, champions, playoffs, Super Bowl).</td>
+                                <td><div class="command-params"><code>season_year</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/lock-season</span></td>
+                                <td>Lock pre-season predictions (run when NFL season starts).</td>
+                                <td><div class="command-params"><code>season_year</code> required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/open-playoff-bracket</span></td>
+                                <td>Open a playoff round for bracket predictions with specified matchups.</td>
+                                <td><div class="command-params"><code>season_year</code>, <code>round_name</code>, <code>matchups</code> all required</div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="command-name command-admin">/resolve-season</span></td>
+                                <td>Resolve a season prediction category with actual results and process payouts.</td>
+                                <td><div class="command-params"><code>season_year</code>, <code>category</code>, <code>result</code> required; <code>subcategory</code> optional</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -740,31 +1108,66 @@
                         <div class="step-number">1</div>
                         <div class="step-content">
                             <h4>Select a Game</h4>
-                            <p>Use the dropdown in the Daily Games post to select a matchup you want to predict.</p>
+                            <p>Use the dropdown in the Human Predictions thread to select a matchup you want to predict.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">2</div>
                         <div class="step-content">
                             <h4>Make Your Picks</h4>
-                            <p>Choose the winner (Home/Away) and Over/Under on the total points line.</p>
+                            <p>Choose the winner (Home/Away) and Over/Under on the total points line. Optionally place a bet with economy coins.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
                         <div class="step-content">
-                            <h4>Wait for Results</h4>
-                            <p>Predictions lock at game time. Results post automatically when games finish.</p>
+                            <h4>AI Makes Its Picks Too</h4>
+                            <p>Three AI models independently analyze each game and make their own winner + O/U predictions with detailed reasoning.</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">4</div>
                         <div class="step-content">
-                            <h4>Track Your Record</h4>
-                            <p>Check the leaderboard to see how you stack up against other humans AND the AI!</p>
+                            <h4>Wait for Results</h4>
+                            <p>Predictions lock at game time. Final scores are fetched from ESPN automatically.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Get Results &amp; Payouts</h4>
+                            <p>Predictions are graded, stats updated, bet payouts processed, and you get a DM with your results.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Track the War</h4>
+                            <p>Check the leaderboard to see how humans stack up against the AI. Use <code>/war-stats</code> for the full breakdown!</p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Background Tasks -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#9881;</span> Automatic Background Tasks</h3>
+                <table class="betting-table">
+                    <thead>
+                        <tr><th>Task</th><th>Interval</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Daily Games Refresh</td><td>8:00 AM ET daily</td><td>Fetches fresh games from ESPN for all sports, updates daily games messages, and auto-generates AI predictions.</td></tr>
+                        <tr><td>Game Start Check</td><td>Every 60 seconds</td><td>Checks for games that have started and auto-closes predictions.</td></tr>
+                        <tr><td>Game Results Check</td><td>Every 60 seconds</td><td>Fetches final scores from ESPN, grades predictions, processes payouts, sends DM notifications.</td></tr>
+                        <tr><td>Results Posting</td><td>Every 2 minutes</td><td>Posts game result embeds (with stats button) to results forum threads when games finish.</td></tr>
+                        <tr><td>Game Status Check</td><td>Every 5 minutes</td><td>Monitors scheduled games and closes predictions when game time is reached, updates forum messages.</td></tr>
+                        <tr><td>Sport Leaderboard Update</td><td>Every 5 minutes</td><td>Refreshes per-sport leaderboard posts in forum threads with latest stats and war bar.</td></tr>
+                        <tr><td>Global Leaderboard Update</td><td>Every 5 minutes</td><td>Refreshes the auto-updating global leaderboard message in the designated channel.</td></tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -787,8 +1190,8 @@
                             <p>Create a <code>.env</code> file with your tokens:</p>
                             <div class="code-block">
 DISCORD_BOT_TOKEN=your_discord_bot_token<br>
-OPENAI_API_KEY=your_openai_key (optional)<br>
-ANTHROPIC_API_KEY=your_anthropic_key (optional)<br>
+OPENAI_API_KEY=your_openai_key<br>
+ANTHROPIC_API_KEY=your_anthropic_key<br>
 ECONOMY_BOT_DB_PATH=path/to/economy.db (optional)
                             </div>
                         </div>
@@ -797,7 +1200,7 @@ ECONOMY_BOT_DB_PATH=path/to/economy.db (optional)
                         <div class="step-number">3</div>
                         <div class="step-content">
                             <h4>Install Dependencies</h4>
-                            <p>Set up Python and install packages:</p>
+                            <p>Set up Python 3.10+ and install packages:</p>
                             <div class="code-block">
 pip install -r requirements.txt
                             </div>
@@ -807,7 +1210,6 @@ pip install -r requirements.txt
                         <div class="step-number">4</div>
                         <div class="step-content">
                             <h4>Run the Bot</h4>
-                            <p>Start the bot:</p>
                             <div class="code-block">
 python main.py
                             </div>
@@ -817,7 +1219,21 @@ python main.py
                         <div class="step-number">5</div>
                         <div class="step-content">
                             <h4>Setup Sports</h4>
-                            <p>Use <code>/setup-sport</code> in a forum channel to initialize each sport you want to track.</p>
+                            <p>Use <code>/setup-sport</code> in a forum channel to initialize each sport. Then use <code>/setup-results-forum</code> for a results forum.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Fetch Games &amp; Post Predictions</h4>
+                            <p>Use <code>/fetch-games</code> to pull today's games, then <code>/post-ai-predictions</code> to generate and post AI picks. Users can then make their predictions via the dropdown in the forum thread.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">7</div>
+                        <div class="step-content">
+                            <h4>NFL Season Predictions (Optional)</h4>
+                            <p>Use <code>/setup-season 2025</code> to create season prediction threads. Then <code>/generate-season-predictions 2025</code> for AI picks. Lock with <code>/lock-season</code> when the NFL season begins.</p>
                         </div>
                     </div>
                 </div>
@@ -844,14 +1260,16 @@ python main.py
                             &#9989; Manage Messages<br>
                             &#9989; Use Slash Commands<br>
                             &#9989; Create Public Threads<br>
-                            &#9989; Send Messages in Threads
+                            &#9989; Send Messages in Threads<br>
+                            &#9989; Read Message History
                         </p>
                     </div>
                     <div class="feature-card">
                         <h4>Gateway Intents</h4>
                         <p>
                             &#9989; Server Members Intent<br>
-                            &#9989; Message Content Intent
+                            &#9989; Message Content Intent<br>
+                            &#9989; Guilds Intent
                         </p>
                     </div>
                 </div>
