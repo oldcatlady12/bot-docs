@@ -285,6 +285,14 @@
             border-left: 4px solid var(--accent-crown);
         }
 
+        .perk-card.guesser {
+            border-left-color: var(--accent-blue);
+        }
+
+        .perk-card.counter {
+            border-left-color: var(--accent-red);
+        }
+
         .perk-card h4 {
             font-size: 1.1rem;
             margin-bottom: 8px;
@@ -296,6 +304,18 @@
         .perk-card p {
             color: var(--text-secondary);
             font-size: 0.95rem;
+        }
+
+        .perk-category {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            margin-top: 32px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .perk-category:first-of-type {
+            margin-top: 0;
         }
 
         /* Flow Diagram */
@@ -433,11 +453,14 @@
                     <p>
                         A competitive Discord game where users battle for their server invite to be displayed
                         in a channel. Submit an invite, set a secret number, and defend your throne while
-                        challengers try to guess it. Features perks, leaderboards, and multi-server support.
+                        challengers try to guess it. Features 12 perks with counter roles, coin rewards,
+                        daily guess limits, cooldowns, an interactive guide, and 12 leaderboard categories.
+                        Built with Discord Components v2.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-badge">JavaScript</span>
                         <span class="tech-badge">Discord.js v14</span>
+                        <span class="tech-badge">Components v2</span>
                         <span class="tech-badge">SQLite</span>
                         <span class="tech-badge">Node.js</span>
                     </div>
@@ -449,16 +472,20 @@
         <div class="container">
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-value">6</div>
+                    <div class="stat-value">10</div>
                     <div class="stat-label">Slash Commands</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">3</div>
+                    <div class="stat-value">12</div>
                     <div class="stat-label">Perk Types</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">6</div>
+                    <div class="stat-value">12</div>
                     <div class="stat-label">Leaderboard Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">14</div>
+                    <div class="stat-label">Database Tables</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">&#8734;</div>
@@ -475,7 +502,7 @@
                     <div class="mechanic-card">
                         <div class="mechanic-icon">&#128229;</div>
                         <h4>Submit Invite</h4>
-                        <p>Post a discord.gg link or use /invite in a game channel</p>
+                        <p>Post a message with a link or use /invite in a game channel</p>
                     </div>
                     <div class="mechanic-card">
                         <div class="mechanic-icon">&#128274;</div>
@@ -483,14 +510,34 @@
                         <p>Pick a number 1-100 via a private modal popup</p>
                     </div>
                     <div class="mechanic-card">
+                        <div class="mechanic-icon">&#9200;</div>
+                        <h4>Cooldown Period</h4>
+                        <p>3-hour cooldown (configurable) after activation before guessing opens</p>
+                    </div>
+                    <div class="mechanic-card">
                         <div class="mechanic-icon">&#127919;</div>
                         <h4>Challengers Guess</h4>
-                        <p>Others use /guess — within 10 of the number wins</p>
+                        <p>Up to 5 guesses per day (configurable). Guess within range to win</p>
+                    </div>
+                    <div class="mechanic-card">
+                        <div class="mechanic-icon">&#128176;</div>
+                        <h4>Earn Coins</h4>
+                        <p>Correct guesses earn coin rewards shared with the economy bot</p>
                     </div>
                     <div class="mechanic-card">
                         <div class="mechanic-icon">&#128081;</div>
                         <h4>New King</h4>
                         <p>Winner's invite replaces the old one on the hill</p>
+                    </div>
+                    <div class="mechanic-card">
+                        <div class="mechanic-icon">&#9989;</div>
+                        <h4>Admin Approval</h4>
+                        <p>All invites reviewed by admin before going live</p>
+                    </div>
+                    <div class="mechanic-card">
+                        <div class="mechanic-icon">&#127922;</div>
+                        <h4>Random Pick</h4>
+                        <p>Admins can /pick a random invite from source channels</p>
                     </div>
                 </div>
             </div>
@@ -504,40 +551,47 @@
                     <div class="flow-step">
                         <div class="flow-number">1</div>
                         <div class="flow-content">
-                            <h4>User submits an invite link</h4>
-                            <p>Via <code>/invite &lt;link&gt;</code> or by posting a discord.gg link in a game channel.</p>
+                            <h4>User submits an ad</h4>
+                            <p>Via <code>/invite &lt;link&gt;</code> with an optional message, or by posting a message with any URL in a game channel.</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="flow-number">2</div>
                         <div class="flow-content">
-                            <h4>If the hill is empty — become the King</h4>
-                            <p>A modal appears asking for a secret number (1-100). The invite embed is posted to the channel.</p>
+                            <h4>If the hill is empty &mdash; submit for approval</h4>
+                            <p>A modal asks for a secret number (1-100). The invite is sent to the admin approval channel. Once approved, it's posted with interactive buttons.</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="flow-number">3</div>
                         <div class="flow-content">
-                            <h4>If the hill is occupied — join the queue</h4>
-                            <p>Your invite is queued. Use <code>/guess</code> to try to dethrone the current king.</p>
+                            <h4>Cooldown period begins</h4>
+                            <p>After activation, there's a configurable cooldown (default: 3 hours) before anyone can guess. The KOTH message displays a countdown timer.</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="flow-number">4</div>
                         <div class="flow-content">
-                            <h4>Guess within 10 of the secret number to win</h4>
-                            <p>Each user gets one guess per day per channel. If <code>|guess - secret| &le; 10</code>, you win!</p>
+                            <h4>If the hill is occupied &mdash; join the queue</h4>
+                            <p>Your invite is queued. Click the Guess button on the embed or use <code>/guess</code> to try to dethrone the current king.</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="flow-number">5</div>
                         <div class="flow-content">
-                            <h4>Winner takes the hill</h4>
-                            <p>The old invite is deleted, the reign is archived, and the winner sets their own secret number.</p>
+                            <h4>Guess close enough to win</h4>
+                            <p>Each user gets up to <strong>5 guesses per day</strong> (configurable). Default range is 10, but admins can change it. King roles can make the range tighter. Perks like Double Guess, Precision, and Guess Steal affect the outcome.</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="flow-number">6</div>
+                        <div class="flow-content">
+                            <h4>Correct guess &mdash; dethrone the king</h4>
+                            <p>The old king is notified with a channel mention. The guesser earns <strong>coins</strong> (configurable reward). The winner's invite is submitted for admin approval. King perks like Extra Life and Last Stand may prevent dethronement.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">7</div>
                         <div class="flow-content">
                             <h4>Auto-expiration after 7 days</h4>
                             <p>If nobody guesses the number within a week, the invite expires and the next person in queue is promoted.</p>
@@ -558,23 +612,55 @@
                     </div>
                     <div class="feature-card">
                         <h4>&#128270; Dual Input Detection</h4>
-                        <p>Submit invites via slash command <code>/invite</code> or just paste a discord.gg link — the bot detects both.</p>
+                        <p>Submit ads via slash command <code>/invite</code> or just paste a message with any URL &mdash; the bot detects discord.gg, youtube, twitch, linktree, and more.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128176; Coin Rewards</h4>
+                        <p>Earn coins for correctly guessing the secret number. Coin balances are shared with the Many Worlds economy bot via the same SQLite database.</p>
                     </div>
                     <div class="feature-card">
                         <h4>&#128197; Daily Guess Limit</h4>
-                        <p>Each user gets one guess per day per channel, keeping the game strategic and drawn out.</p>
+                        <p>Each user gets up to 5 guesses per day per channel (configurable 1-20). Perks like Double Guess grant bonus guesses, while Guess Steal takes them away.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>&#9200; 7-Day Expiration</h4>
-                        <p>Unguessed invites automatically expire after one week. The queue advances automatically.</p>
+                        <h4>&#9200; Guess Cooldown</h4>
+                        <p>After a new ad is activated on the hill, there's a configurable cooldown (default 3 hours) before guessing opens. The KOTH message shows remaining time.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>&#128202; Interactive Leaderboards</h4>
-                        <p>Dropdown menus to switch views (longest streak, most wins, top defenders) with pagination buttons.</p>
+                        <h4>&#127775; 12 Perks &amp; Counters</h4>
+                        <p>5 king defensive perks, 3 guesser offensive perks, and 4 counter perks that negate king abilities. All tied to Discord roles.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128202; 12 Leaderboard Views</h4>
+                        <p>Interactive leaderboard with dropdown menu: streaks, wins, defenders, aim, correct guesses, total time, activity, coins, current king, and 3 global views.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128218; Interactive Guide</h4>
+                        <p>Admins post a 6-page interactive guide with <code>/guide</code>. Users navigate with Previous/Next buttons. Refresh button updates content after bot updates.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128280; Components v2</h4>
+                        <p>All bot messages use Discord Components v2 containers with accent colors, text displays, separators, and action rows &mdash; no legacy embeds.</p>
                     </div>
                     <div class="feature-card">
                         <h4>&#127760; Multi-Server Support</h4>
-                        <p>Independent game state per server and channel. Global leaderboard aggregates across all servers.</p>
+                        <p>Independent game state per server and channel. Global leaderboards aggregate across all servers.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#9989; Admin Approval Flow</h4>
+                        <p>All invites must be reviewed and approved by an admin before going live. Approve or reject with buttons in the approval channel.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128172; Game Threads</h4>
+                        <p>When an admin adds a game channel, a dedicated thread is automatically created for the King of the Hill battle.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127922; Random Invite Pick</h4>
+                        <p>Admins can use <code>/pick</code> to randomly select an invite from configured source channels when nobody submits manually.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127919; Configurable Guess Range</h4>
+                        <p>Admins set the base guess range. Assign roles to the king that make the range tighter, making it harder for challengers to win.</p>
                     </div>
                 </div>
             </div>
@@ -595,12 +681,12 @@
                     <tbody>
                         <tr>
                             <td><span class="command-name">/invite &lt;link&gt;</span></td>
-                            <td>Submit a Discord invite link. If the hill is empty, you become king. Otherwise, your invite is queued.</td>
+                            <td>Submit your ad (link + optional message). If the hill is empty, you become king. Otherwise, your ad is queued.</td>
                             <td>Everyone</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name">/guess &lt;number&gt;</span></td>
-                            <td>Guess the king's secret number (1-100). Within 10 wins. One guess per day.</td>
+                            <td><span class="command-name">/guess &lt;number&gt; &lt;link&gt;</span></td>
+                            <td>Guess the king's secret number (1-100). You must also provide your link and optional ad message. Checks cooldown and daily limit before processing.</td>
                             <td>Everyone</td>
                         </tr>
                         <tr>
@@ -610,7 +696,7 @@
                         </tr>
                         <tr>
                             <td><span class="command-name">/leaderboard</span></td>
-                            <td>View interactive leaderboard with dropdown views and pagination (server + global).</td>
+                            <td>View interactive leaderboard with 12 views and pagination (server + global). Categories include streaks, wins, aim, coins, and more.</td>
                             <td>Everyone</td>
                         </tr>
                         <tr>
@@ -619,28 +705,73 @@
                             <td>Admin</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/config channel add/remove</span></td>
-                            <td>Add or remove a text channel as a game channel.</td>
+                            <td><span class="command-name command-admin">/guide [#channel]</span></td>
+                            <td>Post an interactive 6-page guide explaining the game, perks, leaderboards, and commands. Includes Previous/Next/Refresh buttons.</td>
                             <td>Admin</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/config channel list</span></td>
-                            <td>List all configured game channels.</td>
+                            <td><span class="command-name command-admin">/config channel add/remove/list</span></td>
+                            <td>Add, remove, or list game channels. Creates a game thread automatically on add.</td>
                             <td>Admin</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/config perks add/remove</span></td>
-                            <td>Assign or remove a perk (Extra Life, Number Reset, Guess Tip) to a role.</td>
+                            <td><span class="command-name command-admin">/config perks add/remove/list</span></td>
+                            <td>Assign or remove any of the 12 perks (5 king, 3 guesser, 4 counter) to a Discord role.</td>
                             <td>Admin</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/config perks list</span></td>
-                            <td>List all perk role assignments.</td>
+                            <td><span class="command-name command-admin">/config approval &lt;#channel&gt;</span></td>
+                            <td>Set the approval channel where invites are sent for admin review before going live. Leave empty to clear.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config source add/remove/list</span></td>
+                            <td>Add or remove source channels that <code>/pick</code> scans for ad messages with links.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config guessrange &lt;range&gt;</span></td>
+                            <td>Set the base guess range (1-50). Guesses within this distance from the secret number count as a hit.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config rangerole add/remove/list</span></td>
+                            <td>Assign a role a custom guess range. When the king has this role, guessers must be within a tighter range.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config guesses &lt;limit&gt;</span></td>
+                            <td>Set the daily guess limit per user (1-20, default: 5). Perks and penalties modify this per-user.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config cooldown &lt;hours&gt;</span></td>
+                            <td>Set the guess cooldown after a new ad is activated (0-24 hours, default: 3). Set to 0 to disable.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/config coins &lt;amount&gt;</span></td>
+                            <td>Set the coin reward for correctly guessing the secret number (0-1000, default: 10). Set to 0 to disable.</td>
                             <td>Admin</td>
                         </tr>
                         <tr>
                             <td><span class="command-name command-admin">/config tips &lt;limit&gt;</span></td>
                             <td>Set the daily tip limit per user (0-10).</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/pick [#channel]</span></td>
+                            <td>Randomly pick an invite from source channels and send it for admin approval. Defaults to the current game channel.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/forcepick &lt;@user&gt; &lt;link&gt; [#channel]</span></td>
+                            <td>Force-pick a specific user's invite for the hill. The invite is sent to the approval channel for review before going live.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/reset [#channel] [clear-pending]</span></td>
+                            <td>Clear the active invite from the hill. Archives the reign and removes the embed. Optionally cancels all pending approvals for the channel.</td>
                             <td>Admin</td>
                         </tr>
                     </tbody>
@@ -651,22 +782,68 @@
         <!-- Perks Section -->
         <section class="section">
             <div class="container">
-                <h3><span class="section-icon">&#127775;</span> Special Perks</h3>
+                <h3><span class="section-icon">&#127775;</span> Perk System (12 Perks)</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 24px;">
-                    Admins assign perks to roles via <code>/config perks add &lt;perk&gt; @role</code>. Members with the role gain the perk ability.
+                    Admins assign perks to roles via <code>/config perks add &lt;perk&gt; @role</code>. Members with the role gain the perk ability. Counter perks negate king perks when the guesser holds the counter role.
                 </p>
-                <div class="features-grid">
+
+                <p class="perk-category">&#128081; King Perks (Defensive)</p>
+                <div class="features-grid" style="margin-bottom: 24px;">
                     <div class="perk-card">
                         <h4>&#128155; Extra Life</h4>
                         <p>If the king has this perk and someone guesses their number, instead of losing the hill, the bot automatically picks a new random secret number. <strong>One-time use per reign.</strong></p>
                     </div>
                     <div class="perk-card">
                         <h4>&#128260; Number Reset</h4>
-                        <p>Allows resetting the king's secret number to a new random value. Useful for refreshing a stale game when the number hasn't been guessed.</p>
+                        <p>Allows the king to manually reset their secret number to a new random value. Useful for refreshing a stale game.</p>
                     </div>
                     <div class="perk-card">
+                        <h4>&#128167; Guess Steal</h4>
+                        <p>When a challenger guesses wrong, they <strong>lose an extra daily guess</strong> as a penalty. Makes the king harder to dethrone over time.</p>
+                    </div>
+                    <div class="perk-card">
+                        <h4>&#128566; Intimidate</h4>
+                        <p>Wrong guessers <strong>don't see how close they were</strong> to the secret number. They only get a generic "Wrong!" message instead of proximity feedback.</p>
+                    </div>
+                    <div class="perk-card">
+                        <h4>&#128170; Last Stand</h4>
+                        <p>When someone guesses correctly, there's a <strong>25% chance</strong> the king survives anyway. The secret number is reset and the king stays on the hill.</p>
+                    </div>
+                </div>
+
+                <p class="perk-category">&#127919; Guesser Perks (Offensive)</p>
+                <div class="features-grid" style="margin-bottom: 24px;">
+                    <div class="perk-card guesser">
                         <h4>&#128161; Guess Tip</h4>
-                        <p>Use <code>/tip</code> to get a hint — a 20-wide range containing the secret number (e.g., "between 35 and 55"). Limited uses per day, configurable by admin.</p>
+                        <p>Use <code>/tip</code> to get a hint &mdash; a 20-wide range containing the secret number (e.g., "between 35 and 55"). Limited uses per day, configurable by admin.</p>
+                    </div>
+                    <div class="perk-card guesser">
+                        <h4>&#10133; Double Guess</h4>
+                        <p>Grants <strong>+1 extra guess per day</strong> beyond the server's daily limit. Stacks with the base limit (e.g., 5 + 1 = 6 guesses per day).</p>
+                    </div>
+                    <div class="perk-card guesser">
+                        <h4>&#127919; Precision</h4>
+                        <p>Your effective guess range is <strong>widened by +5</strong>, making it easier to hit. If the base range is 10, you hit within 15 of the secret number.</p>
+                    </div>
+                </div>
+
+                <p class="perk-category">&#128308; Counter Perks (Negate King Perks)</p>
+                <div class="features-grid">
+                    <div class="perk-card counter">
+                        <h4>&#10060; Counter: Extra Life</h4>
+                        <p>If the guesser holds this perk, the king's <strong>Extra Life is negated</strong>. The correct guess dethrones the king normally.</p>
+                    </div>
+                    <div class="perk-card counter">
+                        <h4>&#10060; Counter: Guess Steal</h4>
+                        <p>Negates the king's <strong>Guess Steal</strong> penalty. The guesser won't lose an extra daily guess on a wrong answer.</p>
+                    </div>
+                    <div class="perk-card counter">
+                        <h4>&#10060; Counter: Last Stand</h4>
+                        <p>Negates the king's <strong>Last Stand</strong>. The 25% survival chance is removed &mdash; a correct guess always dethrones.</p>
+                    </div>
+                    <div class="perk-card counter">
+                        <h4>&#10060; Counter: Intimidate</h4>
+                        <p>Negates the king's <strong>Intimidate</strong>. The guesser still sees proximity feedback ("You were X away") on wrong guesses.</p>
                     </div>
                 </div>
             </div>
@@ -675,9 +852,9 @@
         <!-- Leaderboard Section -->
         <section class="section">
             <div class="container">
-                <h3><span class="section-icon">&#127942;</span> Leaderboard System</h3>
+                <h3><span class="section-icon">&#127942;</span> Leaderboard System (12 Views)</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 24px;">
-                    The <code>/leaderboard</code> command displays an interactive embed with a dropdown menu and pagination buttons.
+                    The <code>/leaderboard</code> command displays an interactive Components v2 message with a dropdown menu to switch views and pagination buttons to navigate pages.
                 </p>
                 <div class="features-grid">
                     <div class="feature-card">
@@ -697,12 +874,36 @@
                         <p>Shows the active invite holder in each game channel.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>&#127760; Global Longest Streak</h4>
+                        <h4>&#127919; Best Aim (Server)</h4>
+                        <p>Closest average guess distance from the secret number. Requires at least 3 guesses to qualify.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#9989; Most Correct Guesses (Server)</h4>
+                        <p>Users with the most successful guesses that dethroned a king.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#9200; Total Time as King (Server)</h4>
+                        <p>Cumulative time spent as king across all reigns in the server.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128200; Most Active Guessers (Server)</h4>
+                        <p>Total number of guesses made, regardless of correctness.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128176; Top Coin Earners (Server)</h4>
+                        <p>Most coins earned from correct guesses. Shows total earned and current balance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127760; Longest Streak (Global)</h4>
                         <p>Longest reigns across all servers the bot is in.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>&#127760; Global Most Wins</h4>
+                        <h4>&#127760; Most Wins (Global)</h4>
                         <p>Top dethronements across all servers.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127760; Total Time as King (Global)</h4>
+                        <p>Cumulative time as king across all servers.</p>
                     </div>
                 </div>
             </div>
@@ -713,20 +914,20 @@
             <div class="container">
                 <h3><span class="section-icon">&#128451;</span> Database Architecture</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 24px;">
-                    SQLite database with 8 tables, all scoped by <code>guild_id</code> for multi-server isolation.
+                    SQLite database with 14 tables, all scoped by <code>guild_id</code> for multi-server isolation. The <code>user_coins</code> table is shared with the Many Worlds economy bot.
                 </p>
                 <div class="features-grid">
                     <div class="feature-card">
                         <h4>guild_config</h4>
-                        <p>Per-server settings: setup status, daily tip limit.</p>
+                        <p>Per-server settings: tip limit, approval channel, guess range, daily guess limit, cooldown hours, coin reward, guide channel.</p>
                     </div>
                     <div class="feature-card">
                         <h4>game_channels</h4>
-                        <p>Which channels run the game. Multiple per server.</p>
+                        <p>Which channels run the game. Multiple per server. Tracks associated game thread IDs.</p>
                     </div>
                     <div class="feature-card">
                         <h4>active_invites</h4>
-                        <p>Current king per channel: user, link, secret number, expiration, guess count.</p>
+                        <p>Current king per channel: user, link, secret number, ad message, expiration, guess count, extra life status.</p>
                     </div>
                     <div class="feature-card">
                         <h4>invite_queue</h4>
@@ -734,19 +935,43 @@
                     </div>
                     <div class="feature-card">
                         <h4>guess_log</h4>
-                        <p>Every guess recorded. Enforces one guess per user per day.</p>
+                        <p>Every guess recorded with distance from secret number. Powers daily limit enforcement and leaderboards.</p>
                     </div>
                     <div class="feature-card">
                         <h4>reign_history</h4>
-                        <p>Archived reigns with duration, guesses survived, and who dethroned them. Powers leaderboards.</p>
+                        <p>Archived reigns with duration, guesses survived, end reason, and who dethroned them. Powers leaderboards.</p>
                     </div>
                     <div class="feature-card">
                         <h4>perk_roles</h4>
-                        <p>Maps Discord roles to perks (extra_life, number_reset, guess_tip).</p>
+                        <p>Maps Discord roles to all 12 perk types (king, guesser, and counter perks).</p>
                     </div>
                     <div class="feature-card">
                         <h4>tip_usage</h4>
                         <p>Tracks daily tip usage per user to enforce configurable limits.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>pending_approvals</h4>
+                        <p>Invites awaiting admin review. Stores user, link, secret number, and approval status (pending/approved/rejected).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>source_channels</h4>
+                        <p>Channels that <code>/pick</code> scans for ad messages with links. Multiple per server.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>guess_range_roles</h4>
+                        <p>Maps Discord roles to custom guess ranges. When the king has the role, guessers must be within a tighter range.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>user_coins</h4>
+                        <p>Coin balances and total earned per user. Shared database table with the economy bot for cross-bot integration.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>guess_penalties</h4>
+                        <p>Tracks extra guess penalties from the Guess Steal perk. Resets daily.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>guide_messages</h4>
+                        <p>Tracks where interactive guide messages are deployed for refresh functionality.</p>
                     </div>
                 </div>
             </div>
@@ -808,8 +1033,15 @@ npm run deploy -- --dev&nbsp;&nbsp;# Dev guild only (instant)
                             <h4>In Discord: Initialize a Server</h4>
                             <div class="code-block">
 /setup<br>
-/config channel add #invite-battles
+/config channel add #invite-battles<br>
+/config approval #invite-approvals<br>
+/config source add #invite-sharing<br>
+/config guesses 5<br>
+/config cooldown 3<br>
+/config coins 10<br>
+/guide #rules
                             </div>
+                            <p style="margin-top: 8px; color: var(--text-secondary);">Set up a game channel, approval channel, source channel, configure daily guesses, cooldown, coin reward, and post the interactive guide.</p>
                         </div>
                     </div>
                 </div>
@@ -835,7 +1067,9 @@ npm run deploy -- --dev&nbsp;&nbsp;# Dev guild only (instant)
                             &#9989; Embed Links<br>
                             &#9989; Manage Messages<br>
                             &#9989; Use Slash Commands<br>
-                            &#9989; Read Message History
+                            &#9989; Read Message History<br>
+                            &#9989; Create Public Threads<br>
+                            &#9989; Send Messages in Threads
                         </p>
                     </div>
                     <div class="feature-card">
