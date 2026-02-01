@@ -242,6 +242,76 @@
             font-size: 0.9rem;
         }
 
+        /* Command Cards */
+        .command-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .command-card .command-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .command-card .command-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            font-family: 'Consolas', monospace;
+        }
+
+        .command-card .command-type {
+            background: var(--bg-secondary);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            border: 1px solid var(--border-color);
+        }
+
+        .command-card .command-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .command-card .command-detail {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .command-card .command-detail code {
+            background: var(--bg-primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: var(--accent-green);
+        }
+
+        .command-category {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            margin-top: 32px;
+            color: var(--text-primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .command-category:first-of-type {
+            margin-top: 0;
+        }
+
         /* Config Table */
         .config-table {
             width: 100%;
@@ -426,6 +496,95 @@
                 <div class="feature-card">
                     <h3>&#128202; Multi-Bot Batching</h3>
                     <p>When multiple documentation files change at once, they're batched into a single embed with inline fields and button rows.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands & Interactions -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="icon">&#128187;</span> Commands & Interactions</h2>
+
+            <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                The Changelog Bot is fully automated and does not use slash commands. Instead, it operates through CLI commands, file-based triggers, and interactive button components.
+            </p>
+
+            <h3 class="command-category">&#9000; CLI Commands</h3>
+
+            <div class="command-card">
+                <div class="command-header">
+                    <span class="command-name">node index.js</span>
+                    <span class="command-type">CLI</span>
+                </div>
+                <p class="command-desc">Starts the bot and begins polling for trigger files every 3 seconds.</p>
+                <div class="command-detail">
+                    Connects to Discord, starts the polling loop, and monitors for <code>trigger.json</code> in the bot's root directory. When a trigger is found, it checks all 16 documentation files for changes and sends notifications.
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-header">
+                    <span class="command-name">node index.js --seed</span>
+                    <span class="command-type">CLI</span>
+                </div>
+                <p class="command-desc">Snapshots all current documentation file hashes without sending any Discord messages.</p>
+                <div class="command-detail">
+                    Use this when setting up the bot for the first time or after adding new bots to <code>bots.json</code>. It computes MD5 hashes for all documentation files and saves them to <code>changelog_settings.json</code>, then exits immediately.
+                </div>
+            </div>
+
+            <h3 class="command-category">&#128196; File Triggers</h3>
+
+            <div class="command-card">
+                <div class="command-header">
+                    <span class="command-name">trigger.json</span>
+                    <span class="command-type">File Trigger</span>
+                </div>
+                <p class="command-desc">Create this file in the bot's root directory to trigger a changelog check.</p>
+                <div class="command-detail">
+                    <strong>Format:</strong> <code>{"message": "Your commit message here"}</code><br><br>
+                    The bot polls for this file every 3 seconds. When found, it reads the optional <code>message</code> field (used as the changelog description), deletes the file, then checks all documentation files for changes. Typically created automatically by a Git post-push hook.
+                </div>
+            </div>
+
+            <h3 class="command-category">&#128992; Button Interactions</h3>
+
+            <div class="command-card">
+                <div class="command-header">
+                    <span class="command-name">About [Bot Name]</span>
+                    <span class="command-type">Button</span>
+                </div>
+                <p class="command-desc">Displays detailed information about the updated bot.</p>
+                <div class="command-detail">
+                    Each changelog notification includes an interactive button for every bot that was updated. Clicking the button shows an ephemeral embed with:<br>
+                    &bull; Bot description<br>
+                    &bull; Tech stack<br>
+                    &bull; Link to documentation page
+                </div>
+            </div>
+
+            <h3 class="command-category">&#128233; Notification Types</h3>
+
+            <div class="command-card">
+                <div class="command-header">
+                    <span class="command-name">Single Bot Update</span>
+                    <span class="command-type">Auto Notification</span>
+                </div>
+                <p class="command-desc">Sent when one bot's documentation changes.</p>
+                <div class="command-detail">
+                    Shows a colored embed with the bot's emoji and name, the commit message as description, a direct link to the documentation, the tech stack in the footer, and one "About" button.
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-header">
+                    <span class="command-name">Multi-Bot Update</span>
+                    <span class="command-type">Auto Notification</span>
+                </div>
+                <p class="command-desc">Sent when multiple bots' documentation changes in a single push.</p>
+                <div class="command-detail">
+                    Shows a blurple embed with inline fields listing each updated bot and their documentation links. Includes up to 25 "About" buttons across up to 5 rows (Discord's component limit).
                 </div>
             </div>
         </div>
