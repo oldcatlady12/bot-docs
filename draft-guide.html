@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madden Draft Guide | Bot Documentation Hub</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --accent-red: #f4212e;
+            --accent-yellow: #ffd400;
+            --accent-gold: #d4af37;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 0;
+            margin-left: 40px;
+        }
+
+        .tab-link {
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-link.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+        }
+
+        /* Main Content */
+        main {
+            padding: 40px 0;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* League/Season Selector */
+        .league-selector {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .selector-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .selector-group label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .selector-group select {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 1rem;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .selector-group select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .league-info {
+            margin-left: auto;
+            text-align: right;
+            color: var(--text-secondary);
+        }
+
+        .league-info .league-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Position Tabs */
+        .position-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .position-tab {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .position-tab:hover {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+        }
+
+        .position-tab.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        /* Madden Rankings Section */
+        .rankings-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rankings-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .rank-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .rank-number.top-3 {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+        }
+
+        .ranking-info {
+            flex: 1;
+        }
+
+        .ranking-name {
+            font-weight: 600;
+        }
+
+        .ranking-details {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Player Cards Grid */
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .player-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .player-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 10px 40px rgba(255, 122, 0, 0.1);
+        }
+
+        .player-image {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 4rem;
+        }
+
+        .player-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-content {
+            padding: 20px;
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .player-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .player-position {
+            background: var(--accent-blue);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .player-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .player-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dev-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .dev-badge.star {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
+        }
+
+        .dev-badge.superstar {
+            background: rgba(255, 122, 0, 0.2);
+            color: var(--accent-orange);
+        }
+
+        .dev-badge.x-factor {
+            background: rgba(244, 33, 46, 0.2);
+            color: var(--accent-red);
+        }
+
+        .dev-badge.normal {
+            background: rgba(139, 152, 165, 0.2);
+            color: var(--text-secondary);
+        }
+
+        .scouting-report {
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+            margin-top: 16px;
+        }
+
+        .scouting-report h4 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .scouting-report p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .strengths-weaknesses {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .strengths, .weaknesses {
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .strengths {
+            background: rgba(0, 186, 124, 0.1);
+        }
+
+        .weaknesses {
+            background: rgba(244, 33, 46, 0.1);
+        }
+
+        .strengths h5 {
+            color: var(--accent-green);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .weaknesses h5 {
+            color: var(--accent-red);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .strengths ul, .weaknesses ul {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .strengths li::before {
+            content: "+" ;
+            color: var(--accent-green);
+            margin-right: 4px;
+        }
+
+        .weaknesses li::before {
+            content: "-" ;
+            color: var(--accent-red);
+            margin-right: 4px;
+        }
+
+        .drafted-info {
+            margin-top: 16px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .drafted-info .round-pick {
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .drafted-info .team {
+            color: var(--text-primary);
+        }
+
+        /* User Predictions Section */
+        .predictions-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .prediction-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .form-group select, .form-group input {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(29, 155, 240, 0.3);
+        }
+
+        .prediction-list {
+            margin-top: 20px;
+        }
+
+        .prediction-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .prediction-user {
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .prediction-pick {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .prediction-result {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .prediction-result.correct {
+            background: rgba(0, 186, 124, 0.2);
+            color: var(--accent-green);
+        }
+
+        .prediction-result.wrong {
+            background: rgba(244, 33, 46, 0.2);
+            color: var(--accent-red);
+        }
+
+        .prediction-result.pending {
+            background: rgba(139, 152, 165, 0.2);
+            color: var(--text-secondary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .tab-nav {
+                margin-left: 0;
+            }
+
+            .selector-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .league-info {
+                margin-left: 0;
+                text-align: left;
+            }
+
+            .player-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prediction-form {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">&#128218;</div>
+                    <h1>Bot Documentation Hub</h1>
+                </div>
+                <nav class="tab-nav">
+                    <a href="index.html" class="tab-link">&#128218; Bot Docs</a>
+                    <a href="draft-guide.html" class="tab-link active">&#127944; Draft Guide</a>
+                </nav>
+                <div class="last-updated">
+                    Last Updated: <span id="lastUpdated"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-title">
+                <h2>&#127944; Madden Draft Guide</h2>
+                <p>Scouting reports, rankings, and predictions for Madden franchise drafts</p>
+            </div>
+
+            <!-- League/Season Selector -->
+            <div class="league-selector">
+                <div class="selector-row">
+                    <div class="selector-group">
+                        <label>League</label>
+                        <select id="leagueSelect" onchange="updateLeague()">
+                            <option value="1">League #1</option>
+                        </select>
+                    </div>
+                    <div class="selector-group">
+                        <label>Season</label>
+                        <select id="seasonSelect" onchange="updateSeason()">
+                            <option value="1">Season 1</option>
+                        </select>
+                    </div>
+                    <div class="league-info">
+                        <div class="league-name" id="currentLeagueName">Many Worlds League</div>
+                        <div>League #1, Season 1</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Position Tabs -->
+            <div class="position-tabs">
+                <button class="position-tab active" data-position="QB">QB</button>
+                <button class="position-tab" data-position="HB">HB</button>
+                <button class="position-tab" data-position="WR">WR</button>
+                <button class="position-tab" data-position="TE">TE</button>
+                <button class="position-tab" data-position="OL">OL</button>
+                <button class="position-tab" data-position="DL">DL</button>
+                <button class="position-tab" data-position="LB">LB</button>
+                <button class="position-tab" data-position="CB">CB</button>
+                <button class="position-tab" data-position="S">S</button>
+                <button class="position-tab" data-position="K">K/P</button>
+            </div>
+
+            <!-- Madden Rankings -->
+            <div class="rankings-section">
+                <div class="section-header">
+                    <h3 class="section-title">&#127942; Madden's Top <span id="positionRankTitle">QB</span> Rankings</h3>
+                </div>
+                <div class="rankings-list" id="rankingsList">
+                    <div class="ranking-item">
+                        <div class="rank-number top-3">1</div>
+                        <div class="ranking-info">
+                            <div class="ranking-name">Mason Williams</div>
+                            <div class="ranking-details">Arizona State | Star Dev</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="rank-number top-3">2</div>
+                        <div class="ranking-info">
+                            <div class="ranking-name">Jaelon Holt</div>
+                            <div class="ranking-details">Texas | Star Dev</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="rank-number top-3">3</div>
+                        <div class="ranking-info">
+                            <div class="ranking-name">Brian Sims</div>
+                            <div class="ranking-details">Michigan | Star Dev</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="rank-number">4</div>
+                        <div class="ranking-info">
+                            <div class="ranking-name">Khalil White</div>
+                            <div class="ranking-details">Colorado | Star Dev</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="rank-number">5</div>
+                        <div class="ranking-info">
+                            <div class="ranking-name">Donnie Brown</div>
+                            <div class="ranking-details">BYU | Star Dev</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Predictions -->
+            <div class="predictions-section">
+                <div class="section-header">
+                    <h3 class="section-title">&#128203; Draft Predictions</h3>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Use <code>/predict</code> in Discord to submit your predictions!</p>
+                <div class="prediction-list" id="predictionsList">
+                    <div class="prediction-item">
+                        <div class="prediction-user">@JohnDoe</div>
+                        <div class="prediction-pick">Mason Williams - Pick #1 to Panthers</div>
+                        <div class="prediction-result pending">Pending</div>
+                    </div>
+                    <div class="prediction-item">
+                        <div class="prediction-user">@JaneDoe</div>
+                        <div class="prediction-pick">Mason Williams - Pick #3 to Giants</div>
+                        <div class="prediction-result pending">Pending</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player Cards -->
+            <h3 class="section-title" style="margin-bottom: 20px;">&#128100; <span id="positionTitle">Quarterback</span> Prospects</h3>
+            <div class="player-grid" id="playerGrid">
+                <!-- Mason Williams Card -->
+                <div class="player-card">
+                    <div class="player-image">&#128100;</div>
+                    <div class="player-content">
+                        <div class="player-header">
+                            <div class="player-name">Mason Williams</div>
+                            <div class="player-position">QB</div>
+                        </div>
+                        <div class="player-meta">
+                            <span>&#127891; Arizona State</span>
+                            <span>&#128197; 21 years old</span>
+                            <span>&#9994; Right-handed</span>
+                        </div>
+                        <div class="dev-badge star">&#11088; Star Development</div>
+                        <div class="scouting-report">
+                            <h4>Scouting Report</h4>
+                            <p>A true field general who orchestrates the offense with surgical precision. Williams brings elite pocket presence and the football IQ of a 10-year veteran. His ability to read defenses pre-snap and make adjustments sets him apart from his peers.</p>
+                            <div class="strengths-weaknesses">
+                                <div class="strengths">
+                                    <h5>Strengths</h5>
+                                    <ul>
+                                        <li>Elite field vision</li>
+                                        <li>Strong arm talent</li>
+                                        <li>Pocket awareness</li>
+                                        <li>Leadership qualities</li>
+                                    </ul>
+                                </div>
+                                <div class="weaknesses">
+                                    <h5>Weaknesses</h5>
+                                    <ul>
+                                        <li>Limited mobility</li>
+                                        <li>Needs better footwork</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="drafted-info" style="display: none;">
+                            <span class="round-pick">Round 1, Pick 1</span>
+                            <span class="team">Carolina Panthers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jaelon Holt Card -->
+                <div class="player-card">
+                    <div class="player-image">&#128100;</div>
+                    <div class="player-content">
+                        <div class="player-header">
+                            <div class="player-name">Jaelon Holt</div>
+                            <div class="player-position">QB</div>
+                        </div>
+                        <div class="player-meta">
+                            <span>&#127891; Texas</span>
+                            <span>&#128197; 22 years old</span>
+                            <span>&#9994; Right-handed</span>
+                        </div>
+                        <div class="dev-badge star">&#11088; Star Development</div>
+                        <div class="scouting-report">
+                            <h4>Scouting Report</h4>
+                            <p>Dual-threat quarterback with exceptional athleticism. Holt brings a dynamic element to the position with his ability to extend plays and create outside the pocket while still delivering accurate passes downfield.</p>
+                            <div class="strengths-weaknesses">
+                                <div class="strengths">
+                                    <h5>Strengths</h5>
+                                    <ul>
+                                        <li>Excellent mobility</li>
+                                        <li>Strong arm</li>
+                                        <li>Playmaking ability</li>
+                                        <li>Big-game performer</li>
+                                    </ul>
+                                </div>
+                                <div class="weaknesses">
+                                    <h5>Weaknesses</h5>
+                                    <ul>
+                                        <li>Accuracy inconsistent</li>
+                                        <li>Decision-making under pressure</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brian Sims Card -->
+                <div class="player-card">
+                    <div class="player-image">&#128100;</div>
+                    <div class="player-content">
+                        <div class="player-header">
+                            <div class="player-name">Brian Sims</div>
+                            <div class="player-position">QB</div>
+                        </div>
+                        <div class="player-meta">
+                            <span>&#127891; Michigan</span>
+                            <span>&#128197; 23 years old</span>
+                            <span>&#9994; Right-handed</span>
+                        </div>
+                        <div class="dev-badge star">&#11088; Star Development</div>
+                        <div class="scouting-report">
+                            <h4>Scouting Report</h4>
+                            <p>Pro-ready quarterback with a cannon arm. Sims thrived in Michigan's pro-style offense and has the arm talent to make every throw in the NFL. His ability to drive the ball into tight windows is exceptional.</p>
+                            <div class="strengths-weaknesses">
+                                <div class="strengths">
+                                    <h5>Strengths</h5>
+                                    <ul>
+                                        <li>Strongest arm in class</li>
+                                        <li>Deep ball accuracy</li>
+                                        <li>Pro-style experience</li>
+                                        <li>Clutch performer</li>
+                                    </ul>
+                                </div>
+                                <div class="weaknesses">
+                                    <h5>Weaknesses</h5>
+                                    <ul>
+                                        <li>Sometimes forces throws</li>
+                                        <li>Average mobility</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State (hidden by default) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="icon">&#127944;</div>
+                <h3>No Players Yet</h3>
+                <p>Player data will be added when the draft class is available.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Madden Draft Guide &copy; 2026 | Part of Bot Documentation Hub</p>
+        </div>
+    </footer>
+
+    <script>
+        // Set last updated date
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Position tab handling
+        const positionTabs = document.querySelectorAll('.position-tab');
+        const positionNames = {
+            'QB': 'Quarterback',
+            'HB': 'Halfback',
+            'WR': 'Wide Receiver',
+            'TE': 'Tight End',
+            'OL': 'Offensive Line',
+            'DL': 'Defensive Line',
+            'LB': 'Linebacker',
+            'CB': 'Cornerback',
+            'S': 'Safety',
+            'K': 'Kicker/Punter'
+        };
+
+        positionTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                positionTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const position = tab.dataset.position;
+                document.getElementById('positionTitle').textContent = positionNames[position] || position;
+                document.getElementById('positionRankTitle').textContent = position;
+                // In a real implementation, this would load players for the selected position
+            });
+        });
+
+        // League/Season update functions
+        function updateLeague() {
+            const league = document.getElementById('leagueSelect').value;
+            console.log('Loading League #' + league);
+            // In a real implementation, this would fetch league data
+        }
+
+        function updateSeason() {
+            const season = document.getElementById('seasonSelect').value;
+            console.log('Loading Season ' + season);
+            // In a real implementation, this would fetch season data
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madden Drafts Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --accent-red: #f4212e;
+            --accent-yellow: #ffd400;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-blue);
+        }
+
+        .bot-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .bot-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bot-title h1 {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .bot-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        main {
+            padding: 40px 0;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 122, 0, 0.1), rgba(255, 212, 0, 0.1));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .command-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .command-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .command-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .command-name {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+        }
+
+        .command-tag {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .command-tag.admin {
+            background: rgba(244, 33, 46, 0.2);
+            color: var(--accent-red);
+        }
+
+        .command-description {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .command-params {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .command-params h5 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .param {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        .param-name {
+            color: var(--accent-purple);
+            font-family: 'Courier New', monospace;
+        }
+
+        .param-desc {
+            color: var(--text-secondary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h4 {
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link">
+                    &#8592; Back to Hub
+                </a>
+                <div class="bot-header">
+                    <div class="bot-icon">&#127944;</div>
+                    <div class="bot-title">
+                        <h1>Madden Drafts Bot</h1>
+                        <div class="bot-subtitle">Franchise Draft Scouting & Predictions</div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="hero">
+                <h2>&#127944; Madden Draft Scouting System</h2>
+                <p>
+                    Complete draft scouting and prediction system for Madden franchise modes. View detailed scouting reports, track Madden's rankings, make predictions, and manage multiple leagues and seasons.
+                </p>
+                <div class="tech-stack">
+                    <span class="tech-badge">Python 3.10+</span>
+                    <span class="tech-badge">discord.py 2.0+</span>
+                    <span class="tech-badge">JSON Database</span>
+                    <span class="tech-badge">Slash Commands</span>
+                </div>
+            </div>
+
+            <section>
+                <h3>&#128736; Key Features</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">&#128269;</div>
+                        <h4>Player Scouting</h4>
+                        <p>Detailed scouting reports with strengths, weaknesses, development traits, archetypes, and NFL comparisons.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>Rankings System</h4>
+                        <p>View Madden's official rankings alongside custom potential rankings for each position group.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#128203;</div>
+                        <h4>Draft Predictions</h4>
+                        <p>Users can predict where players will be drafted. Predictions are tracked and scored for accuracy.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#127760;</div>
+                        <h4>Multi-League Support</h4>
+                        <p>Track multiple leagues with multiple seasons each. Perfect for franchise communities with several groups.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#128247;</div>
+                        <h4>Player Images</h4>
+                        <p>Admins can add player portrait images to enhance scouting reports and the draft guide website.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">&#128279;</div>
+                        <h4>Website Integration</h4>
+                        <p>Links directly to the draft guide website for a complete visual experience with all scouting data.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>&#128187; User Commands</h3>
+                <div class="command-grid">
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/lookup</span>
+                            <span class="command-tag">User</span>
+                        </div>
+                        <p class="command-description">Look up a player's full scouting report including development, archetype, strengths, weaknesses, and draft status.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">player_name</span>
+                                <span class="param-desc">- The name of the player to look up</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/potential</span>
+                            <span class="command-tag">User</span>
+                        </div>
+                        <p class="command-description">View potential rankings for a position group based on scouting analysis.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">position</span>
+                                <span class="param-desc">- Position group (QB, HB, WR, TE, OL, DL, LB, CB, S)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/rankings</span>
+                            <span class="command-tag">User</span>
+                        </div>
+                        <p class="command-description">View Madden's official draft rankings for a position or overall.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">position</span>
+                                <span class="param-desc">- Position group or "ALL" for overall rankings</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/predict</span>
+                            <span class="command-tag">User</span>
+                        </div>
+                        <p class="command-description">Make a draft prediction for where a player will be selected.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">player_name</span>
+                                <span class="param-desc">- The player's name</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">pick_number</span>
+                                <span class="param-desc">- Predicted overall pick (1-256)</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">team</span>
+                                <span class="param-desc">- Predicted team to draft the player</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/mypredictions</span>
+                            <span class="command-tag">User</span>
+                        </div>
+                        <p class="command-description">View all of your draft predictions and their results.</p>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/draftguide</span>
+                            <span class="command-tag">User</span>
+                        </div>
+                        <p class="command-description">Get the link to the draft guide website with full visual scouting reports.</p>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/leagueinfo</span>
+                            <span class="command-tag">User</span>
+                        </div>
+                        <p class="command-description">View current league information including season and all available leagues.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>&#128272; Admin Commands</h3>
+                <div class="command-grid">
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/addplayer</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Add a new player to the current draft class.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">name</span>
+                                <span class="param-desc">- Player's full name</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">position</span>
+                                <span class="param-desc">- Player's position</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">college</span>
+                                <span class="param-desc">- Player's college</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">age</span>
+                                <span class="param-desc">- Player's age</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">development</span>
+                                <span class="param-desc">- Development trait (Normal, Star, Superstar, X-Factor)</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">archetype</span>
+                                <span class="param-desc">- Player archetype (optional)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/setimage</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Set a player's portrait image URL.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">player_name</span>
+                                <span class="param-desc">- The player's name</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">image_url</span>
+                                <span class="param-desc">- URL to the player's image</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/setscouting</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Set or update a player's scouting report.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">player_name</span>
+                                <span class="param-desc">- The player's name</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">report</span>
+                                <span class="param-desc">- The scouting report text</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">strengths</span>
+                                <span class="param-desc">- Comma-separated list of strengths</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">weaknesses</span>
+                                <span class="param-desc">- Comma-separated list of weaknesses</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/setdrafted</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Mark a player as drafted and update prediction results.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">player_name</span>
+                                <span class="param-desc">- The player's name</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">team</span>
+                                <span class="param-desc">- Team that drafted the player</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">round_num</span>
+                                <span class="param-desc">- Draft round (1-7)</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">pick_num</span>
+                                <span class="param-desc">- Overall pick number</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/setrank</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Set a player's Madden rank and/or potential rank.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">player_name</span>
+                                <span class="param-desc">- The player's name</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">madden_rank</span>
+                                <span class="param-desc">- Madden's official rank</span>
+                            </div>
+                            <div class="param">
+                                <span class="param-name">potential_rank</span>
+                                <span class="param-desc">- Custom potential rank</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/newseason</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Start a new season in the current league.</p>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/newleague</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Create a new league and set it as active.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">name</span>
+                                <span class="param-desc">- Name for the new league</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-card">
+                        <div class="command-header">
+                            <span class="command-name">/setleague</span>
+                            <span class="command-tag admin">Admin</span>
+                        </div>
+                        <p class="command-description">Switch to a different league.</p>
+                        <div class="command-params">
+                            <h5>Parameters</h5>
+                            <div class="param">
+                                <span class="param-name">league_number</span>
+                                <span class="param-desc">- The league number to switch to</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h3>&#128194; Data Structure</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">The bot uses JSON files for data storage, located in the <code>data/</code> directory:</p>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>players.json</h4>
+                        <p>Contains all player data including name, position, college, development trait, scouting report, rankings, and draft results.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>leagues.json</h4>
+                        <p>Tracks all leagues, their current seasons, and which league is currently active.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>predictions.json</h4>
+                        <p>Stores all user predictions with their results (pending, correct, wrong).</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Madden Drafts Bot Documentation &copy; 2026 | Part of Bot Documentation Hub</p>
+        </div>
+    </footer>
+</body>
+</html>

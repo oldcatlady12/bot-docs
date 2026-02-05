@@ -83,6 +83,32 @@
             font-size: 0.85rem;
         }
 
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 0;
+            margin-left: 40px;
+        }
+
+        .tab-link {
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-link.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+        }
+
         /* Main Content */
         main {
             padding: 40px 0;
@@ -292,6 +318,10 @@
                     <div class="logo-icon">&#128218;</div>
                     <h1>Bot Documentation Hub</h1>
                 </div>
+                <nav class="tab-nav">
+                    <a href="index.html" class="tab-link active">&#128218; Bot Docs</a>
+                    <a href="draft-guide.html" class="tab-link">&#127944; Draft Guide</a>
+                </nav>
                 <div class="last-updated">
                     Last Updated: <span id="lastUpdated"></span>
                 </div>
@@ -386,32 +416,31 @@
                     </div>
                 </a>
 
-                <!-- MW Fantasy Bot -->
-                <a href="mw-fantasy-bot.html" class="bot-card">
+                <!-- Madden Drafts Bot -->
+                <a href="madden-drafts-bot.html" class="bot-card">
                     <div class="bot-header">
                         <div class="bot-icon mw-fantasy">&#127944;</div>
                         <div class="bot-info">
-                            <h3>M.W Fantasy Bot</h3>
+                            <h3>Madden Drafts Bot</h3>
                             <div class="bot-tech">
                                 <span class="tech-badge">Python</span>
                                 <span class="tech-badge">discord.py</span>
-                                <span class="tech-badge">SQLite</span>
-                                <span class="tech-badge">EA API</span>
+                                <span class="tech-badge">JSON</span>
                             </div>
                         </div>
                     </div>
                     <p class="bot-description">
-                        Fantasy football for EA Madden franchises. Daily Fantasy, Season-Long leagues, betting, economy system, and EA Madden integration.
+                        Madden franchise draft scouting and predictions. View rankings, scouting reports, make predictions, and track multi-league/season draft data.
                     </p>
                     <div class="bot-features">
-                        <span class="feature-tag">Daily Fantasy</span>
-                        <span class="feature-tag">Season Leagues</span>
-                        <span class="feature-tag">Drafts</span>
-                        <span class="feature-tag">Betting</span>
+                        <span class="feature-tag">Scouting Reports</span>
+                        <span class="feature-tag">Rankings</span>
+                        <span class="feature-tag">Predictions</span>
+                        <span class="feature-tag">Multi-League</span>
                     </div>
                     <div class="bot-status">
                         <span class="status-dot active"></span>
-                        <span class="status-text">Active - 81 Commands</span>
+                        <span class="status-text">Active - 12 Commands</span>
                     </div>
                 </a>
 
