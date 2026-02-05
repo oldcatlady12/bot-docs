@@ -130,6 +130,16 @@
             font-size: 0.9rem;
         }
 
+        .new-badge {
+            background: var(--accent-green);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
         /* Stats Section */
         .stats {
             display: grid;
@@ -279,6 +289,49 @@
             font-size: 0.85rem;
         }
 
+        /* UI Preview */
+        .ui-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .ui-preview h4 {
+            margin-bottom: 16px;
+            color: var(--accent-gold);
+        }
+
+        .ui-container {
+            background: #2b2d31;
+            border-radius: 8px;
+            padding: 16px;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .ui-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .ui-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .ui-separator {
+            border-top: 1px solid #4f545c;
+            margin: 12px 0;
+        }
+
+        .ui-footer {
+            font-size: 0.8rem;
+            color: #72767d;
+            margin-top: 8px;
+        }
+
         /* Setup Section */
         .setup-steps {
             max-width: 800px;
@@ -321,6 +374,37 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.9rem;
             overflow-x: auto;
+        }
+
+        /* Leaderboard Types */
+        .leaderboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .leaderboard-type {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .leaderboard-type .lb-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .leaderboard-type h5 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .leaderboard-type p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
 
         /* Footer */
@@ -377,15 +461,16 @@
                 <div class="hero-content">
                     <h2>Complete Discord Economy System</h2>
                     <p>
-                        A feature-rich economy bot with banking, stocks, lottery, shops, and activity rewards.
-                        Built with TypeScript for reliability and scalability. Engage your community with
-                        a full virtual economy ecosystem.
+                        A feature-rich multi-server economy bot with banking, lottery, shops, currency exchange,
+                        and activity rewards. Built with TypeScript and featuring Discord's modern
+                        Components V2 UI for a sleek, interactive experience.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-badge">TypeScript</span>
                         <span class="tech-badge">Discord.js v14</span>
+                        <span class="tech-badge">Prisma ORM</span>
                         <span class="tech-badge">SQLite</span>
-                        <span class="tech-badge">Node.js</span>
+                        <span class="tech-badge">Components V2 <span class="new-badge">NEW</span></span>
                     </div>
                 </div>
             </div>
@@ -395,16 +480,16 @@
         <div class="container">
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-value">25+</div>
+                    <div class="stat-value">20+</div>
                     <div class="stat-label">Commands</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">6</div>
+                    <div class="stat-value">5</div>
                     <div class="stat-label">Economy Systems</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">2</div>
-                    <div class="stat-label">Command Types</div>
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Leaderboard Types</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">24/7</div>
@@ -420,66 +505,130 @@
                 <div class="economy-grid">
                     <div class="economy-card">
                         <div class="economy-icon">💵</div>
-                        <h4>Currency</h4>
-                        <p>Earn coins through activity, transfers, and rewards</p>
+                        <h4>Multi-Currency</h4>
+                        <p>Each server has its own currency with custom name & emoji</p>
                     </div>
                     <div class="economy-card">
                         <div class="economy-icon">🏦</div>
                         <h4>Banking</h4>
-                        <p>Deposit, withdraw, earn interest on savings</p>
-                    </div>
-                    <div class="economy-card">
-                        <div class="economy-icon">📈</div>
-                        <h4>Stocks</h4>
-                        <p>Buy and sell virtual stocks with real-time prices</p>
-                    </div>
-                    <div class="economy-card">
-                        <div class="economy-icon">🎰</div>
-                        <h4>Lottery</h4>
-                        <p>Daily and weekly lottery drawings</p>
-                    </div>
-                    <div class="economy-card">
-                        <div class="economy-icon">🛒</div>
-                        <h4>Shop</h4>
-                        <p>Buy roles, items, and perks</p>
+                        <p>View all accounts across servers, track earnings & spending</p>
                     </div>
                     <div class="economy-card">
                         <div class="economy-icon">💱</div>
-                        <h4>Exchange</h4>
-                        <p>Currency exchange between servers</p>
+                        <h4>Exchange Panel</h4>
+                        <p>Live exchange rates panel with currency dropdowns</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🎰</div>
+                        <h4>Lottery Panel</h4>
+                        <p>Daily, weekly & monthly lotteries with ticket system</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🛒</div>
+                        <h4>Server Shop</h4>
+                        <p>Buy roles, items, and perks with server currency</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🏆</div>
+                        <h4>Leaderboards</h4>
+                        <p>6 different ranking types with top 5 display</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section -->
+        <!-- Components V2 UI Section -->
         <section class="section">
             <div class="container">
-                <h3><span class="section-icon">✨</span> Key Features</h3>
+                <h3><span class="section-icon">✨</span> Modern UI with Components V2 <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    All bot messages now use Discord's Components V2 format for a cleaner, more interactive experience
+                    with colored accent bars, rich text formatting, and visual separators.
+                </p>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <h4>📊 Activity Rewards</h4>
-                        <p>Earn currency automatically by sending messages, reacting, joining voice channels, and being active in the server.</p>
+                        <h4>🎨 Accent Colors</h4>
+                        <p>Each section has a colored accent bar for visual organization - gold for headers, blue for info, green for success.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>🏦 Banking System</h4>
-                        <p>Deposit money to earn interest over time. Set up savings accounts with different interest rates and terms.</p>
+                        <h4>📝 Rich Text</h4>
+                        <p>Support for headings (#, ##), bold text, and markdown formatting within component containers.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>📈 Stock Market</h4>
-                        <p>Virtual stock market with fluctuating prices. Buy low, sell high! Track your portfolio and trading history.</p>
+                        <h4>➖ Separators</h4>
+                        <p>Visual divider lines between sections for cleaner organization and easier reading.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>🎰 Lottery System</h4>
-                        <p>Daily and weekly lottery drawings. Buy tickets for a chance to win the jackpot!</p>
+                        <h4>🔘 Interactive Buttons</h4>
+                        <p>Refresh buttons, pagination, and action buttons integrated seamlessly into the new UI.</p>
                     </div>
-                    <div class="feature-card">
-                        <h4>🛒 Server Shop</h4>
-                        <p>Admins can create custom shop items including roles, custom commands, and special perks.</p>
+                </div>
+
+                <div class="ui-preview">
+                    <h4>Example: Leaderboard Display</h4>
+                    <div class="ui-container">
+                        <div class="ui-title">💰 Server Balance Leaderboard</div>
+                        <div class="ui-separator"></div>
+                        <div class="ui-content">
+                            🥇 PlayerOne<br>
+                            └ 🪙 15,230<br><br>
+                            🥈 PlayerTwo<br>
+                            └ 🪙 12,450<br><br>
+                            🥉 PlayerThree<br>
+                            └ 🪙 9,800<br><br>
+                            <strong>4.</strong> PlayerFour<br>
+                            └ 🪙 7,320<br><br>
+                            <strong>5.</strong> PlayerFive<br>
+                            └ 🪙 5,100
+                        </div>
+                        <div class="ui-separator"></div>
+                        <div class="ui-content">
+                            <strong>📍 Your Position</strong><br>
+                            Rank #12 with 2,450
+                        </div>
+                        <div class="ui-footer">Page 1/5 • 47 total entries</div>
                     </div>
-                    <div class="feature-card">
-                        <h4>🏆 Leaderboards</h4>
-                        <p>Compete for the top spot on wealth leaderboards. Track richest members and most active traders.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Types Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🏆</span> Leaderboard Categories</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                    Six different leaderboard types to track various achievements. Each displays the top 5 entries with pagination.
+                </p>
+                <div class="leaderboard-grid">
+                    <div class="leaderboard-type">
+                        <div class="lb-icon">💰</div>
+                        <h5>Server Balance</h5>
+                        <p>Richest in current server</p>
+                    </div>
+                    <div class="leaderboard-type">
+                        <div class="lb-icon">🌍</div>
+                        <h5>Global Net Worth</h5>
+                        <p>Total wealth across all servers</p>
+                    </div>
+                    <div class="leaderboard-type">
+                        <div class="lb-icon">🔄</div>
+                        <h5>Most Transfers</h5>
+                        <p>Most transactions made</p>
+                    </div>
+                    <div class="leaderboard-type">
+                        <div class="lb-icon">🌐</div>
+                        <h5>Currencies Owned</h5>
+                        <p>Most different server currencies</p>
+                    </div>
+                    <div class="leaderboard-type">
+                        <div class="lb-icon">🎰</div>
+                        <h5>Lottery Wins</h5>
+                        <p>Most lottery victories</p>
+                    </div>
+                    <div class="leaderboard-type">
+                        <div class="lb-icon">⚡</div>
+                        <h5>Most Active</h5>
+                        <p>Highest activity score</p>
                     </div>
                 </div>
             </div>
@@ -500,92 +649,67 @@
                     <tbody>
                         <tr>
                             <td><span class="command-name">/balance</span></td>
-                            <td>Check your current wallet and bank balance.</td>
+                            <td>Check your or another user's balance in the current server.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/bank</span></td>
+                            <td>View your bank overview with all accounts across servers.</td>
                             <td>Everyone</td>
                         </tr>
                         <tr>
                             <td><span class="command-name">/transfer</span></td>
-                            <td>Send money to another user.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/bank deposit</span></td>
-                            <td>Deposit money from wallet to bank.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/bank withdraw</span></td>
-                            <td>Withdraw money from bank to wallet.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/bank interest</span></td>
-                            <td>View your earned interest.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/stocks buy</span></td>
-                            <td>Purchase stocks at current market price.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/stocks sell</span></td>
-                            <td>Sell stocks from your portfolio.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/stocks portfolio</span></td>
-                            <td>View your stock holdings and performance.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/lottery buy</span></td>
-                            <td>Purchase lottery tickets.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/lottery jackpot</span></td>
-                            <td>View current jackpot amount.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/shop view</span></td>
-                            <td>Browse available shop items.</td>
-                            <td>Everyone</td>
-                        </tr>
-                        <tr>
-                            <td><span class="command-name">/shop buy</span></td>
-                            <td>Purchase an item from the shop.</td>
+                            <td>Send currency to another user in the same server.</td>
                             <td>Everyone</td>
                         </tr>
                         <tr>
                             <td><span class="command-name">/exchange</span></td>
-                            <td>Exchange currency with other servers.</td>
+                            <td>Exchange currency between different servers or to BotCoin.</td>
                             <td>Everyone</td>
                         </tr>
                         <tr>
                             <td><span class="command-name">/leaderboard</span></td>
-                            <td>View wealth and activity leaderboards.</td>
+                            <td>View various leaderboards (balance, global, transfers, etc).</td>
                             <td>Everyone</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/economy give</span></td>
-                            <td>Give currency to a user (admin).</td>
+                            <td><span class="command-name">/lottery</span></td>
+                            <td>View lottery information and your tickets.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/shop browse</span></td>
+                            <td>Browse available items in the server shop.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/shop inventory</span></td>
+                            <td>View your purchased items.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/admin currency</span></td>
+                            <td>Set server currency name and emoji.</td>
                             <td>Admin</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/economy take</span></td>
-                            <td>Remove currency from a user (admin).</td>
+                            <td><span class="command-name command-admin">/admin rates</span></td>
+                            <td>Configure earning rates for messages/voice/reactions.</td>
                             <td>Admin</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/shop add</span></td>
-                            <td>Add a new item to the shop (admin).</td>
+                            <td><span class="command-name command-admin">/admin exchange panel</span></td>
+                            <td>Create an exchange rate panel in a channel.</td>
                             <td>Admin</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-admin">/lottery draw</span></td>
-                            <td>Force a lottery drawing (admin).</td>
+                            <td><span class="command-name command-admin">/admin lottery panel</span></td>
+                            <td>Create a lottery panel in a channel.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/admin shop add</span></td>
+                            <td>Add a new item to the shop.</td>
                             <td>Admin</td>
                         </tr>
                     </tbody>
@@ -604,24 +728,29 @@
                     <thead>
                         <tr>
                             <th>Command</th>
+                            <th>Aliases</th>
                             <th>Description</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><span class="command-name command-prefix">!bal</span></td>
+                            <td><span class="command-name command-prefix">!balance</span></td>
+                            <td>!bal, !b</td>
                             <td>Quick balance check</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-prefix">!pay @user amount</span></td>
-                            <td>Quick transfer to another user</td>
+                            <td><span class="command-name command-prefix">!transfer</span></td>
+                            <td>!pay, !send</td>
+                            <td>Send currency to another user</td>
                         </tr>
                         <tr>
-                            <td><span class="command-name command-prefix">!lb</span></td>
-                            <td>Quick leaderboard view</td>
+                            <td><span class="command-name command-prefix">!leaderboard</span></td>
+                            <td>!lb, !top, !rank</td>
+                            <td>View server leaderboard</td>
                         </tr>
                         <tr>
                             <td><span class="command-name command-prefix">!help</span></td>
+                            <td>-</td>
                             <td>Show all available commands</td>
                         </tr>
                     </tbody>
@@ -632,26 +761,54 @@
         <!-- Activity Rewards Section -->
         <section class="section">
             <div class="container">
-                <h3><span class="section-icon">🎯</span> Activity Rewards</h3>
+                <h3><span class="section-icon">🎯</span> Activity Rewards & Lottery Tickets</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 24px;">
-                    Users automatically earn currency through various server activities:
+                    Users earn currency and lottery tickets through server activity:
                 </p>
                 <div class="features-grid">
                     <div class="feature-card">
                         <h4>💬 Messages</h4>
-                        <p>Earn coins for each message sent (with cooldown to prevent spam).</p>
+                        <p>Earn coins per message (with cooldown). Also earns lottery tickets based on message count.</p>
                     </div>
                     <div class="feature-card">
                         <h4>😀 Reactions</h4>
-                        <p>Earn coins for adding reactions to messages.</p>
+                        <p>Earn coins for adding reactions. Every 5 reactions earns a lottery ticket.</p>
                     </div>
                     <div class="feature-card">
                         <h4>🎤 Voice Activity</h4>
-                        <p>Earn coins for time spent in voice channels.</p>
+                        <p>Earn coins per minute in voice channels (must be unmuted with others). Also earns lottery tickets.</p>
                     </div>
                     <div class="feature-card">
-                        <h4>📅 Daily Bonus</h4>
-                        <p>Claim daily rewards with streak multipliers.</p>
+                        <h4>🎫 Lottery Tickets</h4>
+                        <p>Tickets are automatically entered into Daily, Weekly, and Monthly lottery drawings.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lottery System Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🎰</span> Lottery System</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Three lottery types with automatic drawings and tiered prizes:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🌅 Daily Lottery</h4>
+                        <p>Drawn at midnight UTC daily. 1st, 2nd, and 3rd place prizes in BotCoin.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📅 Weekly Lottery</h4>
+                        <p>Drawn Sunday midnight UTC. Larger prizes for weekly participation.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🗓️ Monthly Lottery</h4>
+                        <p>Drawn 1st of each month. Biggest jackpots for dedicated participants.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Lottery Panel</h4>
+                        <p>Admin-created panel showing all lotteries, ticket counts, recent winners, and how to earn tickets.</p>
                     </div>
                 </div>
             </div>
@@ -677,17 +834,18 @@
                             <div class="code-block">
 DISCORD_TOKEN=your_bot_token_here<br>
 CLIENT_ID=your_client_id<br>
-DATABASE_PATH=./data/economy.db
+DATABASE_URL="file:./dev.db"
                             </div>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
                         <div class="step-content">
-                            <h4>Install Dependencies</h4>
-                            <p>Install Node.js packages:</p>
+                            <h4>Install & Setup Database</h4>
+                            <p>Install dependencies and initialize the database:</p>
                             <div class="code-block">
-npm install
+npm install<br>
+npx prisma db push
                             </div>
                         </div>
                     </div>
@@ -695,13 +853,41 @@ npm install
                         <div class="step-number">4</div>
                         <div class="step-content">
                             <h4>Run the Bot</h4>
-                            <p>Start the bot using ts-node:</p>
+                            <p>Start the bot:</p>
                             <div class="code-block">
 npx ts-node src/index.ts<br>
-# Or for production:<br>
-npm run build && npm start
+# Or for development with auto-reload:<br>
+npm run dev
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Setup -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">⚙️</span> Admin Panel Setup</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Create interactive panels in your server for members to use:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🔄 Exchange Panel</h4>
+                        <p>Use <code>/admin exchange panel #channel</code> to create a live exchange rate panel with currency dropdowns. Updates every 5 minutes.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎰 Lottery Panel</h4>
+                        <p>Use <code>/admin lottery panel #channel</code> to create a lottery info panel showing all drawings, tickets, and recent winners.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💰 Currency Setup</h4>
+                        <p>Use <code>/admin currency name emoji</code> to set your server's custom currency name and emoji.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Rate Config</h4>
+                        <p>Use <code>/admin rates</code> to configure how much users earn from messages, voice, and reactions.</p>
                     </div>
                 </div>
             </div>
@@ -748,6 +934,9 @@ npm run build && npm start
             <p>Many Worlds Economy Bot Documentation | <a href="index.html">Back to Bot Hub</a></p>
             <p style="margin-top: 10px; font-size: 0.85rem;">
                 Build a thriving virtual economy in your Discord server!
+            </p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">
+                Last updated: February 2026 | Components V2 UI Update
             </p>
         </div>
     </footer>
