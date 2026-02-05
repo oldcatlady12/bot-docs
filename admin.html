@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Madden Draft Guide</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --accent-red: #f4212e;
+            --accent-yellow: #ffd400;
+            --accent-gold: #d4af37;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 0;
+            margin-left: 40px;
+        }
+
+        .tab-link {
+            padding: 12px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-link.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+        }
+
+        /* Main Content */
+        main {
+            padding: 40px 0;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Admin Warning */
+        .admin-warning {
+            background: rgba(255, 122, 0, 0.1);
+            border: 1px solid var(--accent-orange);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-warning .icon {
+            font-size: 1.5rem;
+        }
+
+        .admin-warning p {
+            color: var(--text-secondary);
+        }
+
+        /* Admin Grid Layout */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Cards */
+        .admin-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(29, 155, 240, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent-green), #00d68f);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 186, 124, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+            color: white;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--accent-red), #ff5252);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(244, 33, 46, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Player List for Editing */
+        .player-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .player-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .player-list-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .player-list-item.selected {
+            border: 2px solid var(--accent-blue);
+        }
+
+        .player-list-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .player-list-rank {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .player-list-name {
+            font-weight: 600;
+        }
+
+        .player-list-meta {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .player-list-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Export Section */
+        .export-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .export-info {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .export-info code {
+            display: block;
+            background: var(--bg-primary);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: var(--accent-green);
+        }
+
+        .toast.error {
+            border-color: var(--accent-red);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .tab-nav {
+                margin-left: 0;
+            }
+
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">&#128218;</div>
+                    <h1>Bot Documentation Hub</h1>
+                </div>
+                <nav class="tab-nav">
+                    <a href="index.html" class="tab-link">&#128218; Bot Docs</a>
+                    <a href="draft-guide.html" class="tab-link active">&#127944; Draft Guide</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-title">
+                <h2>&#128274; Admin Panel</h2>
+                <p>Manage players, set draft status, and export data</p>
+            </div>
+
+            <!-- Admin Warning -->
+            <div class="admin-warning">
+                <span class="icon">&#9888;</span>
+                <div>
+                    <strong>Local Admin Tool</strong>
+                    <p>Changes made here are stored in your browser's localStorage. Export JSON to sync with the Discord bot.</p>
+                </div>
+            </div>
+
+            <!-- Admin Grid -->
+            <div class="admin-grid">
+                <!-- Add/Edit Player Form -->
+                <div class="admin-card">
+                    <h3 class="card-title">&#128100; <span id="formTitle">Add New Player</span></h3>
+                    <form id="playerForm" onsubmit="savePlayer(event)">
+                        <input type="hidden" id="playerId">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Player Name *</label>
+                                <input type="text" id="playerName" required placeholder="e.g., Mason Williams">
+                            </div>
+                            <div class="form-group">
+                                <label>Position *</label>
+                                <select id="playerPosition" required>
+                                    <option value="">Select Position</option>
+                                    <option value="QB">QB - Quarterback</option>
+                                    <option value="HB">HB - Halfback</option>
+                                    <option value="WR">WR - Wide Receiver</option>
+                                    <option value="TE">TE - Tight End</option>
+                                    <option value="LT">LT - Left Tackle</option>
+                                    <option value="LG">LG - Left Guard</option>
+                                    <option value="C">C - Center</option>
+                                    <option value="RG">RG - Right Guard</option>
+                                    <option value="RT">RT - Right Tackle</option>
+                                    <option value="DE">DE - Defensive End</option>
+                                    <option value="DT">DT - Defensive Tackle</option>
+                                    <option value="OLB">OLB - Outside Linebacker</option>
+                                    <option value="MLB">MLB - Middle Linebacker</option>
+                                    <option value="CB">CB - Cornerback</option>
+                                    <option value="FS">FS - Free Safety</option>
+                                    <option value="SS">SS - Strong Safety</option>
+                                    <option value="K">K - Kicker</option>
+                                    <option value="P">P - Punter</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>College *</label>
+                                <input type="text" id="playerCollege" required placeholder="e.g., Arizona State">
+                            </div>
+                            <div class="form-group">
+                                <label>Age *</label>
+                                <input type="number" id="playerAge" required min="18" max="30" placeholder="21">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Archetype</label>
+                                <input type="text" id="playerArchetype" placeholder="e.g., Field General">
+                            </div>
+                            <div class="form-group">
+                                <label>Throwing Hand (QB only)</label>
+                                <select id="playerThrowHand">
+                                    <option value="">N/A</option>
+                                    <option value="Right">Right</option>
+                                    <option value="Left">Left</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Madden Rank *</label>
+                                <input type="number" id="playerMaddenRank" required min="1" placeholder="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Potential Rank *</label>
+                                <input type="number" id="playerPotentialRank" required min="1" placeholder="1">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Development Trait</label>
+                                <select id="playerDevelopment">
+                                    <option value="Normal">Normal</option>
+                                    <option value="Star">Star</option>
+                                    <option value="Superstar">Superstar</option>
+                                    <option value="X-Factor">X-Factor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="visibility: hidden;">Reveal</label>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="playerDevRevealed">
+                                    <label for="playerDevRevealed">Reveal Dev Trait</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <input type="url" id="playerImage" placeholder="https://example.com/player-image.jpg">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Scouting Report</label>
+                            <textarea id="playerScoutingReport" placeholder="Detailed scouting report..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Strengths (comma-separated)</label>
+                                <input type="text" id="playerStrengths" placeholder="Elite arm, Leadership, Accuracy">
+                            </div>
+                            <div class="form-group">
+                                <label>Weaknesses (comma-separated)</label>
+                                <input type="text" id="playerWeaknesses" placeholder="Limited mobility, Footwork">
+                            </div>
+                        </div>
+
+                        <h4 style="margin: 20px 0 16px; color: var(--text-secondary);">Draft Status</h4>
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label>Drafted Team</label>
+                                <select id="playerDraftedTeam">
+                                    <option value="">Not Drafted</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Draft Round</label>
+                                <input type="number" id="playerDraftRound" min="1" max="7" placeholder="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Draft Pick</label>
+                                <input type="number" id="playerDraftPick" min="1" max="256" placeholder="1">
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">&#128190; Save Player</button>
+                            <button type="button" class="btn btn-secondary" onclick="clearForm()">&#128260; Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Player List -->
+                <div class="admin-card">
+                    <h3 class="card-title">&#128203; Existing Players</h3>
+                    <div class="form-group">
+                        <input type="text" id="playerSearch" placeholder="Search players..." oninput="filterPlayerList()">
+                    </div>
+                    <div class="player-list" id="playerList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Section -->
+            <div class="export-section">
+                <h3 class="card-title">&#128230; Export & Sync Data</h3>
+                <div class="export-info">
+                    <p><strong>How to sync with the Discord bot:</strong></p>
+                    <ol style="margin-left: 20px; color: var(--text-secondary);">
+                        <li>Click "Export Players JSON" below</li>
+                        <li>Save the downloaded file to: <code>madden-drafts-bot/data/players.json</code></li>
+                        <li>Restart the Discord bot to load the new data</li>
+                    </ol>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-success" onclick="exportPlayersJSON()">&#128230; Export Players JSON</button>
+                    <button class="btn btn-warning" onclick="exportDraftDataJS()">&#128196; Export draft-data.js</button>
+                    <button class="btn btn-danger" onclick="clearAllData()">&#128465; Clear All Local Data</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Madden Draft Guide &copy; 2026 | Part of <a href="index.html">Bot Documentation Hub</a></p>
+            <p style="margin-top: 8px;"><a href="players-list.html">All Players</a> | <a href="draft-guide.html">Draft Guide</a></p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">&#9989;</span>
+        <span class="toast-message">Success!</span>
+    </div>
+
+    <script src="js/draft-data.js"></script>
+    <script>
+        // Local storage key
+        const STORAGE_KEY = 'madden_draft_admin_players';
+
+        // Get local players (merged with base data)
+        function getLocalPlayers() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            // Initialize with existing data from draft-data.js
+            return [...DRAFT_DATA.players];
+        }
+
+        // Save players to local storage
+        function saveLocalPlayers(players) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
+        }
+
+        // Initialize NFL teams dropdown
+        function initTeamsDropdown() {
+            const select = document.getElementById('playerDraftedTeam');
+            NFL_TEAMS.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team;
+                option.textContent = team;
+                select.appendChild(option);
+            });
+        }
+
+        // Render player list
+        function renderPlayerList() {
+            const container = document.getElementById('playerList');
+            const searchTerm = document.getElementById('playerSearch').value.toLowerCase();
+            const players = getLocalPlayers();
+
+            const filtered = players.filter(p =>
+                p.name.toLowerCase().includes(searchTerm) ||
+                p.college.toLowerCase().includes(searchTerm) ||
+                p.position.toLowerCase().includes(searchTerm)
+            ).sort((a, b) => a.madden_rank - b.madden_rank);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                        <p>No players found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(player => `
+                <div class="player-list-item" onclick="editPlayer(${player.id})">
+                    <div class="player-list-info">
+                        <div class="player-list-rank">${player.madden_rank}</div>
+                        <div>
+                            <div class="player-list-name">${player.name}</div>
+                            <div class="player-list-meta">${player.position} - ${player.college}</div>
+                        </div>
+                    </div>
+                    <div class="player-list-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); editPlayer(${player.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); deletePlayer(${player.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterPlayerList() {
+            renderPlayerList();
+        }
+
+        // Edit player
+        function editPlayer(id) {
+            const players = getLocalPlayers();
+            const player = players.find(p => p.id === id);
+            if (!player) return;
+
+            document.getElementById('formTitle').textContent = 'Edit Player';
+            document.getElementById('playerId').value = player.id;
+            document.getElementById('playerName').value = player.name;
+            document.getElementById('playerPosition').value = player.position;
+            document.getElementById('playerCollege').value = player.college;
+            document.getElementById('playerAge').value = player.age;
+            document.getElementById('playerArchetype').value = player.archetype || '';
+            document.getElementById('playerThrowHand').value = player.throw_hand || '';
+            document.getElementById('playerMaddenRank').value = player.madden_rank;
+            document.getElementById('playerPotentialRank').value = player.potential_rank;
+            document.getElementById('playerDevelopment').value = player.development || 'Normal';
+            document.getElementById('playerDevRevealed').checked = player.dev_revealed || false;
+            document.getElementById('playerImage').value = player.image_url || '';
+            document.getElementById('playerScoutingReport').value = player.scouting_report || '';
+            document.getElementById('playerStrengths').value = (player.strengths || []).join(', ');
+            document.getElementById('playerWeaknesses').value = (player.weaknesses || []).join(', ');
+            document.getElementById('playerDraftedTeam').value = player.drafted_team || '';
+            document.getElementById('playerDraftRound').value = player.draft_round || '';
+            document.getElementById('playerDraftPick').value = player.draft_pick || '';
+
+            // Scroll to form
+            document.getElementById('playerForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Save player
+        function savePlayer(event) {
+            event.preventDefault();
+
+            const players = getLocalPlayers();
+            const editId = document.getElementById('playerId').value;
+
+            const playerData = {
+                name: document.getElementById('playerName').value,
+                position: document.getElementById('playerPosition').value,
+                college: document.getElementById('playerCollege').value,
+                age: parseInt(document.getElementById('playerAge').value),
+                archetype: document.getElementById('playerArchetype').value || null,
+                throw_hand: document.getElementById('playerThrowHand').value || null,
+                madden_rank: parseInt(document.getElementById('playerMaddenRank').value),
+                potential_rank: parseInt(document.getElementById('playerPotentialRank').value),
+                development: document.getElementById('playerDevelopment').value,
+                dev_revealed: document.getElementById('playerDevRevealed').checked,
+                image_url: document.getElementById('playerImage').value || null,
+                scouting_report: document.getElementById('playerScoutingReport').value || null,
+                strengths: document.getElementById('playerStrengths').value
+                    ? document.getElementById('playerStrengths').value.split(',').map(s => s.trim()).filter(s => s)
+                    : [],
+                weaknesses: document.getElementById('playerWeaknesses').value
+                    ? document.getElementById('playerWeaknesses').value.split(',').map(s => s.trim()).filter(s => s)
+                    : [],
+                drafted_team: document.getElementById('playerDraftedTeam').value || null,
+                draft_round: document.getElementById('playerDraftRound').value ? parseInt(document.getElementById('playerDraftRound').value) : null,
+                draft_pick: document.getElementById('playerDraftPick').value ? parseInt(document.getElementById('playerDraftPick').value) : null,
+                league_id: 1,
+                season: 1
+            };
+
+            if (editId) {
+                // Update existing player
+                const index = players.findIndex(p => p.id === parseInt(editId));
+                if (index !== -1) {
+                    playerData.id = parseInt(editId);
+                    players[index] = playerData;
+                    showToast('Player updated successfully!', 'success');
+                }
+            } else {
+                // Add new player
+                const maxId = players.reduce((max, p) => Math.max(max, p.id), 0);
+                playerData.id = maxId + 1;
+                players.push(playerData);
+                showToast('Player added successfully!', 'success');
+            }
+
+            saveLocalPlayers(players);
+            renderPlayerList();
+            clearForm();
+        }
+
+        // Delete player
+        function deletePlayer(id) {
+            if (!confirm('Are you sure you want to delete this player?')) return;
+
+            const players = getLocalPlayers();
+            const filtered = players.filter(p => p.id !== id);
+            saveLocalPlayers(filtered);
+            renderPlayerList();
+            showToast('Player deleted', 'success');
+        }
+
+        // Clear form
+        function clearForm() {
+            document.getElementById('formTitle').textContent = 'Add New Player';
+            document.getElementById('playerForm').reset();
+            document.getElementById('playerId').value = '';
+        }
+
+        // Export players as JSON (for bot)
+        function exportPlayersJSON() {
+            const players = getLocalPlayers();
+            const dataStr = JSON.stringify(players, null, 2);
+            downloadFile(dataStr, 'players.json', 'application/json');
+            showToast('Players JSON exported!', 'success');
+        }
+
+        // Export as draft-data.js (for website)
+        function exportDraftDataJS() {
+            const players = getLocalPlayers();
+            const league = getCurrentLeague();
+
+            const jsContent = `// Madden Draft Guide Data
+// This file is generated from the bot's data files
+// Last updated: ${new Date().toISOString().split('T')[0]}
+
+const DRAFT_DATA = {
+  currentLeagueId: ${DRAFT_DATA.currentLeagueId},
+
+  leagues: ${JSON.stringify(DRAFT_DATA.leagues, null, 4).replace(/\n/g, '\n  ')},
+
+  players: ${JSON.stringify(players, null, 4).replace(/\n/g, '\n  ')},
+
+  predictions: ${JSON.stringify(DRAFT_DATA.predictions || [], null, 4).replace(/\n/g, '\n  ')}
+};
+
+// Helper functions for data access
+function getCurrentLeague() {
+  return DRAFT_DATA.leagues.find(l => l.id === DRAFT_DATA.currentLeagueId);
+}
+
+function getPlayersByPosition(position) {
+  const league = getCurrentLeague();
+  return DRAFT_DATA.players
+    .filter(p => p.position === position && p.league_id === league.id && p.season === league.current_season)
+    .sort((a, b) => a.madden_rank - b.madden_rank);
+}
+
+function getTopProspects(count = 3) {
+  const league = getCurrentLeague();
+  return DRAFT_DATA.players
+    .filter(p => p.league_id === league.id && p.season === league.current_season)
+    .sort((a, b) => a.madden_rank - b.madden_rank)
+    .slice(0, count);
+}
+
+function getPlayerById(id) {
+  return DRAFT_DATA.players.find(p => p.id === parseInt(id));
+}
+
+function getAllPlayers() {
+  const league = getCurrentLeague();
+  return DRAFT_DATA.players
+    .filter(p => p.league_id === league.id && p.season === league.current_season)
+    .sort((a, b) => a.madden_rank - b.madden_rank);
+}
+
+function getPredictionsForPlayer(playerId) {
+  return DRAFT_DATA.predictions.filter(p => p.player_id === parseInt(playerId));
+}
+
+// Position display names
+const POSITION_NAMES = {
+  'QB': 'Quarterback',
+  'HB': 'Halfback',
+  'WR': 'Wide Receiver',
+  'TE': 'Tight End',
+  'OL': 'Offensive Line',
+  'LT': 'Left Tackle',
+  'LG': 'Left Guard',
+  'C': 'Center',
+  'RG': 'Right Guard',
+  'RT': 'Right Tackle',
+  'DL': 'Defensive Line',
+  'DE': 'Defensive End',
+  'DT': 'Defensive Tackle',
+  'LB': 'Linebacker',
+  'OLB': 'Outside Linebacker',
+  'MLB': 'Middle Linebacker',
+  'CB': 'Cornerback',
+  'S': 'Safety',
+  'FS': 'Free Safety',
+  'SS': 'Strong Safety',
+  'K': 'Kicker',
+  'P': 'Punter'
+};
+
+// NFL Teams for predictions
+const NFL_TEAMS = [
+  "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills",
+  "Carolina Panthers", "Chicago Bears", "Cincinnati Bengals", "Cleveland Browns",
+  "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers",
+  "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs",
+  "Las Vegas Raiders", "Los Angeles Chargers", "Los Angeles Rams", "Miami Dolphins",
+  "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants",
+  "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers",
+  "Seattle Seahawks", "Tampa Bay Buccaneers", "Tennessee Titans", "Washington Commanders"
+];
+`;
+
+            downloadFile(jsContent, 'draft-data.js', 'application/javascript');
+            showToast('draft-data.js exported!', 'success');
+        }
+
+        // Clear all local data
+        function clearAllData() {
+            if (!confirm('Are you sure you want to clear all local data? This will reset to the default players from the bot.')) return;
+
+            localStorage.removeItem(STORAGE_KEY);
+            renderPlayerList();
+            showToast('Local data cleared', 'success');
+        }
+
+        // Download file helper
+        function downloadFile(content, filename, contentType) {
+            const blob = new Blob([content], { type: contentType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.querySelector('.toast-message').textContent = message;
+            toast.className = 'toast ' + type;
+
+            if (type === 'success') {
+                toast.querySelector('.toast-icon').innerHTML = '&#9989;';
+            } else {
+                toast.querySelector('.toast-icon').innerHTML = '&#10060;';
+            }
+
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            initTeamsDropdown();
+            renderPlayerList();
+        });
+    </script>
+</body>
+</html>

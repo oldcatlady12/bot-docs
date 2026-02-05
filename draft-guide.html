@@ -134,6 +134,31 @@
             font-size: 1.1rem;
         }
 
+        /* Quick Links */
+        .quick-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .quick-link:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-secondary);
+        }
+
         /* League/Season Selector */
         .league-selector {
             background: var(--bg-card);
@@ -257,6 +282,15 @@
             padding: 12px;
             background: var(--bg-secondary);
             border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .ranking-item:hover {
+            background: var(--bg-primary);
+            transform: translateX(4px);
         }
 
         .rank-number {
@@ -269,6 +303,7 @@
             justify-content: center;
             font-weight: 700;
             font-size: 1.1rem;
+            flex-shrink: 0;
         }
 
         .rank-number.top-3 {
@@ -288,6 +323,15 @@
             color: var(--text-secondary);
         }
 
+        .ranking-position-badge {
+            background: var(--accent-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
         /* Player Cards Grid */
         .player-grid {
             display: grid;
@@ -302,6 +346,9 @@
             border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .player-card:hover {
@@ -358,6 +405,7 @@
             margin-bottom: 16px;
             color: var(--text-secondary);
             font-size: 0.9rem;
+            flex-wrap: wrap;
         }
 
         .player-meta span {
@@ -373,6 +421,11 @@
             font-size: 0.8rem;
             font-weight: 600;
             margin-bottom: 12px;
+        }
+
+        .dev-badge.hidden {
+            background: rgba(139, 152, 165, 0.2);
+            color: var(--text-secondary);
         }
 
         .dev-badge.star {
@@ -450,34 +503,32 @@
         }
 
         .strengths li::before {
-            content: "+" ;
+            content: "+ ";
             color: var(--accent-green);
-            margin-right: 4px;
         }
 
         .weaknesses li::before {
-            content: "-" ;
+            content: "- ";
             color: var(--accent-red);
-            margin-right: 4px;
         }
 
-        .drafted-info {
+        .view-details-btn {
+            display: block;
+            width: 100%;
             margin-top: 16px;
             padding: 12px;
-            background: var(--bg-secondary);
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+            color: white;
+            text-align: center;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
 
-        .drafted-info .round-pick {
-            font-weight: 700;
-            color: var(--accent-gold);
-        }
-
-        .drafted-info .team {
-            color: var(--text-primary);
+        .view-details-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
         }
 
         /* User Predictions Section */
@@ -489,49 +540,19 @@
             margin-bottom: 30px;
         }
 
-        .prediction-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 16px;
-            align-items: end;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .form-group select, .form-group input {
+        .discord-command {
             background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 10px 16px;
-            font-size: 1rem;
+            padding: 16px;
+            margin-bottom: 20px;
         }
 
-        .submit-btn {
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 24px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(29, 155, 240, 0.3);
+        .discord-command code {
+            background: var(--bg-primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-blue);
         }
 
         .prediction-list {
@@ -583,18 +604,18 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             color: var(--text-secondary);
         }
 
         .empty-state .icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            margin-bottom: 16px;
         }
 
-        .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+        .empty-state h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
             color: var(--text-primary);
         }
 
@@ -605,6 +626,15 @@
             padding: 24px 0;
             text-align: center;
             color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
 
         /* Responsive */
@@ -632,7 +662,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .prediction-form {
+            .strengths-weaknesses {
                 grid-template-columns: 1fr;
             }
 
@@ -668,6 +698,12 @@
                 <p>Scouting reports, rankings, and predictions for Madden franchise drafts</p>
             </div>
 
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <a href="players-list.html" class="quick-link">&#128203; View All Players</a>
+                <a href="admin.html" class="quick-link">&#128274; Admin Panel</a>
+            </div>
+
             <!-- League/Season Selector -->
             <div class="league-selector">
                 <div class="selector-row">
@@ -685,7 +721,7 @@
                     </div>
                     <div class="league-info">
                         <div class="league-name" id="currentLeagueName">Many Worlds League</div>
-                        <div>League #1, Season 1</div>
+                        <div id="leagueSeasonText">League #1, Season 1</div>
                     </div>
                 </div>
             </div>
@@ -704,47 +740,13 @@
                 <button class="position-tab" data-position="K">K/P</button>
             </div>
 
-            <!-- Madden Rankings -->
+            <!-- Madden Rankings by Position -->
             <div class="rankings-section">
                 <div class="section-header">
                     <h3 class="section-title">&#127942; Madden's Top <span id="positionRankTitle">QB</span> Rankings</h3>
                 </div>
                 <div class="rankings-list" id="rankingsList">
-                    <div class="ranking-item">
-                        <div class="rank-number top-3">1</div>
-                        <div class="ranking-info">
-                            <div class="ranking-name">Mason Williams</div>
-                            <div class="ranking-details">Arizona State | Star Dev</div>
-                        </div>
-                    </div>
-                    <div class="ranking-item">
-                        <div class="rank-number top-3">2</div>
-                        <div class="ranking-info">
-                            <div class="ranking-name">Jaelon Holt</div>
-                            <div class="ranking-details">Texas | Star Dev</div>
-                        </div>
-                    </div>
-                    <div class="ranking-item">
-                        <div class="rank-number top-3">3</div>
-                        <div class="ranking-info">
-                            <div class="ranking-name">Brian Sims</div>
-                            <div class="ranking-details">Michigan | Star Dev</div>
-                        </div>
-                    </div>
-                    <div class="ranking-item">
-                        <div class="rank-number">4</div>
-                        <div class="ranking-info">
-                            <div class="ranking-name">Khalil White</div>
-                            <div class="ranking-details">Colorado | Star Dev</div>
-                        </div>
-                    </div>
-                    <div class="ranking-item">
-                        <div class="rank-number">5</div>
-                        <div class="ranking-info">
-                            <div class="ranking-name">Donnie Brown</div>
-                            <div class="ranking-details">BYU | Star Dev</div>
-                        </div>
-                    </div>
+                    <!-- Populated by JavaScript -->
                 </div>
             </div>
 
@@ -753,161 +755,36 @@
                 <div class="section-header">
                     <h3 class="section-title">&#128203; Draft Predictions</h3>
                 </div>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">Use <code>/predict</code> in Discord to submit your predictions!</p>
+                <div class="discord-command">
+                    <p style="margin-bottom: 8px;">Submit predictions using Discord:</p>
+                    <code>/predict player_name:&lt;name&gt; pick_number:&lt;1-256&gt; team:&lt;team&gt;</code>
+                </div>
                 <div class="prediction-list" id="predictionsList">
-                    <div class="prediction-item">
-                        <div class="prediction-user">@JohnDoe</div>
-                        <div class="prediction-pick">Mason Williams - Pick #1 to Panthers</div>
-                        <div class="prediction-result pending">Pending</div>
-                    </div>
-                    <div class="prediction-item">
-                        <div class="prediction-user">@JaneDoe</div>
-                        <div class="prediction-pick">Mason Williams - Pick #3 to Giants</div>
-                        <div class="prediction-result pending">Pending</div>
-                    </div>
+                    <!-- Populated by JavaScript -->
                 </div>
             </div>
 
-            <!-- Player Cards -->
-            <h3 class="section-title" style="margin-bottom: 20px;">&#128100; <span id="positionTitle">Quarterback</span> Prospects</h3>
-            <div class="player-grid" id="playerGrid">
-                <!-- Mason Williams Card -->
-                <div class="player-card">
-                    <div class="player-image">&#128100;</div>
-                    <div class="player-content">
-                        <div class="player-header">
-                            <div class="player-name">Mason Williams</div>
-                            <div class="player-position">QB</div>
-                        </div>
-                        <div class="player-meta">
-                            <span>&#127891; Arizona State</span>
-                            <span>&#128197; 21 years old</span>
-                            <span>&#9994; Right-handed</span>
-                        </div>
-                        <div class="dev-badge star">&#11088; Star Development</div>
-                        <div class="scouting-report">
-                            <h4>Scouting Report</h4>
-                            <p>A true field general who orchestrates the offense with surgical precision. Williams brings elite pocket presence and the football IQ of a 10-year veteran. His ability to read defenses pre-snap and make adjustments sets him apart from his peers.</p>
-                            <div class="strengths-weaknesses">
-                                <div class="strengths">
-                                    <h5>Strengths</h5>
-                                    <ul>
-                                        <li>Elite field vision</li>
-                                        <li>Strong arm talent</li>
-                                        <li>Pocket awareness</li>
-                                        <li>Leadership qualities</li>
-                                    </ul>
-                                </div>
-                                <div class="weaknesses">
-                                    <h5>Weaknesses</h5>
-                                    <ul>
-                                        <li>Limited mobility</li>
-                                        <li>Needs better footwork</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="drafted-info" style="display: none;">
-                            <span class="round-pick">Round 1, Pick 1</span>
-                            <span class="team">Carolina Panthers</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Jaelon Holt Card -->
-                <div class="player-card">
-                    <div class="player-image">&#128100;</div>
-                    <div class="player-content">
-                        <div class="player-header">
-                            <div class="player-name">Jaelon Holt</div>
-                            <div class="player-position">QB</div>
-                        </div>
-                        <div class="player-meta">
-                            <span>&#127891; Texas</span>
-                            <span>&#128197; 22 years old</span>
-                            <span>&#9994; Right-handed</span>
-                        </div>
-                        <div class="dev-badge star">&#11088; Star Development</div>
-                        <div class="scouting-report">
-                            <h4>Scouting Report</h4>
-                            <p>Dual-threat quarterback with exceptional athleticism. Holt brings a dynamic element to the position with his ability to extend plays and create outside the pocket while still delivering accurate passes downfield.</p>
-                            <div class="strengths-weaknesses">
-                                <div class="strengths">
-                                    <h5>Strengths</h5>
-                                    <ul>
-                                        <li>Excellent mobility</li>
-                                        <li>Strong arm</li>
-                                        <li>Playmaking ability</li>
-                                        <li>Big-game performer</li>
-                                    </ul>
-                                </div>
-                                <div class="weaknesses">
-                                    <h5>Weaknesses</h5>
-                                    <ul>
-                                        <li>Accuracy inconsistent</li>
-                                        <li>Decision-making under pressure</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Brian Sims Card -->
-                <div class="player-card">
-                    <div class="player-image">&#128100;</div>
-                    <div class="player-content">
-                        <div class="player-header">
-                            <div class="player-name">Brian Sims</div>
-                            <div class="player-position">QB</div>
-                        </div>
-                        <div class="player-meta">
-                            <span>&#127891; Michigan</span>
-                            <span>&#128197; 23 years old</span>
-                            <span>&#9994; Right-handed</span>
-                        </div>
-                        <div class="dev-badge star">&#11088; Star Development</div>
-                        <div class="scouting-report">
-                            <h4>Scouting Report</h4>
-                            <p>Pro-ready quarterback with a cannon arm. Sims thrived in Michigan's pro-style offense and has the arm talent to make every throw in the NFL. His ability to drive the ball into tight windows is exceptional.</p>
-                            <div class="strengths-weaknesses">
-                                <div class="strengths">
-                                    <h5>Strengths</h5>
-                                    <ul>
-                                        <li>Strongest arm in class</li>
-                                        <li>Deep ball accuracy</li>
-                                        <li>Pro-style experience</li>
-                                        <li>Clutch performer</li>
-                                    </ul>
-                                </div>
-                                <div class="weaknesses">
-                                    <h5>Weaknesses</h5>
-                                    <ul>
-                                        <li>Sometimes forces throws</li>
-                                        <li>Average mobility</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Top 3 Overall Prospects -->
+            <h3 class="section-title" style="margin-bottom: 20px;">&#127942; Top 3 Prospects</h3>
+            <div class="player-grid" id="topProspectsGrid">
+                <!-- Populated by JavaScript -->
             </div>
 
-            <!-- Empty State (hidden by default) -->
-            <div class="empty-state" id="emptyState" style="display: none;">
-                <div class="icon">&#127944;</div>
-                <h3>No Players Yet</h3>
-                <p>Player data will be added when the draft class is available.</p>
+            <!-- View All Players Link -->
+            <div style="text-align: center; margin-bottom: 40px;">
+                <a href="players-list.html" class="quick-link" style="display: inline-block;">&#128203; View All Players &rarr;</a>
             </div>
         </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>Madden Draft Guide &copy; 2026 | Part of Bot Documentation Hub</p>
+            <p>Madden Draft Guide &copy; 2026 | Part of <a href="index.html">Bot Documentation Hub</a></p>
+            <p style="margin-top: 8px;"><a href="players-list.html">All Players</a> | <a href="admin.html">Admin Panel</a></p>
         </div>
     </footer>
 
+    <script src="js/draft-data.js"></script>
     <script>
         // Set last updated date
         document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', {
@@ -918,8 +795,7 @@
             minute: '2-digit'
         });
 
-        // Position tab handling
-        const positionTabs = document.querySelectorAll('.position-tab');
+        // Position names mapping
         const positionNames = {
             'QB': 'Quarterback',
             'HB': 'Halfback',
@@ -933,28 +809,175 @@
             'K': 'Kicker/Punter'
         };
 
-        positionTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                positionTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                const position = tab.dataset.position;
-                document.getElementById('positionTitle').textContent = positionNames[position] || position;
-                document.getElementById('positionRankTitle').textContent = position;
-                // In a real implementation, this would load players for the selected position
-            });
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRankings('QB');
+            renderTopProspects();
+            renderPredictions();
+            setupPositionTabs();
         });
 
-        // League/Season update functions
+        // Setup position tabs
+        function setupPositionTabs() {
+            const tabs = document.querySelectorAll('.position-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const position = tab.dataset.position;
+                    document.getElementById('positionRankTitle').textContent = position;
+                    renderRankings(position);
+                });
+            });
+        }
+
+        // Render rankings by position
+        function renderRankings(position) {
+            const container = document.getElementById('rankingsList');
+            const players = getPlayersByPosition(position);
+
+            if (players.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="icon">&#128100;</div>
+                        <h4>No ${positionNames[position] || position} Prospects</h4>
+                        <p>No players available for this position yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = players.slice(0, 5).map((player, index) => `
+                <a href="player.html?id=${player.id}" class="ranking-item">
+                    <div class="rank-number ${index < 3 ? 'top-3' : ''}">${index + 1}</div>
+                    <div class="ranking-info">
+                        <div class="ranking-name">${player.name}</div>
+                        <div class="ranking-details">${player.college}</div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Render top 3 overall prospects
+        function renderTopProspects() {
+            const container = document.getElementById('topProspectsGrid');
+            const topPlayers = getTopProspects(3);
+
+            if (topPlayers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="icon">&#127944;</div>
+                        <h4>No Players Yet</h4>
+                        <p>Player data will be added when the draft class is available.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = topPlayers.map(player => createPlayerCard(player)).join('');
+        }
+
+        // Create player card HTML
+        function createPlayerCard(player) {
+            const imageHtml = player.image_url
+                ? `<img src="${player.image_url}" alt="${player.name}">`
+                : '&#128100;';
+
+            const devBadgeHtml = player.dev_revealed
+                ? `<div class="dev-badge ${player.development.toLowerCase().replace('-', '')}">${getDevEmoji(player.development)} ${player.development} Development</div>`
+                : `<div class="dev-badge hidden">&#128274; Development: TBD</div>`;
+
+            const strengthsHtml = player.strengths && player.strengths.length > 0
+                ? player.strengths.slice(0, 4).map(s => `<li>${s}</li>`).join('')
+                : '<li>No data available</li>';
+
+            const weaknessesHtml = player.weaknesses && player.weaknesses.length > 0
+                ? player.weaknesses.slice(0, 3).map(w => `<li>${w}</li>`).join('')
+                : '<li>No data available</li>';
+
+            return `
+                <div class="player-card">
+                    <div class="player-image">${imageHtml}</div>
+                    <div class="player-content">
+                        <div class="player-header">
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-position">${player.position}</div>
+                        </div>
+                        <div class="player-meta">
+                            <span>&#127891; ${player.college}</span>
+                            <span>&#128197; ${player.age} years old</span>
+                            ${player.throw_hand ? `<span>&#9994; ${player.throw_hand}-handed</span>` : ''}
+                        </div>
+                        ${devBadgeHtml}
+                        <div class="scouting-report">
+                            <h4>Scouting Report</h4>
+                            <p>${player.scouting_report || 'Scouting report not yet available.'}</p>
+                            <div class="strengths-weaknesses">
+                                <div class="strengths">
+                                    <h5>Strengths</h5>
+                                    <ul>${strengthsHtml}</ul>
+                                </div>
+                                <div class="weaknesses">
+                                    <h5>Weaknesses</h5>
+                                    <ul>${weaknessesHtml}</ul>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="player.html?id=${player.id}" class="view-details-btn">View Full Profile & Predictions</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render predictions
+        function renderPredictions() {
+            const container = document.getElementById('predictionsList');
+            const predictions = DRAFT_DATA.predictions || [];
+
+            if (predictions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">&#128203;</div>
+                        <h4>No Predictions Yet</h4>
+                        <p>Be the first to make a prediction using the Discord command!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = predictions.slice(0, 10).map(pred => `
+                <div class="prediction-item">
+                    <div class="prediction-user">@${pred.username.split('#')[0]}</div>
+                    <div class="prediction-pick">${pred.player_name} - Pick #${pred.predicted_pick} to ${pred.predicted_team}</div>
+                    <div class="prediction-result ${pred.result}">${capitalizeFirst(pred.result)}</div>
+                </div>
+            `).join('');
+        }
+
+        // Helper functions
+        function getDevEmoji(development) {
+            const emojis = {
+                'Normal': '&#9898;',
+                'Star': '&#11088;',
+                'Superstar': '&#127775;',
+                'X-Factor': '&#128171;'
+            };
+            return emojis[development] || '&#9898;';
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // League/Season update functions (placeholder for future expansion)
         function updateLeague() {
             const league = document.getElementById('leagueSelect').value;
             console.log('Loading League #' + league);
-            // In a real implementation, this would fetch league data
         }
 
         function updateSeason() {
             const season = document.getElementById('seasonSelect').value;
             console.log('Loading Season ' + season);
-            // In a real implementation, this would fetch season data
         }
     </script>
 </body>
