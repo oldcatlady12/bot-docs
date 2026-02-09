@@ -480,11 +480,11 @@
         <div class="container">
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-value">20+</div>
+                    <div class="stat-value">35+</div>
                     <div class="stat-label">Commands</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">5</div>
+                    <div class="stat-value">12</div>
                     <div class="stat-label">Economy Systems</div>
                 </div>
                 <div class="stat-card">
@@ -532,6 +532,36 @@
                         <div class="economy-icon">🏆</div>
                         <h4>Leaderboards</h4>
                         <p>6 different ranking types with top 5 display</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">💰</div>
+                        <h4>Tax System <span class="new-badge">NEW</span></h4>
+                        <p>Weekly automated taxes with a communal tax pot</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">💳</div>
+                        <h4>Loans <span class="new-badge">NEW</span></h4>
+                        <p>Request loans with auto-repayment and bankruptcy options</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">📈</div>
+                        <h4>Investments <span class="new-badge">NEW</span></h4>
+                        <p>Invest in other servers and earn dividends</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🗳️</div>
+                        <h4>Voting <span class="new-badge">NEW</span></h4>
+                        <p>Propose and vote on tax pot spending</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">⚠️</div>
+                        <h4>Warnings & Fines <span class="new-badge">NEW</span></h4>
+                        <p>Admin warnings with optional currency fines</p>
+                    </div>
+                    <div class="economy-card">
+                        <div class="economy-icon">🏛️</div>
+                        <h4>Server Hierarchy <span class="new-badge">NEW</span></h4>
+                        <p>Cross-server tax collection between linked servers</p>
                     </div>
                 </div>
             </div>
@@ -712,6 +742,111 @@
                             <td>Add a new item to the shop.</td>
                             <td>Admin</td>
                         </tr>
+                        <tr>
+                            <td><span class="command-name">/guide</span></td>
+                            <td>Interactive guide with dropdown topic selection for all bot features.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/loan request</span></td>
+                            <td>Request a loan based on your management tier limit.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/loan repay</span></td>
+                            <td>Manually repay your active loans.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/loan status</span></td>
+                            <td>View your current loans and repayment progress.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/loan bankruptcy</span></td>
+                            <td>Declare bankruptcy to clear all debts (max 2 times).</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/invest buy</span></td>
+                            <td>Buy ownership shares in a server using BotCoin.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/invest sell</span></td>
+                            <td>Sell your ownership shares back for BotCoin.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/invest portfolio</span></td>
+                            <td>View all your investments and earnings.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/invest info</span></td>
+                            <td>Get detailed information about a server's investment stats.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/vote propose</span></td>
+                            <td>Propose spending from the tax pot.</td>
+                            <td>Management</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/vote cast</span></td>
+                            <td>Vote FOR or AGAINST an active proposal.</td>
+                            <td>Voters</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name">/vote list</span></td>
+                            <td>View all active and recent proposals.</td>
+                            <td>Everyone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/warn</span></td>
+                            <td>Issue a warning to a user with optional fine.</td>
+                            <td>Admin/Fine Manager</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/finemanager</span></td>
+                            <td>Set or remove the Fine Manager role.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/tax config</span></td>
+                            <td>Configure tax rate and settings.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/tax pot</span></td>
+                            <td>View the current tax pot balance and history.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/management add</span></td>
+                            <td>Add a management role with specific tier and permissions.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/taxhierarchy</span></td>
+                            <td>Configure cross-server tax relationships.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/investpanel</span></td>
+                            <td>Create an investment panel in a channel.</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/activity chart</span></td>
+                            <td>Generate activity or exchange rate charts (7d/30d/90d).</td>
+                            <td>Admin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/activity stats</span></td>
+                            <td>View detailed activity statistics for a timeframe.</td>
+                            <td>Admin</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -814,6 +949,242 @@
             </div>
         </section>
 
+        <!-- Tax System Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">💰</span> Tax System <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Automated weekly tax collection with a communal pot for server projects:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📅 Weekly Collection</h4>
+                        <p>Taxes are automatically collected every Sunday at midnight UTC. Configurable tax rate (default 10%).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💵 Tax Pot</h4>
+                        <p>All collected taxes go into a communal pot. View balance with <code>/tax pot</code>.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚙️ Admin Control</h4>
+                        <p>Enable/disable taxes, set rates, and distribute funds using admin commands.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Transparency</h4>
+                        <p>Tax summaries posted to economy alert channel showing total collected and users taxed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loan System Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">💳</span> Loan System <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Borrow currency with automatic repayments and bankruptcy protection:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📝 Request Loans</h4>
+                        <p>Use <code>/loan request</code> to borrow currency. Loan limits based on management tier (1,000 - 50,000).</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💸 Auto-Repayment</h4>
+                        <p>Loans are automatically repaid when your balance reaches the loan amount. Processed every 10 minutes.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📉 Interest Rates</h4>
+                        <p>Server-configurable interest rates. Admins can start polls to change rates via voting.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🏦 Bankruptcy</h4>
+                        <p>Use <code>/loan bankruptcy</code> to clear all debts. After 2 bankruptcies, you're permanently banned from loans.</p>
+                    </div>
+                </div>
+                <div class="ui-preview">
+                    <h4>Loan Limits by Management Tier</h4>
+                    <div class="ui-container">
+                        <div class="ui-content">
+                            <strong>Tier 1:</strong> Up to 1,000 currency<br>
+                            <strong>Tier 2:</strong> Up to 5,000 currency<br>
+                            <strong>Tier 3:</strong> Up to 10,000 currency<br>
+                            <strong>Tier 4:</strong> Up to 25,000 currency<br>
+                            <strong>Tier 5:</strong> Up to 50,000 currency
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Investment System Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">📈</span> Investment System <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Invest in other servers and earn daily dividends based on their activity:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🌐 Cross-Server Investing</h4>
+                        <p>Use BotCoin to buy ownership shares in other servers. Prices fluctuate based on server activity.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💵 Daily Dividends</h4>
+                        <p>Automatically receive dividends at 6 AM UTC based on your ownership percentage and server revenue.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Investment Panel</h4>
+                        <p>Admin-created panel showing available servers, prices, and your current holdings.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💼 Portfolio View</h4>
+                        <p>Use <code>/invest portfolio</code> to see all your investments, earnings, and performance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Voting System Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🗳️</span> Voting System <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Democratic spending of the tax pot through community voting:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📋 Propose Spending</h4>
+                        <p>Management roles can propose using tax pot funds for grants, projects, or events.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>✅ Cast Votes</h4>
+                        <p>Members with voting privileges can vote FOR or AGAINST proposals.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Majority Rules</h4>
+                        <p>Simple majority (50%+) passes. Proposals that would deplete the pot require 2/3 majority.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⏰ Auto-Processing</h4>
+                        <p>Expired votes are automatically tallied hourly. Passed proposals execute immediately.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Warning System Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">⚠️</span> Warning & Fine System <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Moderation tools with optional economic penalties:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📝 Issue Warnings</h4>
+                        <p>Admins and Fine Managers can warn users with <code>/warn user reason</code>.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💸 Optional Fines</h4>
+                        <p>Attach currency fines to warnings. Fines are automatically deducted from the user's balance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>👮 Fine Manager Role</h4>
+                        <p>Delegate fine-issuing power to a specific role without giving full admin access.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📜 Warning History</h4>
+                        <p>View complete warning history for any user including reasons and fine amounts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Server Hierarchy Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">🏛️</span> Server Hierarchy <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Link servers together for cross-server tax collection:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>🔗 Link Servers</h4>
+                        <p>Set up main/secondary server relationships. Bot must be in both servers.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💰 Daily Tax Flow</h4>
+                        <p>Secondary servers pay a percentage (default 5%) of their tax pot to the main server daily.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚙️ Configurable Rates</h4>
+                        <p>Customize the cross-server tax rate for each linked server pair.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔒 Auto-Deactivate</h4>
+                        <p>If the bot leaves a secondary server, the hierarchy is automatically deactivated.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity Charts Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">📊</span> Activity Charts <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Visual analytics for server activity and exchange rates:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📈 Activity Charts</h4>
+                        <p>Generate line charts showing messages, voice minutes, and reactions over time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💱 Exchange Rate Charts</h4>
+                        <p>Track how your server's exchange rate has changed based on activity levels.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📅 Multiple Timeframes</h4>
+                        <p>View data for 7 days, 30 days, or 90 days. Perfect for short and long-term analysis.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📊 Statistics</h4>
+                        <p>Get detailed stats including totals, daily averages, peak activity days and hours.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guide Command Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">📚</span> Interactive Guide <span class="new-badge">NEW</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    In-bot help system with dropdown topic selection:
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>📖 /guide Command</h4>
+                        <p>Access the interactive guide with detailed explanations of all bot features.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔽 Topic Dropdown</h4>
+                        <p>Select from topics: Earning, Exchange, Lottery, Tax, Loans, Investments, Voting, Warnings, and Hierarchy.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔄 Refresh Button</h4>
+                        <p>Reset the guide to the topic selection menu at any time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📱 User-Friendly</h4>
+                        <p>No need to remember commands - browse topics interactively and learn at your own pace.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Setup Section -->
         <section class="section">
             <div class="container">
@@ -882,6 +1253,14 @@ npm run dev
                         <p>Use <code>/admin lottery panel #channel</code> to create a lottery info panel showing all drawings, tickets, and recent winners.</p>
                     </div>
                     <div class="feature-card">
+                        <h4>📈 Investment Panel <span class="new-badge">NEW</span></h4>
+                        <p>Use <code>/investpanel create #channel</code> to create an investment panel showing available servers and prices.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔄 Trading Panel</h4>
+                        <p>Use <code>/admin trading panel #channel</code> to create a trading panel for buying/selling currencies.</p>
+                    </div>
+                    <div class="feature-card">
                         <h4>💰 Currency Setup</h4>
                         <p>Use <code>/admin currency name emoji</code> to set your server's custom currency name and emoji.</p>
                     </div>
@@ -936,7 +1315,7 @@ npm run dev
                 Build a thriving virtual economy in your Discord server!
             </p>
             <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">
-                Last updated: February 2026 | Components V2 UI Update
+                Last updated: February 2026 | Taxes, Loans, Investments, Voting, Charts & More
             </p>
         </div>
     </footer>
