@@ -63,7 +63,7 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Madden Highlights Bot automatically processes Madden franchise game VODs to detect scoring plays, generate highlight videos, and post individual clips to Discord. It uses OCR to read the in-game scoreboard, identifies touchdowns, field goals, and other scoring events, then creates a full highlight reel with background music and top clips for the community. Highlights are uploaded to YouTube and clips are posted as YouTube Shorts, with a voting system for end-of-season awards.</p>
+                <p>The Madden Highlights Bot automatically processes Madden franchise game VODs to detect scoring plays, generate highlight videos, and post individual clips to Discord. It uses PaddleOCR to read the in-game scoreboard, identifies touchdowns, field goals, and other scoring events, then creates a full highlight reel with original game audio and posts top clips for the community. A weekly roundup feature combines the best moments from each week's games into a single video with music. Highlights are uploaded to YouTube and clips are posted as YouTube Shorts, with a voting system for end-of-season awards.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
@@ -74,7 +74,7 @@
                     <div class="feature-item">
                         <div class="feature-icon">&#128065;</div>
                         <h4>OCR Score Detection</h4>
-                        <p>Reads Madden 26 scoreboard via EasyOCR to detect scoring plays</p>
+                        <p>Reads Madden 26 scoreboard via PaddleOCR with 0/1 correction</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128293;</div>
@@ -108,8 +108,13 @@
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#127925;</div>
-                        <h4>Background Music</h4>
-                        <p>Randomly selects and overlays background music on highlight videos</p>
+                        <h4>Original Game Audio</h4>
+                        <p>Highlight videos keep original game commentary; music reserved for weekly roundups</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128197;</div>
+                        <h4>Weekly Roundup</h4>
+                        <p>Combines highlights from all games in a week into one video with music overlay</p>
                     </div>
                 </div>
             </section>
@@ -122,12 +127,12 @@
                     <ol style="margin-left: 24px; color: var(--text-secondary);">
                         <li>Bot reacts with &#9203; and adds the job to the processing queue</li>
                         <li>Downloads the VOD from YouTube/Twitch (or uses a local file)</li>
-                        <li>Samples frames every 2 seconds and runs OCR on the scoreboard</li>
+                        <li>Two-pass analysis: fast brightness scan to find gameplay, then PaddleOCR on scoreboard</li>
                         <li>Detects score changes with sanity checks (max 8 pts/play, 1&#8596;7 OCR correction)</li>
                         <li>Extracts individual clips around each scoring play (20-60 seconds each)</li>
-                        <li>Creates a full highlight video with randomly selected background music</li>
+                        <li>Creates a full highlight video with original game audio (no music)</li>
                         <li>Uploads highlight to YouTube and top clips as YouTube Shorts</li>
-                        <li>Posts highlights and top 5 clips to Discord channels with YouTube links</li>
+                        <li>Posts highlights and top clips (~1/3 of scoring events) to Discord channels with YouTube links</li>
                         <li>Reacts &#9989; when done (or &#10060; on failure)</li>
                     </ol>
                 </div>
@@ -139,7 +144,7 @@
 
                 <div class="card">
                     <h4>Score Detection</h4>
-                    <p>The analyzer uses a debounced scoring system &mdash; a score must appear consistently across 2+ consecutive frames to be accepted. It handles EasyOCR's common "1" vs "7" digit confusion by trying all possible digit swaps and finding the most plausible score change (no more than 8 points per play, scores never decrease).</p>
+                    <p>The analyzer uses a debounced scoring system &mdash; a score must appear consistently across 2+ consecutive frames to be accepted. It handles PaddleOCR's common "0" vs "1" misread (a score of exactly 1 is impossible in football) and "1" vs "7" digit confusion by trying all possible digit swaps and finding the most plausible score change (no more than 8 points per play, scores never decrease).</p>
                 </div>
             </section>
 
@@ -164,6 +169,7 @@
                         <tr><td><span class="command-name">!gameclips &lt;name&gt;</span></td><td>View all clips for a specific game with IDs and YouTube links</td></tr>
                         <tr><td><span class="command-name">!delete clip &lt;id&gt;</span></td><td>Delete a specific clip by ID (removes from Discord and database)</td></tr>
                         <tr><td><span class="command-name">!delete game &lt;name&gt;</span></td><td>Delete all clips for a game (requires confirmation)</td></tr>
+                        <tr><td><span class="command-name">!weeklyroundup &lt;week&gt;</span></td><td>Create a weekly roundup video from all games in a week (e.g., <code>!weeklyroundup Week 1</code>)</td></tr>
                         <tr><td><span class="command-name">!seasonpoll [count]</span></td><td>Create end-of-season poll from top clips (default: top 10)</td></tr>
                     </tbody>
                 </table>
@@ -208,7 +214,7 @@
                 <h2>Voting System</h2>
                 <div class="card">
                     <h4>Clip Voting</h4>
-                    <p>Every clip posted to the clips channel gets an automatic &#128293; reaction from the bot. Members react with &#128293; to vote for their favorite clips. Use <code>!topclips</code> to see the leaderboard at any time.</p>
+                    <p>After processing a game, the bot selects the top ~1/3 of scoring events as individual clips, prioritizing touchdowns and turnovers over field goals. Each clip posted to the clips channel gets an automatic &#128293; reaction. Members react with &#128293; to vote for their favorite clips. Use <code>!topclips</code> to see the leaderboard at any time.</p>
                 </div>
                 <div class="card">
                     <h4>Season Poll</h4>
@@ -217,13 +223,27 @@
             </section>
 
             <section class="content-section">
+                <h2>Weekly Roundup</h2>
+                <div class="card">
+                    <h4>!weeklyroundup &lt;week&gt;</h4>
+                    <p>Creates a ~3.5 minute highlight video combining the best moments from every game in a given week. Each game gets proportional screen time based on its highlight video length.</p>
+                    <ul>
+                        <li><strong>Proportional segments:</strong> Longer games get more time in the roundup</li>
+                        <li><strong>Music overlay:</strong> Game audio is muted and replaced with a randomly selected background track</li>
+                        <li><strong>Auto-posted:</strong> The roundup video is posted to the highlights channel</li>
+                        <li><strong>Database tracking:</strong> Each processed game's highlight video is automatically saved for roundup use</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="content-section">
                 <h2>Command Summary</h2>
                 <div class="card">
-                    <h4>Total Commands: 12</h4>
-                    <p><strong>Admin:</strong> setchannel (3 types), dashboard, gameclips, delete (clip/game), seasonpoll</p>
+                    <h4>Total Commands: 13</h4>
+                    <p><strong>Admin:</strong> setchannel (3 types), dashboard, gameclips, delete (clip/game), weeklyroundup, seasonpoll</p>
                     <p><strong>Everyone:</strong> channels, status, topclips, pollresults</p>
                     <p><strong>Interactive:</strong> &#9203; reaction for time estimates, &#128293; reaction for clip voting</p>
-                    <p><strong>Automatic:</strong> VOD link detection, parallel processing queue, YouTube upload, clip posting</p>
+                    <p><strong>Automatic:</strong> VOD link detection, parallel processing queue, YouTube upload, clip posting, weekly roundup</p>
                 </div>
             </section>
 
@@ -234,29 +254,31 @@
 # Navigate to bot directory
 cd MaddenHighlights
 
-# Create virtual environment
-python -m venv venv
+# Create virtual environment (Python 3.10 required for PaddleOCR)
+python3.10 -m venv venv310
 
 # Install dependencies
-venv\Scripts\pip install discord.py python-dotenv easyocr opencv-python-headless
-venv\Scripts\pip install yt-dlp google-api-python-client google-auth-oauthlib
+venv310\Scripts\pip install discord.py python-dotenv
+venv310\Scripts\pip install paddlepaddle==2.6.2 paddleocr==2.9.1
+venv310\Scripts\pip install opencv-python numpy Pillow yt-dlp
+venv310\Scripts\pip install google-api-python-client google-auth-oauthlib
 
 # Configure .env file
 # DISCORD_BOT_TOKEN=your_token_here
 
 # Run YouTube authorization (one-time)
-venv\Scripts\python youtube_auth.py
+venv310\Scripts\python youtube_auth.py
 
 # Run the bot
-venv\Scripts\python bot.py
+venv310\Scripts\python bot.py
                 </div>
 
                 <h3>First-Time Setup</h3>
                 <ol style="margin-left: 24px; color: var(--text-secondary);">
                     <li>Add your Discord bot token to the <code>.env</code> file</li>
                     <li>Set up YouTube OAuth credentials in Google Cloud Console</li>
-                    <li>Run <code>venv\Scripts\python youtube_auth.py</code> to authorize YouTube uploads</li>
-                    <li>Run <code>venv\Scripts\python bot.py</code> (or use <code>start_bot.bat</code>)</li>
+                    <li>Run <code>venv310\Scripts\python youtube_auth.py</code> to authorize YouTube uploads</li>
+                    <li>Run <code>venv310\Scripts\python bot.py</code> (or use <code>start_bot.bat</code>)</li>
                     <li>In Discord, use <code>!setchannel vod #vod-submissions</code></li>
                     <li>Use <code>!setchannel highlights #highlights</code></li>
                     <li>Use <code>!setchannel clips #clips</code></li>
