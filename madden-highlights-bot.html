@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madden Highlights Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #ff7a00, #1d9bf0); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-blue); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .card h4 { margin-bottom: 8px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-blue); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#127944;</div>
+                    <h1>Madden Highlights Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>The Madden Highlights Bot automatically processes Madden franchise game VODs to detect scoring plays, generate highlight videos, and post individual clips to Discord. It uses OCR to read the in-game scoreboard, identifies touchdowns, field goals, and other scoring events, then creates a full highlight reel and top clips for the community. Clips are uploaded to Google Drive for public viewing and posted to Discord with a voting system for end-of-season awards.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127909;</div>
+                        <h4>Auto Highlight Videos</h4>
+                        <p>Creates 3-10 minute highlight reels from full game VODs</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128065;</div>
+                        <h4>OCR Score Detection</h4>
+                        <p>Reads Madden 26 scoreboard via EasyOCR to detect scoring plays</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128293;</div>
+                        <h4>Clip Voting</h4>
+                        <p>Auto-reacts with fire emoji for community voting on best plays</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#9729;&#65039;</div>
+                        <h4>Google Drive Upload</h4>
+                        <p>Uploads highlights and clips to public Drive folders</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>Season Polls</h4>
+                        <p>End-of-season top 10 clips poll with reaction voting</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128279;</div>
+                        <h4>Auto VOD Detection</h4>
+                        <p>Detects YouTube/Twitch links in submissions channel</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>How It Works</h2>
+                <div class="card">
+                    <h4>Processing Pipeline</h4>
+                    <p>When a VOD link is posted in the submissions channel:</p>
+                    <ol style="margin-left: 24px; color: var(--text-secondary);">
+                        <li>Bot reacts with &#9203; and starts processing (~60 min for a full game)</li>
+                        <li>Downloads the VOD from YouTube/Twitch (or uses a local file)</li>
+                        <li>Samples frames every 2 seconds and runs OCR on the scoreboard</li>
+                        <li>Detects score changes with sanity checks (max 8 pts/play, 1&#8596;7 OCR correction)</li>
+                        <li>Extracts individual clips around each scoring play (20-60 seconds each)</li>
+                        <li>Creates a full highlight video from all scoring plays</li>
+                        <li>Uploads to Google Drive with public view links</li>
+                        <li>Posts highlights and top 5 clips to Discord channels</li>
+                        <li>Reacts &#9989; when done (or &#10060; on failure)</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h4>Score Detection</h4>
+                    <p>The analyzer uses a debounced scoring system — a score must appear consistently across 2+ consecutive frames to be accepted. It handles EasyOCR's common "1" vs "7" digit confusion by trying all possible digit swaps and finding the most plausible score change (no more than 8 points per play, scores never decrease).</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+
+                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!setchannel vod #channel</span></td><td>Set the VOD submissions channel where users post game links</td></tr>
+                        <tr><td><span class="command-name">!setchannel highlights #channel</span></td><td>Set the channel where highlight videos are posted</td></tr>
+                        <tr><td><span class="command-name">!setchannel clips #channel</span></td><td>Set the channel where individual clips are posted with voting</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Info Commands <span class="tag user">Everyone</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!channels</span></td><td>Show the current channel configuration</td></tr>
+                        <tr><td><span class="command-name">!status</span></td><td>Check if a game is currently being processed</td></tr>
+                        <tr><td><span class="command-name">!topclips [count]</span></td><td>Show top clips ranked by fire reaction count (default: 10)</td></tr>
+                        <tr><td><span class="command-name">!pollresults</span></td><td>Show current season poll standings</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Season Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!seasonpoll [count]</span></td><td>Create end-of-season poll from top clips (default: top 10). Users react with number emojis to vote.</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Voting System</h2>
+                <div class="card">
+                    <h4>Clip Voting</h4>
+                    <p>Every clip posted to the clips channel gets an automatic &#128293; reaction from the bot. Members react with &#128293; to vote for their favorite clips. Use <code>!topclips</code> to see the leaderboard at any time.</p>
+                </div>
+                <div class="card">
+                    <h4>Season Poll</h4>
+                    <p>At the end of a season, an admin runs <code>!seasonpoll</code> to create a numbered poll of the top 10 most-reacted clips. Members vote by reacting with number emojis (1&#65039;&#8419; through &#128287;). Check standings with <code>!pollresults</code>.</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 8</h4>
+                    <p><strong>Admin:</strong> setchannel (3 types), seasonpoll</p>
+                    <p><strong>Everyone:</strong> channels, status, topclips, pollresults</p>
+                    <p><strong>Automatic:</strong> VOD link detection, processing, clip posting, voting reactions</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup & Configuration</h2>
+                <h3>Installation</h3>
+                <div class="code-block">
+# Navigate to bot directory
+cd MaddenHighlights
+
+# Install dependencies
+pip install discord.py python-dotenv easyocr opencv-python
+pip install google-api-python-client google-auth
+
+# Configure .env file
+# DISCORD_BOT_TOKEN=your_token_here
+
+# Run the bot
+python bot.py
+                </div>
+
+                <h3>First-Time Setup</h3>
+                <ol style="margin-left: 24px; color: var(--text-secondary);">
+                    <li>Add your Discord bot token to the <code>.env</code> file</li>
+                    <li>Run <code>python bot.py</code></li>
+                    <li>In Discord, use <code>!setchannel vod #vod-submissions</code></li>
+                    <li>Use <code>!setchannel highlights #highlights</code></li>
+                    <li>Use <code>!setchannel clips #clips</code></li>
+                    <li>(Optional) Add a <code>service_account.json</code> for Google Drive uploads</li>
+                </ol>
+
+                <h3>Configuration Files</h3>
+                <table class="command-table">
+                    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>.env</code></td><td>Discord bot token</td></tr>
+                        <tr><td><code>bot_config.py</code></td><td>Command prefix, upload size limit, processing settings</td></tr>
+                        <tr><td><code>config.py</code></td><td>Video analysis settings (sample interval, clip durations, scoreboard regions)</td></tr>
+                        <tr><td><code>service_account.json</code></td><td>Google Drive API credentials (optional)</td></tr>
+                        <tr><td><code>data/clips.db</code></td><td>SQLite database for clips, settings, and polls</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Architecture</h2>
+                <div class="code-block">
+MaddenHighlights/
+&#9500;&#9472;&#9472; bot.py              # Discord bot entry point
+&#9500;&#9472;&#9472; bot_config.py       # Bot settings (prefix, upload limits)
+&#9500;&#9472;&#9472; bot_commands.py     # Admin commands Cog
+&#9500;&#9472;&#9472; clip_database.py    # SQLite database layer
+&#9500;&#9472;&#9472; drive_uploader.py   # Google Drive upload & sharing
+&#9500;&#9472;&#9472; main.py             # Processing pipeline (download &#8594; analyze &#8594; clip)
+&#9500;&#9472;&#9472; config.py           # Analysis & clip extraction settings
+&#9500;&#9472;&#9472; .env                # Bot token
+&#9500;&#9472;&#9472; src/
+&#9474;   &#9500;&#9472;&#9472; analyzer.py     # OCR-based score detection engine
+&#9474;   &#9500;&#9472;&#9472; clipper.py      # FFmpeg clip extraction & highlight stitching
+&#9474;   &#9500;&#9472;&#9472; detector.py     # Frame analysis & scoreboard OCR
+&#9474;   &#9492;&#9472;&#9472; downloader.py   # YouTube/Twitch VOD downloader
+&#9500;&#9472;&#9472; downloads/          # Downloaded VODs
+&#9500;&#9472;&#9472; clips/              # Extracted clips per game
+&#9492;&#9472;&#9472; highlights/         # Full highlight videos
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Google Drive Integration</h2>
+                <p>The bot can optionally upload all highlights and clips to Google Drive with public view-only links. This lets league members watch highlights without downloading files.</p>
+                <div class="card">
+                    <h4>Setup</h4>
+                    <ol style="margin-left: 24px; color: var(--text-secondary);">
+                        <li>Create a project in Google Cloud Console</li>
+                        <li>Enable the Google Drive API</li>
+                        <li>Create a Service Account and download the JSON key</li>
+                        <li>Save as <code>service_account.json</code> in the MaddenHighlights folder</li>
+                    </ol>
+                    <p style="margin-top: 12px;">The bot creates two public folders: <strong>Madden Highlights</strong> and <strong>Madden Clips</strong>. All uploaded files are set to "anyone with the link can view."</p>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

@@ -192,6 +192,8 @@
         .bot-icon.economy { background: linear-gradient(135deg, #ffd700, #e67e22); }
         .bot-icon.sports-war { background: linear-gradient(135deg, #1d9bf0, #f4212e); }
         .bot-icon.invite-battles { background: linear-gradient(135deg, #ffd700, #ff6b35); }
+        .bot-icon.partner { background: linear-gradient(135deg, #e91e8c, #7856ff); }
+        .bot-icon.madden-highlights { background: linear-gradient(135deg, #ff7a00, #1d9bf0); }
 
         .bot-info h3 {
             font-size: 1.25rem;
@@ -318,10 +320,6 @@
                     <div class="logo-icon">&#128218;</div>
                     <h1>Bot Documentation Hub</h1>
                 </div>
-                <nav class="tab-nav">
-                    <a href="index.html" class="tab-link active">&#128218; Bot Docs</a>
-                    <a href="draft-guide.html" class="tab-link">&#127944; Draft Guide</a>
-                </nav>
                 <div class="last-updated">
                     Last Updated: <span id="lastUpdated"></span>
                 </div>
@@ -340,15 +338,15 @@
             <div class="stats-section">
                 <div class="stats-grid">
                     <div class="stat-item">
-                        <div class="stat-value">14</div>
+                        <div class="stat-value">16</div>
                         <div class="stat-label">Total Bots</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">14</div>
+                        <div class="stat-value">16</div>
                         <div class="stat-label">Active</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">350+</div>
+                        <div class="stat-value">370+</div>
                         <div class="stat-label">Commands</div>
                     </div>
                     <div class="stat-item">
@@ -441,6 +439,35 @@
                     <div class="bot-status">
                         <span class="status-dot active"></span>
                         <span class="status-text">Active - 12 Commands</span>
+                    </div>
+                </a>
+
+                <!-- Madden Highlights Bot -->
+                <a href="madden-highlights-bot.html" class="bot-card">
+                    <div class="bot-header">
+                        <div class="bot-icon madden-highlights">&#127944;</div>
+                        <div class="bot-info">
+                            <h3>Madden Highlights Bot</h3>
+                            <div class="bot-tech">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">discord.py</span>
+                                <span class="tech-badge">EasyOCR</span>
+                                <span class="tech-badge">Google Drive</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="bot-description">
+                        Automatic Madden highlight generator. Processes game VODs with OCR to detect scoring plays, creates highlight videos, uploads clips to Google Drive, and runs a season-long voting system.
+                    </p>
+                    <div class="bot-features">
+                        <span class="feature-tag">Auto Highlights</span>
+                        <span class="feature-tag">OCR Detection</span>
+                        <span class="feature-tag">Clip Voting</span>
+                        <span class="feature-tag">Google Drive</span>
+                    </div>
+                    <div class="bot-status">
+                        <span class="status-dot active"></span>
+                        <span class="status-text">Active - 8 Commands</span>
                     </div>
                 </a>
 
@@ -725,7 +752,7 @@
                         <span class="feature-tag">File Monitoring</span>
                         <span class="feature-tag">Auto Detection</span>
                         <span class="feature-tag">Rich Embeds</span>
-                        <span class="feature-tag">15 Bots</span>
+                        <span class="feature-tag">16 Bots</span>
                     </div>
                     <div class="bot-status">
                         <span class="status-dot active"></span>
@@ -758,6 +785,34 @@
                     <div class="bot-status">
                         <span class="status-dot active"></span>
                         <span class="status-text">Active - 6 Commands</span>
+                    </div>
+                </a>
+
+                <!-- Discord Partner Bot -->
+                <a href="partner-bot.html" class="bot-card">
+                    <div class="bot-header">
+                        <div class="bot-icon partner">&#129309;</div>
+                        <div class="bot-info">
+                            <h3>Discord Partner Bot</h3>
+                            <div class="bot-tech">
+                                <span class="tech-badge">Node.js</span>
+                                <span class="tech-badge">Discord.js</span>
+                                <span class="tech-badge">SQLite</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="bot-description">
+                        Server partnership management with per-category embeds. Handles partnerships, staff recruitment, job listings, and boost exchanges with admin approval and activity tracking.
+                    </p>
+                    <div class="bot-features">
+                        <span class="feature-tag">4 Categories</span>
+                        <span class="feature-tag">Admin Approval</span>
+                        <span class="feature-tag">Bump System</span>
+                        <span class="feature-tag">Activity Tracking</span>
+                    </div>
+                    <div class="bot-status">
+                        <span class="status-dot active"></span>
+                        <span class="status-text">Active - 12 Commands</span>
                     </div>
                 </a>
             </div>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Partner Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-pink: #e91e8c;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --accent-red: #f4212e;
+            --accent-yellow: #ffd400;
+            --border-color: #2f3542;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--accent-pink);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .bot-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bot-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .bot-title h1 {
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h3 {
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Commands Table */
+        .commands-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .commands-table th,
+        .commands-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .commands-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .commands-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .command-name {
+            font-family: 'Fira Code', monospace;
+            background: var(--accent-pink);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .command-admin {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Category Cards */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .category-card .cat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .category-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .category-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Flow Diagram */
+        .flow-steps {
+            max-width: 700px;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+            align-items: flex-start;
+        }
+
+        .flow-number {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-pink);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .flow-content h4 {
+            margin-bottom: 4px;
+            font-size: 1.05rem;
+        }
+
+        .flow-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Setup Section */
+        .setup-steps {
+            max-width: 800px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-pink);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent-pink);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .commands-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .step, .flow-step {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link">
+                    &larr; Back to All Bots
+                </a>
+                <div class="bot-title">
+                    <div class="bot-icon">&#129309;</div>
+                    <h1>Discord Partner Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Server Partnership Management</h2>
+                    <p>
+                        A Discord bot for managing server partnerships, staff recruitment, job listings,
+                        and boost exchanges. Each category gets its own independent embed with Browse, Join,
+                        Edit, Leave, and Bump buttons. Features admin approval, activity tracking, DM notifications,
+                        and auto-refreshing embeds.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Discord.js v14</span>
+                        <span class="tech-badge">SQLite</span>
+                        <span class="tech-badge">Node.js</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="container">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Admin Commands</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Database Tables</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Embed Buttons</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">&#8734;</div>
+                    <div class="stat-label">Multi-Server</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128204;</span> Partnership Categories</h3>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <div class="cat-icon">&#129309;</div>
+                        <h4>Partnership Hub</h4>
+                        <p>Cross-promote servers and find partners to grow your community together</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="cat-icon">&#128188;</div>
+                        <h4>Looking for Staff</h4>
+                        <p>Find admins, moderators, bot developers, and other staff for your server</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="cat-icon">&#128736;</div>
+                        <h4>Looking for Work</h4>
+                        <p>Showcase your skills and find Discord roles &mdash; moderation, design, development</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="cat-icon">&#128640;</div>
+                        <h4>Looking for Boosts</h4>
+                        <p>Find or offer server boosts to unlock perks and features</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128260;</span> How It Works</h3>
+
+                <h4 style="margin-bottom: 16px; color: var(--accent-pink);">For Users</h4>
+                <div class="flow-steps" style="margin-bottom: 40px;">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div class="flow-content">
+                            <h4>Browse Listings</h4>
+                            <p>Each category has its own embed in the channel. Click <strong>Browse</strong> to see approved users in that category with a dropdown selector.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div class="flow-content">
+                            <h4>Join a Category</h4>
+                            <p>Click <strong>Join</strong> on a specific embed to apply. Fill out a description and optional invite link via a modal popup. Your application goes to admin review.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div class="flow-content">
+                            <h4>Get Approved</h4>
+                            <p>Admins review your application in the admin channel with Approve/Deny buttons. You'll receive a DM when your application is approved or denied.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div class="flow-content">
+                            <h4>Bump Your Listing</h4>
+                            <p>Click <strong>Bump</strong> to move your name to the top of the category list. Configurable cooldown (default 24 hours). Recent bumps are shown on each embed.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <div class="flow-content">
+                            <h4>Edit or Leave</h4>
+                            <p>Click <strong>Edit</strong> to update your listing (requires re-approval). Click <strong>Leave</strong> to remove yourself from that category.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom: 16px; color: var(--accent-orange);">For Admins</h4>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div class="flow-content">
+                            <h4>Configure Channels</h4>
+                            <p>Set the partner channel for embeds and the admin channel for application reviews using slash commands.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div class="flow-content">
+                            <h4>Enable Categories</h4>
+                            <p>Enable/disable individual category embeds per server. Each enabled category gets its own embed with all buttons.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div class="flow-content">
+                            <h4>Review Applications</h4>
+                            <p>Approve or deny applications from the admin channel. Use <code>/partner pending</code> to see up to 5 pending applications at a time.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div class="flow-content">
+                            <h4>Monitor Activity</h4>
+                            <p>Add channels to track user activity. Users who have messaged in monitored channels within 30 days are marked as active.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#10024;</span> Key Features</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>&#128204; Per-Category Embeds</h4>
+                        <p>Each of the 4 categories gets its own embed message with independent Browse, Join, Edit, Leave, and Bump buttons.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#9989; Admin Approval</h4>
+                        <p>All applications and edits go through admin review before appearing in the listings. Approve/Deny with interactive buttons.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128200; Bump System</h4>
+                        <p>Users can bump their listing to the top of the browse list. Configurable cooldown (1-168 hours). Recent bumps shown on each embed.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128101; Activity Tracking</h4>
+                        <p>Monitor specific channels for user messages. Activity status (active/inactive) shown in browse results based on 30-day window.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128172; DM Notifications</h4>
+                        <p>Users receive DMs when their application is approved or denied, keeping them informed without cluttering the server.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128270; Browse with Details</h4>
+                        <p>Select users from a dropdown to view their description, invite link, Discord account age, join date, activity status, and other categories.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#127760; Server Invites</h4>
+                        <p>Partners can share invite links with clickable "Join Server" buttons shown in their browse details.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128260; Auto Refresh</h4>
+                        <p>Embeds automatically refresh every hour and immediately when listings are approved or removed.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128683; Auto Cleanup</h4>
+                        <p>When a member leaves the server, all their listings are automatically removed and embeds are refreshed.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128203; Multi-Category</h4>
+                        <p>Users can join multiple categories independently, each with its own description and invite link.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128736; Admin Controls</h4>
+                        <p>Enable/disable specific embeds per server. Configure bump cooldown, monitor channels, and manage pending applications.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128225; Ephemeral Messages</h4>
+                        <p>All user interactions are ephemeral (only visible to the user), keeping the channel clean and clutter-free.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commands Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128187;</span> Admin Commands</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    All commands use the <code>/partner</code> prefix and require Administrator permission. User interactions are button-based (Browse, Join, Edit, Leave, Bump).
+                </p>
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner set-channel #channel</span></td>
+                            <td>Set the channel where partnership embeds are posted</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner set-admin-channel #channel</span></td>
+                            <td>Set the channel where admin application reviews are sent</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner enable &lt;category&gt;</span></td>
+                            <td>Enable a specific category embed (Partnership, Staff, Work, Boosts)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner disable &lt;category&gt;</span></td>
+                            <td>Disable a category embed and remove it from the channel</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner monitor-add #channel</span></td>
+                            <td>Add a channel to track user activity (messages in last 30 days)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner monitor-remove #channel</span></td>
+                            <td>Remove a channel from activity monitoring</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner monitor-list</span></td>
+                            <td>List all currently monitored channels</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner set-bump-cooldown &lt;hours&gt;</span></td>
+                            <td>Set the cooldown between bumps (1-168 hours, default: 24)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner pending</span></td>
+                            <td>View and manage up to 5 pending applications at a time</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner status</span></td>
+                            <td>Show full bot configuration: channels, enabled embeds, listing counts</td>
+                        </tr>
+                        <tr>
+                            <td><span class="command-name command-admin">/partner refresh</span></td>
+                            <td>Manually refresh all enabled partnership embeds</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- User Buttons Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128377;</span> Embed Buttons (User Actions)</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>&#128270; Browse</h4>
+                        <p>View all approved users in the category. Select a user from the dropdown to see their full details, invite link, and DM mention.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128200; Bump</h4>
+                        <p>Move your name to the top of the browse list. Subject to a cooldown timer. Shows next available bump time if on cooldown.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#10133; Join</h4>
+                        <p>Apply to join the category. Opens a modal to enter your description and optional invite link. Sent for admin approval.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#9999; Edit</h4>
+                        <p>Update your existing listing. Opens a pre-filled modal. Changes require admin re-approval before going live.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>&#128682; Leave</h4>
+                        <p>Remove yourself from the category. Your listing is deleted immediately and the embed is refreshed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Database Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128451;</span> Database Architecture</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    SQLite database with 5 tables, all scoped by <code>guild_id</code> for multi-server isolation. Uses WAL journal mode for performance.
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>guild_settings</h4>
+                        <p>Per-server configuration: partner channel, admin channel, bump cooldown hours.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>guild_embeds</h4>
+                        <p>Tracks which category embeds are enabled per server and their Discord message IDs for editing.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>partners</h4>
+                        <p>All partner listings with category, description, invite link, status (pending/approved/denied), and bump timestamp.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>monitored_channels</h4>
+                        <p>Channels tracked for user activity. Messages in these channels update the user's activity timestamp.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>user_activity</h4>
+                        <p>Tracks last message timestamp per user per guild. Used to determine active/inactive status (30-day window).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Setup Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128640;</span> Setup Guide</h3>
+                <div class="setup-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Create Discord Bot</h4>
+                            <p>Go to the Discord Developer Portal, create a new application, and add a bot. Enable <strong>Server Members Intent</strong> under Privileged Gateway Intents.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Configure Environment</h4>
+                            <p>Copy <code>.env.example</code> to <code>.env</code> and add your bot token and client ID:</p>
+                            <div class="code-block">
+copy .env.example .env
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Install Dependencies</h4>
+                            <div class="code-block">npm install</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Deploy Slash Commands</h4>
+                            <div class="code-block">npm run deploy</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Start the Bot</h4>
+                            <div class="code-block">npm start</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>In Discord: Configure the Bot</h4>
+                            <div class="code-block">
+/partner set-admin-channel #admin-reviews<br>
+/partner set-channel #partnerships<br>
+/partner enable Partnership<br>
+/partner enable Looking for Staff<br>
+/partner enable Looking for Work<br>
+/partner enable Looking for Boosts<br>
+/partner monitor-add #general
+                            </div>
+                            <p style="margin-top: 8px; color: var(--text-secondary);">Set up admin and partner channels, enable desired categories, and add channels for activity monitoring.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Permissions Section -->
+        <section class="section">
+            <div class="container">
+                <h3><span class="section-icon">&#128273;</span> Required Permissions</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4>OAuth2 Scopes</h4>
+                        <p>
+                            &#9989; bot<br>
+                            &#9989; applications.commands
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Bot Permissions</h4>
+                        <p>
+                            &#9989; Send Messages<br>
+                            &#9989; Embed Links<br>
+                            &#9989; Manage Messages<br>
+                            &#9989; Read Message History
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Gateway Intents (Privileged)</h4>
+                        <p>
+                            &#9989; Guilds<br>
+                            &#9989; GuildMessages<br>
+                            &#9989; GuildMembers &#128312;<br>
+                            <small>&#128312; = Privileged, enable in Developer Portal</small>
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Permission Integer</h4>
+                        <p>
+                            <strong>116736</strong><br>
+                            Use this in the OAuth2 URL generator for the correct bot permissions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Discord Partner Bot Documentation | <a href="index.html">Back to Bot Hub</a></p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">
+                Partner up. Grow together. Build your community.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
