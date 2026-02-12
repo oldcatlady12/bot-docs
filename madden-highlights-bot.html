@@ -63,13 +63,13 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Madden Highlights Bot automatically processes Madden franchise game VODs to detect scoring plays, generate highlight videos, and post individual clips to Discord. It uses OCR to read the in-game scoreboard, identifies touchdowns, field goals, and other scoring events, then creates a full highlight reel and top clips for the community. Clips are uploaded to Google Drive for public viewing and posted to Discord with a voting system for end-of-season awards.</p>
+                <p>The Madden Highlights Bot automatically processes Madden franchise game VODs to detect scoring plays, generate highlight videos, and post individual clips to Discord. It uses OCR to read the in-game scoreboard, identifies touchdowns, field goals, and other scoring events, then creates a full highlight reel with background music and top clips for the community. Highlights are uploaded to YouTube and clips are posted as YouTube Shorts, with a voting system for end-of-season awards.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
                         <div class="feature-icon">&#127909;</div>
                         <h4>Auto Highlight Videos</h4>
-                        <p>Creates 3-10 minute highlight reels from full game VODs</p>
+                        <p>Creates highlight reels from full game VODs with background music overlay</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128065;</div>
@@ -82,9 +82,9 @@
                         <p>Auto-reacts with fire emoji for community voting on best plays</p>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">&#9729;&#65039;</div>
-                        <h4>Google Drive Upload</h4>
-                        <p>Uploads highlights and clips to public Drive folders</p>
+                        <div class="feature-icon">&#9654;&#65039;</div>
+                        <h4>YouTube Upload</h4>
+                        <p>Uploads highlights to YouTube and clips as YouTube Shorts</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#127942;</div>
@@ -96,6 +96,21 @@
                         <h4>Auto VOD Detection</h4>
                         <p>Detects YouTube/Twitch links in submissions channel</p>
                     </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#9203;</div>
+                        <h4>Time Estimates</h4>
+                        <p>Click the hourglass emoji to check processing progress and ETA</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128203;</div>
+                        <h4>Admin Dashboard</h4>
+                        <p>View processing queue, history, and manage games and clips</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127925;</div>
+                        <h4>Background Music</h4>
+                        <p>Randomly selects and overlays background music on highlight videos</p>
+                    </div>
                 </div>
             </section>
 
@@ -105,21 +120,26 @@
                     <h4>Processing Pipeline</h4>
                     <p>When a VOD link is posted in the submissions channel:</p>
                     <ol style="margin-left: 24px; color: var(--text-secondary);">
-                        <li>Bot reacts with &#9203; and starts processing (~60 min for a full game)</li>
+                        <li>Bot reacts with &#9203; and adds the job to the processing queue</li>
                         <li>Downloads the VOD from YouTube/Twitch (or uses a local file)</li>
                         <li>Samples frames every 2 seconds and runs OCR on the scoreboard</li>
                         <li>Detects score changes with sanity checks (max 8 pts/play, 1&#8596;7 OCR correction)</li>
                         <li>Extracts individual clips around each scoring play (20-60 seconds each)</li>
-                        <li>Creates a full highlight video from all scoring plays</li>
-                        <li>Uploads to Google Drive with public view links</li>
-                        <li>Posts highlights and top 5 clips to Discord channels</li>
+                        <li>Creates a full highlight video with randomly selected background music</li>
+                        <li>Uploads highlight to YouTube and top clips as YouTube Shorts</li>
+                        <li>Posts highlights and top 5 clips to Discord channels with YouTube links</li>
                         <li>Reacts &#9989; when done (or &#10060; on failure)</li>
                     </ol>
                 </div>
 
                 <div class="card">
+                    <h4>Job Queue System</h4>
+                    <p>The bot supports parallel processing with a configurable queue. By default, it can process 2 VODs simultaneously with up to 10 more in the queue. Users can click the &#9203; emoji on their submission to see estimated time remaining and progress percentage.</p>
+                </div>
+
+                <div class="card">
                     <h4>Score Detection</h4>
-                    <p>The analyzer uses a debounced scoring system — a score must appear consistently across 2+ consecutive frames to be accepted. It handles EasyOCR's common "1" vs "7" digit confusion by trying all possible digit swaps and finding the most plausible score change (no more than 8 points per play, scores never decrease).</p>
+                    <p>The analyzer uses a debounced scoring system &mdash; a score must appear consistently across 2+ consecutive frames to be accepted. It handles EasyOCR's common "1" vs "7" digit confusion by trying all possible digit swaps and finding the most plausible score change (no more than 8 points per play, scores never decrease).</p>
                 </div>
             </section>
 
@@ -136,24 +156,52 @@
                     </tbody>
                 </table>
 
+                <h3>Admin Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!dashboard</span></td><td>Admin dashboard &mdash; shows active jobs, queue, recent history, and all processed games</td></tr>
+                        <tr><td><span class="command-name">!gameclips &lt;name&gt;</span></td><td>View all clips for a specific game with IDs and YouTube links</td></tr>
+                        <tr><td><span class="command-name">!delete clip &lt;id&gt;</span></td><td>Delete a specific clip by ID (removes from Discord and database)</td></tr>
+                        <tr><td><span class="command-name">!delete game &lt;name&gt;</span></td><td>Delete all clips for a game (requires confirmation)</td></tr>
+                        <tr><td><span class="command-name">!seasonpoll [count]</span></td><td>Create end-of-season poll from top clips (default: top 10)</td></tr>
+                    </tbody>
+                </table>
+
                 <h3>Info Commands <span class="tag user">Everyone</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
                         <tr><td><span class="command-name">!channels</span></td><td>Show the current channel configuration</td></tr>
-                        <tr><td><span class="command-name">!status</span></td><td>Check if a game is currently being processed</td></tr>
+                        <tr><td><span class="command-name">!status</span></td><td>Check what's currently being processed and queue status</td></tr>
                         <tr><td><span class="command-name">!topclips [count]</span></td><td>Show top clips ranked by fire reaction count (default: 10)</td></tr>
                         <tr><td><span class="command-name">!pollresults</span></td><td>Show current season poll standings</td></tr>
                     </tbody>
                 </table>
 
-                <h3>Season Commands <span class="tag admin">Admin Only</span></h3>
+                <h3>Interactive Features <span class="tag user">Everyone</span></h3>
                 <table class="command-table">
-                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <thead><tr><th>Action</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!seasonpoll [count]</span></td><td>Create end-of-season poll from top clips (default: top 10). Users react with number emojis to vote.</td></tr>
+                        <tr><td><span class="command-name">React &#9203; on a VOD message</span></td><td>See processing progress, elapsed time, and estimated time remaining (auto-deletes after 15s)</td></tr>
+                        <tr><td><span class="command-name">React &#128293; on clips</span></td><td>Vote for your favorite clips &mdash; counts toward !topclips rankings</td></tr>
                     </tbody>
                 </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Admin Dashboard</h2>
+                <div class="card">
+                    <h4>!dashboard</h4>
+                    <p>The admin dashboard shows a complete overview of the bot's status:</p>
+                    <ul>
+                        <li><strong>Processing:</strong> Currently active jobs with elapsed time</li>
+                        <li><strong>Queued:</strong> Pending jobs with queue position and wait time</li>
+                        <li><strong>Recent History:</strong> Completed and failed jobs from the current session</li>
+                        <li><strong>All Processed Games:</strong> Every game in the database with clip counts and dates</li>
+                    </ul>
+                    <p>From the dashboard, admins can use <code>!gameclips &lt;name&gt;</code> to drill into a specific game's clips, and <code>!delete</code> to remove individual clips or entire games.</p>
+                </div>
             </section>
 
             <section class="content-section">
@@ -171,10 +219,11 @@
             <section class="content-section">
                 <h2>Command Summary</h2>
                 <div class="card">
-                    <h4>Total Commands: 8</h4>
-                    <p><strong>Admin:</strong> setchannel (3 types), seasonpoll</p>
+                    <h4>Total Commands: 12</h4>
+                    <p><strong>Admin:</strong> setchannel (3 types), dashboard, gameclips, delete (clip/game), seasonpoll</p>
                     <p><strong>Everyone:</strong> channels, status, topclips, pollresults</p>
-                    <p><strong>Automatic:</strong> VOD link detection, processing, clip posting, voting reactions</p>
+                    <p><strong>Interactive:</strong> &#9203; reaction for time estimates, &#128293; reaction for clip voting</p>
+                    <p><strong>Automatic:</strong> VOD link detection, parallel processing queue, YouTube upload, clip posting</p>
                 </div>
             </section>
 
@@ -185,25 +234,42 @@
 # Navigate to bot directory
 cd MaddenHighlights
 
+# Create virtual environment
+python -m venv venv
+
 # Install dependencies
-pip install discord.py python-dotenv easyocr opencv-python
-pip install google-api-python-client google-auth
+venv\Scripts\pip install discord.py python-dotenv easyocr opencv-python-headless
+venv\Scripts\pip install yt-dlp google-api-python-client google-auth-oauthlib
 
 # Configure .env file
 # DISCORD_BOT_TOKEN=your_token_here
 
+# Run YouTube authorization (one-time)
+venv\Scripts\python youtube_auth.py
+
 # Run the bot
-python bot.py
+venv\Scripts\python bot.py
                 </div>
 
                 <h3>First-Time Setup</h3>
                 <ol style="margin-left: 24px; color: var(--text-secondary);">
                     <li>Add your Discord bot token to the <code>.env</code> file</li>
-                    <li>Run <code>python bot.py</code></li>
+                    <li>Set up YouTube OAuth credentials in Google Cloud Console</li>
+                    <li>Run <code>venv\Scripts\python youtube_auth.py</code> to authorize YouTube uploads</li>
+                    <li>Run <code>venv\Scripts\python bot.py</code> (or use <code>start_bot.bat</code>)</li>
                     <li>In Discord, use <code>!setchannel vod #vod-submissions</code></li>
                     <li>Use <code>!setchannel highlights #highlights</code></li>
                     <li>Use <code>!setchannel clips #clips</code></li>
-                    <li>(Optional) Add a <code>service_account.json</code> for Google Drive uploads</li>
+                </ol>
+
+                <h3>YouTube Setup</h3>
+                <ol style="margin-left: 24px; color: var(--text-secondary);">
+                    <li>Create a project in Google Cloud Console</li>
+                    <li>Enable the YouTube Data API v3</li>
+                    <li>Create OAuth 2.0 credentials (Desktop app type)</li>
+                    <li>Download the JSON and save as <code>client_secret.json</code> in the MaddenHighlights folder</li>
+                    <li>Add yourself as a test user in the OAuth consent screen</li>
+                    <li>Run <code>youtube_auth.py</code> &mdash; approve in browser &mdash; token saved to <code>youtube_token.json</code></li>
                 </ol>
 
                 <h3>Configuration Files</h3>
@@ -211,10 +277,12 @@ python bot.py
                     <thead><tr><th>File</th><th>Purpose</th></tr></thead>
                     <tbody>
                         <tr><td><code>.env</code></td><td>Discord bot token</td></tr>
-                        <tr><td><code>bot_config.py</code></td><td>Command prefix, upload size limit, processing settings</td></tr>
-                        <tr><td><code>config.py</code></td><td>Video analysis settings (sample interval, clip durations, scoreboard regions)</td></tr>
-                        <tr><td><code>service_account.json</code></td><td>Google Drive API credentials (optional)</td></tr>
+                        <tr><td><code>bot_config.py</code></td><td>Command prefix, upload size limit, queue size, processing time estimate</td></tr>
+                        <tr><td><code>config.py</code></td><td>Video analysis settings (sample interval, clip durations, scoreboard regions, music settings)</td></tr>
+                        <tr><td><code>client_secret.json</code></td><td>YouTube OAuth 2.0 credentials (from Google Cloud Console)</td></tr>
+                        <tr><td><code>youtube_token.json</code></td><td>Saved YouTube authorization token (auto-generated)</td></tr>
                         <tr><td><code>data/clips.db</code></td><td>SQLite database for clips, settings, and polls</td></tr>
+                        <tr><td><code>music/</code></td><td>MP3 files for background music on highlight videos (randomly selected)</td></tr>
                     </tbody>
                 </table>
             </section>
@@ -224,18 +292,22 @@ python bot.py
                 <div class="code-block">
 MaddenHighlights/
 &#9500;&#9472;&#9472; bot.py              # Discord bot entry point
-&#9500;&#9472;&#9472; bot_config.py       # Bot settings (prefix, upload limits)
-&#9500;&#9472;&#9472; bot_commands.py     # Admin commands Cog
+&#9500;&#9472;&#9472; bot_config.py       # Bot settings (prefix, queue size, upload limits)
+&#9500;&#9472;&#9472; bot_commands.py     # Admin commands Cog (dashboard, delete, polls)
 &#9500;&#9472;&#9472; clip_database.py    # SQLite database layer
-&#9500;&#9472;&#9472; drive_uploader.py   # Google Drive upload & sharing
+&#9500;&#9472;&#9472; job_queue.py        # Parallel processing job queue
+&#9500;&#9472;&#9472; youtube_uploader.py # YouTube API upload (videos + Shorts)
+&#9500;&#9472;&#9472; youtube_auth.py     # One-time YouTube OAuth authorization
 &#9500;&#9472;&#9472; main.py             # Processing pipeline (download &#8594; analyze &#8594; clip)
 &#9500;&#9472;&#9472; config.py           # Analysis & clip extraction settings
+&#9500;&#9472;&#9472; start_bot.bat       # Windows launcher script
 &#9500;&#9472;&#9472; .env                # Bot token
 &#9500;&#9472;&#9472; src/
 &#9474;   &#9500;&#9472;&#9472; analyzer.py     # OCR-based score detection engine
-&#9474;   &#9500;&#9472;&#9472; clipper.py      # FFmpeg clip extraction & highlight stitching
+&#9474;   &#9500;&#9472;&#9472; clipper.py      # FFmpeg clip extraction, highlight stitching, music overlay
 &#9474;   &#9500;&#9472;&#9472; detector.py     # Frame analysis & scoreboard OCR
-&#9474;   &#9492;&#9472;&#9472; downloader.py   # YouTube/Twitch VOD downloader
+&#9474;   &#9492;&#9472;&#9472; downloader.py   # YouTube/Twitch VOD downloader (yt-dlp)
+&#9500;&#9472;&#9472; music/              # Background music MP3s for highlights
 &#9500;&#9472;&#9472; downloads/          # Downloaded VODs
 &#9500;&#9472;&#9472; clips/              # Extracted clips per game
 &#9492;&#9472;&#9472; highlights/         # Full highlight videos
@@ -243,17 +315,17 @@ MaddenHighlights/
             </section>
 
             <section class="content-section">
-                <h2>Google Drive Integration</h2>
-                <p>The bot can optionally upload all highlights and clips to Google Drive with public view-only links. This lets league members watch highlights without downloading files.</p>
+                <h2>YouTube Integration</h2>
+                <p>The bot uploads all highlights and clips to YouTube using the YouTube Data API v3 with OAuth 2.0 authentication.</p>
                 <div class="card">
-                    <h4>Setup</h4>
-                    <ol style="margin-left: 24px; color: var(--text-secondary);">
-                        <li>Create a project in Google Cloud Console</li>
-                        <li>Enable the Google Drive API</li>
-                        <li>Create a Service Account and download the JSON key</li>
-                        <li>Save as <code>service_account.json</code> in the MaddenHighlights folder</li>
-                    </ol>
-                    <p style="margin-top: 12px;">The bot creates two public folders: <strong>Madden Highlights</strong> and <strong>Madden Clips</strong>. All uploaded files are set to "anyone with the link can view."</p>
+                    <h4>How it works</h4>
+                    <ul>
+                        <li><strong>Highlight videos</strong> are uploaded as regular YouTube videos with scoring play descriptions</li>
+                        <li><strong>Individual clips</strong> are uploaded as YouTube Shorts with #Shorts tag</li>
+                        <li>YouTube links are included in Discord messages alongside the clip files</li>
+                        <li>If YouTube upload fails, clips are still posted directly to Discord (under 8 MB)</li>
+                        <li>The OAuth token auto-refreshes &mdash; you only need to authorize once</li>
+                    </ul>
                 </div>
             </section>
         </div>
