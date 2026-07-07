@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFL Fantasy Intel Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #013369, #C9082A); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-green); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .card h4 { margin-bottom: 8px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-green); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: var(--accent-orange); }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        .doc-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .doc-section-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; border-left: 4px solid var(--accent-green); }
+        .doc-section-item h4 { margin-bottom: 4px; }
+        .doc-section-item p { color: var(--text-secondary); font-size: 0.85rem; margin: 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#128200;</div>
+                    <h1>NFL Fantasy Intel Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>The NFL Fantasy Intel Bot continuously collects fantasy football intelligence from RSS feeds, websites, and a Discord Twitter relay channel. Every 6 hours, Claude AI reads and synthesizes all new articles, then updates a living Google Doc with organized analysis across 9 sections — draft rankings, injury history, strength of schedule, coaching changes, rookie breakdowns, sleepers/busts, strategies, and waiver wire advice.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128196;</div>
+                        <h4>Living Google Doc</h4>
+                        <p>One always-updated document covering every major fantasy angle — organized into 9 sections</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#129302;</div>
+                        <h4>Claude AI Analysis</h4>
+                        <p>Claude reads and synthesizes articles with prompt caching for fast, efficient processing</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128038;</div>
+                        <h4>Twitter Relay Integration</h4>
+                        <p>Reads your server's existing Twitter relay bot channel — no Twitter API key needed</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128248;</div>
+                        <h4>RSS + Web Sources</h4>
+                        <p>Monitors multiple RSS feeds and websites simultaneously with deduplication</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128232;</div>
+                        <h4>Update Summaries</h4>
+                        <p>Posts a Discord summary to your updates channel after each sweep with key findings</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128101;</div>
+                        <h4>Community Suggestions</h4>
+                        <p>Any server member can submit source tips via !suggest — forwarded to the submissions channel</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Living Google Doc — 9 Sections</h2>
+                <p>The bot maintains one continuously-updated Google Doc with the following sections. Claude rewrites each section as new information arrives:</p>
+                <div class="doc-sections">
+                    <div class="doc-section-item">
+                        <h4>&#127942; Draft Rankings</h4>
+                        <p>Overall rankings and positional tiers updated throughout the offseason and season</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#129657; Injury Reports</h4>
+                        <p>Current injuries, practice participation, and return timelines for key players</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#128200; Strength of Schedule</h4>
+                        <p>Remaining schedule difficulty by position — who has favorable matchups coming up</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#128104;&#8205;&#127979; Coaching Changes</h4>
+                        <p>New offensive coordinators, scheme changes, and how they affect fantasy value</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#127381; Rookie Breakdowns</h4>
+                        <p>Rookie class analysis, ADP vs. value, and role projections</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#128161; Sleepers &amp; Busts</h4>
+                        <p>Undervalued players to target and overvalued players to fade</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#129504; Fantasy Strategies</h4>
+                        <p>Draft strategies, trade advice, and lineup-setting tips</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#128260;</h4>
+                        <h4>Waiver Wire</h4>
+                        <p>In-season waiver pickups, streamers, and adds by position</p>
+                    </div>
+                    <div class="doc-section-item">
+                        <h4>&#128240; General News</h4>
+                        <p>Miscellaneous NFL news relevant to fantasy — depth chart changes, suspensions, etc.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+
+                <h3>Configuration Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!setchannel submissions #channel</span></td><td>Set the channel where users submit source tips (via !suggest)</td></tr>
+                        <tr><td><span class="command-name">!setchannel updates #channel</span></td><td>Set the channel where the bot posts update summaries after each sweep</td></tr>
+                        <tr><td><span class="command-name">!setchannel twitter #channel</span></td><td>Set the channel where your Twitter relay bot posts — the bot reads these messages</td></tr>
+                        <tr><td><span class="command-name">!setdoc &lt;doc_id&gt;</span></td><td>Set the Google Doc to update. Accepts either the doc ID or the full Google Docs URL</td></tr>
+                        <tr><td><span class="command-name">!botconfig</span></td><td>Show the current bot configuration — channels, doc link, and source count</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Source Management <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!addsource &lt;url&gt; [category]</span></td><td>Add an RSS feed or website to monitor. Categories: general, fantasy, stats, news</td></tr>
+                        <tr><td><span class="command-name">!sources</span></td><td>List all active sources with their IDs and last-checked times</td></tr>
+                        <tr><td><span class="command-name">!removesource &lt;id&gt;</span></td><td>Deactivate a source by ID</td></tr>
+                        <tr><td><span class="command-name">!sweep</span></td><td>Manually trigger a source sweep right now instead of waiting for the 6-hour interval</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>User Commands <span class="tag user">Everyone</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!suggest &lt;url or text&gt;</span></td><td>Submit a source tip or resource link — forwarded to the submissions channel for admin review</td></tr>
+                        <tr><td><span class="command-name">!doclink</span></td><td>Get the link to the current NFL Fantasy Intelligence Google Doc</td></tr>
+                        <tr><td><span class="command-name">!status</span></td><td>Show bot status — source count, article counts, and whether the Google Doc is configured</td></tr>
+                        <tr><td><span class="command-name">!fantasyhelp</span></td><td>Show all available commands with descriptions</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup Guide</h2>
+                <h3>Step 1 — Google Service Account</h3>
+                <p>Create a service account in Google Cloud Console, download the JSON credentials file, and rename it <code>service_account.json</code> in the bot folder. Create or open a Google Doc and share it with the service account email as <strong>Editor</strong>.</p>
+
+                <h3>Step 2 — Configure .env</h3>
+                <div class="code-block">DISCORD_TOKEN=your_bot_token_here
+ANTHROPIC_API_KEY=your_anthropic_key_here
+GOOGLE_DOC_ID=your_google_doc_id_here
+GOOGLE_CREDS_FILE=service_account.json
+COMMAND_PREFIX=!</div>
+
+                <h3>Step 3 — Install and Start</h3>
+                <div class="code-block">cd nfl-fantasy-intel-bot
+py -3.10 -m venv venv310
+.\venv310\Scripts\pip install -r requirements.txt
+.\venv310\Scripts\python -u bot.py</div>
+
+                <h3>Step 4 — Configure in Discord</h3>
+                <div class="code-block">!setchannel submissions #source-suggestions
+!setchannel updates #fantasy-intel-updates
+!setchannel twitter #twitter-relay
+!setdoc YOUR_GOOGLE_DOC_ID</div>
+
+                <h3>Enable Message Content Intent</h3>
+                <p>In the Discord Developer Portal, go to your bot application &rarr; Bot &rarr; Privileged Gateway Intents and enable <strong>MESSAGE CONTENT INTENT</strong>. This is required for the bot to read messages in the Twitter relay channel.</p>
+
+                <h3>Required Bot Permissions</h3>
+                <ul>
+                    <li>Send Messages</li>
+                    <li>Read Message History</li>
+                    <li>Embed Links</li>
+                    <li>Add Reactions</li>
+                    <li>Message Content Intent (Privileged — must be enabled in Developer Portal)</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>How to Find Your Google Doc ID</h2>
+                <p>Open your Google Doc. Look at the URL — it will look like this:</p>
+                <div class="code-block">https://docs.google.com/document/d/<strong>1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms</strong>/edit</div>
+                <p>The bold part between <code>/d/</code> and <code>/edit</code> is your Doc ID. You can paste either just the ID or the full URL into <code>!setdoc</code> — the bot handles both.</p>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 13</h4>
+                    <p><strong>Admin Commands:</strong> 9 — setchannel (×3), setdoc, botconfig, addsource, sources, removesource, sweep</p>
+                    <p><strong>User Commands:</strong> 4 — suggest, doclink, status, fantasyhelp</p>
+                    <p><strong>Automated:</strong> 6-hour source sweeps, Claude AI analysis, Google Doc updates, Discord update summaries</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</body>
+</html>

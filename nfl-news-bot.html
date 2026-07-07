@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFL News Alert Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-red: #f4212e;
+            --accent-orange: #ff7a00;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #f4212e, #ff7a00); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-red); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .card h4 { margin-bottom: 8px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-red); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: var(--accent-orange); }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .category-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; text-align: center; }
+        .category-item .emoji { font-size: 28px; display: block; margin-bottom: 6px; }
+        .category-item .name { font-weight: 600; display: block; }
+        .category-item .desc { color: var(--text-secondary); font-size: 0.8rem; margin-top: 4px; }
+        .credibility-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .cred-item { border-radius: 8px; padding: 14px; border-left: 4px solid; }
+        .cred-official { background: rgba(0,186,124,0.1); border-color: #00ba7c; }
+        .cred-twitter { background: rgba(29,155,240,0.1); border-color: #1d9bf0; }
+        .cred-admin { background: rgba(120,86,255,0.1); border-color: #7856ff; }
+        .cred-discovered { background: rgba(255,122,0,0.1); border-color: #ff7a00; }
+        .cred-rumor { background: rgba(244,33,46,0.1); border-color: #f4212e; }
+        .cred-item h4 { margin-bottom: 4px; }
+        .cred-item p { color: var(--text-secondary); font-size: 0.85rem; margin: 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#127944;</div>
+                    <h1>NFL News Alert Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>The NFL News Alert Bot is a real-time news monitoring system that watches dozens of RSS feeds, websites, and Discord Twitter relay channels for NFL news. It uses Claude AI to classify and summarize articles, then posts them immediately to designated forum threads — organized by category with source credibility tags so you always know how reliable the information is.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128161;</div>
+                        <h4>Real-Time Alerts</h4>
+                        <p>Polls all sources every 3 minutes and posts breaking news immediately to Discord</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#129302;</div>
+                        <h4>Claude AI Classification</h4>
+                        <p>AI reads each article and classifies it into the right category automatically</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128483;</div>
+                        <h4>Forum Thread Posts</h4>
+                        <p>Each category posts to its own dedicated forum thread — no channel clutter</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#9989;</div>
+                        <h4>Source Credibility Tags</h4>
+                        <p>Every post shows Official, Twitter Relay, Admin-added, Bot-discovered, or Unverified</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128269;</div>
+                        <h4>Auto-Discovery</h4>
+                        <p>Weekly automatic search for new NFL news sources using DuckDuckGo — admin approves before use</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127783;</div>
+                        <h4>Weather Alerts</h4>
+                        <p>Fetches game-day weather for all outdoor stadiums via Open-Meteo with fantasy impact ratings</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>News Categories</h2>
+                <p>The bot monitors 5 categories, each mapped to its own forum thread:</p>
+                <div class="category-grid">
+                    <div class="category-item">
+                        <span class="emoji">&#129657;</span>
+                        <span class="name">Injuries</span>
+                        <span class="desc">Player injuries, practice reports, and return timelines</span>
+                    </div>
+                    <div class="category-item">
+                        <span class="emoji">&#128260;</span>
+                        <span class="name">Transactions</span>
+                        <span class="desc">Trades, signings, cuts, waivers, and free agency</span>
+                    </div>
+                    <div class="category-item">
+                        <span class="emoji">&#128176;</span>
+                        <span class="name">Cap</span>
+                        <span class="desc">Salary cap moves, contract extensions, and restructures</span>
+                    </div>
+                    <div class="category-item">
+                        <span class="emoji">&#127783;</span>
+                        <span class="name">Weather</span>
+                        <span class="desc">Game-day weather at outdoor stadiums with fantasy impact ratings</span>
+                    </div>
+                    <div class="category-item">
+                        <span class="emoji">&#127942;</span>
+                        <span class="name">Playoff</span>
+                        <span class="desc">Playoff standings, seeding scenarios, and clinching situations</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Source Credibility Tags</h2>
+                <p>Every post includes a tag showing how reliable the source is:</p>
+                <div class="credibility-grid">
+                    <div class="cred-item cred-official">
+                        <h4>&#9989; Official</h4>
+                        <p>Direct from NFL.com, team websites, or established beat reporters (ESPN, NFL Network, etc.)</p>
+                    </div>
+                    <div class="cred-item cred-twitter">
+                        <h4>&#128038; Twitter Relay</h4>
+                        <p>Posted via the server's existing Twitter relay bot — high-speed insider tweets</p>
+                    </div>
+                    <div class="cred-item cred-admin">
+                        <h4>&#128736; Admin-Added</h4>
+                        <p>Source manually added by a server admin — trusted and pre-vetted</p>
+                    </div>
+                    <div class="cred-item cred-discovered">
+                        <h4>&#129302; Bot-Discovered</h4>
+                        <p>Found by the weekly auto-discovery scan — admin-approved before use</p>
+                    </div>
+                    <div class="cred-item cred-rumor">
+                        <h4>&#10067; Unverified (Rumor)</h4>
+                        <p>Submitted by a server member via <code>!rumor</code> — treat with caution</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+
+                <h3>Setup Commands <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!setcategory &lt;category&gt; #forum &lt;"Thread Name"&gt;</span></td><td>Map a news category to a forum thread. Creates the thread if it doesn't exist. Categories: injuries, transactions, cap, weather, playoff</td></tr>
+                        <tr><td><span class="command-name">!status</span></td><td>Show all configured categories and their forum threads — see what's set up and what's missing</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Source Management <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!addsource &lt;url&gt; [category]</span></td><td>Add an RSS feed or website to monitor. Auto-detects RSS vs web. Category is optional — AI will classify if omitted</td></tr>
+                        <tr><td><span class="command-name">!addtwitter #channel [category]</span></td><td>Monitor a Discord channel where a Twitter relay bot posts tweets. Reads messages automatically every 3 min</td></tr>
+                        <tr><td><span class="command-name">!sources [category]</span></td><td>List all active sources with their IDs, types, and status</td></tr>
+                        <tr><td><span class="command-name">!removesource &lt;id&gt;</span></td><td>Deactivate a source by ID (from !sources list)</td></tr>
+                        <tr><td><span class="command-name">!approvesource &lt;id&gt;</span></td><td>Approve a bot-discovered source so it becomes active</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>User Commands <span class="tag user">Everyone</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!rumor &lt;text&gt; [source_url]</span></td><td>Submit an unverified rumor. AI classifies it to the right category. Posted with an Unverified tag. Optional trailing URL is used as the source link</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup Guide</h2>
+                <h3>Step 1 — Create a Discord Application</h3>
+                <p>Go to the Discord Developer Portal, create a new application named "NFL News Alert Bot", go to the Bot tab, enable <strong>Message Content Intent</strong> under Privileged Gateway Intents, copy the token, and invite the bot to your server.</p>
+
+                <h3>Step 2 — Configure .env</h3>
+                <div class="code-block">DISCORD_TOKEN=your_bot_token_here
+ANTHROPIC_API_KEY=your_anthropic_key_here
+COMMAND_PREFIX=!</div>
+
+                <h3>Step 3 — Install and Start</h3>
+                <div class="code-block">cd nfl-news-bot
+py -3.10 -m venv venv310
+.\venv310\Scripts\pip install -r requirements.txt
+.\venv310\Scripts\python -u bot.py</div>
+
+                <h3>Step 4 — Configure Categories in Discord</h3>
+                <div class="code-block">!setcategory injuries #nfl-news "Injury Reports"
+!setcategory transactions #nfl-news "Transactions"
+!setcategory cap #nfl-news "Cap Moves"
+!setcategory weather #nfl-news "Weather Alerts"
+!setcategory playoff #nfl-news "Playoff Picture"
+
+# Add your Twitter relay channel
+!addtwitter #twitter-feed</div>
+
+                <h3>Required Bot Permissions</h3>
+                <ul>
+                    <li>Send Messages</li>
+                    <li>Read Message History</li>
+                    <li>Create Public Threads</li>
+                    <li>Send Messages in Threads</li>
+                    <li>Embed Links</li>
+                    <li>Manage Threads</li>
+                    <li>Message Content Intent (Privileged — must be enabled in Developer Portal)</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Weather System</h2>
+                <p>The weather module fetches game-day conditions for all 32 NFL teams via <strong>Open-Meteo</strong> (free, no API key required). Dome stadiums are automatically excluded — only outdoor games get weather alerts.</p>
+                <ul>
+                    <li><strong>High Impact</strong> — Wind &ge; 25 mph, snow, or thunderstorm</li>
+                    <li><strong>Medium Impact</strong> — Wind &ge; 15 mph, temp &le; 20&deg;F, or any rain/drizzle</li>
+                    <li><strong>Low Impact</strong> — Clear conditions with light wind</li>
+                </ul>
+                <p>Weather alerts are posted to the configured Weather forum thread the day before a game with the fantasy impact rating included.</p>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 8</h4>
+                    <p><strong>Admin Commands:</strong> 7 — setcategory, status, addsource, addtwitter, sources, removesource, approvesource</p>
+                    <p><strong>User Commands:</strong> 1 — rumor</p>
+                    <p><strong>Automated:</strong> News polling every 3 minutes, weather checks, weekly source auto-discovery</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</body>
+</html>

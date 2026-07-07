@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Versus Invites Bot - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-orange: #ff7a00;
+            --accent-yellow: #ffd400;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #ffd700, #ff6b35); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-yellow); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .card h4 { margin-bottom: 8px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-yellow); }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 212, 0, 0.2); color: var(--accent-yellow); }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        .system-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .system-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; border-top: 4px solid; }
+        .system-card.koth { border-top-color: var(--accent-yellow); }
+        .system-card.partner { border-top-color: var(--accent-purple); }
+        .system-card h3 { margin: 0 0 12px 0; font-size: 1.15rem; }
+        .system-card p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .perk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .perk-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; text-align: center; }
+        .perk-item .emoji { font-size: 24px; display: block; margin-bottom: 6px; }
+        .perk-item .name { font-weight: 600; font-size: 0.95rem; }
+        .partner-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .partner-cat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; border-left: 4px solid var(--accent-purple); }
+        .partner-cat h4 { margin-bottom: 4px; }
+        .partner-cat p { color: var(--text-secondary); font-size: 0.85rem; margin: 0; }
+        @media (max-width: 768px) { .system-split { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#9876;&#65039;</div>
+                    <h1>Versus Invites Bot</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>Versus Invites combines two systems into one bot: a competitive King of the Hill invite battle game and a global server partnership listings hub. Servers compete to hold the throne by out-inviting each other, guessing secret numbers, and spending coins on perks — while the partnership system lets servers list themselves across 4 categories for cross-server discovery and collaboration.</p>
+
+                <div class="system-split">
+                    <div class="system-card koth">
+                        <h3>&#128081; King of the Hill — Invite Battles</h3>
+                        <p>Servers compete to hold the top position by earning more invites than the current holder. The holder picks a secret number — challengers guess it to dethrone them. Earn coins for correct guesses, spend them on perks, and climb the leaderboard.</p>
+                    </div>
+                    <div class="system-card partner">
+                        <h3>&#129309; Global Partnership Listings</h3>
+                        <p>Servers submit themselves to 4 global categories (Partnership, Staff, Work, Boosts). Applications go through admin approval, then appear in a live-updating embed in your server's partner channel. Any Discord server can browse all listings.</p>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128081;</div>
+                        <h4>Secret Number Game</h4>
+                        <p>Holder sets a number 1–100. Challengers guess — hot/cold hints given. Correct guess = dethroned</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128176;</div>
+                        <h4>Coin Economy</h4>
+                        <p>Earn coins for correct guesses and tips from other users. Spend on role perks</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#127942;</div>
+                        <h4>Perk Roles</h4>
+                        <p>Admins assign roles as perks — users buy them with coins earned from battles</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128200;</div>
+                        <h4>Persistent Leaderboard</h4>
+                        <p>Paginated leaderboard tracking all-time invite counts, wins, and coin balances</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#129309;</div>
+                        <h4>4-Category Listings</h4>
+                        <p>Servers list themselves across Partnership, Staff, Work, and Boost categories</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#9989;</div>
+                        <h4>Admin Approval Queue</h4>
+                        <p>All partnership applications are reviewed by admins before going live</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Partnership Categories</h2>
+                <p>Servers can submit listings to any of these 4 global categories:</p>
+                <div class="partner-cats">
+                    <div class="partner-cat">
+                        <h4>&#129309; Partnership</h4>
+                        <p>General server partnerships — mutual promotions, co-events, and cross-community collaboration</p>
+                    </div>
+                    <div class="partner-cat">
+                        <h4>&#128104;&#8205;&#128187; Looking for Staff</h4>
+                        <p>Servers actively recruiting moderators, admins, or other staff positions</p>
+                    </div>
+                    <div class="partner-cat">
+                        <h4>&#128188; Looking for Work</h4>
+                        <p>Individuals or servers offering Discord services — moderation, design, bot development, etc.</p>
+                    </div>
+                    <div class="partner-cat">
+                        <h4>&#128293; Looking for Boosts</h4>
+                        <p>Servers seeking Nitro boosts — can offer perks, roles, or other incentives in exchange</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands — Invite Battles (KOTH)</h2>
+
+                <h3>Setup <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/setup</span></td><td>Initialize Invite Battles for this server — creates database entries and shows config instructions</td></tr>
+                        <tr><td><span class="command-name">/config channel add #channel</span></td><td>Set the channel where game activity is posted</td></tr>
+                        <tr><td><span class="command-name">/config approval #channel</span></td><td>Set the channel where new invite submissions are reviewed</td></tr>
+                        <tr><td><span class="command-name">/config perks add</span></td><td>Assign a Discord role as a purchasable perk (users spend coins to buy)</td></tr>
+                        <tr><td><span class="command-name">/config coins &lt;amount&gt;</span></td><td>Set how many coins a user earns per correct secret number guess</td></tr>
+                        <tr><td><span class="command-name">/config guesses &lt;limit&gt;</span></td><td>Set the daily guess limit per user (default: 5)</td></tr>
+                        <tr><td><span class="command-name">/config cooldown &lt;hours&gt;</span></td><td>Set the cooldown period after activation (default: 3 hours)</td></tr>
+                        <tr><td><span class="command-name">/reset</span></td><td>Reset the current game — clears the active holder and secret number</td></tr>
+                        <tr><td><span class="command-name">/forcepick &lt;invite&gt;</span></td><td>Admin: force-set a specific server invite as the current target</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Game Commands <span class="tag user">Everyone</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/pick</span></td><td>Submit your server's invite to challenge the current holder — starts the guessing phase</td></tr>
+                        <tr><td><span class="command-name">/tip &lt;user&gt; &lt;amount&gt;</span></td><td>Send coins from your balance to another user</td></tr>
+                        <tr><td><span class="command-name">/leaderboard</span></td><td>View the paginated all-time leaderboard — invite counts, wins, and coin balances</td></tr>
+                        <tr><td><span class="command-name">/guide [#channel]</span></td><td>Post an interactive guide explaining how the game works. Optionally specify a target channel</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands — Partnership System</h2>
+
+                <h3>Partnership Setup <span class="tag admin">Admin Only</span></h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/partner set-channel #channel</span></td><td>Set the channel where partnership embeds are posted. Auto-enables all 4 category embeds</td></tr>
+                        <tr><td><span class="command-name">/partner set-admin-channel #channel</span></td><td>Set the channel where incoming partnership applications appear for admin review</td></tr>
+                        <tr><td><span class="command-name">/partner enable &lt;category&gt;</span></td><td>Enable a category embed (Partnership, Staff, Work, or Boost)</td></tr>
+                        <tr><td><span class="command-name">/partner disable &lt;category&gt;</span></td><td>Disable a category embed — removes it from the partner channel</td></tr>
+                        <tr><td><span class="command-name">/partner set-bump-cooldown &lt;hours&gt;</span></td><td>Set how often listed servers can bump their listing (default: 24 hours)</td></tr>
+                        <tr><td><span class="command-name">/partner monitor-add #channel</span></td><td>Add a channel to track for user activity</td></tr>
+                        <tr><td><span class="command-name">/partner monitor-remove #channel</span></td><td>Remove a channel from activity monitoring</td></tr>
+                        <tr><td><span class="command-name">/partner monitor-list</span></td><td>List all currently monitored channels</td></tr>
+                        <tr><td><span class="command-name">/partner pending</span></td><td>View and approve/deny pending partnership applications (up to 5 at a time)</td></tr>
+                        <tr><td><span class="command-name">/partner status</span></td><td>Show full partnership configuration — channels, enabled categories, listing counts, bump cooldown</td></tr>
+                        <tr><td><span class="command-name">/partner refresh</span></td><td>Manually refresh all partnership embeds in the partner channel</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>Setup Guide</h2>
+                <h3>Step 1 — Create a Discord Application</h3>
+                <p>Go to the Discord Developer Portal, create a new application named "Versus Invites", go to the Bot tab, copy the token. Under OAuth2 &rarr; URL Generator, select scopes: <code>bot</code>, <code>applications.commands</code>. Invite the bot to your server.</p>
+
+                <h3>Step 2 — Configure .env</h3>
+                <div class="code-block">DISCORD_TOKEN=your_bot_token_here
+CLIENT_ID=your_application_client_id
+GUILD_ID=your_server_id</div>
+
+                <h3>Step 3 — Install and Deploy Slash Commands</h3>
+                <div class="code-block">cd versus-invites-bot
+npm install
+
+# Deploy slash commands to your server (guild-scoped, instant)
+node deploy.js --dev
+
+# Start the bot
+node index.js</div>
+
+                <h3>Step 4 — Configure in Discord</h3>
+                <div class="code-block"># Invite Battles setup
+/setup
+/config channel add #invite-battles
+/config approval #invite-approvals
+
+# Partnership setup
+/partner set-channel #partnerships
+/partner set-admin-channel #partner-applications</div>
+
+                <h3>Required Bot Permissions</h3>
+                <ul>
+                    <li>Manage Roles (for perk role assignment)</li>
+                    <li>Send Messages</li>
+                    <li>Read Message History</li>
+                    <li>Embed Links</li>
+                    <li>Use External Emojis</li>
+                    <li>Manage Messages (for updating embeds)</li>
+                    <li>Create Public Threads</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Command Summary</h2>
+                <div class="card">
+                    <h4>Total Commands: 20</h4>
+                    <p><strong>KOTH Admin Commands:</strong> 9 — setup, config (×6), reset, forcepick</p>
+                    <p><strong>KOTH User Commands:</strong> 4 — pick, tip, leaderboard, guide</p>
+                    <p><strong>Partnership Admin Commands:</strong> 11 — partner subcommands (set-channel, set-admin-channel, enable, disable, set-bump-cooldown, monitor-add, monitor-remove, monitor-list, pending, status, refresh)</p>
+                    <p><strong>Technology:</strong> Node.js &bull; Discord.js &bull; SQLite (sql.js) &bull; Slash Commands</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</body>
+</html>
