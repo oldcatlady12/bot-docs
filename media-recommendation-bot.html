@@ -72,7 +72,7 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
-                <p>The Media Recommendation Bot is a comprehensive recommendation tracking system for Discord servers. Members can recommend and vote on various types of media including games, movies, TV shows, anime, manga, and more. Features automatic forum organization, voting systems, leaderboards, approval system, and optional Google Calendar integration for unreleased media.</p>
+                <p>The Media Recommendation Bot is a comprehensive recommendation tracking system for Discord servers. Members can recommend and vote on various types of media including games, movies, TV shows, anime, manga, and more. Features automatic forum organization, voting, an approval system, Tv Kitty content requests, and optional Google Calendar integration for unreleased media.</p>
 
                 <div class="feature-grid">
                     <div class="feature-item">
@@ -83,7 +83,7 @@
                     <div class="feature-item">
                         <div class="feature-icon">&#128077;</div>
                         <h4>Like System</h4>
-                        <p>Like recommendations with persistent tracking and real-time leaderboard updates</p>
+                        <p>Like recommendations with persistent tracking - likes show live on each card</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128483;</div>
@@ -190,7 +190,20 @@
                     <tbody>
                         <tr><td><span class="command-name">!setup_media</span></td><td>Create all media category forums and genre threads (initial setup)</td></tr>
                         <tr><td><span class="command-name">!setup_recommend_channel [#channel]</span></td><td>Set up the recommendation submission channel. Uses current channel if none specified.</td></tr>
-                        <tr><td><span class="command-name">!setup_missing</span></td><td>Check and create any missing categories, forums, leaderboards, daily posts, and genre posts. Use this to fix incomplete setups or add missing components.</td></tr>
+                        <tr><td><span class="command-name">!setup_missing</span></td><td>Check and create any missing categories, forums, daily posts, and genre posts. Use this to fix incomplete setups or add missing components.</td></tr>
+                        <tr><td><span class="command-name">!remove_leaderboards</span></td><td>One-time cleanup: delete the old "Top Recommendations Leaderboard" posts from every forum (the leaderboard system was retired in September 2026).</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Tv Kitty Content Requests <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
+                <p>Requests to add a title to the Tv Kitty library (from the Tv Kitty app's <strong>Request to Add</strong>, or typed into the request channel) become cards in one channel. Members 👍 a card to get pinged; an admin presses "I'll download this" to claim it; the bot deletes the card and pings everyone once the title shows up in the library. No admin approval step.</p>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!set_content_request_channel [#channel]</span></td><td>Where request cards (and the "now available" pings) go.</td></tr>
+                        <tr><td><span class="command-name">!clear_content_request_channel</span></td><td>Unset it (cards fall back to the approval channel).</td></tr>
+                        <tr><td><span class="command-name">!set_content_request_role @role</span></td><td>Only this role can press "I'll download this" (default: administrators).</td></tr>
+                        <tr><td><span class="command-name">!close_content_request &lt;id&gt;</span></td><td>Close a request by hand.</td></tr>
                     </tbody>
                 </table>
 
@@ -227,7 +240,6 @@
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!leaderboard [category]</span></td><td>View top recommendations. Optional category filter (e.g., movies, anime_movies, video_games).</td></tr>
                         <tr><td><span class="command-name">!random_rec [category]</span></td><td>Get a random recommendation from the database</td></tr>
                         <tr><td><span class="command-name">!media_stats</span></td><td>View server statistics (total recommendations by category)</td></tr>
                     </tbody>
@@ -297,10 +309,10 @@ python bot.py
                 <p>The bot requires these permissions:</p>
                 <ul>
                     <li>Manage Channels - Create forum channels for categories</li>
-                    <li>Send Messages - Post recommendations and leaderboards</li>
+                    <li>Send Messages - Post recommendations and request cards</li>
                     <li>Create Public Threads - Create genre threads in forums</li>
                     <li>Send Messages in Threads - Post in forum threads</li>
-                    <li>Manage Messages - Update leaderboard messages</li>
+                    <li>Manage Messages - Edit and clear request cards</li>
                     <li>Read Message History - Track existing recommendations</li>
                     <li>Add Reactions - Vote button functionality</li>
                 </ul>
@@ -324,9 +336,9 @@ python bot.py
             <section class="content-section">
                 <h2>Command Summary</h2>
                 <div class="card">
-                    <h4>Total Commands: 14</h4>
-                    <p><strong>Admin Commands:</strong> 11 (setup_media, setup_recommend_channel, setup_missing, set_approval_channel, enable_approval, disable_approval, approval_status, set_deletion_channel, disable_deletion_notifications, reorganize, migrate_categories)</p>
-                    <p><strong>User Commands:</strong> 3 (leaderboard, random_rec, media_stats)</p>
+                    <h4>Total Commands: 18</h4>
+                    <p><strong>Admin Commands:</strong> 16 (setup_media, setup_recommend_channel, setup_missing, remove_leaderboards, set_approval_channel, enable_approval, disable_approval, approval_status, set_deletion_channel, disable_deletion_notifications, reorganize, migrate_categories, set_content_request_channel, clear_content_request_channel, set_content_request_role, close_content_request)</p>
+                    <p><strong>User Commands:</strong> 2 (random_rec, media_stats)</p>
                     <p><strong>Calendar Commands:</strong> 4 (setup_calendar, authenticate_calendar, set_calendar, list_calendars)</p>
                 </div>
             </section>
