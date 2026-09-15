@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purrl TV - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #1e2433;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent-blue: #1d9bf0;
+            --accent-green: #00ba7c;
+            --accent-purple: #7856ff;
+            --accent-pink: #e91e8c;
+            --border-color: #2f3542;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .bot-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #e91e8c, #7856ff); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        main { padding: 40px 0; }
+        .content-section { margin-bottom: 48px; }
+        .content-section h2 { font-size: 1.75rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .content-section h3 { font-size: 1.25rem; margin: 24px 0 12px; color: var(--accent-purple); }
+        .content-section p { color: var(--text-secondary); margin-bottom: 16px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .card h4 { margin-bottom: 8px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .feature-icon { font-size: 24px; margin-bottom: 8px; }
+        .feature-item h4 { margin-bottom: 4px; }
+        .feature-item p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+        .command-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        .command-table th, .command-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+        .command-table th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+        .command-name { font-family: 'Consolas', monospace; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; color: var(--accent-green); white-space: nowrap; }
+        .code-block { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; font-family: 'Consolas', monospace; font-size: 0.9rem; overflow-x: auto; margin-bottom: 16px; color: var(--text-primary); }
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; }
+        .tag.user { background: rgba(0, 186, 124, 0.2); color: var(--accent-green); }
+        .tag.admin { background: rgba(255, 122, 0, 0.2); color: #ff7a00; }
+        .tag.owner { background: rgba(233, 30, 140, 0.2); color: var(--accent-pink); }
+        .tag.full { background: rgba(120, 86, 255, 0.2); color: var(--accent-purple); }
+        ul { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
+        li { margin-bottom: 8px; }
+        .warn { border-color: var(--accent-pink); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="back-link"><span>&larr;</span> Back to All Bots</a>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="bot-icon">&#128008;</div>
+                    <h1>Purrl TV</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content-section">
+                <h2>Overview</h2>
+                <p>Purrl TV is an adult, stations-only Discord Activity and website (<strong>purrl.tvkitty.com</strong>) forked from Tv Kitty. Members tune into always-on stations that play from a private Plex library on the NAS; there is no watch-party mode. Everything is gated by an 18+ Discord role, and the app itself never shows explicit content until someone deliberately enters a station.</p>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128250;</div>
+                        <h4>Stations from folders</h4>
+                        <p>Stations are scoped to Plex libraries and tags. Videos are auto-labeled with the folder they sit in, so a station named after a folder fills itself.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128065;</div>
+                        <h4>Blurred featured station</h4>
+                        <p>The home screen shows a blurred poster with an Enter button, never a live preview.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#10084;</div>
+                        <h4>Likes and Top Rated</h4>
+                        <p>Anyone can like what a station is playing; the most-liked videos make the Top Rated page.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128274;</div>
+                        <h4>Two tiers</h4>
+                        <p>Everyone with the 18+ role watches stations. The owner and a chosen full-library role also browse, play, keep favorites and upload clips.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#11014;</div>
+                        <h4>Clip uploads</h4>
+                        <p>From the app or with /clip-upload in Discord; clips land in a category folder on the NAS and Plex rescans.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">&#128190;</div>
+                        <h4>Always ready</h4>
+                        <p>The whole library is prepared ahead of time and nothing prepared is ever deleted; disk is the only limit.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>How content flows</h2>
+                <div class="card">
+                    <h4>1. Download into a category folder</h4>
+                    <p>The NAS share <code>purrl</code> has <code>Videos\&lt;Category&gt;</code> and <code>Clips\&lt;Category&gt;</code> folders (Vintage, Ebony, Interracial, Amateur, ...). Two Desktop shortcuts open them. Plex's "Purrl (18+)" library covers the whole share.</p>
+                </div>
+                <div class="card">
+                    <h4>2. Labels appear on their own</h4>
+                    <p>Every 30 minutes the backend re-reads the library, labels each video with its folder name (clips also get "Clips"), and queues anything unprepared for preparation at the lowest priority.</p>
+                </div>
+                <div class="card">
+                    <h4>3. Stations pick by tag</h4>
+                    <p>A station scoped to tag <em>Vintage</em> plays everything labeled Vintage. Run <span class="command-name">/station-rebuild</span> after adding content to rebuild today's schedules right away instead of waiting for the nightly build.</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Commands</h2>
+                <h3>Everyone</h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/stations</span></td><td>Browse station schedules and vote to replace upcoming items.</td></tr>
+                        <tr><td><span class="command-name">/clip-upload</span> <span class="tag full">full tier</span></td><td>Upload a video attachment into a category. Age-restricted channels only.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Owner</h3>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">/connect</span></td><td>Link the Plex account Purrl streams from (the owner's personal account, which owns the NAS server).</td></tr>
+                        <tr><td><span class="command-name">/station-add</span></td><td>Create a station: name, comma-separated library titles, comma-separated tags. Blank tags = everything in those libraries.</td></tr>
+                        <tr><td><span class="command-name">/station-edit</span> / <span class="command-name">/station-remove</span> / <span class="command-name">/station-list</span></td><td>Manage stations. Type <code>-</code> for a field to clear it.</td></tr>
+                        <tr><td><span class="command-name">/station-scope-options</span></td><td>Show the libraries and tags a station can be scoped to.</td></tr>
+                        <tr><td><span class="command-name">/station-rebuild</span></td><td>Rebuild today's station schedules now.</td></tr>
+                        <tr><td><span class="command-name">/full-library-role</span> (+ <code>-clear</code>, <code>-show</code>)</td><td>The role that unlocks browsing, favorites, Play and uploads.</td></tr>
+                        <tr><td><span class="command-name">/clips-channel-set</span></td><td>Age-restricted channel where each uploaded clip gets a card and a thread.</td></tr>
+                        <tr><td><span class="command-name">/now-playing-channel</span></td><td>Age-restricted channel for station "now playing" cards.</td></tr>
+                        <tr><td><span class="command-name">/station-calendar-channel</span></td><td>Channel for the daily station calendar post.</td></tr>
+                        <tr><td><span class="command-name">/favorite-save-role</span></td><td>Role whose favorites are kept prepared permanently (inherited from Tv Kitty).</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-section">
+                <h2>In the app</h2>
+                <ul>
+                    <li><strong>Home:</strong> the blurred featured station with Enter, the other station tiles, and (full tier) a big "Purrl (18+)" library tile.</li>
+                    <li><strong>Menu:</strong> Join a Station, Top Rated, and for the full tier My Favorites (with Randomize) and Upload a Clip.</li>
+                    <li><strong>Station view:</strong> Like what's playing; full tier also gets Favorite.</li>
+                    <li><strong>Video page:</strong> Like for everyone; Play and Favorite for the full tier. Play prepares the file through the same pipeline the stations use, then plays it in the app.</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Operations</h2>
+                <div class="card">
+                    <h4>Services</h4>
+                    <p>Three Windows services on the desktop, installed by <code>scripts\install_services.ps1</code>: <strong>PurrlTvBackend</strong> (port 8440, runs as the local <code>tvkitty</code> account so it can write to the NAS), <strong>PurrlTvBot</strong> (internal API 8441), <strong>PurrlTvVite</strong> (port 5174). <code>purrl.tvkitty.com</code> is an ingress rule in Tv Kitty's named Cloudflare tunnel; there is no tunnel service of its own.</p>
+                </div>
+                <div class="card">
+                    <h4>Restart order</h4>
+                    <div class="code-block">Stop-Service PurrlTvBot; Restart-Service PurrlTvBackend; Start-Sleep 8; Start-Service PurrlTvBot</div>
+                    <p>Frontend changes need <code>npm run build</code> in <code>activity\</code> followed by <code>Restart-Service PurrlTvVite</code>.</p>
+                </div>
+                <div class="card">
+                    <h4>Configuration</h4>
+                    <p><code>.env</code> in the repo root (never committed). Notable keys: <code>PLEX_SERVER_NAMES=tvkitty-nas</code>, <code>PURRL_LIBRARY_PREFIX=Purrl</code>, <code>CLIPS_DIR</code>, <code>PREPARED_MEDIA_DIR</code>, <code>FFMPEG_BINARY</code> (full path - the service account has no PATH to the per-user ffmpeg), <code>PREPARE_WHOLE_LIBRARY</code>, <code>PREPARE_KEEP_EVERYTHING</code>, <code>AUTO_LABEL_BY_FOLDER</code>.</p>
+                </div>
+                <div class="card warn">
+                    <h4>Watch the disk</h4>
+                    <p>Prepared files are kept forever by design. The cache lives on <code>D:\purrl-prepared</code> for now; move it to a NAS share the way Tv Kitty's was moved when it grows.</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Tech</h2>
+                <p>Python 3.10, FastAPI + uvicorn, discord.py 2.7, plexapi, aiosqlite, ffmpeg; vanilla JS frontend built with Vite and served as a Discord Activity and a standalone site. Repo: <code>oldcatlady12/purrl-tv</code> (private).</p>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
