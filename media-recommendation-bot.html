@@ -72,6 +72,7 @@
         <div class="container">
             <section class="content-section">
                 <h2>Overview</h2>
+                <div class="card"><h4>Watchlist bot mode (2026-09-16)</h4><p>Recommendations now live only inside the Tv Kitty app and website (Top Recommended). In Discord this bot keeps: the submission channel (a personal <em>watchlist</em> channel for everyone; app testers can also recommend), the Games forum for upcoming and released games, content requests and the approval channel. The per-category recommendation forums, the general Upcoming forum and Random Weekly Picks are retired.</p></div>
                 <p>The Media Recommendation Bot is a comprehensive recommendation tracking system for Discord servers. Members can recommend and vote on various types of media including games, movies, TV shows, anime, manga, and more. Features automatic forum organization, voting, an approval system, Tv Kitty content requests, and optional Google Calendar integration for unreleased media.</p>
 
                 <div class="feature-grid">
@@ -188,10 +189,8 @@
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!setup_media</span></td><td>Create all media category forums and genre threads (initial setup)</td></tr>
-                        <tr><td><span class="command-name">!setup_recommend_channel [#channel]</span></td><td>Set up the recommendation submission channel. Uses current channel if none specified.</td></tr>
-                        <tr><td><span class="command-name">!setup_missing</span></td><td>Check and create any missing categories, forums, daily posts, and genre posts. Use this to fix incomplete setups or add missing components.</td></tr>
-                        <tr><td><span class="command-name">!remove_leaderboards</span></td><td>One-time cleanup: delete the old "Top Recommendations Leaderboard" posts from every forum (the leaderboard system was retired in September 2026).</td></tr>
+                        <tr><td><span class="command-name">!teardown_recommendation_channels</span></td><td>One-time cleanup (2026-09-16): deletes every per-category recommendation forum, the general Upcoming forum and the Random Picks forum/threads after a confirmation. Keeps the submission channel and the Games forum.</td></tr>
+                        <tr><td><span class="command-name">!setup_recommend_channel [#channel]</span></td><td>Set the submission channel. Everyone can drop a title or link there to add it to their own watchlist; members with the Tv Kitty app-tester role also get the option to recommend it (Top Recommended in the app).</td></tr>
                     </tbody>
                 </table>
 
@@ -227,12 +226,10 @@
                     </tbody>
                 </table>
 
-                <h3>Category Management Commands <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
+                <h3>Category Management Commands <span class="tag admin">Retired 2026-09-16</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!reorganize [mode]</span></td><td>Check and reorganize misplaced recommendations. Modes: <code>report</code> (default) - shows which need to be moved; <code>execute</code> - actually moves recommendations to correct categories</td></tr>
-                        <tr><td><span class="command-name">!migrate_categories</span></td><td>Migrate old category names to new ones in the database (anime -> anime_tv, cartoons -> cartoon_tv). Run before reorganize.</td></tr>
                     </tbody>
                 </table>
 
@@ -240,7 +237,8 @@
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="command-name">!random_rec [category]</span></td><td>Get a random recommendation from the database</td></tr>
+                        <tr><td><span class="command-name">!watchlist</span></td><td>Your watchlist as a card: pages of 10, mark as watched, remove, add. Works in DMs too.</td></tr>
+                        <tr><td><span class="command-name">DM the bot a title or link</span></td><td>Adds it to your watchlist (app testers can choose to recommend it instead, or both). Once a month the bot DMs everyone with a watchlist to tidy it.</td></tr>
                         <tr><td><span class="command-name">!media_stats</span></td><td>View server statistics (total recommendations by category)</td></tr>
                     </tbody>
                 </table>
