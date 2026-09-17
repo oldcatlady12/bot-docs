@@ -81,6 +81,7 @@
                     <li>The finished video is posted in the highlights channel, uploaded to YouTube, and listed at <a href="https://highlights.tvkitty.com">highlights.tvkitty.com</a>. About an hour per game; one at a time at low CPU priority so Tv Kitty and Purrl always come first; the rest queue.</li>
                 </ol>
                 <div class="card"><h4>Website</h4><p>The gallery is public. Submitting from the site needs the key an admin creates with <code>!webkey</code> (each game costs an hour of CPU, so it's not open to the internet). Uploads up to 6 GB.</p></div>
+                <div class="card"><h4>Link screening</h4><p>Every submitted link (Discord or website) is screened before the bot touches it: only http(s), no private or bare-IP addresses, no shortened links, no throwaway domains, no executable downloads, no fake Discord/Steam/Nitro domains. Add <code>SAFE_BROWSING_API_KEY</code> to <code>.env</code> to also check Google Safe Browsing. Refused links get the reason back. Shared <code>linkcheck.py</code> with the other bots.</p></div>
             </section>
 
             <section class="content-section">
@@ -92,6 +93,10 @@
                         <tr><td><span class="command-name">!setchannel vod #channel</span></td><td>Where people drop game links / files</td></tr>
                         <tr><td><span class="command-name">!setchannel highlights #channel</span></td><td>Where finished highlight videos are posted</td></tr>
                         <tr><td><span class="command-name">!webkey</span></td><td>Create or rotate the website submit key (sent to you by DM)</td></tr>
+                        <tr><td><span class="command-name">!guide</span></td><td>Post the short how-to in the submissions channel. It's a sticky: a few seconds after anyone writes there it's re-posted at the bottom (the old copy removed).</td></tr>
+                        <tr><td><span class="command-name">!setadminrole @role</span></td><td>Let a role delete highlights (server administrators always can). <code>!setadminrole clear</code> removes it.</td></tr>
+                        <tr><td><span class="command-name">!delete_highlight &lt;id&gt;</span></td><td>Bot admins: delete a highlight everywhere (website, video file, Discord post). The id is the one in the website link (<code>#h=...</code>) or the row number from <code>!recent</code>. Every highlight post also has a 🗑️ Delete button that does the same after a confirm.</td></tr>
+                        <tr><td><span class="command-name">!webadminkey</span></td><td>Create or rotate the website admin key (DM). Press <em>Admin</em> on the site and paste it once; a Delete button then appears in every highlight's player.</td></tr>
                         <tr><td><span class="command-name">!dashboard</span></td><td>Active jobs, queue, recent history, highlight count</td></tr>
                     </tbody>
                 </table>
@@ -112,7 +117,7 @@
 
             <section class="content-section">
                 <h2>Adding or calibrating a game</h2>
-                <p>Each game is a profile in <code>src/profiles.py</code>: where the score sits on screen (percent of the frame), which team codes to expect, which score jumps are legal (football 1/2/3/6/7/8, basketball 1/2/3, soccer 1, baseball 1-4), how to word a play, and how much footage to keep around it. Madden's regions were tuned on real footage. The other games start from best guesses and are marked <em>not calibrated</em> until a full-frame gameplay screenshot with the score visible is used to set the region (<code>tools/debug_ocr.py</code> shows what the OCR sees).</p>
+                <p>Each game is a profile in <code>src/profiles.py</code>: where the score sits on screen (percent of the frame), which team codes to expect, which score jumps are legal (football 1/2/3/6/7/8, basketball 1/2/3, soccer 1, baseball 1-4), how to word a play, and how much footage to keep around it. Madden's regions were tuned on real footage. Madden 26 and 27 scores are read by matching each digit's shape against templates learned from real games of both (<code>src/madden27.py</code>, <code>scripts/learn_m27_digits.py</code>), which reads the bold HUD font exactly where OCR guessed; plain OCR stays as the fallback and the bot picks the better reader during the first minute of gameplay. A video holding several games back to back becomes one highlight per game (verified on a three-game franchise episode). The other games start from best guesses and are marked <em>not calibrated</em> until a full-frame gameplay screenshot with the score visible is used to set the region (<code>tools/debug_ocr.py</code> shows what the OCR sees).</p>
             </section>
 
             <section class="content-section">
