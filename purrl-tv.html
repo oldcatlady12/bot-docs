@@ -94,7 +94,7 @@
                     <div class="feature-item">
                         <div class="feature-icon">&#11014;</div>
                         <h4>Clip uploads</h4>
-                        <p>From the app or with /clip-upload in Discord; clips land in a category folder on the NAS and Plex rescans.</p>
+                        <p>Post a video in the clips channel and the bot asks which category it is (a dropdown under your post, no threads); pick one and it lands in that folder on the NAS and Plex rescans. Also from the app's upload page or /clip-upload.</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">&#128190;</div>
@@ -141,7 +141,8 @@
                         <tr><td><span class="command-name">/station-scope-options</span></td><td>Show the libraries and tags a station can be scoped to.</td></tr>
                         <tr><td><span class="command-name">/station-rebuild</span></td><td>Rebuild today's station schedules now.</td></tr>
                         <tr><td><span class="command-name">/full-library-role</span> (+ <code>-clear</code>, <code>-show</code>)</td><td>The role that unlocks browsing, favorites, Play and uploads.</td></tr>
-                        <tr><td><span class="command-name">/clips-channel-set</span></td><td>Age-restricted channel where each uploaded clip gets a card and a thread.</td></tr>
+                        <tr><td><span class="command-name">/clips-channel-set</span></td><td>The age-restricted clips channel. Any video posted there gets a category prompt (dropdowns, 15-minute timeout files it under Uncategorized) and is saved to the library; /clip-upload cards go there too. No threads.</td></tr>
+                        <tr><td><span class="command-name">/clip-channel-add #channel [category]</span></td><td>Optionally watch another 18+ channel too, with its own default category; clips from there are reposted (video only) into the clips channel. <code>/clip-channel-remove</code>, <code>/clip-channel-list</code>.</td></tr>
                         <tr><td><span class="command-name">/now-playing-channel</span></td><td>Age-restricted channel for station "now playing" cards.</td></tr>
                         <tr><td><span class="command-name">/station-calendar-channel</span></td><td>Channel for the daily station calendar post.</td></tr>
                         <tr><td><span class="command-name">/favorite-save-role</span></td><td>Role whose favorites are kept prepared permanently (inherited from Tv Kitty).</td></tr>
