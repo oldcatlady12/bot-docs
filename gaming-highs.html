@@ -55,7 +55,7 @@
                 <div class="bot-icon">&#127944;</div>
                 <h1>Gaming Highs</h1>
             </div>
-            <a href="https://highlights.tvkitty.com" target="_blank" rel="noopener">highlights.tvkitty.com</a>
+            <a href="https://football.manybumps.com" target="_blank" rel="noopener">football.manybumps.com</a>
         </div>
     </header>
 
@@ -78,7 +78,7 @@
                     <li>Someone posts a game link or video file in the submissions channel (or on the website with the submit key).</li>
                     <li>The bot reads the title, guesses the game, and asks to confirm. Nothing pressed for 90 seconds = it starts with the guess.</li>
                     <li>The video is downloaded, the scoreboard is OCR'd, scoring plays are found, clips are cut and stitched, a thumbnail is made, and the download + clip pieces are deleted.</li>
-                    <li>The finished video is posted in the highlights channel, uploaded to YouTube, and listed at <a href="https://highlights.tvkitty.com">highlights.tvkitty.com</a>. About an hour per game; one at a time at low CPU priority so Tv Kitty and Purrl always come first; the rest queue.</li>
+                    <li>The finished video is posted in the highlights channel, uploaded to YouTube, and listed at <a href="https://football.manybumps.com">football.manybumps.com</a>. About an hour per game; one at a time at low CPU priority so Tv Kitty and Purrl always come first; the rest queue.</li>
                 </ol>
                 <div class="card"><h4>Website</h4><p>The gallery is public. Submitting from the site needs the key an admin creates with <code>!webkey</code> (each game costs an hour of CPU, so it's not open to the internet). Uploads up to 6 GB.</p></div>
                 <div class="card"><h4>Link screening</h4><p>Every submitted link (Discord or website) is screened before the bot touches it: only http(s), no private or bare-IP addresses, no shortened links, no throwaway domains, no executable downloads, no fake Discord/Steam/Nitro domains. Add <code>SAFE_BROWSING_API_KEY</code> to <code>.env</code> to also check Google Safe Browsing. Refused links get the reason back. Shared <code>linkcheck.py</code> with the other bots.</p></div>
@@ -126,7 +126,7 @@
                     <li>Python 3.10 venv (<code>venv310</code>), Tesseract at <code>C:\Program Files\Tesseract-OCR</code>, ffmpeg and yt-dlp on PATH.</li>
                     <li><code>.env</code>: <code>DISCORD_BOT_TOKEN</code>; optional <code>WEB_PORT</code> (8450), <code>PUBLIC_SITE_URL</code>, <code>MAX_UPLOAD_MB</code>.</li>
                     <li>YouTube uploads: <code>client_secret.json</code> + <code>python youtube_auth.py</code> once.</li>
-                    <li>The site runs inside the bot on 127.0.0.1:8450 and is published as highlights.tvkitty.com by the shared Cloudflare tunnel (an ingress rule in <code>~/.cloudflared/config.yml</code>).</li>
+                    <li>The site runs inside the bot on 127.0.0.1:8450 and is published as football.manybumps.com by the shared Cloudflare tunnel (an ingress rule in <code>~/.cloudflared/config.yml</code>).</li>
                     <li>Tests: <code>venv310\Scripts\python.exe scripts\headless_test.py</code>.</li>
                 </ul>
             </section>
