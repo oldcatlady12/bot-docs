@@ -73,6 +73,7 @@
             <section class="content-section">
                 <h2>Overview</h2>
                 <div class="card"><h4>Watchlist bot mode (2026-09-16)</h4><p>Recommendations now live only inside the Tv Kitty app and website (Top Recommended). In Discord this bot keeps: the submission channel (a personal <em>watchlist</em> channel for everyone; app testers can also recommend), the Games forum for upcoming and released games, content requests and the approval channel. The per-category recommendation forums, the general Upcoming forum and Random Weekly Picks are retired.</p></div>
+                <div class="card"><h4>Game Watch (2026-10-17)</h4><p>One pinned panel in the games forum's <strong>Gaming Hub</strong> post lists every game suggested in the forum (a post with a YouTube trailer counts as one game). Members pick a game from the dropdown and get a private card: watch the trailer, talk about it, gameplay videos, <strong>Wishlist on Steam</strong>, platforms, release status, and <strong>Add to my watch list</strong> (their <code>!gamelist</code>). The Suggestions bot still runs the forum and its votes; Game Watch only reads those posts and sorts the panel by votes, then newest. See <a href="#game-watch">Game Watch</a> below.</p></div>
                 <p>The Media Recommendation Bot is a comprehensive recommendation tracking system for Discord servers. Members can recommend and vote on various types of media including games, movies, TV shows, anime, manga, and more. Features automatic forum organization, voting, an approval system, Tv Kitty content requests, and optional Google Calendar integration for unreleased media.</p>
 
                 <div class="feature-grid">
@@ -208,6 +209,28 @@
                     </tbody>
                 </table>
 
+                <h3 id="game-watch">Game Watch <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
+                <p>Runs on its own once set up. The Suggestions bot reposts every member's post in the games forum with vote buttons; Game Watch reads the repost and never edits or deletes the Suggestions bot's messages or anyone's posts.</p>
+                <ul>
+                    <li><strong>New post:</strong> reads the first YouTube link (the trailer), finds the game on Steam (name, release status, genres, developer, art, wishlist link) and adds missing genre tags to the post. It never removes tags and stops at Discord's 5. A post without a trailer gets one reply asking for the link; the game is still looked up from the post's title.</li>
+                    <li><strong>Gameplay:</strong> up to two gameplay videos per game from YouTube, posted in the <strong>Gameplay Clips</strong> post and shown on the game's card. Checked again every week while a game has fewer than two.</li>
+                    <li><strong>Daily check:</strong> Steam release status and announcements. An Early Access launch is announced in the post, a full release closes the post, and a major update or re-release reopens it.</li>
+                    <li><strong>Cost:</strong> free. YouTube's free API quota (Game Watch stops at 3,000 of the 10,000 daily units) and Steam's public store and news pages, which need no key.</li>
+                </ul>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!gamewatch</span></td><td>Lists the Game Watch commands below.</td></tr>
+                        <tr><td><span class="command-name">!gamewatch setup &lt;forum&gt; &lt;panel post&gt; &lt;clips post&gt;</span></td><td>The games forum, the post that holds the panel, and the Gameplay Clips post (mentions, links or ids). Already set up for the games forum.</td></tr>
+                        <tr><td><span class="command-name">!gamewatch rescan</span></td><td>Re-read every post in the forum and rebuild the panel.</td></tr>
+                        <tr><td><span class="command-name">!gamewatch fix &lt;post&gt; &lt;Steam link, app id or name&gt;</span></td><td>Correct a wrong Steam match. The corrected match is kept from then on.</td></tr>
+                        <tr><td><span class="command-name">!gamewatch hide &lt;post&gt;</span> / <span class="command-name">show</span></td><td>Take a game off the panel or put it back. The post stays.</td></tr>
+                        <tr><td><span class="command-name">!gamewatch ignore &lt;post&gt;</span></td><td>A post that isn't a game. It's never listed or tagged.</td></tr>
+                        <tr><td><span class="command-name">!gamewatch check</span></td><td>Run the daily check now (release status, big updates, weekly gameplay).</td></tr>
+                        <tr><td><span class="command-name">!gamewatch status</span></td><td>The setup, how many games and clips, and today's YouTube use.</td></tr>
+                    </tbody>
+                </table>
+
                 <h3>Approval System Commands <span class="tag admin">Admin Only</span></h3>
                 <table class="command-table">
                     <thead><tr><th>Command</th><th>Description</th></tr></thead>
@@ -327,6 +350,7 @@ python bot.py
                         <tr><td>Movies & TV Shows</td><td>OMDB, TMDB</td><td>Year, Rating, Plot, Poster, Genre</td></tr>
                         <tr><td>Anime & Manga</td><td>Jikan, AniList, Kitsu</td><td>Synopsis, Score, Episodes, Type (Movie/TV), Image</td></tr>
                         <tr><td>Video Games</td><td>RAWG</td><td>Release Date, Rating, Description, Image</td></tr>
+                        <tr><td>Game Watch</td><td>Steam store + news, YouTube</td><td>Name, Release Status, Genres, Developer, Platforms, Art, Wishlist Link, Announcements, Trailer + Gameplay Videos</td></tr>
                         <tr><td>Documentaries</td><td>TMDB</td><td>Year, Synopsis, Type (Film/Series), Image</td></tr>
                         <tr><td>Cartoons</td><td>TMDB</td><td>Year, Synopsis, Type (Movie/TV), Image</td></tr>
                     </tbody>
@@ -336,8 +360,8 @@ python bot.py
             <section class="content-section">
                 <h2>Command Summary</h2>
                 <div class="card">
-                    <h4>Total Commands: 18</h4>
-                    <p><strong>Admin Commands:</strong> 16 (setup_media, setup_recommend_channel, setup_missing, remove_leaderboards, set_approval_channel, enable_approval, disable_approval, approval_status, set_deletion_channel, disable_deletion_notifications, reorganize, migrate_categories, set_content_request_channel, clear_content_request_channel, set_content_request_role, close_content_request)</p>
+                    <h4>Total Commands: 19</h4>
+                    <p><strong>Admin Commands:</strong> 17 (setup_media, setup_recommend_channel, setup_missing, remove_leaderboards, set_approval_channel, enable_approval, disable_approval, approval_status, set_deletion_channel, disable_deletion_notifications, reorganize, migrate_categories, set_content_request_channel, clear_content_request_channel, set_content_request_role, close_content_request, gamewatch)</p>
                     <p><strong>User Commands:</strong> 2 (random_rec, media_stats)</p>
                     <p><strong>Calendar Commands:</strong> 4 (setup_calendar, authenticate_calendar, set_calendar, list_calendars)</p>
                 </div>
