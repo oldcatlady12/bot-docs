@@ -215,6 +215,7 @@
                     <li><strong>New post:</strong> reads the first YouTube link (the trailer), finds the game on Steam (name, release status, genres, developer, art, wishlist link) and adds missing genre tags to the post. It never removes tags and stops at Discord's 5. A post without a trailer gets one reply asking for the link; the game is still looked up from the post's title.</li>
                     <li><strong>Gameplay:</strong> up to two gameplay videos per game from YouTube, posted in the <strong>Gameplay Clips</strong> post and shown on the game's card. Checked again every week while a game has fewer than two.</li>
                     <li><strong>Daily check:</strong> Steam release status and announcements. An Early Access launch is announced in the post, a full release closes the post, and a major update or re-release reopens it.</li>
+                    <li><strong>Gaming Hub on top:</strong> the Suggestions bot holds the forum's one pinned post, so the Gaming Hub post can't be pinned. Instead, after anything is posted elsewhere in the forum, the bot sends a silent, empty message in the Gaming Hub post and deletes it at once, which moves the post back to the top. This only works while the forum's <strong>Default Sort Order</strong> is <strong>Recently Active</strong>; under Date Posted the bot doesn't bump. <code>!gamewatch status</code> shows whether it's on and when it last bumped.</li>
                     <li><strong>Cost:</strong> free. YouTube's free API quota (Game Watch stops at 3,000 of the 10,000 daily units) and Steam's public store and news pages, which need no key.</li>
                 </ul>
                 <table class="command-table">
@@ -227,7 +228,7 @@
                         <tr><td><span class="command-name">!gamewatch hide &lt;post&gt;</span> / <span class="command-name">show</span></td><td>Take a game off the panel or put it back. The post stays.</td></tr>
                         <tr><td><span class="command-name">!gamewatch ignore &lt;post&gt;</span></td><td>A post that isn't a game. It's never listed or tagged.</td></tr>
                         <tr><td><span class="command-name">!gamewatch check</span></td><td>Run the daily check now (release status, big updates, weekly gameplay).</td></tr>
-                        <tr><td><span class="command-name">!gamewatch status</span></td><td>The setup, how many games and clips, and today's YouTube use.</td></tr>
+                        <tr><td><span class="command-name">!gamewatch status</span></td><td>The setup, how many games and clips, today's YouTube use, and whether the Gaming Hub post is being kept on top.</td></tr>
                     </tbody>
                 </table>
 
