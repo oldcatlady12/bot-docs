@@ -73,7 +73,8 @@
             <section class="content-section">
                 <h2>Overview</h2>
                 <div class="card"><h4>Watchlist bot mode (2026-09-16)</h4><p>Recommendations now live only inside the Tv Kitty app and website (Top Recommended). In Discord this bot keeps: the submission channel (a personal <em>watchlist</em> channel for everyone; app testers can also recommend), the Games forum for upcoming and released games, content requests and the approval channel. The per-category recommendation forums, the general Upcoming forum and Random Weekly Picks are retired.</p></div>
-                <div class="card"><h4>Game Watch (2026-10-17)</h4><p>One pinned panel in the games forum's <strong>Gaming Hub</strong> post lists every game suggested in the forum (a post with a YouTube trailer counts as one game). Members pick a game from the dropdown and get a private card: watch the trailer, talk about it, gameplay videos, <strong>Wishlist on Steam</strong>, platforms, release status, and <strong>Add to my watch list</strong> (their <code>!gamelist</code>). The Suggestions bot still runs the forum and its votes; Game Watch only reads those posts and sorts the panel by votes, then newest. See <a href="#game-watch">Game Watch</a> below.</p></div>
+                <div class="card"><h4>Game Watch (2026-10-17)</h4><p>One pinned panel in the games forum's <strong>Gaming Hub</strong> post lists every game suggested in the forum (a post with a YouTube trailer counts as one game). Members pick a game from the dropdown and get a private card: watch the trailer, talk about it, gameplay videos, <strong>Wishlist on Steam</strong>, platforms, release status, and <strong>Add to my watch list</strong> (their <code>!gamelist</code>). The Suggestions bot still runs the forum and its votes; Game Watch only reads those posts and sorts the panel by votes, then newest. Fully released games move to a second panel with the same dropdowns and buttons in the Games news forum's <strong>Out, Watching, Recommend</strong> post. See <a href="#game-watch">Game Watch</a> below.</p></div>
+                <div class="card"><h4>Gaming Showcases (2026-10-17)</h4><p>The full-length YouTube videos of gaming showcases - The Game Awards, Summer Game Fest, Xbox, PlayStation, Nintendo Directs, the PC Gaming Show and more - are posted in the Games news forum's <strong>Gaming Showcase</strong> post once each show is over. New and recent shows only. See <a href="#showcases">Gaming Showcases</a> below.</p></div>
                 <p>The Media Recommendation Bot is a comprehensive recommendation tracking system for Discord servers. Members can recommend and vote on various types of media including games, movies, TV shows, anime, manga, and more. Features automatic forum organization, voting, an approval system, Tv Kitty content requests, and optional Google Calendar integration for unreleased media.</p>
 
                 <div class="feature-grid">
@@ -216,6 +217,7 @@
                     <li><strong>New post:</strong> reads the first YouTube link (the trailer), finds the game on Steam (name, release status, genres, developer, art, wishlist link) and adds missing genre tags to the post. It never removes tags and stops at Discord's 5. A post without a trailer gets one reply asking for the link; the game is still looked up from the post's title.</li>
                     <li><strong>Gameplay:</strong> up to two gameplay videos per game from YouTube, posted in the <strong>Gameplay Clips</strong> post and shown on the game's card. Checked again every week while a game has fewer than two.</li>
                     <li><strong>Daily check:</strong> Steam release status and announcements. An Early Access launch is announced in the post, a full release closes the post, and a major update or re-release reopens it.</li>
+                    <li><strong>Released games:</strong> a second panel with the same dropdowns and buttons, in the Games news forum's <strong>Out, Watching, Recommend</strong> post, lists the fully released games. The Gaming Hub panel keeps the games still to come (Coming soon, Early Access, status unknown). A game moves across by itself when the daily check sees it release, and each panel links to the other.</li>
                     <li><strong>Gaming Hub on top:</strong> the Suggestions bot holds the forum's one pinned post, so the Gaming Hub post can't be pinned. Instead, after anything is posted elsewhere in the forum, the bot sends a silent, empty message in the Gaming Hub post and deletes it at once, which moves the post back to the top. This only works while the forum's <strong>Default Sort Order</strong> is <strong>Recently Active</strong>; under Date Posted the bot doesn't bump. <code>!gamewatch status</code> shows whether it's on and when it last bumped.</li>
                     <li><strong>Cost:</strong> free. YouTube's free API quota (Game Watch stops at 3,000 of the 10,000 daily units) and Steam's public store and news pages, which need no key.</li>
                 </ul>
@@ -229,7 +231,27 @@
                         <tr><td><span class="command-name">!gamewatch hide &lt;post&gt;</span> / <span class="command-name">show</span></td><td>Take a game off the panel or put it back. The post stays.</td></tr>
                         <tr><td><span class="command-name">!gamewatch ignore &lt;post&gt;</span></td><td>A post that isn't a game. It's never listed or tagged.</td></tr>
                         <tr><td><span class="command-name">!gamewatch check</span></td><td>Run the daily check now (release status, big updates, weekly gameplay).</td></tr>
+                        <tr><td><span class="command-name">!gamewatch released &lt;post&gt;</span></td><td>The post that holds the released games' panel. Set to the Games news forum's Out, Watching, Recommend post.</td></tr>
                         <tr><td><span class="command-name">!gamewatch status</span></td><td>The setup, how many games and clips, today's YouTube use, and whether the Gaming Hub post is being kept on top.</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 id="showcases">Gaming Showcases <span class="tag admin">Admin Only</span> <span class="tag new">NEW</span></h3>
+                <p>Runs on its own. Every 2 hours the bot looks at the newest uploads of 15 YouTube channels - The Game Awards (which also streams Summer Game Fest and Opening Night Live), Xbox, PlayStation, Nintendo of America, Ubisoft, Capcom USA, PC Gamer (the PC Gaming Show), Future Games Show, Wholesome Games, Devolver Digital, Tokyo Game Show, Day of the Devs, Annapurna Interactive, Limited Run Games and IGN - and posts each new showcase in the Games news forum's <strong>Gaming Showcase</strong> post: the show's name, the channel, how long it runs and when it streamed, with the YouTube player under it.</p>
+                <ul>
+                    <li><strong>Full shows only:</strong> the title has to name a showcase (Showcase, Direct, State of Play, The Game Awards, Summer Game Fest, Opening Night Live, Games Show...) and nothing like a trailer, recap, reaction, pre-show or gameplay video, and the video has to be at least 18 minutes long.</li>
+                    <li><strong>New and recent only:</strong> nothing from more than 14 days ago is posted. A live stream or premiere waits until it has ended, so the full video is what gets shared.</li>
+                    <li><strong>Once per show:</strong> when IGN co-streams a show the organiser also posts, only one of them is shared, the organiser's when both arrive together.</li>
+                    <li><strong>Cost:</strong> free. YouTube's public channel feeds weren't working, so it uses YouTube's free API quota - about 200 units a day, counted inside Game Watch's 3,000-unit daily cap.</li>
+                </ul>
+                <table class="command-table">
+                    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="command-name">!showcases</span></td><td>Where the videos go, which channels are watched, what's been posted and what's still live or upcoming.</td></tr>
+                        <tr><td><span class="command-name">!showcases set &lt;post&gt;</span></td><td>The forum post the videos go to. Set to the Games news forum's Gaming Showcase post.</td></tr>
+                        <tr><td><span class="command-name">!showcases check</span></td><td>Look for new showcase videos now instead of waiting for the next 2-hour check.</td></tr>
+                        <tr><td><span class="command-name">!showcases add &lt;@handle or channel link&gt;</span> / <span class="command-name">remove</span></td><td>Watch another YouTube channel for showcases, or stop watching one.</td></tr>
+                        <tr><td><span class="command-name">!showcases post &lt;YouTube link&gt;</span></td><td>Post one showcase video by hand, for a show on a channel that isn't watched.</td></tr>
                     </tbody>
                 </table>
 
@@ -363,7 +385,7 @@ python bot.py
                 <h2>Command Summary</h2>
                 <div class="card">
                     <h4>Total Commands: 19</h4>
-                    <p><strong>Admin Commands:</strong> 17 (setup_media, setup_recommend_channel, setup_missing, remove_leaderboards, set_approval_channel, enable_approval, disable_approval, approval_status, set_deletion_channel, disable_deletion_notifications, reorganize, migrate_categories, set_content_request_channel, clear_content_request_channel, set_content_request_role, close_content_request, gamewatch)</p>
+                    <p><strong>Admin Commands:</strong> 18 (setup_media, setup_recommend_channel, setup_missing, remove_leaderboards, set_approval_channel, enable_approval, disable_approval, approval_status, set_deletion_channel, disable_deletion_notifications, reorganize, migrate_categories, set_content_request_channel, clear_content_request_channel, set_content_request_role, close_content_request, gamewatch, showcases)</p>
                     <p><strong>User Commands:</strong> 2 (random_rec, media_stats)</p>
                     <p><strong>Calendar Commands:</strong> 4 (setup_calendar, authenticate_calendar, set_calendar, list_calendars)</p>
                 </div>
